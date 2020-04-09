@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 09 avr. 2020 à 11:40
+-- Généré le : jeu. 09 avr. 2020 à 17:23
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -439,6 +439,35 @@ INSERT INTO `specialitelabo` (`idspe`, `idlabo`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `systemenotes`
+--
+
+CREATE TABLE `systemenotes` (
+  `revueInterAA` int(2) NOT NULL,
+  `revueInterA` int(2) NOT NULL,
+  `revueInterB` int(2) NOT NULL,
+  `revueInterC` int(2) NOT NULL,
+  `revueNat` int(2) NOT NULL,
+  `autre` int(2) NOT NULL,
+  `comInterA` int(2) NOT NULL,
+  `comInterB` int(2) NOT NULL,
+  `comInterC` int(2) NOT NULL,
+  `comNat` int(2) NOT NULL,
+  `chapitreOuvrage` int(2) NOT NULL,
+  `ouvrage` int(2) NOT NULL,
+  `id` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `systemenotes`
+--
+
+INSERT INTO `systemenotes` (`revueInterAA`, `revueInterA`, `revueInterB`, `revueInterC`, `revueNat`, `autre`, `comInterA`, `comInterB`, `comInterC`, `comNat`, `chapitreOuvrage`, `ouvrage`, `id`) VALUES
+(60, 50, 40, 20, 20, 10, 30, 20, 10, 10, 30, 100, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `these`
 --
 
@@ -661,6 +690,12 @@ ALTER TABLE `specialitelabo`
   ADD KEY `idlabo` (`idlabo`);
 
 --
+-- Index pour la table `systemenotes`
+--
+ALTER TABLE `systemenotes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `these`
 --
 ALTER TABLE `these`
@@ -738,6 +773,12 @@ ALTER TABLE `revue`
 --
 ALTER TABLE `specialite`
   MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `systemenotes`
+--
+ALTER TABLE `systemenotes`
+  MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Contraintes pour les tables déchargées
