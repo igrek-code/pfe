@@ -1,66 +1,102 @@
 <?php
     require_once("config.php");
     session_start();
-    if(!isset($_SESSION['loggedinadmin']) || !$_SESSION['loggedinadmin'])
-        {   
-            session_destroy();
-            header("location: index.php");
-        }
-    
-    if(isset($_GET["modifier"]) && $_GET["modifier"] != ""){
-        $idetab = mysqli_real_escape_string($db,$_GET["modifier"]);
-        $sql = "SELECT * FROM etablissement WHERE idetab='".$idetab."'";
-        if($result = mysqli_query($db,$sql)){
-            $row = mysqli_fetch_array($result);
-            $nomEtab = $row["nom"];
-            $abrvEtab = $row["abrv"];
-            $typeEtab = $row["type"];
-            $sitewebEtab = $row["siteweb"];
-            $addresseEtab = $row["addresse"];
-            $telEtab = $row["tel"];
-            $faxEtab = $row["fax"];
-        }
+    if(!isset($_SESSION['loggedinadmin']) || !$_SESSION['loggedinadmin']){   
+        session_destroy();
+        header("location: index.php");
     }
-    else header("location: adminGererEtab.php");
+    
+    $sql = "SELECT * FROM systemeNotes WHERE id = '1' ";
+    if($result = mysqli_query($db,$sql)){
+        $row = mysqli_fetch_array($result);
+        $revueInterAA = $row["revueInterAA"];
+        $revueInterA = $row["revueInterA"];
+        $revueInterB = $row["revueInterB"];
+        $revueInterC = $row["revueInterC"];
+        $revueNat = $row["revueNat"];
+        $autre = $row["autre"];
+        $comInterA = $row["comInterA"];
+        $comInterB = $row["comInterB"];
+        $comInterC = $row["comInterC"];
+        $comNat = $row["comNat"];
+        $chapitreOuvrage = $row["chapitreOuvrage"];
+        $ouvrage = $row["ouvrage"];
+    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
         $error = false;
-        if($_POST["nomEtab"] != $nomEtab){
-            $nomEtab = mysqli_real_escape_string($db,$_POST["nomEtab"]);
-            $sql = "UPDATE etablissement SET nom='".$nomEtab."'WHERE idetab='".$idetab."'";
+        if($_POST["revueInterAA"] != $revueInterAA){
+            $revueInterAA = mysqli_real_escape_string($db,$_POST["revueInterAA"]);
+            $sql = "UPDATE systemeNotes SET revueInterAA='".$revueInterAA."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
-         if($_POST["abrvEtab"] != $abrvEtab){
-            $abrvEtab = mysqli_real_escape_string($db,$_POST["abrvEtab"]);
-            $sql = "UPDATE etablissement SET abrv='".$abrvEtab."'WHERE idetab='".$idetab."'";
+        }
+
+        if($_POST["revueInterA"] != $revueInterA){
+            $revueInterA = mysqli_real_escape_string($db,$_POST["revueInterA"]);
+            $sql = "UPDATE systemeNotes SET revueInterA='".$revueInterA."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
-         if($_POST["typeEtab"] != $typeEtab){
-            $typeEtab = mysqli_real_escape_string($db,$_POST["typeEtab"]);
-            $sql = "UPDATE etablissement SET type='".$typeEtab."'WHERE idetab='".$idetab."'";
+        }
+
+        if($_POST["revueInterB"] != $revueInterB){
+            $revueInterB = mysqli_real_escape_string($db,$_POST["revueInterB"]);
+            $sql = "UPDATE systemeNotes SET revueInterB='".$revueInterB."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
-         if($_POST["sitewebEtab"] != $sitewebEtab){
-            $sitewebEtab = mysqli_real_escape_string($db,$_POST["sitewebEtab"]);
-            $sql = "UPDATE etablissement SET siteweb='".$sitewebEtab."'WHERE idetab='".$idetab."'";
+        }
+
+        if($_POST["revueInterC"] != $revueInterC){
+            $revueInterC = mysqli_real_escape_string($db,$_POST["revueInterC"]);
+            $sql = "UPDATE systemeNotes SET revueInterC='".$revueInterC."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
-         if($_POST["addresseEtab"] != $addresseEtab){
-            $addresseEtab = mysqli_real_escape_string($db,$_POST["addresseEtab"]);
-            $sql = "UPDATE etablissement SET addresse='".$addresseEtab."'WHERE idetab='".$idetab."'";
+        }
+
+        if($_POST["revueNat"] != $revueNat){
+            $revueNat = mysqli_real_escape_string($db,$_POST["revueNat"]);
+            $sql = "UPDATE systemeNotes SET revueNat='".$revueNat."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
-         if($_POST["telEtab"] != $telEtab){
-            $telEtab = mysqli_real_escape_string($db,$_POST["telEtab"]);
-            $sql = "UPDATE etablissement SET tel='".$telEtab."'WHERE idetab='".$idetab."'";
+        }
+
+        if($_POST["autre"] != $autre){
+            $autre = mysqli_real_escape_string($db,$_POST["autre"]);
+            $sql = "UPDATE systemeNotes SET autre='".$autre."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
-         if($_POST["faxEtab"] != $faxEtab){
-            $faxEtab = mysqli_real_escape_string($db,$_POST["faxEtab"]);
-            $sql = "UPDATE etablissement SET fax='".$faxEtab."'WHERE idetab='".$idetab."'";
+        }
+
+        if($_POST["comInterA"] != $comInterA){
+            $comInterA = mysqli_real_escape_string($db,$_POST["comInterA"]);
+            $sql = "UPDATE systemeNotes SET comInterA='".$comInterA."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
-         }
+        }
+
+        if($_POST["comInterB"] != $comInterB){
+            $comInterB = mysqli_real_escape_string($db,$_POST["comInterB"]);
+            $sql = "UPDATE systemeNotes SET comInterB='".$comInterB."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["comInterC"] != $comInterC){
+            $comInterC = mysqli_real_escape_string($db,$_POST["comInterC"]);
+            $sql = "UPDATE systemeNotes SET comInterC='".$comInterC."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["comNat"] != $comNat){
+            $comNat = mysqli_real_escape_string($db,$_POST["comNat"]);
+            $sql = "UPDATE systemeNotes SET comNat='".$comNat."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["ouvrage"] != $ouvrage){
+            $ouvrage = mysqli_real_escape_string($db,$_POST["ouvrage"]);
+            $sql = "UPDATE systemeNotes SET ouvrage='".$ouvrage."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["chapitreOuvrage"] != $chapitreOuvrage){
+            $chapitreOuvrage = mysqli_real_escape_string($db,$_POST["chapitreOuvrage"]);
+            $sql = "UPDATE systemeNotes SET chapitreOuvrage='".$chapitreOuvrage."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
 
         if(!$error) $display_type = "success";
         else $display_type = "error";
@@ -104,13 +140,13 @@
     <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
 
     <style>
-        /*.btn-success{
-           position : relative;
-           margin-left : 25%;
-            /*top : 22px;
-            left : 60px;
-            width : 50%;
-        }*/
+        .inline-label { 
+            white-space: nowrap;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            float:left;     
+        }
         #revenir{
             font-size : 17px;
             text-decoration : underline;
@@ -143,7 +179,7 @@
                         <p>Demande inscriptions</p>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="adminGererEtab.php">
                         <i class="pe-7s-culture"></i>
                         <p>Gerer Etablissement</p>
@@ -161,7 +197,7 @@
                         <p>Gerer Compte</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="#">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
@@ -224,83 +260,115 @@
         
 
 
-        <div style="position:relative; width:80%; left:10%; right:10%;" class="content">
+        <div style="position:relative; width:60%; left:20%; right:20%;" class="content">
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Modifier Établissement
-                        <a id="revenir" href="adminGererEtab.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste établissements </a> </h4>
+                        <h4 class="title">Modifier Notes
+                        <a id="revenir" href="adminGererDemande.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'acceuil </a> </h4>
                     </div>
 
                     <div class="content">
                         <form action="" id="mainForm" method="post">
+                            <p class="category">Revue Internationelle</p>
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>nom</label>
-                                        <input value="<?php echo $nomEtab;?>" type="text" name="nomEtab" class="form-control" placeholder="Nom de l'établissement" required>
-                                    </div>
+                                        <label class="inline-label">classe A*</label>
+                                        <input onClick="this.select();" value="<?php echo $revueInterAA;?>" class="form-control" type="text" name="revueInterAA" required>
+                                    </div>  
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="inline-label">classe A</label>
+                                        <input onClick="this.select();" value="<?php echo $revueInterA;?>" class="form-control" type="text" name="revueInterA" required>
+                                    </div>  
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="inline-label">classe b</label>
+                                        <input onClick="this.select();" value="<?php echo $revueInterB;?>" class="form-control" type="text" name="revueInterB" required>
+                                    </div>  
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="inline-label">classe C</label>
+                                        <input onClick="this.select();" value="<?php echo $revueInterC;?>" class="form-control" type="text" name="revueInterC" required>
+                                    </div>  
+                                </div>
+                            </div>
+
+                            
+
+                            <p class="category">Revue nationalle</p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input onClick="this.select();" value="<?php echo $revueNat;?>" class="form-control" type="text" name="revueNat" required>
+                                    </div>  
+                                </div>
+                            </div>
+
+                            <div style="background:grey;width:100%;height:1px;margin-bottom:5px;"></div>
+
+                            <p class="category">Communication internationalle</p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="inline-label">classe a</label>
+                                        <input onClick="this.select();" value="<?php echo $comInterA;?>" class="form-control" type="text" name="comInterA" required>
+                                    </div>  
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">abréviation</label>
-                                        <input value="<?php echo $abrvEtab;?>" type="text" name="abrvEtab" class="form-control" placeholder="ex: USTHB">
-                                    </div>
+                                        <label class="inline-label">classe b</label>
+                                        <input onClick="this.select();" value="<?php echo $comInterB;?>" class="form-control" type="text" name="comInterB" required>
+                                    </div>  
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="inline-label">classe c</label>
+                                        <input onClick="this.select();" value="<?php echo $comInterC;?>" class="form-control" type="text" name="comInterC" required>
+                                    </div>  
                                 </div>
                             </div>
 
+                            <p class="category">Communication nationalle</p>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">type</label>
-                                        <select name="typeEtab" id="typeEtab" class="form-control selectpicker" title="Type..." required>
-                                            <?php
-                                                switch ($typeEtab) {
-                                                    case 'université':
-                                                        echo '<option value="universite" selected>Université</option>
-                                                        <option value="centre de recherche">Centre de recherche</option>';
-                                                        break;
-                                                    
-                                                    default:
-                                                        echo '<option value="universite" >Université</option>
-                                                        <option value="centre de recherche" selected>Centre de recherche</option>';
-                                                        break;
-                                                }
-                                            ?>
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 pull-right">
-                                    <div class="form-group">
-                                        <label for="">Site Web</label>
-                                        <input value="<?php echo $sitewebEtab;?>" type="text" name="sitewebEtab"  class="form-control" placeholder="ex: usthb.dz">
-                                    </div>
+                                        <input onClick="this.select();" value="<?php echo $comNat;?>" class="form-control" type="text" name="comNat" required>
+                                    </div>  
                                 </div>
                             </div>
 
+                            <div style="background:grey;width:100%;height:1px;margin-bottom:5px;"></div>
+
+                            <p class="category">Ouvrage</p>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">adresse</label>
-                                        <input value="<?php echo $addresseEtab;?>" type="text" name="addresseEtab"  class="form-control" placeholder="Adresse de l'établissement">
-                                    </div>
+                                        <label class="inline-label">complet</label>
+                                        <input onClick="this.select();" value="<?php echo $ouvrage;?>" class="form-control" type="text" name="ouvrage" required>
+                                    </div>  
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="inline-label">chapitre</label>
+                                        <input onClick="this.select();" value="<?php echo $chapitreOuvrage;?>" class="form-control" type="text" name="chapitreOuvrage" required>
+                                    </div>  
                                 </div>
                             </div>
 
+                            <div style="background:grey;width:100%;height:1px;margin-bottom:5px;"></div>
+
+                            <p class="category">Autre</p>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">Tél.</label>
-                                        <input value="<?php echo $telEtab;?>" type="text" name="telEtab"  class="form-control" placeholder="Téléphone de l'établissement">
+                                    <input onClick="this.select();" value="<?php echo $autre;?>" class="form-control" type="text" name="autre" required>
                                     </div>
-                                </div> 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">fax.</label>
-                                        <input value="<?php echo $faxEtab;?>" type="text" name="faxEtab"  class="form-control" placeholder="Fax de l'établissement">
-                                    </div>
-                                </div> 
+                                </div>
                             </div>
 
                             <div class="row">
@@ -382,56 +450,8 @@
             ?>
             $("#clearBtn").click(function(){
                 $(".form-control").val("");
-                $("#typeEtab").selectpicker("refresh");
             });
 
-            $("#etablissement").change(function(){
-                var value = $(this).val();
-                if(value.length!=0){
-                    $.get("ajax/ajouterLaboAjax.php",{term : value},function(data){
-                        $("#faculte").html(data);
-                        $("#faculte").selectpicker("refresh");
-                    });
-                }
-            });
-
-            $("#faculte").change(function(){
-                var value = $(this).val();
-                if(value.length!=0){
-                    $.get("ajax/ajouterLaboAjax.php",{codeFaculte : value},function(data){
-                        $("#domaine").html(data);
-                        $("#domaine").selectpicker("refresh");
-                    });
-                }
-            });
-
-            /*$("#domaine").change(function(){
-                var value = $(this).val();
-                if(value.length!=0){
-                    $.get("ajax/ajouterLaboAjax.php",{codeDomaine : value},function(data){
-                        $("#specialite").html(data);
-                        $("#specialite").selectpicker("refresh");
-                    });
-                }
-            });*/
-
-           /* $("#ajouterChef").click(function(){
-                alert("IM IN");
-                if($(this).val() === "true"){
-                    $("#infoChef").html(<div>HELLLO</div>);
-                }else{
-                    $("#infoChef").empty();
-                }
-            });*/
-
-           /* $("#mailChercheur").blur(function(){
-                var value = $(this).val();
-                if(value.length!=0){
-                    $.get("ajax/ajouterLaboAjax.php"),{mailChercheur : value},function(data){
-                        autofill(data);
-                    }
-                }
-            })*/
         });
     </script>
 
