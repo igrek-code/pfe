@@ -1,6 +1,4 @@
 <?php
-    $msg ="";
-    
     require_once("config.php");
     session_start();
 
@@ -41,14 +39,14 @@
     <!--     Fonts and icons     -->
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
 
-    <!-- DATA TABLE CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css"/>
-
     <!-- J-CONFIRM CSS -->
     <link rel="stylesheet" href="assets/j-confirm/j-confirm.css">
     
     <!-- BOOTSTRAP SELECT CSS -->
     <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
+
+    <!-- DATA TABLE CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css"/>
 
     <style>
         #seDeconnecter:hover{
@@ -235,14 +233,14 @@
 	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 	<script src="assets/js/demo.js"></script>
 
-    <!-- DATA TABLE JS -->
-    <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
-
     <!-- J-CONFIRM JS -->
     <script src="assets/j-confirm/j-confirm.js"></script>
 
     <!-- BOOTSTRAP SELECT JS -->
     <script src="assets/select/bootstrap-select.min.js"></script>
+
+    <!-- DATA TABLE JS -->
+    <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
     
     <script>
         $(document).ready(function(){
@@ -252,12 +250,16 @@
                 $.get("ajax/adminGererLaboAjax.php",{idetab : val},function(data){
                     $("#codeDomaine").html($("#codeDomaine").html()+data);
                     $("#codeDomaine").selectpicker("refresh");
-                    refresh_table();
+                    //refresh_table();
+                    $("#codeDomaine").trigger("change");
                 });
             });
 
             $("#codeDomaine").change(function(){
                 refresh_table();
+                setTimeout(function() {
+                    $(".table").DataTable();
+                }, /*22*/100);
             });
 
             function refresh_table(){
@@ -269,7 +271,8 @@
                     $("#typeListe").html(" ("+nomDomaine+")");
                 var idetab = $("#idetab").val();
                 $.get("ajax/adminGererLaboAjax.php",{codeDomaine : codeDomaine,idetab : idetab},function(data){
-                    $("#theTables").html(data.slice(2, -1)).done(init_click());
+                    $("#theTables").html(data.slice(2, -1));
+                    init_click();
                 });
             }
 
@@ -335,41 +338,42 @@
                 });
             }
 
-            
-            /*$('#myTable').DataTable({
-                "language" : {
-                    "sEmptyTable":     "Aucune donnée disponible dans le tableau",
-                    "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
-                    "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
-                    "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
-                    "sInfoPostFix":    "",
-                    "sInfoThousands":  ",",
-                    "sLengthMenu":     "Afficher _MENU_ éléments",
-                    "sLoadingRecords": "Chargement...",
-                    "sProcessing":     "Traitement...",
-                    "sSearch":         "Rechercher :",
-                    "sZeroRecords":    "Aucun élément correspondant trouvé",
-                    "oPaginate": {
-                        "sFirst":    "Premier",
-                        "sLast":     "Dernier",
-                        "sNext":     "Suivant",
-                        "sPrevious": "Précédent"
-                    },
-                    "oAria": {
-                        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-                        "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
-                    },
-                    "select": {
-                            "rows": {
-                                "_": "%d lignes sélectionnées",
-                                "0": "Aucune ligne sélectionnée",
-                                "1": "1 ligne sélectionnée"
-                            } 
+            /*function apply_dataTable(){
+                $('table.table').DataTable({
+                    "language" : {
+                        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ",",
+                        "sLengthMenu":     "Afficher _MENU_ éléments",
+                        "sLoadingRecords": "Chargement...",
+                        "sProcessing":     "Traitement...",
+                        "sSearch":         "Rechercher :",
+                        "sZeroRecords":    "Aucun élément correspondant trouvé",
+                        "oPaginate": {
+                            "sFirst":    "Premier",
+                            "sLast":     "Dernier",
+                            "sNext":     "Suivant",
+                            "sPrevious": "Précédent"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                        },
+                        "select": {
+                                "rows": {
+                                    "_": "%d lignes sélectionnées",
+                                    "0": "Aucune ligne sélectionnée",
+                                    "1": "1 ligne sélectionnée"
+                                } 
+                        }
                     }
-                }
 
-            });*/
-            
+                });
+            }*/
+
         });
     </script>
 

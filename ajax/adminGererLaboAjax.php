@@ -20,13 +20,14 @@
                         $nomDomaine = $row["nom"];
                         $codeDomaine = $row["codeDomaine"];
                         echo '
+                        <div class="row">
                         <div class="col-md-12">
                         <div class="card" style="padding-top:0px;">
                         <div style="color:grey;margin-top:0px;padding-top:1px;border-bottom:black;" class="header">
                             <h4 style="text-transform:capitalize;">'.$nomDomaine.'</h4>
                         </div>
-                        <div class="content table-responsive table-full-width">
-                        <table class="table table-hover" id="myTable" >
+                        <div class="content table-responsive ">
+                        <table class="table table-hover">
                             <thead>
                                 <th>Nom</th>
                                 <th>Abréviation</th>
@@ -47,6 +48,7 @@
                             )
                         )"; 
                         if($result2 = mysqli_query($db,$sql)){
+                            echo '<tbody>';
                             while ($row2 = mysqli_fetch_array($result2)) {
                                 $nomLabo = $row2["nom"];
                                 $idLabo = $row2["idlabo"];
@@ -59,7 +61,7 @@
                                 $mailLabo = $row2["mail"];
                                 $adresseLabo = $row2["addresse"];
 
-                                echo    '<tbody>';
+                                
                                 echo    '<tr>';
                                 echo    '<td>'.$nomLabo.'</td>';
                                 echo    '<td>'.$abrvLabo.'</td>';
@@ -87,8 +89,9 @@
                                 echo    '</tr>';
                                 
                             }
-                            echo    '</tbody>';
+                                echo    '</tbody>';
                                 echo    '</table>';
+                                echo    '</div>';
                                 echo    '</div>';
                                 echo    '</div>';
                                 echo    '</div>';
@@ -109,10 +112,11 @@
                 )";
                 if($result = mysqli_query($db,$sql)){
                     echo '
+                        <div class="row">
                         <div class="col-md-12">
                         <div class="card" style="padding-top:0px;">
                         <div class="content table-responsive table-full-width">
-                        <table class="table table-hover" id="myTable" >
+                        <table class="table table-hover">
                             <thead>
                                 <th>Nom</th>
                                 <th>Abréviation</th>
@@ -168,6 +172,7 @@
                     }
                     echo    '</tbody>';
                     echo    '</table>';
+                    echo    '</div>';
                     echo    '</div>';
                     echo    '</div>';
                     echo    '</div>';
