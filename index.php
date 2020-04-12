@@ -35,9 +35,27 @@
             $result = mysqli_query($db,$sql);
             if(mysqli_num_rows($result) == 1) {
                 $row = mysqli_fetch_array($result);
-                $_SESSION["idcher"] = $row["idcher"];
+                $_SESSION["idcher"]= $idcher = $row["idcher"];
                 $_SESSION["nom"] = $row["nom"];
                 $_SESSION["loggedinlabo"] = true;
+                $sql = "SELECT * FROM equipe WHERE idequipe IN (
+                    SELECT idequipe FROM chefequip WHERE idcher='".$idcher."'
+                )";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_array($result);
+                    $_SESSION["idequipe"] = $row["idequipe"];
+                    $_SESSION["nomequip"] = $row["nomequip"]; 
+                }
+                $sql = "SELECT * FROM laboratoire WHERE idlabo IN (
+                    SELECT idlabo FROM cheflabo WHERE idcher='".$idcher."'
+                )";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_array($result);
+                    $_SESSION["idlabo"] = $row["idlabo"];
+                    $_SESSION["nomlabo"] = $row["nom"]; 
+                }
                 header("location: laboGererEquipe.php");
             }
             else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
