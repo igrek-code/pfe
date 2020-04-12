@@ -32,6 +32,17 @@
     }
 
     if(isset($_GET["refresh"]) && $_GET["refresh"]){
+        echo '<div class="content">
+        <table class="table table-hover" id="myTable" >
+            <thead>
+                <th>Nom</th>
+                <th>Profil</th>
+                <th>Grade</th>
+                <th>Email</th>
+                <th>Laboratoire</th>
+                <th>Action</th>
+            </thead>
+            <tbody>';
         $sql = "SELECT * FROM chercheur WHERE idcher NOT IN (
             SELECT idcher FROM users
         ) AND idcher IN (
@@ -73,5 +84,8 @@
                 }
             }
         }
+        echo '</tbody>
+            </table>
+        </div>';
     }
 ?>

@@ -56,11 +56,6 @@
         th, td { 
             white-space: nowrap;
         }
-        /*tr { height: 10px; }*/
-        /*.dataTables_wrapper{
-            margin-left:5px;
-            margin-right:5px;
-        }*/
     </style>
 </head>
 <body>
@@ -265,53 +260,16 @@
             });
 
             $("#codeDomaine").change(function(){
+                var codeDomaine = $(this).val();
                 refresh_table();
                 setTimeout(function() {
-                    $(".table").DataTable({
-                    //"scrollY" : "500px",
-                    "scrollCollapse": true,
-                    "scrollX": true,
-                    "columnDefs": [
-                        {targets: -1, orderable: false, "width": "105px"}
-                    ],
-                    "language" : {
-                        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
-                        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
-                        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
-                        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
-                        "sInfoPostFix":    "",
-                        "sInfoThousands":  ",",
-                        "sLengthMenu":     "Afficher _MENU_ éléments",
-                        "sLoadingRecords": "Chargement...",
-                        "sProcessing":     "Traitement...",
-                        "sSearch":         "Rechercher :",
-                        "sZeroRecords":    "Aucun élément correspondant trouvé",
-                        "oPaginate": {
-                            "sFirst":    "Premier",
-                            "sLast":     "Dernier",
-                            "sNext":     "Suivant",
-                            "sPrevious": "Précédent"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-                            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
-                        },
-                        "select": {
-                                "rows": {
-                                    "_": "%d lignes sélectionnées",
-                                    "0": "Aucune ligne sélectionnée",
-                                    "1": "1 ligne sélectionnée"
-                                } 
-                        }
-                    }
-
-                });
-                }, /*22*/100);
-                setTimeout(function(){
+                    $(".table").DataTable(fr_table(codeDomaine));
+                },100);
+                /*setTimeout(function(){
                     $("body").animate({
                     scrollTop: $("h4:eq(1)").offset().top-50
-                    }, 1000);
-                },1000);
+                    }, 500);
+                },200);*/
             });
 
             function refresh_table(){
@@ -390,41 +348,87 @@
                 });
             }
 
-            /*function apply_dataTable(){
-                $('table.table').DataTable({
-                    "language" : {
-                        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
-                        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
-                        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
-                        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
-                        "sInfoPostFix":    "",
-                        "sInfoThousands":  ",",
-                        "sLengthMenu":     "Afficher _MENU_ éléments",
-                        "sLoadingRecords": "Chargement...",
-                        "sProcessing":     "Traitement...",
-                        "sSearch":         "Rechercher :",
-                        "sZeroRecords":    "Aucun élément correspondant trouvé",
-                        "oPaginate": {
-                            "sFirst":    "Premier",
-                            "sLast":     "Dernier",
-                            "sNext":     "Suivant",
-                            "sPrevious": "Précédent"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-                            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
-                        },
-                        "select": {
-                                "rows": {
-                                    "_": "%d lignes sélectionnées",
-                                    "0": "Aucune ligne sélectionnée",
-                                    "1": "1 ligne sélectionnée"
-                                } 
+            function fr_table(codeDomaine){
+                if(codeDomaine == "all")
+                    return {
+                        "scrollY" : "400px",
+                        "scrollCollapse": true,
+                        "scrollX": true,
+                        "columnDefs": [
+                            {targets: -1, orderable: false, "width": "105px"}
+                        ],
+                        "language" : {
+                            "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                            "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                            "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                            "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                            "sInfoPostFix":    "",
+                            "sInfoThousands":  ",",
+                            "sLengthMenu":     "Afficher _MENU_ éléments",
+                            "sLoadingRecords": "Chargement...",
+                            "sProcessing":     "Traitement...",
+                            "sSearch":         "Rechercher :",
+                            "sZeroRecords":    "Aucun élément correspondant trouvé",
+                            "oPaginate": {
+                                "sFirst":    "Premier",
+                                "sLast":     "Dernier",
+                                "sNext":     "Suivant",
+                                "sPrevious": "Précédent"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                                "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                            },
+                            "select": {
+                                    "rows": {
+                                        "_": "%d lignes sélectionnées",
+                                        "0": "Aucune ligne sélectionnée",
+                                        "1": "1 ligne sélectionnée"
+                                    } 
+                            }
                         }
                     }
-
-                });
-            }*/
+                else{
+                    return {
+                        //"scrollY" : "500px",
+                        "scrollCollapse": true,
+                        "scrollX": true,
+                        "columnDefs": [
+                            {targets: -1, orderable: false, "width": "105px"}
+                        ],
+                        "language" : {
+                            "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                            "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                            "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                            "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                            "sInfoPostFix":    "",
+                            "sInfoThousands":  ",",
+                            "sLengthMenu":     "Afficher _MENU_ éléments",
+                            "sLoadingRecords": "Chargement...",
+                            "sProcessing":     "Traitement...",
+                            "sSearch":         "Rechercher :",
+                            "sZeroRecords":    "Aucun élément correspondant trouvé",
+                            "oPaginate": {
+                                "sFirst":    "Premier",
+                                "sLast":     "Dernier",
+                                "sNext":     "Suivant",
+                                "sPrevious": "Précédent"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                                "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                            },
+                            "select": {
+                                    "rows": {
+                                        "_": "%d lignes sélectionnées",
+                                        "0": "Aucune ligne sélectionnée",
+                                        "1": "1 ligne sélectionnée"
+                                    } 
+                            }
+                        }
+                    } 
+                } 
+            }
 
         });
     </script>

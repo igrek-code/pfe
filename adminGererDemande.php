@@ -48,6 +48,9 @@
     
 
     <style>
+        th, td { 
+            white-space: nowrap;
+        }
         #seDeconnecter:hover{
             color:red;
         }
@@ -168,22 +171,7 @@
 
                             
 
-                            <div class="content table-responsive ">
-                                <table class="table table-hover" id="myTable" >
-                                    <thead>
-                                        <th>Nom</th>
-                                        <th>Profil</th>
-                                        <th>Grade</th>
-                                        <th>Email</th>
-                                        <th>Laboratoire</th>
-                                        <th>Action</th>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                                
-                            </div>
+                            <div id="theTable"></div>
                         </div>
                     </div>
 
@@ -226,10 +214,11 @@
             refresh_table();
 
             function refresh_table() {
+                $("#theTable").html('');
                 $.get("ajax/adminGererDemandeAjax.php",{refresh: true},function(data){
-                    $("tbody").html(data.slice(2,-1));
+                    $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
-                    $("table").DataTable();
+                    $("table").DataTable(fr_table());
                     $('button[title="supprimer"]').click(function(){
                         var idcher = $(this).val();
                         $.confirm({
@@ -342,6 +331,48 @@
                         });
                     });
                 });    
+            }
+
+            function fr_table (){
+                return {
+                    //"scrollY" : "500px",
+                    //"scrollCollapse": true,
+                    "scrollX": true,
+                    "columnDefs": [
+                        {targets: -1, orderable: false, "width": "184px"}
+                    ],
+                    "language" : {
+                        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ",",
+                        "sLengthMenu":     "Afficher _MENU_ éléments",
+                        "sLoadingRecords": "Chargement...",
+                        "sProcessing":     "Traitement...",
+                        "sSearch":         "Rechercher :",
+                        "sZeroRecords":    "Aucun élément correspondant trouvé",
+                        "oPaginate": {
+                            "sFirst":    "Premier",
+                            "sLast":     "Dernier",
+                            "sNext":     "Suivant",
+                            "sPrevious": "Précédent"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                        },
+                        "select": {
+                                "rows": {
+                                    "_": "%d lignes sélectionnées",
+                                    "0": "Aucune ligne sélectionnée",
+                                    "1": "1 ligne sélectionnée"
+                                } 
+                        }
+                    }
+
+                };
             }
             
         });

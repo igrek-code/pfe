@@ -8,6 +8,15 @@
     }
 
     if(isset($_GET["loadTable"])){
+        echo '<div class="content">
+        <table class="table table-hover">
+            <thead>
+                <th>Nom</th>
+                <th>Abréviation</th>
+                <th>Type</th>
+                <th>Action</th>
+            </thead>
+            <tbody>';
         $sql = "SELECT * FROM etablissement";
         $result = mysqli_query($db,$sql);
         while ($row = mysqli_fetch_array($result)) {
@@ -36,17 +45,8 @@
         echo    '</td>';
         echo    '</tr>';
         }
+        echo '</tbody>
+            </table>
+        </div>';
     }
-
-    /*if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $sql = "SELECT nom from etablissement";
-        if($result = mysqli_query($db,$sql)){
-            $rows = array();
-            while($row = mysqli_fetch_array($result)){
-                $rows[] = $row;
-            }
-            echo json_encode($rows);
-        }
-    }        
-   */
 ?>

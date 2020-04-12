@@ -139,7 +139,8 @@
                         $sql = "SELECT * FROM equipe WHERE idequipe IN (
                             SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
                         )";
-                        if($result2 = mysqli_query($db,$sql)){
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $nomequip = $row2["nomequip"];
                             $idlabo = $row2["idlabo"];
