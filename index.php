@@ -8,21 +8,39 @@
 
    if (isset($_SESSION["loggedinadmin"]) && $_SESSION["loggedinadmin"] == true)
         header("location: adminGererDemande.php");
+    if (isset($_SESSION["loggedinlabo"]) && $_SESSION["loggedinlabo"] == true)
+        header("location: laboGererEquipe.php");
     
    if($_SERVER["REQUEST_METHOD"] == "POST"){
     $login = mysqli_real_escape_string($db,$_POST["login"]);
     $password = mysqli_real_escape_string($db,$_POST["password"]);
 
-    if($_POST["profil"] == "admin") {
-        $sql = " SELECT * FROM admin WHERE login = '".$login."' AND password = '".$password."'";
-        $result = mysqli_query($db,$sql);
-        if(mysqli_num_rows($result) == 1) {
-            $_SESSION["mail"] = $login;
-            $_SESSION["loggedinadmin"] = true;
-            header("location: adminGererDemande.php");
-        }
-        else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';  
-        
+    switch($_POST["profil"]) {
+        case 'admin':
+            $sql = " SELECT * FROM admin WHERE login = '".$login."' AND password = '".$password."'";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) == 1) {
+                $_SESSION["mail"] = $login;
+                $_SESSION["loggedinadmin"] = true;
+                header("location: adminGererDemande.php");
+            }
+            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';  
+        break;
+        case 'chefLabo':
+            $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM users WHERE mail = '".$login."' AND password = '".$password."'
+            ) AND idcher IN (
+                SELECT idcher FROM cheflabo
+            )";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) == 1) {
+                $row = mysqli_fetch_array($result);
+                $_SESSION["idcher"] = $row["idcher"];
+                $_SESSION["nom"] = $row["nom"];
+                $_SESSION["loggedinlabo"] = true;
+                header("location: laboGererEquipe.php");
+            }
+            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
     }     
    
 }
