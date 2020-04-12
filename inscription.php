@@ -6,35 +6,45 @@
         if(isset($_POST["statuscher"]) && $_POST["statuscher"] == "cheflabo"){
             $display_notif = true;
             $error = true;
+            $execute = true;
             if(isset($_POST["mailcher"]) && $_POST["mailcher"] != ""){
                 $mailcher = mysqli_real_escape_string($db,$_POST["mailcher"]);
-            }
+            }else $execute = false;
             if(isset($_POST["nomcher"]) && $_POST["nomcher"] != ""){
                 $nomcher = mysqli_real_escape_string($db,$_POST["nomcher"]);
-            }
+            }else $execute = false;
             if(isset($_POST["gradecher"]) && $_POST["gradecher"] != ""){
                 $gradecher = mysqli_real_escape_string($db,$_POST["gradecher"]);
-            }
+            }else $execute = false;
             if(isset($_POST["profilcher"]) && $_POST["profilcher"] != ""){
                 $profilcher = mysqli_real_escape_string($db,$_POST["profilcher"]);
-            }
+            }else $execute = false;
             if(isset($_POST["idlabo"]) && $_POST["idlabo"] != ""){
                 $idlabo = mysqli_real_escape_string($db,$_POST["idlabo"]);
-            }
+            }else $execute = false;
+            if(isset($_POST["pwdcher"]) && isset($_POST["pwdcherconf"]) && $_POST["pwdcher"] != "" && $_POST["pwdcher"] == $_POST["pwdcherconf"]){
+                $pwdcher = mysqli_real_escape_string($db,$_POST["pwdcher"]);
+            }else $execute = false;
 
-            $sql = "INSERT INTO chercheur (mail,nom,grade,profil) VALUES ('".$mailcher."','".$nomcher."','".$gradecher."','".$profilcher."')";
-            if(mysqli_query($db,$sql)){
-               $sql = "SELECT * FROM chercheur ORDER BY idcher DESC";
-               if($result = mysqli_query($db,$sql)){
-                    $idcher = mysqli_fetch_array($result)["idcher"];
-                    $sql = "INSERT INTO cheflabo (idlabo,idcher) VALUES ('".$idlabo."','".$idcher."')";
-                    if(mysqli_query($db,$sql)){
-                        $error = false;
+            if($execute){
+                $sql = "INSERT INTO chercheur (mail,nom,grade,profil) VALUES ('".$mailcher."','".$nomcher."','".$gradecher."','".$profilcher."')";
+                if(mysqli_query($db,$sql)){
+                    $sql = "SELECT * FROM chercheur ORDER BY idcher DESC";
+                    if($result = mysqli_query($db,$sql)){
+                        $idcher = mysqli_fetch_array($result)["idcher"];
+                        $sql = "INSERT INTO cheflabo (idlabo,idcher) VALUES ('".$idlabo."','".$idcher."')";
+                        if(mysqli_query($db,$sql)){
+                            $sql = "INSERT INTO users (idcher,mail,password) VALUES ('".$idcher."','".$mailcher."','".$pwdcher."')";
+                            if(mysqli_query($db,$sql))
+                                $error = false;
+                        }
                     }
                 }
+                if(!$error)
+                    $display_type = "success";
+                else
+                    $display_type = "error";
             }
-            if(!$error)
-                $display_type = "success";
             else
                 $display_type = "error";
         }
@@ -104,6 +114,25 @@
                                 <div class="form-group">
                                     <label>email</label>
                                     <input type="email" name="mailcher" class="form-control" placeholder="Votre email" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>mot de passe</label>
+                                    <input type="password" name="pwdcher" class="form-control" placeholder="Mot de passe" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>confirmer mot de passe</label>
+                                    <input type="password" name="pwdcherconf" class="form-control" placeholder="Confirmer mot de passe" required>
+                                    <div style="margin-top:5px;margin-left:2px;" id="msgConfMdp" class="text-danger" hidden>Veuillez saisir le même mot de passe</div>
                                 </div>
                             </div>
                         </div>
@@ -254,7 +283,7 @@
     
     <script>
         $(document).ready(function(){
-
+            
             $("#etabcher").change(function(){
                 $("#codeDomaine").html('<option selected value="all">Tous les domaines</option>');
                 $("#codeDomaine").selectpicker("refresh");
@@ -310,9 +339,12 @@
                 $(".form-check-input").prop("checked",false);
             });
 
-            /*$('button [type="submit"]').click(function(){
-               $("form").trigger("submit"); 
-            })*/
+            $('input[name="pwdcherconf"]').keyup(function(){
+                if($('input[name="pwdcher"]').val()!=$(this).val())
+                    $("#msgConfMdp").prop("hidden",false);
+                else
+                    $("#msgConfMdp").prop("hidden",true);
+            }); 
 
             <?php
                 if(isset($display_notif) && $display_notif == true)
