@@ -49,6 +49,9 @@
     <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
     
     <style>
+        th, td { 
+            white-space: nowrap;
+        }
         #seDeconnecter:hover{
             color:red;
         }
@@ -166,7 +169,7 @@
                                 <h4 class="title">Liste des comptes</h4>
                                 <p class="category">Bloquer/supprimer</p>      
                                 <div style="margin-top:10px;" class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Type du compte</label>
                                             <select class="form-control selectpicker" name="statuscher" id="statuscher">
@@ -180,25 +183,7 @@
                             </div>
 
                             
-
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-hover" id="myTable" >
-                                    <thead>
-                                        <th>Nom</th>
-                                        <th>Mail</th>
-                                        <th>Grade</th>
-                                        <th>Profil</th>
-                                        <th>Equipe</th>
-                                        <th>Laboratoire</th>
-                                        <th>Etablissement</th>
-                                        <th>Action</th>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                                
-                            </div>
+                            <div id="theTable"></div>
                         </div>
                     </div>
 
@@ -240,15 +225,19 @@
     
     <script>
         $(document).ready(function(){
+            //$.fn.dataTable.ext.errMode = 'none';
+            setTimeout(function(){
+                $("#statuscher").trigger("change");
+            },50);
 
-            $("#statuscher").trigger("change");
-            
             $("#statuscher").change(function(){
+                $("#theTable").html("");
                 var statuscher = $(this).val();
                 $.get("ajax/adminGererCompteAjax.php",{statuscher: statuscher},function(data){
-                    $("tbody").html(data.slice(2,-1));
+                    $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
-                    $('button [title="supprimer"]').click(function(){
+                    $("table").DataTable(fr_table());
+                    $('button[title="supprimer"]').click(function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",
@@ -305,6 +294,48 @@
                     });
                 });
             });
+
+            function fr_table (){
+                return {
+                    //"scrollY" : "500px",
+                    "scrollCollapse": true,
+                    "scrollX": true,
+                    "columnDefs": [
+                        {targets: -1, orderable: false}
+                    ],
+                    "language" : {
+                        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ",",
+                        "sLengthMenu":     "Afficher _MENU_ éléments",
+                        "sLoadingRecords": "Chargement...",
+                        "sProcessing":     "Traitement...",
+                        "sSearch":         "Rechercher :",
+                        "sZeroRecords":    "Aucun élément correspondant trouvé",
+                        "oPaginate": {
+                            "sFirst":    "Premier",
+                            "sLast":     "Dernier",
+                            "sNext":     "Suivant",
+                            "sPrevious": "Précédent"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                        },
+                        "select": {
+                                "rows": {
+                                    "_": "%d lignes sélectionnées",
+                                    "0": "Aucune ligne sélectionnée",
+                                    "1": "1 ligne sélectionnée"
+                                } 
+                        }
+                    }
+
+                };
+            }
 
         });
     </script>

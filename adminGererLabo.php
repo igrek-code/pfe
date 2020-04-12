@@ -47,11 +47,20 @@
 
     <!-- DATA TABLE CSS -->
     <link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" href="assets/DataTables/fixed-col.css">
 
     <style>
         #seDeconnecter:hover{
             color:red;
         }
+        th, td { 
+            white-space: nowrap;
+        }
+        /*tr { height: 10px; }*/
+        /*.dataTables_wrapper{
+            margin-left:5px;
+            margin-right:5px;
+        }*/
     </style>
 </head>
 <body>
@@ -241,6 +250,7 @@
 
     <!-- DATA TABLE JS -->
     <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
+    <script src="assets/DataTables/fixed-cols.js"></script>
     
     <script>
         $(document).ready(function(){
@@ -250,7 +260,6 @@
                 $.get("ajax/adminGererLaboAjax.php",{idetab : val},function(data){
                     $("#codeDomaine").html($("#codeDomaine").html()+data);
                     $("#codeDomaine").selectpicker("refresh");
-                    //refresh_table();
                     $("#codeDomaine").trigger("change");
                 });
             });
@@ -259,6 +268,12 @@
                 refresh_table();
                 setTimeout(function() {
                     $(".table").DataTable({
+                    //"scrollY" : "500px",
+                    "scrollCollapse": true,
+                    "scrollX": true,
+                    "columnDefs": [
+                        {targets: -1, orderable: false, "width": "105px"}
+                    ],
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                         "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
@@ -292,6 +307,11 @@
 
                 });
                 }, /*22*/100);
+                setTimeout(function(){
+                    $("body").animate({
+                    scrollTop: $("h4:eq(1)").offset().top-50
+                    }, 1000);
+                },1000);
             });
 
             function refresh_table(){

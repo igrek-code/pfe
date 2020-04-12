@@ -172,7 +172,7 @@
 
                             
 
-                            <div class="content table-responsive table-full-width">
+                            <div class="content table-responsive">
                                 <table class="table table-hover" id="myTable" >
                                     <thead>
                                         <th>Nom</th>
@@ -232,6 +232,7 @@
                 $.get("ajax/adminGererEtabAjax.php",{loadTable : "true"},function(data){
                     $("tbody").html(data);
                 }).done(function(){
+                    $("table").DataTable();
                     $('button[title="supprimer"]').click(function(){
                         var val = $(this).val();
                         $.confirm({

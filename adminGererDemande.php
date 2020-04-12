@@ -168,7 +168,7 @@
 
                             
 
-                            <div class="content table-responsive table-full-width">
+                            <div class="content table-responsive ">
                                 <table class="table table-hover" id="myTable" >
                                     <thead>
                                         <th>Nom</th>
@@ -229,6 +229,7 @@
                 $.get("ajax/adminGererDemandeAjax.php",{refresh: true},function(data){
                     $("tbody").html(data.slice(2,-1));
                 }).done(function(){
+                    $("table").DataTable();
                     $('button[title="supprimer"]').click(function(){
                         var idcher = $(this).val();
                         $.confirm({

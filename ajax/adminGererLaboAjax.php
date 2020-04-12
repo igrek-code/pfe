@@ -26,7 +26,7 @@
                         <div style="color:grey;margin-top:0px;padding-top:1px;border-bottom:black;" class="header">
                             <h4 style="text-transform:capitalize;">'.$nomDomaine.'</h4>
                         </div>
-                        <div class="content table-responsive ">
+                        <div class="content ">
                         <table class="table table-hover">
                             <thead>
                                 <th>Nom</th>
@@ -115,7 +115,7 @@
                         <div class="row">
                         <div class="col-md-12">
                         <div class="card" style="padding-top:0px;">
-                        <div class="content table-responsive table-full-width">
+                        <div class="content ">
                         <table class="table table-hover">
                             <thead>
                                 <th>Nom</th>

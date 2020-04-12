@@ -1,6 +1,19 @@
 <?php
     require_once("../config.php");
     if(isset($_GET["statuscher"]) && $_GET["statuscher"] != ""){
+        echo '<div class="content table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <th>Nom</th>
+                <th>Mail</th>
+                <th>Grade</th>
+                <th>Profil</th>
+                <th>Equipe</th>
+                <th>Laboratoire</th>
+                <th>Etablissement</th>
+                <th>Action</th>
+            </thead>
+            <tbody>';
         switch ($_GET["statuscher"]) {
             case 'chercheur':
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
@@ -13,8 +26,8 @@
                 if($result = mysqli_query($db,$sql)){
                     while($row = mysqli_fetch_array($result)){
                         $idcher = $row["idcher"];
-                        $sql = "SELECT * FROM equipe WHERE idequip IN (
-                            SELECT idequip FROM membrequip WHERE idcher ='".$idcher."'
+                        $sql = "SELECT * FROM equipe WHERE idequipe IN (
+                            SELECT idequipe FROM membrequip WHERE idcher ='".$idcher."'
                         )";
                         if($result2 = mysqli_query($db,$sql)){
                             $row2 = mysqli_fetch_array($result2);
@@ -43,12 +56,12 @@
                                     echo    '<td>'.$nometab.'</td>';
                                     echo    '<td>';
                                     echo    '<div class="btn-toolbar">';
-                                    echo    '<div class="btn-group">';
-                                    echo    '<button  value="'.$idcher.'" title="bloquer" class="btn-fill btn btn-warning ">Bloquer</button>';
-                                    echo    '</div>';
                                     //echo    '<div class="btn-group">';
-                                    //echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger ">Supprimer</button>';
+                                    //echo    '<button  value="'.$idcher.'" title="bloquer" class="btn-fill btn btn-warning ">Bloquer</button>';
                                     //echo    '</div>';
+                                    echo    '<div class="btn-group">';
+                                    echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger ">Supprimer</button>';
+                                    echo    '</div>';
                                     echo    '</div>';
                                     echo    '</td>';
                                     echo    '</tr>';
@@ -68,8 +81,8 @@
                 if($result = mysqli_query($db,$sql)){
                     while($row = mysqli_fetch_array($result)){
                         $idcher = $row["idcher"];
-                        $sql = "SELECT * FROM equipe WHERE idequip IN (
-                            SELECT idequip FROM chefequip WHERE idcher ='".$idcher."'
+                        $sql = "SELECT * FROM equipe WHERE idequipe IN (
+                            SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
                         )";
                         if($result2 = mysqli_query($db,$sql)){
                             $row2 = mysqli_fetch_array($result2);
@@ -98,12 +111,12 @@
                                     echo    '<td>'.$nometab.'</td>';
                                     echo    '<td>';
                                     echo    '<div class="btn-toolbar">';
-                                    echo    '<div class="btn-group">';
-                                    echo    '<button  value="'.$idcher.'" title="bloquer" class="btn-fill btn btn-warning ">Bloquer</button>';
-                                    echo    '</div>';
                                     //echo    '<div class="btn-group">';
-                                    //echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger ">Supprimer</button>';
+                                    //echo    '<button  value="'.$idcher.'" title="bloquer" class="btn-fill btn btn-warning ">Bloquer</button>';
                                     //echo    '</div>';
+                                    echo    '<div class="btn-group">';
+                                    echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger ">Supprimer</button>';
+                                    echo    '</div>';
                                     echo    '</div>';
                                     echo    '</td>';
                                     echo    '</tr>';
@@ -123,8 +136,8 @@
                 if($result = mysqli_query($db,$sql)){
                     while($row = mysqli_fetch_array($result)){
                         $idcher = $row["idcher"];
-                        $sql = "SELECT * FROM equipe WHERE idequip IN (
-                            SELECT idequip FROM chefequip WHERE idcher ='".$idcher."'
+                        $sql = "SELECT * FROM equipe WHERE idequipe IN (
+                            SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
                         )";
                         if($result2 = mysqli_query($db,$sql)){
                             $row2 = mysqli_fetch_array($result2);
@@ -153,12 +166,12 @@
                                     echo    '<td>'.$nometab.'</td>';
                                     echo    '<td>';
                                     echo    '<div class="btn-toolbar">';
-                                    echo    '<div class="btn-group">';
-                                    echo    '<button  value="'.$idcher.'" title="bloquer" class="btn-fill btn btn-warning ">Bloquer</button>';
-                                    echo    '</div>';
                                     //echo    '<div class="btn-group">';
-                                    //echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger ">Supprimer</button>';
+                                    //echo    '<button  value="'.$idcher.'" title="bloquer" class="btn-fill btn btn-warning ">Bloquer</button>';
                                     //echo    '</div>';
+                                    echo    '<div class="btn-group">';
+                                    echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger ">Supprimer</button>';
+                                    echo    '</div>';
                                     echo    '</div>';
                                     echo    '</td>';
                                     echo    '</tr>';
@@ -169,6 +182,9 @@
                 }
             break;
         }   
+        echo '</tbody>
+            </table>
+        </div>';
     } 
 
     if(isset($_GET["supprimer"]) && $_GET["supprimer"] != ""){
