@@ -1,12 +1,14 @@
 <?php
     require_once("config.php");
     session_start();
-
-    if(!isset($_SESSION['loggedinlabo']) || !$_SESSION['loggedinlabo'])
-        {   
-            session_destroy();
-            header("location: index.php");
-        }
+    $session = false;
+    if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
+    if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
+    if(!$session){   
+        session_destroy();
+        header("location: index.php");
+    }
+    
 ?>
 
 <!doctype html>
@@ -90,12 +92,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="equipeGererMembre.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Gerer Membre Equipe</p>
-                    </a>
-                </li>
-                <li>
                     <a href="#">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
@@ -164,10 +160,8 @@
                     <div class="col-md-12">
                         <div class="card" style="padding-bottom:20px;">
                             <div class="header">
-                                <h4 class="title">Liste des équipes
-                                    <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterEquipe.php" title="ajouter">+</a>
-                                </h4>
-                                <p class="category">Ajouter/modifier/supprimer</p>
+                                <h4 class="title">Liste des membres</h4>
+                                <p class="category">supprimer</p>
                             </div>
                             <div id="theTable"></div>
                         </div>
@@ -215,7 +209,7 @@
 
             function refresh_table(){
                 $("#theTable").html("");
-                $.get("ajax/laboGererEquipeAjax.php",{refresh: true},function(data){
+                $.get("ajax/equipeGererMembreAjax.php",{refresh: true},function(data){
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
                     $("table").dataTable(fr_table());
@@ -231,7 +225,7 @@
                                 supprimer : {
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
-                                        $.get("ajax/laboGererEquipeAjax.php",{supprimer: val},function (data) {
+                                        $.get("ajax/equipeGererMembreAjax.php",{supprimer: val},function (data) {
                                             if(data == "?>true"){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
@@ -283,7 +277,7 @@
                     //"scrollCollapse": true,
                     "scrollX": true,
                     "columnDefs": [
-                        {targets: -1, orderable: false, "width": "105px"}
+                        {targets: -1, orderable: false}
                     ],
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
