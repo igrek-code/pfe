@@ -5,31 +5,51 @@
         session_destroy();
         header("location: index.php");
     }
-    
+
     $idlabo = $_SESSION["idlabo"];
+    if(isset($_GET["modifier"]) && $_GET["modifier"] != ""){
+        $idequipe = mysqli_real_escape_string($db,$_GET["modifier"]);
+        $sql = "SELECT * FROM equipe WHERE idequipe='".$idequipe."' AND idlabo='".$idlabo."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $nomEquipe = mysqli_fetch_array($result)["nomequip"];
+            $sql = "SELECT * FROM specialite WHERE idspe IN (
+                SELECT idspe FROM specialiteequipe WHERE idequipe='".$idequipe."'
+            )";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $specialites = array();
+                while($row = mysqli_fetch_array($result)){
+                    $specialites[] = $row["idspe"];
+                }
+            }
+        }
+        else header("location: laboGererEquipe.php");
+    }
+    else header("location: laboGererEquipe.php");
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
         $error = false;
-        $nomEquipe = mysqli_real_escape_string($db,$_POST["nomEquipe"]);
-        $specialites = array();
-        for ($i=0; $i < count($_POST["idspe"]); $i++) { 
-            $specialites[] = $_POST["idspe"][$i];
+        
+        if($_POST["nomEquipe"] != $nomEquipe){
+            $nomEquipe = mysqli_real_escape_string($db,$_POST["nomEquipe"]);
+            $sql = "UPDATE equipe SET nomequip='".$nomEquipe."'WHERE idequipe='".$idequipe."'";
+            if(!mysqli_query($db,$sql)) $error = true;
         }
-
-        $sql = "INSERT INTO equipe (idlabo,nomequip) VALUES ('".$idlabo."','".$nomEquipe."')";
-        if(!mysqli_query($db,$sql)) $error = true;
-        $sql = "SELECT * FROM equipe ORDER BY idequipe DESC";
-        if($result = mysqli_query($db,$sql)){
-            $idequipe = mysqli_fetch_array($result)["idequipe"];
-            foreach ($specialites as $specialite) {
-                $sql = "INSERT INTO specialiteequipe (idequipe,idspe) VALUES ('".$idequipe."','".$specialite."')";
+        $sql = "DELETE FROM specialiteequipe WHERE idequipe='".$idequipe."'";
+        if(mysqli_query($db,$sql)){
+            $idspe = $_POST["idspe"];
+            $nbreSpe = count($idspe);
+            for($i=0; $i<$nbreSpe; $i++){
+                $specialite = $idspe[$i];
+                $sql = "INSERT INTO specialiteequipe (idspe,idequipe) VALUES ('".$specialite."','".$idequipe."')";
                 if(!mysqli_query($db,$sql)){
                     $error = true;
                     break;
                 }
             }
-        }
+        }else $error = true;
 
         if(!$error) $display_type = "success";
         else $display_type = "error";
@@ -172,7 +192,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Ajouter Équipe
+                        <h4 class="title">Modifier Équipe
                         <a id="revenir" href="laboGererEquipe.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste équipes </a> </h4>
                     </div>
 
@@ -182,7 +202,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>nom</label>
-                                        <input type="text" name="nomEquipe" class="form-control" placeholder="Nom de l'équipe" required>
+                                        <input value="<?php echo $nomEquipe;?>" type="text" name="nomEquipe" class="form-control" placeholder="Nom de l'équipe" required>
                                     </div>
                                 </div>
                             </div>  
@@ -205,6 +225,16 @@
                                                 while($row = mysqli_fetch_array($result)){
                                                     $idspe = $row["idspe"];
                                                     $nomspe = $row["nomspe"];
+                                                    $same = false;
+                                                    foreach ($specialites as $specialite) {
+                                                        if($specialite == $idspe){
+                                                            $same = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if($same)
+                                                        echo '<option selected value="'.$idspe.'">'.$nomspe.'</option>';
+                                                    else
                                                     echo '<option value="'.$idspe.'">'.$nomspe.'</option>';
                                                 }
                                             }
@@ -216,7 +246,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button style="width:20%;" type="submit" class="btn btn-fill btn-success pull-right ">Ajouter</button>
+                                    <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
                                     <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>

@@ -52,4 +52,11 @@
             </table>
         </div>';
     }
+
+    if(isset($_GET["supprimer"]) && $_GET["supprimer"] != ""){
+        $idequipe = mysqli_real_escape_string($db,$_GET["supprimer"]);
+        $sql = "DELETE FROM equipe WHERE idequipe='".$idequipe."'";
+        if(mysqli_query($db,$sql))
+            echo 'true';
+    }
 ?>
