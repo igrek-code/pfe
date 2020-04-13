@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 09 avr. 2020 à 17:23
+-- Généré le : lun. 13 avr. 2020 à 17:57
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -91,7 +91,7 @@ CREATE TABLE `cheflabo` (
 --
 
 INSERT INTO `cheflabo` (`idcher`, `idlabo`) VALUES
-(9, 33);
+(16, 37);
 
 -- --------------------------------------------------------
 
@@ -123,7 +123,7 @@ CREATE TABLE `chercheur` (
 --
 
 INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `profil`) VALUES
-(9, 'boubou', 'boubou@usthb.dz', 'MAA', 'permanent');
+(16, 'Sid ahmed', 'sid.ahmedl@usthb.dz', 'MCA', 'permanent');
 
 -- --------------------------------------------------------
 
@@ -199,9 +199,16 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 CREATE TABLE `equipe` (
   `idequipe` int(12) NOT NULL,
   `nomequip` varchar(40) NOT NULL,
-  `idlabo` int(12) NOT NULL,
-  `idspe` int(12) NOT NULL
+  `idlabo` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `equipe`
+--
+
+INSERT INTO `equipe` (`idequipe`, `nomequip`, `idlabo`) VALUES
+(1, 'gl', 33),
+(8, 'teamlol4', 37);
 
 -- --------------------------------------------------------
 
@@ -264,7 +271,9 @@ CREATE TABLE `laboratoire` (
 --
 
 INSERT INTO `laboratoire` (`idlabo`, `nom`, `abrv`, `addresse`, `anneecrea`, `tel`, `etat`, `idetab`, `structure`, `fax`, `mail`) VALUES
-(33, 'sys info', 'lsi', '', 2001, 0, 'actif', 1, 'elec info', 0, '');
+(33, 'sys info', 'lsi', '', 2001, 0, 'actif', 1, 'elec info', 0, ''),
+(35, 'holehola', '', '', 0000, 0, 'inactif', 1, '', 0, ''),
+(37, 'djzaodiazj dpzojadpoazdopazjda', '', '', 0000, 0, 'actif', 1, '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -421,6 +430,27 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `specialiteequipe`
+--
+
+CREATE TABLE `specialiteequipe` (
+  `idspe` int(12) NOT NULL,
+  `idequipe` int(12) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `specialiteequipe`
+--
+
+INSERT INTO `specialiteequipe` (`idspe`, `idequipe`) VALUES
+(2, 8),
+(3, 8),
+(4, 8),
+(5, 8);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `specialitelabo`
 --
 
@@ -434,7 +464,10 @@ CREATE TABLE `specialitelabo` (
 --
 
 INSERT INTO `specialitelabo` (`idspe`, `idlabo`) VALUES
-(4, 33);
+(1, 37),
+(2, 37),
+(4, 33),
+(7, 35);
 
 -- --------------------------------------------------------
 
@@ -491,15 +524,16 @@ CREATE TABLE `these` (
 CREATE TABLE `users` (
   `idcher` int(12) NOT NULL,
   `mail` varchar(40) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `actif` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`idcher`, `mail`, `password`) VALUES
-(9, 'boubou@usthb.dz', 'T7SoAJePqrtXkEMnUtUl');
+INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
+(16, 'sid.ahmedl@usthb.dz', 'lol', 1);
 
 --
 -- Index pour les tables déchargées
@@ -524,7 +558,8 @@ ALTER TABLE `chapitredouvrage`
 -- Index pour la table `chefequip`
 --
 ALTER TABLE `chefequip`
-  ADD PRIMARY KEY (`idcher`,`idequipe`),
+  ADD PRIMARY KEY (`idcher`),
+  ADD UNIQUE KEY `idequipe_2` (`idequipe`),
   ADD KEY `idcher` (`idcher`),
   ADD KEY `idequipe` (`idequipe`);
 
@@ -585,8 +620,7 @@ ALTER TABLE `domaine`
 --
 ALTER TABLE `equipe`
   ADD PRIMARY KEY (`idequipe`),
-  ADD KEY `idlabo` (`idlabo`),
-  ADD KEY `idspe` (`idspe`);
+  ADD KEY `idlabo` (`idlabo`);
 
 --
 -- Index pour la table `etablissement`
@@ -619,7 +653,7 @@ ALTER TABLE `membreproj`
 -- Index pour la table `menbrequip`
 --
 ALTER TABLE `menbrequip`
-  ADD PRIMARY KEY (`idcher`,`idequipe`),
+  ADD PRIMARY KEY (`idcher`),
   ADD KEY `idcher` (`idcher`),
   ADD KEY `idequipe` (`idequipe`);
 
@@ -682,6 +716,14 @@ ALTER TABLE `specialite`
   ADD KEY `specialite_domaine_fk` (`codeDomaine`);
 
 --
+-- Index pour la table `specialiteequipe`
+--
+ALTER TABLE `specialiteequipe`
+  ADD PRIMARY KEY (`idspe`,`idequipe`),
+  ADD KEY `idspe` (`idspe`),
+  ADD KEY `idequipe` (`idequipe`);
+
+--
 -- Index pour la table `specialitelabo`
 --
 ALTER TABLE `specialitelabo`
@@ -707,7 +749,6 @@ ALTER TABLE `these`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`idcher`),
-  ADD UNIQUE KEY `mail` (`mail`),
   ADD KEY `idcher` (`idcher`);
 
 --
@@ -718,7 +759,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `chercheur`
 --
 ALTER TABLE `chercheur`
-  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT pour la table `domaine`
@@ -730,13 +771,13 @@ ALTER TABLE `domaine`
 -- AUTO_INCREMENT pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `etablissement`
 --
 ALTER TABLE `etablissement`
-  MODIFY `idetab` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `idetab` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT pour la table `index`
@@ -748,7 +789,7 @@ ALTER TABLE `index`
 -- AUTO_INCREMENT pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT pour la table `production`
@@ -801,8 +842,8 @@ ALTER TABLE `chapitredouvrage`
 -- Contraintes pour la table `chefequip`
 --
 ALTER TABLE `chefequip`
-  ADD CONSTRAINT `chefequip_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`),
-  ADD CONSTRAINT `chefequip_ibfk_2` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`idequipe`);
+  ADD CONSTRAINT `chefequip_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chefequip_ibfk_2` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`idequipe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `cheflabo`
@@ -843,14 +884,13 @@ ALTER TABLE `conference`
 -- Contraintes pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  ADD CONSTRAINT `equipe_ibfk_1` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`),
-  ADD CONSTRAINT `equipe_ibfk_2` FOREIGN KEY (`idlabo`) REFERENCES `laboratoire` (`idlabo`);
+  ADD CONSTRAINT `equipe_ibfk_2` FOREIGN KEY (`idlabo`) REFERENCES `laboratoire` (`idlabo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  ADD CONSTRAINT `laboratoire_ibfk_1` FOREIGN KEY (`idetab`) REFERENCES `etablissement` (`idetab`);
+  ADD CONSTRAINT `laboratoire_ibfk_1` FOREIGN KEY (`idetab`) REFERENCES `etablissement` (`idetab`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `membreproj`
@@ -863,8 +903,8 @@ ALTER TABLE `membreproj`
 -- Contraintes pour la table `menbrequip`
 --
 ALTER TABLE `menbrequip`
-  ADD CONSTRAINT `menbrequip_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`),
-  ADD CONSTRAINT `menbrequip_ibfk_2` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`idequipe`);
+  ADD CONSTRAINT `menbrequip_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `menbrequip_ibfk_2` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`idequipe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `motscle`
@@ -912,6 +952,13 @@ ALTER TABLE `specialite`
   ADD CONSTRAINT `specialite_domaine_fk` FOREIGN KEY (`codeDomaine`) REFERENCES `domaine` (`codeDomaine`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `specialiteequipe`
+--
+ALTER TABLE `specialiteequipe`
+  ADD CONSTRAINT `specialite_equipe_fk` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`idequipe`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `speequipe_specialite_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `specialitelabo`
 --
 ALTER TABLE `specialitelabo`
@@ -928,7 +975,7 @@ ALTER TABLE `these`
 -- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`);
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
