@@ -1,4 +1,5 @@
 <?php
+    
     require_once("config.php");
     session_start();
 
@@ -39,15 +40,12 @@
     <!--     Fonts and icons     -->
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
 
+    <!-- DATA TABLE CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css"/>
+
     <!-- J-CONFIRM CSS -->
     <link rel="stylesheet" href="assets/j-confirm/j-confirm.css">
     
-    <!-- BOOTSTRAP SELECT CSS -->
-    <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
-
-    <!-- DATA TABLE CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css"/>
-    <link rel="stylesheet" href="assets/DataTables/fixed-col.css">
 
     <style>
         th, td { 
@@ -55,9 +53,6 @@
         }
         #seDeconnecter:hover{
             color:red;
-        }
-        th, td { 
-            white-space: nowrap;
         }
     </style>
 </head>
@@ -77,24 +72,7 @@
             </div>
             
             <ul class="nav">
-                <li>
-                    <a href="laboGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="laboGererEquipe.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Gerer Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
+               
                 
             </ul>
     	</div>
@@ -110,13 +88,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div style="font-size:18px;" class="navbar-brand">
-                        <?php 
-                            echo $_SESSION["nom"];
-                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
-                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
-                        ?> 
-                    </div>
+                    <div class="navbar-brand" href="#">Admin</div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -132,8 +104,8 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         
-                        <li>
-                            <a href="laboCompte.php">
+                    <li>
+                            <a href="adminCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>
@@ -156,20 +128,23 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card" style="padding-bottom:20px;">
+                        <div class="card">
                             <div class="header">
-                                <h4 class="title">Liste des équipes
-                                    <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterEquipe.php" title="ajouter">+</a>
-                                </h4>
-                                <p class="category">Ajouter/modifier/supprimer</p>
+                                <h4 class="title">Demandes en attente (chef d'équipe)</h4>
+                                <p class="category">Accepter/Supprimer</p>      
                             </div>
+
+                            
+
                             <div id="theTable"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+
+
+        
+
     </div>
+</div>
 
 
 
@@ -192,29 +167,25 @@
 	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 	<script src="assets/js/demo.js"></script>
 
+    <!-- DATA TABLE JS -->
+    <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
+
     <!-- J-CONFIRM JS -->
     <script src="assets/j-confirm/j-confirm.js"></script>
 
-    <!-- BOOTSTRAP SELECT JS -->
-    <script src="assets/select/bootstrap-select.min.js"></script>
-
-    <!-- DATA TABLE JS -->
-    <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
-    <script src="assets/DataTables/fixed-cols.js"></script>
-    
     <script>
         $(document).ready(function(){
             
             refresh_table();
 
-            function refresh_table(){
-                $("#theTable").html("");
-                $.get("ajax/laboGererEquipeAjax.php",{refresh: true},function(data){
+            function refresh_table() {
+                $("#theTable").html('');
+                $.get("ajax/laboGererDemandeAjax.php",{refresh: true},function(data){
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
-                    $("table").dataTable(fr_table());
+                    $("table").DataTable(fr_table());
                     $('button[title="supprimer"]').click(function(){
-                        var val = $(this).val();
+                        var idcher = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",
                             content : "Voulez vous vraiment supprimer cet élément",
@@ -225,7 +196,7 @@
                                 supprimer : {
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
-                                        $.get("ajax/laboGererEquipeAjax.php",{supprimer: val},function (data) {
+                                        $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "supprimer"},function (data) {
                                             if(data == "?>true"){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
@@ -268,7 +239,63 @@
                             }
                         });
                     });
-                });
+
+                    $('button[title="accepter"]').click(function(){
+                        var idcher = $(this).val();
+                        $.confirm({
+                            title : "Opération d'ajout !",
+                            content : "Voulez vous vraiment accepter cette demande ?",
+                            type : "green",
+                            typeAnimated : true,
+                            draggable : true,
+                            buttons : {
+                                accepter : {
+                                    btnClass : 'btn-success btn-fill',
+                                    action : function (){
+                                        $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "accepter"},function (data) {
+                                            if(data == "?>true"){
+                                                $.notify({
+                                                        icon : "pe-7s-angle-down-circle",
+                                                        title : "Succès !",
+                                                        message : "Opération d'ajout effectuée avec succès"
+                                                    },{
+                                                        type : "success",
+                                                        allow_dismiss : true,
+                                                        placement: {
+                                                            from: "top",
+                                                            align: "center"
+                                                        },
+                                                        timer : 2000
+                                                    });
+                                                    refresh_table();
+                                            }
+                                            else{
+                                                $.notify({
+                                                    icon : "pe-7s-close-circle",
+                                                    title : "Echoué !",
+                                                    message : "Opération d'ajout a échoué"
+                                                },{
+                                                    type : "danger",
+                                                    allow_dismiss : true,
+                                                    placement: {
+                                                        from: "top",
+                                                        align: "center"
+                                                    },
+                                                    timer : 5000
+                                                });
+
+                                            }
+                                        });  
+                                    }
+                                },
+                                retour : {
+                                    btnClass : 'btn-secondary',
+                                    
+                                }
+                            }
+                        });
+                    });
+                });    
             }
 
             function fr_table (){
@@ -277,7 +304,7 @@
                     //"scrollCollapse": true,
                     "scrollX": true,
                     "columnDefs": [
-                        {targets: -1, orderable: false, "width": "105px"}
+                        {targets: -1, orderable: false, "width": "184px"}
                     ],
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
@@ -312,7 +339,7 @@
 
                 };
             }
-
+            
         });
     </script>
 

@@ -22,23 +22,24 @@
                 <th>Profil</th>
                 <th>Grade</th>
                 <th>Email</th>
-                <th>Laboratoire</th>
+                <th>Equipe</th>
                 <th>Action</th>
             </thead>
             <tbody>';
         $sql = "SELECT * FROM chercheur WHERE idcher IN (
             SELECT idcher FROM users WHERE actif = 0
         ) AND idcher IN (
-            SELECT idcher FROM cheflabo
+            SELECT idcher FROM chefequip
         )";
-        if($result = mysqli_query($db,$sql)){
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
             while ($row = mysqli_fetch_array($result)) {
                 $idcher = $row["idcher"];
-                $sql = "SELECT * FROM laboratoire WHERE idlabo IN (
-                    SELECT idlabo FROM cheflabo WHERE idcher='".$idcher."'
+                $sql = "SELECT * FROM equipe WHERE idequipe IN (
+                    SELECT idequipe FROM chefequip WHERE idcher='".$idcher."'
                 )";
                 if($result3 = mysqli_query($db,$sql)){
-                    $nomLabo =mysqli_fetch_array($result3)["nom"];
+                    $nomLabo =mysqli_fetch_array($result3)["nomequip"];
                     $nomcher = $row["nom"];
                     $profilcher = $row["profil"];
                     $gradecher = $row["grade"];

@@ -3,7 +3,6 @@
     session_start();
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        if(isset($_POST["statuscher"]) && $_POST["statuscher"] == "cheflabo"){
             $display_notif = true;
             $error = true;
             $execute = true;
@@ -25,6 +24,12 @@
             if(isset($_POST["pwdcher"]) && isset($_POST["pwdcherconf"]) && $_POST["pwdcher"] != "" && $_POST["pwdcher"] == $_POST["pwdcherconf"]){
                 $pwdcher = mysqli_real_escape_string($db,$_POST["pwdcher"]);
             }else $execute = false;
+            if(isset($_POST["statuscher"]) && $_POST["statuscher"] != ""){
+                $statuscher = mysqli_real_escape_string($db,$_POST["statuscher"]);
+            }else $execute = false;
+            if(isset($_POST["idequip"]) && $_POST["idequip"] != ""){
+                $idequipe = mysqli_real_escape_string($db,$_POST["idequip"]);
+            }
 
             if($execute){
                 $sql = "INSERT INTO chercheur (mail,nom,grade,profil) VALUES ('".$mailcher."','".$nomcher."','".$gradecher."','".$profilcher."')";
@@ -32,12 +37,23 @@
                     $sql = "SELECT * FROM chercheur ORDER BY idcher DESC";
                     if($result = mysqli_query($db,$sql)){
                         $idcher = mysqli_fetch_array($result)["idcher"];
-                        $sql = "INSERT INTO cheflabo (idlabo,idcher) VALUES ('".$idlabo."','".$idcher."')";
+                        switch ($statuscher) {
+                            case 'cheflabo':
+                                $sql = "INSERT INTO cheflabo (idlabo,idcher) VALUES ('".$idlabo."','".$idcher."')";
+                            break;
+                            case 'chefequipe':
+                                $sql = "INSERT INTO chefequip (idequipe,idcher) VALUES ('".$idequipe."','".$idcher."')";
+                            break;
+                            default:
+                                $sql = "INSERT INTO menbrequip (idequipe,idcher) VALUES ('".$idequipe."','".$idcher."')";
+                            break;
+                        }
+                        
                         if(mysqli_query($db,$sql)){
                             $sql = "INSERT INTO users (idcher,mail,password) VALUES ('".$idcher."','".$mailcher."','".$pwdcher."')";
                             if(mysqli_query($db,$sql))
                                 $error = false;
-                        }
+                        }  
                     }
                 }
                 if(!$error)
@@ -47,7 +63,6 @@
             }
             else
                 $display_type = "error";
-        }
     }
 ?>
 
