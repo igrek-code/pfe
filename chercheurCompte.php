@@ -1,47 +1,65 @@
 <?php
     require_once("config.php");
     session_start();
+    $session = false;
+    if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
+    if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
+    if(isset($_SESSION['loggedinchercheur']) && $_SESSION['loggedinchercheur']) $session = true;
+    if(!$session){
+        session_destroy();
+        header("location: index.php");
+    }
+    $idcher = $_SESSION["idcher"];
+    $sql = "SELECT * FROM chercheur WHERE idcher ='".$idcher."'";
+    $result = mysqli_query($db,$sql);
+    if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_array($result);
+        $nomcher = $row["nom"];
+        $mailcher = $row["mail"];
+        $gradecher = $row["grade"];
+        $profilcher = $row["profil"];
+    }
+    $sql = "SELECT * FROM users WHERE idcher='".$idcher."'";
+    $result = mysqli_query($db,$sql);
+    if(mysqli_num_rows($result) > 0) $pwd = mysqli_fetch_array($result)["password"];
+    
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $display_notif = true;
+        $error = false;
 
-    if(!isset($_SESSION['loggedinadmin']) || !$_SESSION['loggedinadmin'])
-        {   
-            session_destroy();
-            header("location: index.php");
-        }
-    
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $display_notif = true;
-            $error = true;
-    
-            $oldmail = mysqli_real_escape_string($db,$_SESSION["mail"]);
-            $newmail = mysqli_real_escape_string($db,$_POST["mailCompte"]);
-            $pwd = mysqli_real_escape_string($db,$_POST["mdpCompte"]);
-            $newpwd = mysqli_real_escape_string($db,$_POST["mdpCompteNv"]);
-            $newpwdconf = mysqli_real_escape_string($db,$_POST["mdpCompteNvConf"]);
-    
-            $sql = "SELECT * FROM admin WHERE login='".$oldmail."'";
-            if($result = mysqli_query($db,$sql)){
-                $row = mysqli_fetch_array($result);
-                if($row["password"] == $_POST["mdpCompte"]){
-                    $error = false;
-                    if($newpwd!=""){
-                        if($newpwd == $newpwdconf){
-                            $sql = "UPDATE admin SET password='".$newpwd."' WHERE login ='".$oldmail."'";
-                            if(!mysqli_query($db,$sql)) $error = true;
-                        }else $error = true;
-                    }
-                    if($oldmail != $newmail && !$error){
-                        $sql = "UPDATE admin SET login='".$newmail."' WHERE login ='".$oldmail."'";
-                        if(!mysqli_query($db,$sql)) $error = true;
-                    }
-                    
-                }
+        if(isset($_POST["mdpCompte"]) && isset($pwd) && $_POST["mdpCompte"] != "" && $_POST["mdpCompte"] == $pwd){
+            if(isset($_POST["mailcher"]) && $_POST["mailcher"] != ""){
+                $mailcher = mysqli_real_escape_string($db,$_POST["mailcher"]);
+                $sql = "UPDATE users SET mail='".$mailcher."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
+                $sql = "UPDATE chercheur SET mail='".$mailcher."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
             }
-            if($error) $display_type = "error";
-            else{
-                $_SESSION["loggedinadmin"] = false;
-                header("location: index.php");
+            if(isset($_POST["nomcher"]) && $_POST["nomcher"] != ""){
+                $nomcher = mysqli_real_escape_string($db,$_POST["nomcher"]);
+                $_SESSION["nom"] = $nomcher;
+                $sql = "UPDATE chercheur SET nom='".$nomcher."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
+            }
+            if(isset($_POST["gradecher"]) && $_POST["gradecher"] != ""){
+                $gradecher = mysqli_real_escape_string($db,$_POST["gradecher"]);
+                $sql = "UPDATE chercheur SET grade='".$gradecher."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
+            }
+            if(isset($_POST["profilcher"]) && $_POST["profilcher"] != ""){
+                $profilcher = mysqli_real_escape_string($db,$_POST["profilcher"]);
+                $sql = "UPDATE chercheur SET profil='".$profilcher."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
+            }
+            if(isset($_POST["mdpCompteNv"]) && isset($_POST["mdpCompteNvConf"]) && $_POST["mdpCompteNvConf"] == $_POST["mdpCompteNv"]){
+                $newpwd = mysqli_real_escape_string($db,$_POST["mdpCompteNv"]);
+                $sql = "UPDATE users SET password='".$newpwd."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
             }
         }
+        if(!$error) $display_type = "success";
+        else $display_type = "error";
+    }
 
 ?>
 
@@ -80,13 +98,6 @@
     <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
 
     <style>
-        /*.btn-success{
-           position : relative;
-           margin-left : 25%;
-            /*top : 22px;
-            left : 60px;
-            width : 50%;
-        }*/
         #revenir{
             font-size : 17px;
             text-decoration : underline;
@@ -113,42 +124,7 @@
             </div>
 
             <ul class="nav">
-                <li>
-                    <a href="adminGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererEtab.php">
-                        <i class="pe-7s-culture"></i>
-                        <p>Gerer Etablissement</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererLabo.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Gerer Laboratoire</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Compte</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Fixer Notation</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
+                
                 
             </ul>
     	</div>
@@ -164,7 +140,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" >Admin</div>
+                    <div class="navbar-brand" >chef</div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -205,7 +181,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Modifier Compte
-                        <a id="revenir" href="adminGererEtab.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
+                        <a id="revenir" href="laboGererEquipe.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
                     </div>
 
                     <div class="content">
@@ -213,8 +189,42 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Nom d'utilisateur</label>
-                                        <input value="<?php echo $_SESSION["mail"];?>" type="text" name="mailCompte" class="form-control" placeholder="Votre Nom d'utilisateur" required>
+                                        <label>Email</label>
+                                        <input value="<?php echo $mailcher;?>" type="text" name="mailcher" class="form-control" placeholder="Votre email" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>nom</label>
+                                        <input value="<?php echo $nomcher;?>" type="text" name="nomcher" class="form-control" placeholder="Votre nom" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6" style="top:30px;">
+                                    <div class="form-check form-check-inline">
+                                        <input required class="form-check-input" type="radio" name="profilcher" <?php if($profilcher == "permanent") echo 'checked';?> value="permanent">
+                                        <label class="form-check-label">Permanent</label>
+                                        <input required style="margin-left:10px;" class="form-check-input" <?php if($profilcher == "doctorant") echo 'checked';?> type="radio" name="profilcher" value="doctorant">
+                                        <label class="form-check-label">Doctorant</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>grade</label>
+                                        <select required class="form-control selectpicker" name="gradecher" id="gradecher">
+                                            <option <?php if($gradecher == "DOC") echo 'selected';?> value="DOC">Doc.</option>
+                                            <option <?php if($gradecher == "MAB") echo 'selected';?> value="MAB">MAB</option>
+                                            <option <?php if($gradecher == "MAA") echo 'selected';?> value="MAA">MAA</option>
+                                            <option <?php if($gradecher == "MCB") echo 'selected';?> value="MCB">MCB</option>
+                                            <option <?php if($gradecher == "MCA") echo 'selected';?> value="MCA">MCA</option>
+                                            <option <?php if($gradecher == "PROF") echo 'selected';?> value="PROF">PROF.</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -325,9 +335,16 @@
                         });';
                 }
             ?>
-            
+
             $("#clearBtn").click(function(){
                 $(".form-control").val("");
+                $(".selectpicker").selectpicker("refresh");
+                $(".form-check-input").prop("checked",false);
+            });
+            
+            $('input[name="mdpCompteNv"]').keyup(function(){
+                if($(this).val() != "") $('input[name="mdpCompteNvConf"]').prop("required",true);
+                else $('input[name="mdpCompteNvConf"]').prop("required",false);
             });
 
             $('input[name="mdpCompteNvConf"]').keyup(function(){
@@ -335,12 +352,8 @@
                     $("#msgConfMdp").prop("hidden",false);
                 else
                     $("#msgConfMdp").prop("hidden",true);
-            });  
-
-            $('input[name="mdpCompteNv"]').keyup(function(){
-                if($(this).val() != "") $('input[name="mdpCompteNvConf"]').prop("required",true);
-                else $('input[name="mdpCompteNvConf"]').prop("required",false);
             });
+
         });
     </script>
 

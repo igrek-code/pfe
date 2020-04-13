@@ -100,11 +100,17 @@
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
-        if($_POST["idcher"] != $idChef){
+        if(isset($_POST["idcher"]) && isset($idChef)){
             $newidChef = mysqli_real_escape_string($db,$_POST["idcher"]);
             $sql = "UPDATE cheflabo SET idcher='".$newidChef."' WHERE idcher='".$idChef."'";
             if(!mysqli_query($db,$sql)) $error = true;
-        } 
+        }else {
+            if(isset($_POST["idcher"]) && $_POST["idcher"] != "" && !isset($idChef)){
+                $newidChef = mysqli_real_escape_string($db,$_POST["idcher"]);
+                $sql = "INSERT INTO cheflabo VALUES(idlabo,idcher) ('".$idlabo."','".$newidChef."')";
+                if(!mysqli_query($db,$sql)) $error = true;
+            } 
+        }
         
         $sql = "DELETE FROM specialitelabo WHERE idlabo='".$idlabo."'";
         if(mysqli_query($db,$sql)){
@@ -160,13 +166,6 @@
     <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
 
     <style>
-        /*.btn-success{
-           position : relative;
-           margin-left : 25%;
-            /*top : 22px;
-            left : 60px;
-            width : 50%;
-        }*/
         #revenir{
             font-size : 17px;
             text-decoration : underline;
@@ -432,7 +431,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>spécialité</label>
-                                       <select multiple  required class="selectpicker form-control" data-live-search="true" name="idspe[ ]" title="Spécialité..." id="idspe">
+                                       <select multiple class="selectpicker form-control" data-live-search="true" name="idspe[ ]" title="Spécialité..." id="idspe">
                                                 
                                         </select>
                                         <!--<input type="text" class="form-control" name="specialiteLabo" placeholder="Spécialité du laboratoire">-->
@@ -452,9 +451,10 @@
                                                         SELECT idequip FROM equipe WHERE idlabo ='".$idlabo."'
                                                     )
                                                 ) AND idcher IN (
-                                                    SELECT idcher FROM users
+                                                    SELECT idcher FROM users WHERE actif='1'
                                                 )";
-                                                if($result = mysqli_query($db,$sql)){
+                                                $result = mysqli_query($db,$sql);
+                                                if(mysqli_num_rows($result) > 0){
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         $idcher =  $row["idcher"]; 
                                                         $nomcher = $row["nom"];
@@ -585,7 +585,8 @@
                         $("#idspe").selectpicker("refresh");
                     });
                 }
-            }    
+            } 
+            $("#idcher").has("option").prop("required",true);   
 
         });
     </script>

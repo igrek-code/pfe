@@ -22,6 +22,17 @@
                 while($row = mysqli_fetch_array($result)){
                     $specialites[] = $row["idspe"];
                 }
+                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                    SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
+                ) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_array($result);
+                    $nomchef = $row["nom"];
+                    $idchef = $row["idcher"];
+                }
             }
         }
         else header("location: laboGererEquipe.php");
@@ -50,6 +61,11 @@
                 }
             }
         }else $error = true;
+        if(isset($_POST["idcher"]) && $_POST["idcher"]!=""){
+            $idchef = mysqli_real_escape_string($db,$_POST["idcher"]);
+            $sql = "UPDATE chefequip SET idcher='".$idchef."'WHERE idequipe='".$idequipe."'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
 
         if(!$error) $display_type = "success";
         else $display_type = "error";
@@ -246,6 +262,38 @@
 
                             <div class="row">
                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Chef d'équipe</label>
+                                        <select class="form-control selectpicker" name="idcher" id="idcher" title="Chef d'équipe...">
+                                        <?php
+                                            if(isset($idchef) && isset($nomchef)){
+                                                echo '<optgroup label="chef d\'équipe">';
+                                                echo '<option selected value="'.$idchef.'">'.$nomchef.'</option>';
+                                                echo '</optgroup>';
+                                            }
+                                            $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                SELECT idcher FROM menbrequip
+                                            ) AND idcher IN (
+                                                SELECT idcher FROM users WHERE actif='1'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $nommembre = $row["nom"];
+                                                    $idmembre = $row["idcher"];
+                                                    echo '<optgroup label="membres">';
+                                                    echo '<option value="'.$idmembre.'">'.$nommembre.'</option>';
+                                                    echo '</optgroup>';
+                                                }
+                                            }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
                                     <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
@@ -288,6 +336,7 @@
     
     <script>
         $(document).ready(function(){
+            $("#idcher").has("option").prop("required",true);
             <?php
                 if(isset($display_notif) && $display_notif == true)
                 {
