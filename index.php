@@ -59,6 +59,7 @@
                 header("location: laboGererEquipe.php");
             }
             else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
+        break;
     }     
    
 }

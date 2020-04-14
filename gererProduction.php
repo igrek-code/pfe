@@ -176,8 +176,8 @@
                     <div class="col-md-12">
                         <div class="card" style="padding-bottom:20px;">
                             <div class="header">
-                                <h4 class="title">Liste des équipes
-                                    <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterEquipe.php" title="ajouter">+</a>
+                                <h4 class="title">Liste des productions
+                                    <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterProduction.php" title="ajouter">+</a>
                                 </h4>
                                 <p class="category">Ajouter/modifier/supprimer</p>
                             </div>
@@ -227,7 +227,7 @@
 
             function refresh_table(){
                 $("#theTable").html("");
-                $.get("ajax/laboGererEquipeAjax.php",{refresh: true},function(data){
+                $.get("ajax/gererProductionAjax.php",{refresh: true},function(data){
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
                     $("table").dataTable(fr_table());
@@ -243,7 +243,7 @@
                                 supprimer : {
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
-                                        $.get("ajax/laboGererEquipeAjax.php",{supprimer: val},function (data) {
+                                        $.get("ajax/gererProductionAjax.php",{supprimer: val},function (data) {
                                             if(data == "?>true"){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
