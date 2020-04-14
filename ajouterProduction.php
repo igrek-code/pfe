@@ -11,10 +11,19 @@
     }
     
     if($_SERVER["REQUEST_METHOD"] == "POST"){
+        require_once("ajouterProductionFunc.php");
         $display_notif = true;
         $error = false;
-        
-        
+        if(isset($_POST["typeProduction"]) && $_POST["typeProduction"] != "") 
+            switch ($_POST["typeProduction"]) {
+                case 'publication':
+                    $error = ajouter_publication($error);
+                break;
+                
+                default:
+                    # code...
+                    break;
+            }
 
         if(!$error) $display_type = "success";
         else $display_type = "error";
@@ -173,14 +182,25 @@
                                             <option value="ouvrage">Ouvrage</option>
                                             <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
                                             <option value="doctorat">Thèse de doctorat</option>
-                                            <option value="master"></option>
+                                            <option value="master">PFE Master</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="saisirInfo">
-                                             
+                                <div id="auteurs">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button type="button" value="1" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                                <label>nom auteur 1</label>
+                                                <input required class="form-control" name="auteur1" type="text" placeholder="Nom de l'auteur 1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button value="1" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
+                                </div>         
                             </div>
 
                             <div class="row">
@@ -261,6 +281,25 @@
                         });';
                 }
             ?>
+
+            $('.form-group .btn-danger').click(function(){
+                var button = $(this);
+                $(".row").has(button).detach();
+            });
+
+            $('.btn-info').click(function(){
+                var position = $(this).val();
+                position++;
+                $('#auteurs').prepend(`<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>nom auteur `+position+`</label>
+                            <input required class="form-control" name="auteur`+position+`" type="text" placeholder="Nom de l'auteur `+position+`">
+                        </div>
+                    </div>
+                </div>`);
+                $(this).val(position);
+            });
 
             $("#clearBtn").click(function(){
                 $(".form-control").val("");
