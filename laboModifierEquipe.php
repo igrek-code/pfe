@@ -63,8 +63,16 @@
         }else $error = true;
         if(isset($_POST["idcher"]) && $_POST["idcher"]!=""){
             $idchef = mysqli_real_escape_string($db,$_POST["idcher"]);
-            $sql = "UPDATE chefequip SET idcher='".$idchef."'WHERE idequipe='".$idequipe."'";
+            $sql = "DELETE FROM chefequip WHERE idequipe='".$idequipe."'";
             if(!mysqli_query($db,$sql)) $error = true;
+            $sql = "INSERT INTO chefequip (idcher,idequipe) VALUES ('".$idchef."','".$idequipe."')";
+            if(!mysqli_query($db,$sql)) $error = true;
+            if($idchef == $_SESSION["idcher"]) {
+                if(isset($nomEquipe))
+                    $_SESSION["nomequip"] = $nomEquipe;
+                if(isset($idequipe))
+                    $_SESSION["idequipe"] = $idequipe;
+            }
         }
 
         if(!$error) $display_type = "success";
@@ -264,7 +272,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Chef d'équipe</label>
-                                        <select class="form-control selectpicker" name="idcher" id="idcher" title="Chef d'équipe...">
+                                        <select class="form-control selectpicker" data-live-search="true" name="idcher" id="idcher" title="Chef d'équipe...">
                                         <?php
                                             if(isset($idchef) && isset($nomchef)){
                                                 echo '<optgroup label="chef d\'équipe">';
@@ -273,6 +281,10 @@
                                             }
                                             $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                 SELECT idcher FROM menbrequip
+                                            )OR idcher IN (
+                                                SELECT idcher FROM chefequip
+                                            ) OR idcher IN (
+                                                SELECT idcher FROM cheflabo
                                             ) AND idcher IN (
                                                 SELECT idcher FROM users WHERE actif='1'
                                             )";
@@ -281,7 +293,7 @@
                                                 while($row = mysqli_fetch_array($result)){
                                                     $nommembre = $row["nom"];
                                                     $idmembre = $row["idcher"];
-                                                    echo '<optgroup label="membres">';
+                                                    echo '<optgroup label="membres du l\'aboratoire">';
                                                     echo '<option value="'.$idmembre.'">'.$nommembre.'</option>';
                                                     echo '</optgroup>';
                                                 }

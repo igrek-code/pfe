@@ -176,7 +176,7 @@ option{
 }
 </style></head><body>
 <div class="login">
-	<h1>Login</h1>
+	<h1>Connexion</h1>
     <form action="" method="post">
     	<input type="text" name="login" placeholder="Email" required="required" />
         <input type="password" name="password" placeholder="Mot de passe" required="required" />
