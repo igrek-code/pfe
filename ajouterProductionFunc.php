@@ -1,6 +1,6 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-    function ajouter_publication($error){
+    //require_once("config.php");
+    function ajouter_publication($db){
         if(isset($_POST["coderevue"]) && $_POST["coderevue"] == "autre"){
             $nomrevue = mysqli_real_escape_string($db,$_POST["nomrevue"]);
             $issnonline = mysqli_real_escape_string($db,$_POST["issnonline"]);
@@ -30,7 +30,7 @@
             $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
             if(!($result = mysqli_query($db,$sql))) return true;
             $idspeRevue = mysqli_fetch_array($result)["idspe"];
-            $sql = "INSERT INTO revue (nom,periodicite,issnonline,issnprint,editeur,annee,theme,idspe,classe,type,pays) VALUES ('".$nom."','".$periodiciteRevue."','".$issnonline."','".$issnprint."','".$editeur."','".$anneeRevue."','".$theme."','".$idspeRevue."','".$classeRevue."','".$typeRevue."','".$paysRevue."')";
+            $sql = "INSERT INTO revue (nom,periodicite,issnonline,issnprint,editeur,annee,theme,idspe,classe,type,pays) VALUES ('".$nomrevue."','".$periodiciteRevue."','".$issnonline."','".$issnprint."','".$editeur."','".$anneeRevue."','".$theme."','".$idspeRevue."','".$classeRevue."','".$typeRevue."','".$paysRevue."')";
             if(!mysqli_query($db,$sql)) return true;
             $sql = "SELECT * FROM revue ORDER BY coderevue DESC";
             if(!($result = mysqli_query($db,$sql))) return true;
@@ -50,11 +50,6 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
-        $auteurprinc = mysqli_real_escape_string($db,$_POST["auteurprinc"]);
-        $auteurs = array();
-        for ($i=0; $i <count($_POST["auteurs"]) ; $i++) { 
-            $auteurs[] = mysqli_real_escape_string($db,$_POST["auteurs"][$i]);
-        }
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -77,6 +72,28 @@
             $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
             if(!mysqli_query($db,$sql)) return true;
         }
-        
+        if($_POST["auteurprincSelect"] == "autre"){
+            $auteurprinc =  mysqli_real_escape_string($db,$_POST["auteurprincInput"]);
+            $sql = "INSERT INTO auteurprinc (nom,codepro) VALUES ('".$auteurprinc."','".$codepro."')";
+        } 
+        else {
+            $auteurprinc = mysqli_real_escape_string($db,$_POST["auteurprincSelect"]);
+            $sql = "INSERT INTO auteurprinc (idcher,codepro) VALUES ('".$auteurprinc."','".$codepro."')";
+        }
+        if(!mysqli_query($db,$sql)) return true;
+        $j=0;
+        for ($i=0; $i < count($_POST["auteurSelect"]); $i++) { 
+            if($_POST["auteurSelect"][$i] == "autre"){
+                $coauteur = mysqli_real_escape_string($db,$_POST["auteurInput"][$j]);
+                $j++;
+                $sql = "INSERT INTO coauteurs (nom,codepro) VALUES ('".$coauteur."','".$codepro."')";
+            }
+            else{
+                $coauteur = mysqli_real_escape_string($db,$_POST["auteurSelect"][$i]);
+                $sql = "INSERT INTO coauteurs (idcher,codepro) VALUES ('".$coauteur."','".$codepro."')";
+            }
+            if(!mysqli_query($db,$sql)) return true;
+        }
+        return false;
     }
 ?>

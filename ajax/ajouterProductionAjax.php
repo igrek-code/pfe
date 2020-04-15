@@ -87,7 +87,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Auteur Principal</label>
-                            <select required title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                 <option value="autre">Autre</option>';
                                 $sql = "SELECT * FROM chercheur";
                                 $result = mysqli_query($db,$sql);
@@ -99,7 +99,6 @@
                                     }
                                 }
                             echo '</select>
-                            <input required class="form-control" name="auteurprinc" type="text" placeholder="Nom de l\'auteur principal">
                         </div>
                     </div>
                 </div>
