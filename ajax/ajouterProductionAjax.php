@@ -82,6 +82,30 @@
                 </div>
             </div>
 
+            <div id="auteurs">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Auteur Principal</label>
+                            <select required title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                                <option value="autre">Autre</option>';
+                                $sql = "SELECT * FROM chercheur";
+                                $result = mysqli_query($db,$sql);
+                                if(mysqli_num_rows($result) > 0){
+                                    while($row = mysqli_fetch_array($result)){
+                                        $nomcher = $row["nom"];
+                                        $idcher = $row["idcher"];
+                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                    }
+                                }
+                            echo '</select>
+                            <input required class="form-control" name="auteurprinc" type="text" placeholder="Nom de l\'auteur principal">
+                        </div>
+                    </div>
+                </div>
+                <button value="0" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
+            </div>
+
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
@@ -103,7 +127,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div id="infoRevue"></div> ';
             break;
             
@@ -163,7 +187,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>domaine</label>
-                <input required maxlength="50" class="form-control" name="codeDomaineRevue" type="text" placeholder="Domaine de la revue">
+                <input maxlength="50" class="form-control" name="codeDomaineRevue" type="text" placeholder="Domaine de la revue">
             </div>
         </div>
     </div>
@@ -172,7 +196,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>spécialités</label>
-                <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la production">
+                <input maxlength="255" class="form-control" name="idspeRevue" type="text" placeholder="Spécialités de la production">
             </div>
         </div>
     </div>

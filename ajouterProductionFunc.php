@@ -1,6 +1,82 @@
 <?php
-    require_once("../config.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
     function ajouter_publication($error){
+        if(isset($_POST["coderevue"]) && $_POST["coderevue"] == "autre"){
+            $nomrevue = mysqli_real_escape_string($db,$_POST["nomrevue"]);
+            $issnonline = mysqli_real_escape_string($db,$_POST["issnonline"]);
+            $issnprint = mysqli_real_escape_string($db,$_POST["issnprint"]);
+            $editeur = mysqli_real_escape_string($db,$_POST["editeur"]);
+            $theme = mysqli_real_escape_string($db,$_POST["theme"]);
+            $codeDomaineRevue = mysqli_real_escape_string($db,$_POST["codeDomaineRevue"]);
+            $idspeRevue = mysqli_real_escape_string($db,$_POST["idspeRevue"]);
+            $anneeRevue = mysqli_real_escape_string($db,$_POST["anneeRevue"]);
+            $periodiciteRevue = mysqli_real_escape_string($db,$_POST["periodiciteRevue"]);
+            $typeRevue = mysqli_real_escape_string($db,$_POST["typeRevue"]);
+            if($typeRevue == "nationale"){
+                $paysRevue = mysqli_real_escape_string($db,$_POST["paysRevue"]);
+                $classeRevue = "A";
+            }
+            else{
+                $classeRevue = mysqli_real_escape_string($db,$_POST["classeRevue"]);
+                $paysRevue = "vide";
+            }
+            $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineRevue."')";
+            if(!mysqli_query($db,$sql)) return true;
+            $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
+            if(!($result = mysqli_query($db,$sql))) return true;
+            $codeDomaineRevue = mysqli_fetch_array($result)["codeDomaine"];
+            $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspeRevue."','".$codeDomaineRevue."')";
+            if(!mysqli_query($db,$sql)) return true;
+            $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+            if(!($result = mysqli_query($db,$sql))) return true;
+            $idspeRevue = mysqli_fetch_array($result)["idspe"];
+            $sql = "INSERT INTO revue (nom,periodicite,issnonline,issnprint,editeur,annee,theme,idspe,classe,type,pays) VALUES ('".$nom."','".$periodiciteRevue."','".$issnonline."','".$issnprint."','".$editeur."','".$anneeRevue."','".$theme."','".$idspeRevue."','".$classeRevue."','".$typeRevue."','".$paysRevue."')";
+            if(!mysqli_query($db,$sql)) return true;
+            $sql = "SELECT * FROM revue ORDER BY coderevue DESC";
+            if(!($result = mysqli_query($db,$sql))) return true;
+            $coderevue = mysqli_fetch_array($result)["coderevue"];
+        }else{
+            if(isset($_POST["coderevue"]) && $_POST["coderevue"] != ""){
+                $coderevue = mysqli_real_escape_string($db,$_POST["coderevue"]);
+            }
+        }
+
+        $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
+        $doiProduction = mysqli_real_escape_string($db,$_POST["doiProduction"]);
+        $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
+        $nissueProduction = mysqli_real_escape_string($db,$_POST["nissueProduction"]);
+        $nvolProduction = mysqli_real_escape_string($db,$_POST["nvolProduction"]);
+        $codeDomaineProduction = mysqli_real_escape_string($db,$_POST["codeDomaineProduction"]);
+        $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
+        $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
+        $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $auteurprinc = mysqli_real_escape_string($db,$_POST["auteurprinc"]);
+        $auteurs = array();
+        for ($i=0; $i <count($_POST["auteurs"]) ; $i++) { 
+            $auteurs[] = mysqli_real_escape_string($db,$_POST["auteurs"][$i]);
+        }
+        $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codeDomaineProduction = mysqli_fetch_array($result)["codeDomaine"];
+        $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspeProduction."','".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $idspeProduction = mysqli_fetch_array($result)["idspe"];
+        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','publication')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM production ORDER BY codepro";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codepro = mysqli_fetch_array($result)["codepro"];
+        $sql = "INSERT INTO publication (codepro,titre,coderevue,doi,nvol,nissue,url) VALUES ('".$codepro."','".$titreProduction."','".$coderevue."','".$doiProduction."','".$nvolProduction."','".$nissueProduction."','".$urlProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        for ($i=0; $i < count($motsclesProduction); $i++) { 
+            $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
+            $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
         
     }
 ?>
