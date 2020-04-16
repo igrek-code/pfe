@@ -230,6 +230,92 @@
             <div id="infoConf"></div>';
             break;
 
+            case 'ouvrage':
+                echo '<div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>titre</label>
+                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>éditeur</label>
+                        <input required class="form-control" name="editeurProduction" type="text" placeholder="Editeur de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>nombres de pages</label>
+                        <input min="1" max="9999" required class="form-control" name="nbrePagesProduction" type="number" placeholder="Nombre de pages de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>domaine</label>
+                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>spécialités</label>
+                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>mots-clés (séparés par , )</label>
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de publication de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div id="auteurs">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Auteur Principal</label>
+                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                                <option value="autre">Autre</option>';
+                                    $sql = "SELECT * FROM chercheur";
+                                    $result = mysqli_query($db,$sql);
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_array($result)){
+                                            $nomcher = $row["nom"];
+                                            $idcher = $row["idcher"];
+                                            echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        }
+                                    }
+                            echo'</select>
+                        </div>
+                    </div>
+                </div>
+                <button value="0" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
+            </div>';
             default:
                 # code...
             break;
