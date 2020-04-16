@@ -22,9 +22,18 @@
                 
                 case 'communication':
                     $error = ajouter_communication($db);
-
+                break;
                 case 'ouvrage':
                     $error = ajouter_ouvrage($db);
+                break;
+
+                case 'chapitreOuvrage':
+                    $error = ajouter_chapitreOuvrage($db);
+                break;
+
+                case 'doctorat':
+                    $error = ajouter_doctorat($db);
+                break;
                 default:
                     # code...
                     break;
@@ -295,30 +304,30 @@
 
                         case 'communication':
                             init_communication();
-                        
+                        break;
+
                         case 'ouvrage':
                             init_ouvrage();
+                        break;
+
+                        case 'chapitreOuvrage':
+                            init_chapitreOuvrage();
+                        break;
+
+                        case 'doctorat':
+                            init_doctorat();
+                        break;
+
                         default:
-                            break;
+
+                        break;
                     }
                 });
             });
 
             function init_publication(){
 
-                $("#auteurprinc").change(function(){
-                    $('.row').has('input[name="auteurprincInput"]').not(':has(.bootstrap-select)').remove();
-                    if($(this).val() == "autre"){
-                        $(".bootstrap-select").has(this).after(`<div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l'auteur principale">
-                                </div>
-                            </div>
-                        </div>`);
-                    }
-                    $(".selectpicker").selectpicker("refresh");
-                });
+                init_auteur();
 
                 $("#coderevue").change(function(){
                     $("#infoRevue").html("");
@@ -331,57 +340,6 @@
                             $('input[name="typeRevue"]').trigger("click");
                         });
                     }
-                });
-
-                $('.btn-info').click(function(){
-                    var position = $(this).val();
-                    position++;
-                    $(this).val(position);
-                    $(this).before(`<div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur `+position+`</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur`+position+`" auteur="`+position+`">
-                                <option value="autre">Autre</option>
-                                <?php
-                                    $sql = "SELECT * FROM chercheur";
-                                    $result = mysqli_query($db,$sql);
-                                    if(mysqli_num_rows($result) > 0){
-                                        while($row = mysqli_fetch_array($result)){
-                                            $nomcher = $row["nom"];
-                                            $idcher = $row["idcher"];
-                                            echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
-                                        }
-                                    }
-                                ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>`);
-
-                    $(".selectpicker").selectpicker("resfresh");
-
-                    $('select[name="auteurSelect[]"]').change(function(){
-                        var position = $(this).attr("auteur");
-                        $('.row:has(input[auteur="'+position+'"])').not(':has(.bootstrap-select)').remove();
-                        if($(this).val() == "autre"){
-                            $(".bootstrap-select").has(this).after(`<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                    <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
-                                    </div>
-                                </div>
-                            </div>`);
-                        }
-                    });
-
-                    $('.form-group .btn-danger').click(function(){
-                        var button = $(this);
-                        $(".row").has(button).remove();
-                    });
-                    $(".selectpicker").selectpicker("refresh");
-                    
                 });
 
                 function init_click_revue(){
@@ -397,19 +355,7 @@
 
             function init_communication(){
 
-                $("#auteurprinc").change(function(){
-                    $('.row').has('input[name="auteurprincInput"]').not(':has(.bootstrap-select)').remove();
-                    if($(this).val() == "autre"){
-                        $(".bootstrap-select").has(this).after(`<div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l'auteur principale">
-                                </div>
-                            </div>
-                        </div>`);
-                    }
-                    $(".selectpicker").selectpicker("refresh");
-                });
+                init_auteur();
 
                 $("#codeconf").change(function(){
                     $("#infoConf").html("");
@@ -424,57 +370,6 @@
                     }
                 });
 
-                $('.btn-info').click(function(){
-                    var position = $(this).val();
-                    position++;
-                    $(this).val(position);
-                    $(this).before(`<div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur `+position+`</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur`+position+`" auteur="`+position+`">
-                                <option value="autre">Autre</option>
-                                <?php
-                                    $sql = "SELECT * FROM chercheur";
-                                    $result = mysqli_query($db,$sql);
-                                    if(mysqli_num_rows($result) > 0){
-                                        while($row = mysqli_fetch_array($result)){
-                                            $nomcher = $row["nom"];
-                                            $idcher = $row["idcher"];
-                                            echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
-                                        }
-                                    }
-                                ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>`);
-
-                    $(".selectpicker").selectpicker("resfresh");
-
-                    $('select[name="auteurSelect[]"]').change(function(){
-                        var position = $(this).attr("auteur");
-                        $('.row:has(input[auteur="'+position+'"])').not(':has(.bootstrap-select)').remove();
-                        if($(this).val() == "autre"){
-                            $(".bootstrap-select").has(this).after(`<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                    <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
-                                    </div>
-                                </div>
-                            </div>`);
-                        }
-                    });
-
-                    $('.form-group .btn-danger').click(function(){
-                        var button = $(this);
-                        $(".row").has(button).remove();
-                    });
-                    $(".selectpicker").selectpicker("refresh");
-                    
-                });
-
                 function init_click_conf(){
                     $('input[name="typeConf"]').click(function(){
                         var typeConf = $(this).val();
@@ -487,7 +382,18 @@
             }
 
             function init_ouvrage(){
+                init_auteur();
+            }
 
+            function init_chapitreOuvrage(){
+                init_auteur();
+            }
+
+            function init_doctorat(){
+                //nothing
+            }
+
+            function init_auteur(){
                 $("#auteurprinc").change(function(){
                     $('.row').has('input[name="auteurprincInput"]').not(':has(.bootstrap-select)').remove();
                     if($(this).val() == "autre"){

@@ -191,6 +191,7 @@
     function ajouter_ouvrage($db){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
         $editeurProduction = mysqli_real_escape_string($db,$_POST["editeurProduction"]);
+        $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
         $nbrePagesProduction = mysqli_real_escape_string($db,$_POST["nbrePagesProduction"]);
         $codeDomaineProduction = mysqli_real_escape_string($db,$_POST["codeDomaineProduction"]);
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
@@ -211,7 +212,7 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO ouvrage (codepro,titre,nbpages,editeur) VALUES ('".$codepro."','".$titreProduction."','".$nbrePagesProduction."','".$editeurProduction."')";
+        $sql = "INSERT INTO ouvrage (codepro,titre,nbpages,editeur,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$nbrePagesProduction."','".$editeurProduction."','".$urlProduction."','".$idspeProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
@@ -238,6 +239,98 @@
                 $coauteur = mysqli_real_escape_string($db,$_POST["auteurSelect"][$i]);
                 $sql = "INSERT INTO coauteurs (idcher,codepro) VALUES ('".$coauteur."','".$codepro."')";
             }
+            if(!mysqli_query($db,$sql)) return true;
+        }
+        return false;
+    }
+
+    function ajouter_chapitreOuvrage($db){
+        $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
+        $editeurProduction = mysqli_real_escape_string($db,$_POST["editeurProduction"]);
+        $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
+        $pagesProduction = mysqli_real_escape_string($db,$_POST["pagesProduction"]);
+        $volumeProduction = mysqli_real_escape_string($db,$_POST["volumeProduction"]);
+        $codeDomaineProduction = mysqli_real_escape_string($db,$_POST["codeDomaineProduction"]);
+        $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
+        $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
+        $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codeDomaineProduction = mysqli_fetch_array($result)["codeDomaine"];
+        $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspeProduction."','".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $idspeProduction = mysqli_fetch_array($result)["idspe"];
+        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','chapitreOuvrage')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM production ORDER BY codepro DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codepro = mysqli_fetch_array($result)["codepro"];
+        $sql = "INSERT INTO chapitredouvrage (codepro,titre,editeur,volume,url,idspe,pages) VALUES ('".$codepro."','".$titreProduction."','".$editeurProduction."','".$volumeProduction."','".$urlProduction."','".$idspeProduction."','".$pagesProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        for ($i=0; $i < count($motsclesProduction); $i++) { 
+            $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
+            $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
+        if($_POST["auteurprincSelect"] == "autre"){
+            $auteurprinc =  mysqli_real_escape_string($db,$_POST["auteurprincInput"]);
+            $sql = "INSERT INTO auteurprinc (nom,codepro) VALUES ('".$auteurprinc."','".$codepro."')";
+        } 
+        else {
+            $auteurprinc = mysqli_real_escape_string($db,$_POST["auteurprincSelect"]);
+            $sql = "INSERT INTO auteurprinc (idcher,codepro) VALUES ('".$auteurprinc."','".$codepro."')";
+        }
+        if(!mysqli_query($db,$sql)) return true;
+        $j=0;
+        for ($i=0; $i < count($_POST["auteurSelect"]); $i++) { 
+            if($_POST["auteurSelect"][$i] == "autre"){
+                $coauteur = mysqli_real_escape_string($db,$_POST["auteurInput"][$j]);
+                $j++;
+                $sql = "INSERT INTO coauteurs (nom,codepro) VALUES ('".$coauteur."','".$codepro."')";
+            }
+            else{
+                $coauteur = mysqli_real_escape_string($db,$_POST["auteurSelect"][$i]);
+                $sql = "INSERT INTO coauteurs (idcher,codepro) VALUES ('".$coauteur."','".$codepro."')";
+            }
+            if(!mysqli_query($db,$sql)) return true;
+        }
+        return false;
+    }
+
+    function ajouter_doctorat($db){
+        $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
+        $encadreurProduction = mysqli_real_escape_string($db,$_POST["encadreurProduction"]);
+        $nordreProduction = mysqli_real_escape_string($db,$_POST["nordreProduction"]);
+        $lieusoutProduction = mysqli_real_escape_string($db,$_POST["lieusoutProduction"]);
+        $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
+        $codeDomaineProduction = mysqli_real_escape_string($db,$_POST["codeDomaineProduction"]);
+        $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
+        $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
+        $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codeDomaineProduction = mysqli_fetch_array($result)["codeDomaine"];
+        $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspeProduction."','".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $idspeProduction = mysqli_fetch_array($result)["idspe"];
+        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','doctorat')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM production ORDER BY codepro DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codepro = mysqli_fetch_array($result)["codepro"];
+        $sql = "INSERT INTO these (codepro,titre,encadreur,lieusout,nordre,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$encadreurProduction."','".$lieusoutProduction."','".$nordreProduction."','".$urlProduction."','".$idspeProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        for ($i=0; $i < count($motsclesProduction); $i++) { 
+            $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
+            $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
             if(!mysqli_query($db,$sql)) return true;
         }
         return false;
