@@ -20,6 +20,9 @@
                     $error = ajouter_publication($db);
                 break;
                 
+                case 'communication':
+                    echo '<script>alert("IN CASE");</script>';
+                    $error = ajouter_communication($db);
                 default:
                     # code...
                     break;
@@ -189,7 +192,7 @@
                             </div>
                             
                             <div id="saisirInfo">
-                                         
+                                
                             </div>
 
                             <div class="row">
@@ -287,7 +290,9 @@
                         case 'publication':
                             init_publication();
                         break;
-                    
+
+                        case 'communication':
+                            init_communication();
                         default:
                             break;
                     }
@@ -380,6 +385,97 @@
                         $.get("ajax/ajouterProductionAjax.php",{typeRevue: typeRevue},function(data){
                             $("#infoType").html(data.slice(2,-1));
                             if(typeRevue == "internationale") $("#classeRevue").selectpicker("refresh");
+                        });
+                    });
+                }
+            }
+
+            function init_communication(){
+
+                $("#auteurprinc").change(function(){
+                    $('.row').has('input[name="auteurprincInput"]').not(':has(.bootstrap-select)').remove();
+                    if($(this).val() == "autre"){
+                        $(".bootstrap-select").has(this).after(`<div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l'auteur principale">
+                                </div>
+                            </div>
+                        </div>`);
+                    }
+                    $(".selectpicker").selectpicker("refresh");
+                });
+
+                $("#codeconf").change(function(){
+                    $("#infoConf").html("");
+                    var codeconf = $(this).val();
+                    if(codeconf == "autre"){
+                        $.get("ajax/ajouterProductionAjax.php",{codeconf: codeconf},function(data){
+                            $("#infoConf").html(data.slice(2,-1));
+                            init_click_conf();
+                            $("#periodiciteConf").selectpicker("refresh");
+                            $('input[name="typeConf"]').trigger("click");
+                        });
+                    }
+                });
+
+                $('.btn-info').click(function(){
+                    var position = $(this).val();
+                    position++;
+                    $(this).val(position);
+                    $(this).before(`<div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                <label>auteur `+position+`</label>
+                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur`+position+`" auteur="`+position+`">
+                                <option value="autre">Autre</option>
+                                <?php
+                                    $sql = "SELECT * FROM chercheur";
+                                    $result = mysqli_query($db,$sql);
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_array($result)){
+                                            $nomcher = $row["nom"];
+                                            $idcher = $row["idcher"];
+                                            echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        }
+                                    }
+                                ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>`);
+
+                    $(".selectpicker").selectpicker("resfresh");
+
+                    $('select[name="auteurSelect[]"]').change(function(){
+                        var position = $(this).attr("auteur");
+                        $('.row:has(input[auteur="'+position+'"])').not(':has(.bootstrap-select)').remove();
+                        if($(this).val() == "autre"){
+                            $(".bootstrap-select").has(this).after(`<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
+                                    </div>
+                                </div>
+                            </div>`);
+                        }
+                    });
+
+                    $('.form-group .btn-danger').click(function(){
+                        var button = $(this);
+                        $(".row").has(button).remove();
+                    });
+                    $(".selectpicker").selectpicker("refresh");
+                    
+                });
+
+                function init_click_conf(){
+                    $('input[name="typeConf"]').click(function(){
+                        var typeConf = $(this).val();
+                        $.get("ajax/ajouterProductionAjax.php",{typeConf: typeConf},function(data){
+                            $("#infoType").html(data.slice(2,-1));
+                            if(typeConf == "internationale") $("#classeConf").selectpicker("refresh");
                         });
                     });
                 }
