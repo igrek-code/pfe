@@ -1,12 +1,14 @@
 <?php
     require_once("config.php");
     session_start();
-
-    if(!isset($_SESSION['loggedinlabo']) || !$_SESSION['loggedinlabo'])
-        {   
-            session_destroy();
-            header("location: index.php");
-        }
+    $session = false;
+    if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
+    if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
+    if(isset($_SESSION['loggedinchercheur']) && $_SESSION['loggedinchercheur']) $session = true;
+    if(!$session){   
+        session_destroy();
+        header("location: index.php");
+    }
 ?>
 
 <!doctype html>
@@ -176,6 +178,25 @@
                     <div class="col-md-12">
                         <div class="card" style="padding-bottom:20px;">
                             <div class="header">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Type production</label>
+                                            <select class="form-control selectpicker" name="typeProduction" id="typeProduction">
+                                                <option value="all">Tout</option>
+                                                <option value="publication">Publication</option>
+                                                <option value="communication">Communication</option>
+                                                <option value="ouvrage">Ouvrage</option>
+                                                <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                                <option value="doctorat">Thèse de doctorat</option>
+                                                <option value="master">PFE Master</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="header">
                                 <h4 class="title">Liste des productions
                                     <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterProduction.php" title="ajouter">+</a>
                                 </h4>
@@ -222,15 +243,22 @@
     
     <script>
         $(document).ready(function(){
-            
-            refresh_table();
+
+            $("#typeProduction").change(function(){
+                var typeProduction = $(this).val();
+                $.get("ajax/gererProductionAjax.php",{typeProduction: typeProduction},function(data){
+                    alert(data);
+                });
+            });
+
+            //refresh_table();
 
             function refresh_table(){
                 $("#theTable").html("");
                 $.get("ajax/gererProductionAjax.php",{refresh: true},function(data){
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
-                    $("table").dataTable(fr_table());
+                    $("table").DataTable(fr_table());
                     $('button[title="supprimer"]').click(function(){
                         var val = $(this).val();
                         $.confirm({
