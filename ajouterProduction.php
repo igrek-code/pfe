@@ -34,9 +34,10 @@
                 case 'doctorat':
                     $error = ajouter_doctorat($db);
                 break;
+
                 default:
-                    # code...
-                    break;
+                    $error = ajouter_master($db);
+                break;
             }
 
         if(!$error) $display_type = "success";
@@ -319,7 +320,7 @@
                         break;
 
                         default:
-
+                            init_master();
                         break;
                     }
                 });
@@ -390,6 +391,10 @@
             }
 
             function init_doctorat(){
+                //nothing
+            }
+
+            function init_master(){
                 //nothing
             }
 

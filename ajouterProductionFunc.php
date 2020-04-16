@@ -335,4 +335,37 @@
         }
         return false;
     }
+
+    function ajouter_master($db){
+        $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
+        $encadreurProduction = mysqli_real_escape_string($db,$_POST["encadreurProduction"]);
+        $lieusoutProduction = mysqli_real_escape_string($db,$_POST["lieusoutProduction"]);
+        $codeDomaineProduction = mysqli_real_escape_string($db,$_POST["codeDomaineProduction"]);
+        $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
+        $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
+        $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codeDomaineProduction = mysqli_fetch_array($result)["codeDomaine"];
+        $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspeProduction."','".$codeDomaineProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $idspeProduction = mysqli_fetch_array($result)["idspe"];
+        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','master')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "SELECT * FROM production ORDER BY codepro DESC";
+        if(!($result = mysqli_query($db,$sql))) return true;
+        $codepro = mysqli_fetch_array($result)["codepro"];
+        $sql = "INSERT INTO pfemaster (codepro,titre,encadreur,lieusout,idspe) VALUES ('".$codepro."','".$titreProduction."','".$encadreurProduction."','".$lieusoutProduction."','".$idspeProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        for ($i=0; $i < count($motsclesProduction); $i++) { 
+            $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
+            $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
+        return false;
+    }
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 16 avr. 2020 à 12:43
+-- Généré le : jeu. 16 avr. 2020 à 16:56
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -57,8 +57,12 @@ CREATE TABLE `auteurprinc` (
 --
 
 INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
+(0, 'CH PRINC', 7),
+(0, 'CH PRINC', 8),
 (16, '', 1),
-(21, '', 1);
+(21, '', 1),
+(21, '', 4),
+(21, '', 5);
 
 -- --------------------------------------------------------
 
@@ -68,10 +72,21 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 
 CREATE TABLE `chapitredouvrage` (
   `codepro` int(12) NOT NULL,
+  `titre` varchar(40) NOT NULL,
   `editeur` varchar(40) NOT NULL,
   `volume` int(11) NOT NULL,
-  `url` varchar(255) DEFAULT NULL
+  `url` varchar(255) DEFAULT NULL,
+  `idspe` int(12) NOT NULL,
+  `pages` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `chapitredouvrage`
+--
+
+INSERT INTO `chapitredouvrage` (`codepro`, `titre`, `editeur`, `volume`, `url`, `idspe`, `pages`) VALUES
+(7, 'CH', '', 0, 'CH', 27, '129 230'),
+(8, 'CH', 'CH', 4, 'CH', 28, '129 230');
 
 -- --------------------------------------------------------
 
@@ -160,7 +175,11 @@ CREATE TABLE `coauteurs` (
 --
 
 INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
+(0, 'C2', 4),
+(0, 'CH CO', 7),
+(0, 'CH CO', 8),
 (0, 'com', 1),
+(0, 'moi meme', 5),
 (0, 's', 1);
 
 -- --------------------------------------------------------
@@ -181,7 +200,8 @@ CREATE TABLE `communication` (
 --
 
 INSERT INTO `communication` (`codepro`, `titre`, `url`, `codeconf`) VALUES
-(1, 'c', 'c', 0);
+(1, 'c', 'c', 0),
+(4, 'C2', 'C2', 1);
 
 -- --------------------------------------------------------
 
@@ -208,7 +228,8 @@ CREATE TABLE `conference` (
 --
 
 INSERT INTO `conference` (`codeconf`, `nomconf`, `abrv`, `annee`, `idspe`, `theme`, `periodicite`, `type`, `classe`, `pays`, `numindex`) VALUES
-(0, 'c', 'c', '2010', 18, 'c', 'semestriel', 'internationale', 'C', 'vide', 0);
+(0, 'c', 'c', '2010', 18, 'c', 'semestriel', 'internationale', 'C', 'vide', 0),
+(1, 'C2C', 'C2C', '2020', 23, 'C2C', 'semestriel', 'nationale', 'A', 'ALGERIE', 0);
 
 -- --------------------------------------------------------
 
@@ -239,7 +260,18 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (11, 'cc'),
 (12, 'cc'),
 (13, 'cc'),
-(14, 'c');
+(14, 'c'),
+(15, 'cc'),
+(16, 'cc'),
+(17, 'C2C'),
+(18, 'C2C'),
+(19, 'C2'),
+(20, 'O'),
+(21, 'CH'),
+(22, 'CH'),
+(23, 'CH'),
+(24, 'TD'),
+(25, 'PM');
 
 -- --------------------------------------------------------
 
@@ -371,7 +403,26 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (1, 'd'),
 (1, 'm'),
 (1, 'o'),
-(1, 's');
+(1, 's'),
+(4, 'C21'),
+(4, 'C22'),
+(5, 'A'),
+(5, 'E'),
+(5, 'G'),
+(5, 'O'),
+(5, 'R'),
+(5, 'U'),
+(5, 'V'),
+(7, 'CH1'),
+(7, 'CH2'),
+(7, 'CH3'),
+(8, 'CH1'),
+(8, 'CH2'),
+(8, 'CH3'),
+(9, 'D'),
+(9, 'T'),
+(10, 'M'),
+(10, 'P');
 
 -- --------------------------------------------------------
 
@@ -381,11 +432,11 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 
 CREATE TABLE `ouvrage` (
   `codepro` int(11) NOT NULL,
+  `idspe` int(12) NOT NULL,
   `titre` varchar(40) NOT NULL,
   `nbpages` int(4) NOT NULL,
   `editeur` varchar(40) NOT NULL,
-  `mois` int(2) NOT NULL,
-  `anneeparution` year(4) NOT NULL
+  `url` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -398,10 +449,16 @@ CREATE TABLE `pfemaster` (
   `codepro` int(12) NOT NULL,
   `titre` varchar(255) NOT NULL,
   `idspe` int(12) NOT NULL,
-  `binome` varchar(255) NOT NULL,
-  `mois` int(2) NOT NULL,
-  `annee` year(4) NOT NULL
+  `encadreur` int(12) NOT NULL,
+  `lieusout` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `pfemaster`
+--
+
+INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) VALUES
+(10, 'PM', 30, 21, 'PM');
 
 -- --------------------------------------------------------
 
@@ -412,7 +469,7 @@ CREATE TABLE `pfemaster` (
 CREATE TABLE `production` (
   `codepro` int(12) NOT NULL,
   `date` varchar(7) NOT NULL,
-  `type` enum('communication','ouvrage','chapitre ouvrage','publication','doctorat','master') NOT NULL
+  `type` enum('communication','ouvrage','chapitreOuvrage','publication','doctorat','master') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -422,7 +479,14 @@ CREATE TABLE `production` (
 INSERT INTO `production` (`codepro`, `date`, `type`) VALUES
 (1, '111', 'master'),
 (2, '2020-04', 'publication'),
-(3, '2010-03', 'communication');
+(3, '2010-03', 'communication'),
+(4, '2020-04', 'communication'),
+(5, '2013-01', 'ouvrage'),
+(6, '2020-03', 'chapitreOuvrage'),
+(7, '2020-03', 'chapitreOuvrage'),
+(8, '2020-03', 'chapitreOuvrage'),
+(9, '2020-04', 'doctorat'),
+(10, '2020-04', 'master');
 
 -- --------------------------------------------------------
 
@@ -528,7 +592,18 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (16, 'cc', '', 11),
 (17, 'cc', '', 12),
 (18, 'cc', '', 13),
-(19, 'c', '', 14);
+(19, 'c', '', 14),
+(20, 'cc', '', 15),
+(21, 'cc', '', 16),
+(22, 'C2C', '', 17),
+(23, 'C2C', '', 18),
+(24, 'C2', '', 19),
+(25, 'O', '', 20),
+(26, 'CH', '', 21),
+(27, 'CH', '', 22),
+(28, 'CH', '', 23),
+(29, 'TD', '', 24),
+(30, 'PM', '', 25);
 
 -- --------------------------------------------------------
 
@@ -627,13 +702,19 @@ INSERT INTO `systemenotes` (`revueInterAA`, `revueInterA`, `revueInterB`, `revue
 CREATE TABLE `these` (
   `codepro` int(12) NOT NULL,
   `titre` varchar(255) NOT NULL,
-  `encadreur` varchar(40) NOT NULL,
-  `mois` int(2) NOT NULL,
-  `annee` year(4) NOT NULL,
+  `encadreur` int(12) NOT NULL,
   `lieusout` varchar(40) NOT NULL,
   `nordre` int(11) NOT NULL,
-  `url` varchar(255) DEFAULT NULL
+  `url` varchar(255) DEFAULT NULL,
+  `idspe` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `these`
+--
+
+INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
+(9, 'TD', 16, 'TD', 5, 'TD', 29);
 
 -- --------------------------------------------------------
 
@@ -672,7 +753,8 @@ ALTER TABLE `auteurprinc`
 --
 ALTER TABLE `chapitredouvrage`
   ADD PRIMARY KEY (`codepro`),
-  ADD KEY `codepro` (`codepro`);
+  ADD KEY `codepro` (`codepro`),
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `chefequip`
@@ -787,7 +869,8 @@ ALTER TABLE `motscle`
 --
 ALTER TABLE `ouvrage`
   ADD PRIMARY KEY (`codepro`),
-  ADD KEY `codepro` (`codepro`);
+  ADD KEY `codepro` (`codepro`),
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `pfemaster`
@@ -795,7 +878,8 @@ ALTER TABLE `ouvrage`
 ALTER TABLE `pfemaster`
   ADD PRIMARY KEY (`codepro`),
   ADD KEY `codepro` (`codepro`),
-  ADD KEY `idspe` (`idspe`);
+  ADD KEY `idspe` (`idspe`),
+  ADD KEY `encadreur` (`encadreur`);
 
 --
 -- Index pour la table `production`
@@ -868,7 +952,9 @@ ALTER TABLE `systemenotes`
 --
 ALTER TABLE `these`
   ADD PRIMARY KEY (`codepro`),
-  ADD KEY `codepro` (`codepro`);
+  ADD KEY `codepro` (`codepro`),
+  ADD KEY `idspe` (`idspe`),
+  ADD KEY `encadreur` (`encadreur`);
 
 --
 -- Index pour la table `users`
@@ -888,10 +974,16 @@ ALTER TABLE `chercheur`
   MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- AUTO_INCREMENT pour la table `conference`
+--
+ALTER TABLE `conference`
+  MODIFY `codeconf` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -921,7 +1013,7 @@ ALTER TABLE `laboratoire`
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `projrecher`
@@ -939,7 +1031,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -961,7 +1053,8 @@ ALTER TABLE `auteurprinc`
 -- Contraintes pour la table `chapitredouvrage`
 --
 ALTER TABLE `chapitredouvrage`
-  ADD CONSTRAINT `chapitredouvrage_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`);
+  ADD CONSTRAINT `chapitredouvrage_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chapitredouvrage_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `chefequip`
@@ -1039,14 +1132,16 @@ ALTER TABLE `motscle`
 -- Contraintes pour la table `ouvrage`
 --
 ALTER TABLE `ouvrage`
-  ADD CONSTRAINT `ouvrage_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`);
+  ADD CONSTRAINT `ouvrage_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ouvrage_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `pfemaster`
 --
 ALTER TABLE `pfemaster`
-  ADD CONSTRAINT `pfemaster_ibfk_1` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`),
-  ADD CONSTRAINT `pfemaster_ibfk_2` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`);
+  ADD CONSTRAINT `pfemaster_chercheur_fk` FOREIGN KEY (`encadreur`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pfemaster_ibfk_1` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pfemaster_ibfk_2` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `projrecher`
@@ -1098,7 +1193,9 @@ ALTER TABLE `specialiteproduction`
 -- Contraintes pour la table `these`
 --
 ALTER TABLE `these`
-  ADD CONSTRAINT `these_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`);
+  ADD CONSTRAINT `these_checheur_fk` FOREIGN KEY (`encadreur`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `these_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `these_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `users`

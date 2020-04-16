@@ -525,7 +525,79 @@
             break;
 
             default:
-                # code...
+                echo '<div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>titre</label>
+                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>lieu</label>
+                        <input required class="form-control" name="lieusoutProduction" type="text" placeholder="Lieu de la soutenance">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>domaine</label>
+                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>spécialités</label>
+                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>mots-clés (séparés par , )</label>
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Encadreur</label>
+                        <select required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                                $sql = "SELECT * FROM chercheur";
+                                $result = mysqli_query($db,$sql);
+                                if(mysqli_num_rows($result) > 0){
+                                    while($row = mysqli_fetch_array($result)){
+                                        $nomcher = $row["nom"];
+                                        $idcher = $row["idcher"];
+                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                    }
+                                }
+                        echo'</select>
+                    </div>
+                </div>
+            </div>';
             break;
         }
     }
