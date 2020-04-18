@@ -122,14 +122,14 @@
                     $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                         SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
                     )";
-                    $result = mysqli_query($db,$sql);
-                    if(mysqli_num_rows($result) > 0){
-                        $nomDomaine = mysqli_fetch_array($result)["nom"];
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomDomaine = mysqli_fetch_array($result2)["nom"];
                     }
                     $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
-                    $result = mysqli_query($db,$sql);
-                    if(mysqli_num_rows($result) > 0){
-                        $nomspe = mysqli_fetch_array($result)["nomspe"];
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomspe = mysqli_fetch_array($result2)["nomspe"];
                     }
                 }
                 echo    '<tr>';
@@ -301,9 +301,28 @@
     }
 
     if(isset($_GET["supprimer"]) && $_GET["supprimer"] != ""){
-        $idequipe = mysqli_real_escape_string($db,$_GET["supprimer"]);
-        $sql = "DELETE FROM equipe WHERE idequipe='".$idequipe."'";
-        if(mysqli_query($db,$sql))
-            echo 'true';
+        $codepro = mysqli_real_escape_string($db,$_GET["supprimer"]);
+        $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+        $result = mysqli_query($db,$sql);
+        $typeProduction = "none";
+        if(mysqli_num_rows($result) > 0) $typeProduction = mysqli_fetch_array($result)["type"];
+        $ok = "true";
+        switch ($typeProduction) {
+            case 'publication':
+                $sql = "DELETE FROM domaine WHERE codeDomaine IN (
+                    SELECT codeDomaine FROM specialite WHERE idspe IN (
+                        SELECT idspe FROM publication WHERE codepro='".$codepro."'
+                    )
+                )";
+                if(!mysqli_query($db,$sql)) {$ok = "false";break;}
+                $sql = "DELETE FROM production WHERE codepro='".$codepro."'";
+                if(!mysqli_query($db,$sql)) $ok = "false";
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        echo $ok;
     }
 ?>

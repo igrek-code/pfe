@@ -118,7 +118,7 @@
                                 while($row = mysqli_fetch_array($result)){
                                     $coderevue = $row["coderevue"];
                                     $nomrevue = $row["nom"];
-                                    echo '<option vale="'.$coderevue.'">'.$nomrevue.'</option>';
+                                    echo '<option value="'.$coderevue.'">'.$nomrevue.'</option>';
                                 }
                             }
                             
@@ -220,7 +220,7 @@
                                     while($row = mysqli_fetch_array($result)){
                                         $codeconf = $row["codeconf"];
                                         $nomconf = $row["nomconf"];
-                                        echo '<option vale="'.$codeconf.'">'.$nomconf.'</option>';
+                                        echo '<option valUe="'.$codeconf.'">'.$nomconf.'</option>';
                                     }
                                 }
                         echo '</select>
@@ -795,7 +795,7 @@
                 <div class="form-group">
                     <label>classe</label>
                     <select required class="form-control selectpicker" name="classeRevue" id="classeRevue" title="Classe de la revue...">
-                        <option value="AA">A*</option>
+                        <option value="A*">A*</option>
                         <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>

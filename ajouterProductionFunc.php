@@ -13,11 +13,11 @@
             $typeRevue = mysqli_real_escape_string($db,$_POST["typeRevue"]);
             if($typeRevue == "nationale"){
                 $paysRevue = mysqli_real_escape_string($db,$_POST["paysRevue"]);
-                $classeRevue = "A";
+                $classeRevue = "";
             }
             else{
                 $classeRevue = mysqli_real_escape_string($db,$_POST["classeRevue"]);
-                $paysRevue = "vide";
+                $paysRevue = "";
             }
             $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineRevue."')";
             if(!mysqli_query($db,$sql)) return true;
@@ -64,7 +64,7 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO publication (codepro,titre,coderevue,doi,nvol,nissue,url) VALUES ('".$codepro."','".$titreProduction."','".$coderevue."','".$doiProduction."','".$nvolProduction."','".$nissueProduction."','".$urlProduction."')";
+        $sql = "INSERT INTO publication (codepro,titre,coderevue,doi,nvol,nissue,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$coderevue."','".$doiProduction."','".$nvolProduction."','".$nissueProduction."','".$urlProduction."','".$idspeProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
@@ -108,11 +108,11 @@
             $typeConf = mysqli_real_escape_string($db,$_POST["typeConf"]);
             if($typeConf == "nationale"){
                 $paysConf = mysqli_real_escape_string($db,$_POST["paysConf"]);
-                $classeConf = "A";
+                $classeConf = "";
             }
             else{
                 $classeConf = mysqli_real_escape_string($db,$_POST["classeConf"]);
-                $paysConf = "vide";
+                $paysConf = "";
             }
             $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineConf."')";
             if(!mysqli_query($db,$sql)) return true;

@@ -282,6 +282,61 @@
                             }
                         });
                     });
+
+                    $('button[title="supprimer"]').click(function(){
+                        var val = $(this).val();
+                        $.confirm({
+                            title : "Opération de suppression !",
+                            content : "Voulez vous vraiment supprimer cet élément",
+                            type : "red",
+                            typeAnimated : true,
+                            draggable : true,
+                            buttons : {
+                                supprimer : {
+                                    btnClass : 'btn-danger btn-fill',
+                                    action : function (){
+                                        $.get("ajax/gererProductionAjax.php",{supprimer: val},function (data) {
+                                            if(data == "?>true"){
+                                                $.notify({
+                                                        icon : "pe-7s-angle-down-circle",
+                                                        title : "Succès !",
+                                                        message : "Opération de suppression effectuée avec succès"
+                                                    },{
+                                                        type : "success",
+                                                        allow_dismiss : true,
+                                                        placement: {
+                                                            from: "top",
+                                                            align: "center"
+                                                        },
+                                                        timer : 2000
+                                                    });
+                                            }
+                                            else{
+                                                $.notify({
+                                                    icon : "pe-7s-close-circle",
+                                                    title : "Echoué !",
+                                                    message : "Opération de suppression a échoué"
+                                                },{
+                                                    type : "danger",
+                                                    allow_dismiss : true,
+                                                    placement: {
+                                                        from: "top",
+                                                        align: "center"
+                                                    },
+                                                    timer : 5000
+                                                });
+
+                                            }
+                                        });  
+                                    }
+                                },
+                                retour : {
+                                    btnClass : 'btn-secondary',
+                                    
+                                }
+                            }
+                        });
+                    });
                 });
             });
 
