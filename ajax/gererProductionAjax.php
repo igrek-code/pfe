@@ -27,10 +27,8 @@
             <table class="table table-hover">
                 <thead>
                     <th>Titre</th>
+                    <th>Date</th>
                     <th>Revue</th>
-                    <th>DOI</th>
-                    <th>N Vol.</th>
-                    <th>N issue</th>
                     <th>url</th>
                     <th>Action</th>
                 </thead>
@@ -93,7 +91,78 @@
                 if(mysqli_num_rows($result2) > 0){
                     $nomrevue = mysqli_fetch_array($result2)["nom"];
                 }
+                echo    '<tr>';
+                echo    '<td>'.$titre.'</td>';
+                echo    '<td>'.$date.'</td>';
+                echo    '<td><button class="btn btn-info" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
+                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<a href="chercheurModifierPublication.php?modifier='.$codepro.'" title="modifier"><i class="pe-7s-file  btn-fill btn btn-info"></i></a>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="supprimer btn-fill btn btn-danger "><i class="pe-7s-trash  "></i></button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo    '</td>';
+                echo    '</tr>';
             }
+            echo '</tbody>
+            </table>
+            </div>';
+        }
+    }
+
+    if(isset($_GET["coderevue"]) && $_GET["coderevue"] != ""){
+        $coderevue = mysqli_real_escape_string($db,$_GET["coderevue"]);
+        $sql = "SELECT * FROM revue WHERE coderevue='".$coderevue."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_array($result);
+            $nomrevue = $row["nom"];
+            $periodicite = $row["periodicite"];
+            $issnonline = $row["issnonline"];
+            $issnprint = $row["issnprint"];
+            $editeur = $row["editeur"];
+            $annee = $row["annee"];
+            $theme = $row["theme"];
+            $classe = $row["classe"];
+            $type = $row["type"];
+            $pays = $row["pays"];
+            $idspe = $row["idspe"];
+            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+            )";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $nomDomaine = mysqli_fetch_array($result)["nom"];
+            }
+            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $nomspe = mysqli_fetch_array($result)["nomspe"];
+            }
+            echo '<span class="text-info">Nom: </span>'.$nomrevue.'<br>';
+            echo '<span class="text-info">Périodicité: </span>'.$periodicite.'<br>';
+            echo '<span class="text-info">E-ISSN: </span>'.$issnonline.'<br>';
+            echo '<span class="text-info">ISSN PRINT: </span>'.$issnprint.'<br>';
+            echo '<span class="text-info">editeur: </span>'.$editeur.'<br>';
+            echo '<span class="text-info">Année: </span>'.$annee.'<br>';
+            echo '<span class="text-info">Thème: </span>'.$theme.'<br>';
+            echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
+            echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
+            echo '<span class="text-info">Type: </span>'.$type.'<br>';
+            if($type == "nationale"){
+                echo '<span class="text-info">Pays: </span>'.$pays.'<br>';
+            }
+            else{
+                if($classe == "AA") echo '<span class="text-info">Classe: </span>A*<br>';
+                else echo '<span class="text-info">Classe: </span>'.$classe.'<br>';
+            }
+        }
+        else{
+            echo '<div class="text-danger">information sur la revue non trouvée !</div>';
         }
     }
 

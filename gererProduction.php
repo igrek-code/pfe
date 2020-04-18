@@ -183,7 +183,6 @@
                                         <div class="form-group">
                                             <label>Type production</label>
                                             <select class="form-control selectpicker" name="typeProduction" id="typeProduction">
-                                                <option value="all">Tout</option>
                                                 <option value="publication">Publication</option>
                                                 <option value="communication">Communication</option>
                                                 <option value="ouvrage">Ouvrage</option>
@@ -247,9 +246,30 @@
             $("#typeProduction").change(function(){
                 var typeProduction = $(this).val();
                 $.get("ajax/gererProductionAjax.php",{typeProduction: typeProduction},function(data){
-                    alert(data);
+                    $("#theTable").html(data.slice(2,-1));
+                    $("table").DataTable(fr_table());
+                    $("tr td:nth-child(3) button").click(function(){
+                        var coderevue = $(this).val();
+                        $.confirm({
+                            content: function(){
+                                var self = this;
+                                self.setTitle("Informations supplémentaires sur la revue");
+                                $.get("ajax/gererProductionAjax.php",{coderevue: coderevue},function(data){
+                                    self.setContent(data.slice(2,-1));
+                                });
+                            },
+                            buttons:{
+                                ok: {
+                                    text: "D'accord",
+                                    keys: ["enter"]
+                                }
+                            }
+                        });
+                    });
                 });
             });
+
+            $("#typeProduction").trigger("change");
 
             //refresh_table();
 
@@ -321,9 +341,9 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    "scrollX": true,
+                    //"scrollX": true,  
                     "columnDefs": [
-                        {targets: -1, orderable: false, "width": "105px"}
+                        {targets: [-1,-2], orderable: false, "width": "105px"}
                     ],
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
