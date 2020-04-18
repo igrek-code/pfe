@@ -37,54 +37,11 @@
                 $codepro = $row["codepro"];
                 $titre = $row["titre"];
                 $coderevue = $row["coderevue"];
-                $doi = $row["doi"];
-                $nvol = $row["nvol"];
-                $nissue = $row["nissue"];
                 $url = $row["url"];
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
                     $date = mysqli_fetch_array($result2)["date"]; 
-                }
-                $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                $result2 = mysqli_query($db,$sql);
-                if(mysqli_num_rows($result2) > 0){
-                    $motscles = array();
-                    while($row = mysqli_fetch_array($result2)){
-                        $motscles[] = $row["mot"];
-                    }
-                }
-                $sql = "SELECT * FROM chercheur WHERE idcher IN (
-                    SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
-                )";
-                $result2 = mysqli_query($db,$sql);
-                if(mysqli_num_rows($result2) > 0){
-                    $auteurprinc = mysqli_fetch_array($result2)["nom"];
-                }
-                else{
-                    $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
-                    $result2 = mysqli_query($db,$sql);
-                    if(mysqli_num_rows($result2) > 0){
-                        $auteurprinc = mysqli_fetch_array($result2)["nom"];
-                    }
-                }
-                $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
-                $result2 = mysqli_query($db,$sql);
-                if(mysqli_num_rows($result2) > 0){
-                    $coauteurs = array();
-                    while($row2 = mysqli_fetch_array($result2)){
-                        if($row2["idcher"] == 0){
-                            $coauteurs[] = $row2["nom"];
-                        }
-                        else{
-                            $idcherco = $row2["idcher"];
-                            $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
-                            $result3 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result3) > 0){
-                                $coauteurs = mysqli_fetch_array($result3)["nom"];
-                            }
-                        }
-                    }
                 }
                 $sql = "SELECT * FROM revue WHERE coderevue='".$coderevue."'";
                 $result2 = mysqli_query($db,$sql);
@@ -92,9 +49,9 @@
                     $nomrevue = mysqli_fetch_array($result2)["nom"];
                 }
                 echo    '<tr>';
-                echo    '<td>'.$titre.'</td>';
+                echo    '<td><button class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                echo    '<td><button class="btn btn-info" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
+                echo    '<td><button class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -166,56 +123,69 @@
         }
     }
 
-    if(isset($_GET["refresh"]) && $_GET["refresh"]){
-        $idcher = $_SESSION["idcher"];
-        echo '<div class="content">
-        <table class="table table-hover">
-            <thead>
-                <th>Nom</th>
-                <th>Spécialités</th>
-                <th>Action</th>
-            </thead>
-        <tbody>';
-        $sql = "SELECT * FROM equipe WHERE idlabo IN (
-            SELECT idlabo FROM cheflabo WHERE idcher = '".$idcher."'
-        )";
-        if($result = mysqli_query($db,$sql)){
-            while($row = mysqli_fetch_array($result)){
-                $idequipe = $row["idequipe"];
-                $nomequipe = $row["nomequip"];
-                $sql = "SELECT * FROM specialite WHERE idspe IN (
-                    SELECT idspe FROM specialiteequipe WHERE idequipe = '".$idequipe."'
-                )";
-                $specialites = array();
-                if($result2 = mysqli_query($db,$sql)){
-                    while($nomspe = mysqli_fetch_array($result2)){
-                        $specialites[] = $nomspe["nomspe"];
-                    }
-                    echo    '<tr>';
-                    echo    '<td>'.$nomequipe.'</td>';
-                    echo    '<td>';
-                    foreach ($specialites as $specialite) {
-                        echo    $specialite.", ";
-                    }
-                    echo    '</td>';
-                    echo    '<td>';
-                    echo    '<div class="btn-toolbar">';
-                    echo    '<div class="btn-group">';
-                    echo    '<a href="laboModifierEquipe.php?modifier='.$idequipe.'" title="modifier"><i class="pe-7s-file  btn-fill btn btn-info"></i></a>';
-                    echo    '</div>';
-                    echo    '<div class="btn-group">';
-                    echo    '<button  value="'.$idequipe.'" title="supprimer" class="supprimer btn-fill btn btn-danger "><i class="pe-7s-trash  "></i></button>';
-                    echo    '</div>';
-                    echo    '</div>';
-                    echo    '</td>';
-                    echo    '</tr>';
+    if(isset($_GET["codepro"]) && $_GET["codepro"] != ""){
+        $codepro = mysqli_real_escape_string($db,$_GET["codepro"]);
+        $sql = "SELECT * FROM publication WHERE codepro='".$codepro."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_array($result);
+            $titre = $row["titre"];
+            $doi = $row["doi"];
+            $nvol = $row["nvol"];
+            $nissue = $row["nissue"];
+            echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
+            echo '<span class="text-info">DOI: </span>'.$doi.'<br>';
+            echo '<span class="text-info">Volume: </span>'.$nvol.'<br>';
+            echo '<span class="text-info">N ISSUE: </span>'.$nissue.'<br>';
+            echo '<span class="text-info">Mots-clès: </span>';
+            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+            $result2 = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result2) > 0){
+                while($row = mysqli_fetch_array($result2)){
+                    $mot = $row["mot"];
+                    echo $mot.', ';
                 }
-                
             }
+            echo '<br>';
+            $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result2) > 0){
+                $auteurprinc = mysqli_fetch_array($result2)["nom"];
+            }
+            else{
+                $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                }
+            }
+            echo '<span class="text-info">Auteur principal: </span>'.$auteurprinc.'<br>';
+            $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+            $result2 = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result2) > 0){
+                $coauteurs = array();
+                while($row2 = mysqli_fetch_array($result2)){
+                    if($row2["idcher"] == 0){
+                        $coauteurs[] = $row2["nom"];
+                    }
+                    else{
+                        $idcherco = $row2["idcher"];
+                        $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
+                        $result3 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result3) > 0){
+                            $coauteurs = mysqli_fetch_array($result3)["nom"];
+                        }
+                    }
+                }
+            }
+            echo '<span class="text-info">Co-auteurs: </span>';
+            foreach ($coauteurs as $auteur) {
+                echo $auteur.', ';
+            }
+            echo '<br>';
         }
-        echo '</tbody>
-            </table>
-        </div>';
     }
 
     if(isset($_GET["supprimer"]) && $_GET["supprimer"] != ""){

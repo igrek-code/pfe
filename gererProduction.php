@@ -266,6 +266,24 @@
                             }
                         });
                     });
+                    $("tr td:first-child() button").click(function(){
+                        var codepro = $(this).val();
+                        $.confirm({
+                            content: function(){
+                                var self = this;
+                                self.setTitle("Informations supplémentaires sur la publication");
+                                $.get("ajax/gererProductionAjax.php",{codepro: codepro},function(data){
+                                    self.setContent(data.slice(2,-1));
+                                });
+                            },
+                            buttons:{
+                                ok: {
+                                    text: "D'accord",
+                                    keys: ["enter"]
+                                }
+                            }
+                        });
+                    });
                 });
             });
 
