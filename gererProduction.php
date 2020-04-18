@@ -52,14 +52,11 @@
     <link rel="stylesheet" href="assets/DataTables/fixed-col.css">
 
     <style>
-        th, td { 
+        /*  th, td { 
             white-space: nowrap;
-        }
+        }*/
         #seDeconnecter:hover{
             color:red;
-        }
-        th, td { 
-            white-space: nowrap;
         }
     </style>
 </head>
@@ -248,7 +245,7 @@
                 $.get("ajax/gererProductionAjax.php",{typeProduction: typeProduction},function(data){
                     $("#theTable").html(data.slice(2,-1));
                     $("table").DataTable(fr_table());
-                    $("tr td:nth-child(3) button").click(function(){
+                    $('button[coderevue="coderevue"]').click(function(){
                         var coderevue = $(this).val();
                         $.confirm({
                             content: function(){
@@ -266,7 +263,8 @@
                             }
                         });
                     });
-                    $("tr td:first-child() button").click(function(){
+
+                    $('button[codepro="codepro"]').click(function(){
                         var codepro = $(this).val();
                         $.confirm({
                             content: function(){
@@ -361,7 +359,8 @@
                     //"scrollCollapse": true,
                     //"scrollX": true,  
                     "columnDefs": [
-                        {targets: [-1,-2], orderable: false, "width": "105px"}
+                        {targets: [-1,-2], orderable: false, "width": "105px"},
+                        {targets: Array.from({length: 17}, (x,i) => i), visible: false}
                     ],
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",

@@ -26,6 +26,23 @@
             echo '<div class="content">
             <table class="table table-hover">
                 <thead>
+                    <th>Doi</th>
+                    <th>Volume</th>
+                    <th>N ISSUE</th>
+                    <th>Mots-clès</th>
+                    <th>Auteur principal</th>
+                    <th>Co-auteurs</th>
+                    <th>Périodicité</th>
+                    <th>E-ISSN</th>
+                    <th>ISSN PRINT</th>
+                    <th>Editeur</th>
+                    <th>Année</th>
+                    <th>Thème</th>
+                    <th>Domaine</th>
+                    <th>Spécialités</th>
+                    <th>Type</th>
+                    <th>Classe</th>
+                    <th>Pays</th>
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Revue</th>
@@ -36,6 +53,9 @@
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
                 $titre = $row["titre"];
+                $doi = $row["doi"];
+                $nvol = $row["nvol"];
+                $nissue = $row["nissue"];
                 $coderevue = $row["coderevue"];
                 $url = $row["url"];
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
@@ -43,15 +63,104 @@
                 if(mysqli_num_rows($result2) > 0){
                     $date = mysqli_fetch_array($result2)["date"]; 
                 }
+                $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $motscles = array();
+                    while($row = mysqli_fetch_array($result2)){
+                        $motscles[] = $row["mot"];
+                    }
+                }
+                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                    SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                }
+                else{
+                    $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $coauteurs = array();
+                    while($row2 = mysqli_fetch_array($result2)){
+                        if($row2["idcher"] == 0){
+                            $coauteurs[] = $row2["nom"];
+                        }
+                        else{
+                            $idcherco = $row2["idcher"];
+                            $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
+                            $result3 = mysqli_query($db,$sql);
+                            if(mysqli_num_rows($result3) > 0){
+                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                            }
+                        }
+                    }
+                }
+                /* ---------- PARTIE REVUE ------------ */
                 $sql = "SELECT * FROM revue WHERE coderevue='".$coderevue."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $nomrevue = mysqli_fetch_array($result2)["nom"];
+                    $row2 = mysqli_fetch_array($result2);
+                    $nomrevue = $row2["nom"];
+                    $periodicite = $row2["periodicite"];
+                    $issnonline = $row2["issnonline"];
+                    $issnprint = $row2["issnprint"];
+                    $editeur = $row2["editeur"];
+                    $annee = $row2["annee"];
+                    $theme = $row2["theme"];
+                    $classe = $row2["classe"];
+                    $type = $row2["type"];
+                    $pays = $row2["pays"];
+                    $idspe = $row2["idspe"];
+                    $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                        SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                    )";
+                    $result = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result) > 0){
+                        $nomDomaine = mysqli_fetch_array($result)["nom"];
+                    }
+                    $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                    $result = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result) > 0){
+                        $nomspe = mysqli_fetch_array($result)["nomspe"];
+                    }
                 }
                 echo    '<tr>';
-                echo    '<td><button class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
+                echo    '<td>'.$doi.'</td>';
+                echo    '<td>'.$nvol.'</td>';
+                echo    '<td>'.$nissue.'</td>';
+                echo    '<td>';
+                foreach ($motscles as $mot) {
+                    echo $mot.', ';
+                }   
+                echo    '</td>';
+                echo    '<td>'.$auteurprinc.'</td>';
+                echo    '<td>';
+                foreach ($coauteurs as $auteur) {
+                    echo $auteur.', ';
+                }
+                echo    '</td>';
+                echo    '<td>'.$periodicite.'</td>';
+                echo    '<td>'.$issnonline.'</td>';
+                echo    '<td>'.$issnprint.'</td>';
+                echo    '<td>'.$editeur.'</td>';
+                echo    '<td>'.$annee.'</td>';
+                echo    '<td>'.$theme.'</td>';
+                echo    '<td>'.$nomDomaine.'</td>';
+                echo    '<td>'.$nomspe.'</td>';
+                echo    '<td>'.$type.'</td>';
+                echo    '<td>'.$classe.'</td>';
+                echo    '<td>'.$pays.'</td>';
+                echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                echo    '<td><button class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
+                echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -185,6 +294,9 @@
                 echo $auteur.', ';
             }
             echo '<br>';
+        }
+        else{
+            echo '<div class="text-danger">information sur la publication non trouvée !</div>';
         }
     }
 
