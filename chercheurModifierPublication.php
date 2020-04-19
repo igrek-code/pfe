@@ -11,12 +11,44 @@
     }
 
     if(!isset($_GET["modifier"]) || $_GET["modifier"] == "") header("location: gererProduction.php");
-    else $codepro = mysqli_real_escape_string($db,$_GET["modifier"]);
+    else {
+        $codepro = mysqli_real_escape_string($db,$_GET["modifier"]);
+        $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $typeProduction = mysqli_fetch_array($result)["type"];
+        }
+    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
+        require_once("modifierProductionFunc.php");
         $display_notif = true;
         $error = false;
-        
+        if(isset($typeProduction) && $typeProduction != "") 
+            switch ($typeProduction) {
+                case 'publication':
+                    $error = modifier_publication($db,$codepro);
+                break;
+                
+                case 'communication':
+                    $error = ajouter_communication($db);
+                break;
+                case 'ouvrage':
+                    $error = ajouter_ouvrage($db);
+                break;
+
+                case 'chapitreOuvrage':
+                    $error = ajouter_chapitreOuvrage($db);
+                break;
+
+                case 'doctorat':
+                    $error = ajouter_doctorat($db);
+                break;
+
+                default:
+                    $error = ajouter_master($db);
+                break;
+            }
 
         if(!$error) $display_type = "success";
         else $display_type = "error";
@@ -259,14 +291,8 @@
 
             function page(){
                 $("#saisirInfo").html("");
-                var typeProduction = "<?php
-                    $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
-                    $result = mysqli_query($db,$sql);
-                    if(mysqli_num_rows($result) > 0){
-                        echo mysqli_fetch_array($result)["type"];
-                    }
-                ?>";
-                $.get("ajax/chercheurModifierProductionAjax.php",{typeProduction: typeProduction},function(data){
+                var typeProduction = "<?php echo $typeProduction; ?>";
+                $.get("ajax/chercheurModifierProductionAjax.php",{typeProduction: typeProduction, codepro: <?php echo $codepro; ?>},function(data){
                     $("#saisirInfo").html(data.slice(2,-1));
                     $(".selectpicker").selectpicker("refresh");
                     switch (typeProduction) {
@@ -384,7 +410,26 @@
                     $(".selectpicker").selectpicker("refresh");
                 });
 
-                $('.btn-info').click(function(){
+                $('.form-group .btn-danger').click(function(){
+                    var button = $(this);
+                    $(".row").has(button).remove();
+                });
+
+                $('select[name="auteurSelect[]"]').change(function(){
+                    var position = $(this).attr("auteur");
+                    $('.row:has(input[auteur="'+position+'"])').not(':has(.bootstrap-select)').remove();
+                    if($(this).val() == "autre"){
+                        $(".bootstrap-select").has(this).after(`<div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
+                                </div>
+                            </div>
+                        </div>`);
+                    }
+                });
+
+                $('.btn-info[type="button"]').click(function(){
                     var position = $(this).val();
                     position++;
                     $(this).val(position);
