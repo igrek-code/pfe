@@ -31,7 +31,7 @@
                 break;
                 
                 case 'communication':
-                    $error = ajouter_communication($db);
+                    $error = modifier_communication($db,$codepro);
                 break;
                 case 'ouvrage':
                     $error = ajouter_ouvrage($db);
@@ -191,7 +191,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Ajouter Production
+                        <h4 class="title">Modifier Production
                         <a id="revenir" href="gererProduction.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste productions </a> </h4>
                     </div>
 

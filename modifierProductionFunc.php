@@ -109,7 +109,7 @@
         return false;
     }
 
-    function ajouter_communication($db){
+    function modifier_communication($db,$codepro){
         if(isset($_POST["codeconf"]) && $_POST["codeconf"] == "autre"){
             $nomconf = mysqli_real_escape_string($db,$_POST["nomconf"]);
             $abrvConf = mysqli_real_escape_string($db,$_POST["abrvConf"]);
@@ -154,28 +154,33 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
-        $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
+        $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
+            SELECT codeDomaine FROM specialite WHERE idspe IN (
+                SELECT idspe FROM communication WHERE codepro='".$codepro."'
+            )
+        )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
-        if(!($result = mysqli_query($db,$sql))) return true;
-        $codeDomaineProduction = mysqli_fetch_array($result)["codeDomaine"];
-        $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspeProduction."','".$codeDomaineProduction."')";
+        $sql = "UPDATE specialite SET nomspe='".$idspeProduction."' WHERE idspe IN (
+            SELECT idspe FROM communication WHERE codepro='".$codepro."'
+        )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
-        if(!($result = mysqli_query($db,$sql))) return true;
-        $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','communication')";
+        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "SELECT * FROM production ORDER BY codepro DESC";
-        if(!($result = mysqli_query($db,$sql))) return true;
-        $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO communication (codepro,titre,codeconf,url) VALUES ('".$codepro."','".$titreProduction."','".$codeconf."','".$urlProduction."')";
+        $sql = "UPDATE communication SET titre='".$titreProduction."' WHERE codepro='".$codepro."'";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "UPDATE communication SET codeconf='".$codeconf."' WHERE codepro='".$codepro."'";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "UPDATE communication SET url='".$urlProduction."' WHERE codepro='".$codepro."'";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "DELETE FROM motscle WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
             $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
             if(!mysqli_query($db,$sql)) return true;
         }
+        $sql = "DELETE FROM auteurprinc WHERE codepro='".$codepro."'";
+        if(!mysqli_query($db,$sql)) return true;
         if($_POST["auteurprincSelect"] == "autre"){
             $auteurprinc =  mysqli_real_escape_string($db,$_POST["auteurprincInput"]);
             $sql = "INSERT INTO auteurprinc (nom,codepro) VALUES ('".$auteurprinc."','".$codepro."')";
@@ -184,6 +189,8 @@
             $auteurprinc = mysqli_real_escape_string($db,$_POST["auteurprincSelect"]);
             $sql = "INSERT INTO auteurprinc (idcher,codepro) VALUES ('".$auteurprinc."','".$codepro."')";
         }
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "DELETE FROM coauteurs WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $j=0;
         for ($i=0; $i < count($_POST["auteurSelect"]); $i++) { 
