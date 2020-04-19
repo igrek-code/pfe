@@ -245,178 +245,187 @@
                 $.get("ajax/gererProductionAjax.php",{typeProduction: typeProduction},function(data){
                     $("#theTable").html(data.slice(2,-1));
                     $("table").DataTable(fr_table());
-                    $('button[coderevue="coderevue"]').click(function(){
-                        var coderevue = $(this).val();
-                        $.confirm({
-                            content: function(){
-                                var self = this;
-                                self.setTitle("Informations supplémentaires sur la revue");
-                                $.get("ajax/gererProductionAjax.php",{coderevue: coderevue},function(data){
-                                    self.setContent(data.slice(2,-1));
-                                });
-                            },
-                            buttons:{
-                                ok: {
-                                    text: "D'accord",
-                                    keys: ["enter"]
-                                }
-                            }
-                        });
-                    });
+                    switch (typeProduction) {
+                        case 'publication':
+                            init_publication();    
+                        break;
+                        
+                        case 'communication':
+                            init_communication();
+                        break;
 
-                    $('button[codepro="codepro"]').click(function(){
-                        var codepro = $(this).val();
-                        $.confirm({
-                            content: function(){
-                                var self = this;
-                                self.setTitle("Informations supplémentaires sur la publication");
-                                $.get("ajax/gererProductionAjax.php",{codepro: codepro},function(data){
-                                    self.setContent(data.slice(2,-1));
-                                });
-                            },
-                            buttons:{
-                                ok: {
-                                    text: "D'accord",
-                                    keys: ["enter"]
-                                }
-                            }
-                        });
-                    });
-
-                    $('button[title="supprimer"]').click(function(){
-                        var val = $(this).val();
-                        $.confirm({
-                            title : "Opération de suppression !",
-                            content : "Voulez vous vraiment supprimer cet élément",
-                            type : "red",
-                            typeAnimated : true,
-                            draggable : true,
-                            buttons : {
-                                supprimer : {
-                                    btnClass : 'btn-danger btn-fill',
-                                    action : function (){
-                                        $.get("ajax/gererProductionAjax.php",{supprimer: val},function (data) {
-                                            if(data == "?>true"){
-                                                $.notify({
-                                                        icon : "pe-7s-angle-down-circle",
-                                                        title : "Succès !",
-                                                        message : "Opération de suppression effectuée avec succès"
-                                                    },{
-                                                        type : "success",
-                                                        allow_dismiss : true,
-                                                        placement: {
-                                                            from: "top",
-                                                            align: "center"
-                                                        },
-                                                        timer : 2000
-                                                    });
-                                            }
-                                            else{
-                                                $.notify({
-                                                    icon : "pe-7s-close-circle",
-                                                    title : "Echoué !",
-                                                    message : "Opération de suppression a échoué"
-                                                },{
-                                                    type : "danger",
-                                                    allow_dismiss : true,
-                                                    placement: {
-                                                        from: "top",
-                                                        align: "center"
-                                                    },
-                                                    timer : 5000
-                                                });
-
-                                            }
-                                        });  
-                                    }
-                                },
-                                retour : {
-                                    btnClass : 'btn-secondary',
-                                    
-                                }
-                            }
-                        });
-                    });
+                        default:
+                        break;
+                    }
                 });
             });
 
             $("#typeProduction").trigger("change");
 
-            //refresh_table();
+            function init_communication(){
+                $('button[codeconf="codeconf"]').click(function(){
+                    var codeconf = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle("Informations supplémentaires sur la conférence");
+                            $.get("ajax/gererProductionAjax.php",{codeconf: codeconf},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "D'accord",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
 
-            function refresh_table(){
-                $("#theTable").html("");
-                $.get("ajax/gererProductionAjax.php",{refresh: true},function(data){
-                    $("#theTable").html(data.slice(2,-1));
-                }).done(function(){
-                    $("table").DataTable(fr_table());
-                    $('button[title="supprimer"]').click(function(){
-                        var val = $(this).val();
-                        $.confirm({
-                            title : "Opération de suppression !",
-                            content : "Voulez vous vraiment supprimer cet élément",
-                            type : "red",
-                            typeAnimated : true,
-                            draggable : true,
-                            buttons : {
-                                supprimer : {
-                                    btnClass : 'btn-danger btn-fill',
-                                    action : function (){
-                                        $.get("ajax/gererProductionAjax.php",{supprimer: val},function (data) {
-                                            if(data == "?>true"){
-                                                $.notify({
-                                                        icon : "pe-7s-angle-down-circle",
-                                                        title : "Succès !",
-                                                        message : "Opération de suppression effectuée avec succès"
-                                                    },{
-                                                        type : "success",
-                                                        allow_dismiss : true,
-                                                        placement: {
-                                                            from: "top",
-                                                            align: "center"
-                                                        },
-                                                        timer : 2000
-                                                    });
-                                                    refresh_table();
-                                            }
-                                            else{
-                                                $.notify({
-                                                    icon : "pe-7s-close-circle",
-                                                    title : "Echoué !",
-                                                    message : "Opération de suppression a échoué"
+                $('button[codepro="codepro"]').click(function(){
+                    var codepro = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle("Informations supplémentaires sur la publication");
+                            $.get("ajax/gererProductionAjax.php",{codepro: codepro},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "D'accord",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
+            }
+
+            function init_publication(){
+
+                $('button[coderevue="coderevue"]').click(function(){
+                    var coderevue = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle("Informations supplémentaires sur la revue");
+                            $.get("ajax/gererProductionAjax.php",{coderevue: coderevue},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "D'accord",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
+
+                $('button[codepro="codepro"]').click(function(){
+                    var codepro = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle("Informations supplémentaires sur la publication");
+                            $.get("ajax/gererProductionAjax.php",{codepro: codepro},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "D'accord",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
+
+                $('button[title="supprimer"]').click(function(){
+                    var val = $(this).val();
+                    $.confirm({
+                        title : "Opération de suppression !",
+                        content : "Voulez vous vraiment supprimer cet élément",
+                        type : "red",
+                        typeAnimated : true,
+                        draggable : true,
+                        buttons : {
+                            supprimer : {
+                                btnClass : 'btn-danger btn-fill',
+                                action : function (){
+                                    $.get("ajax/gererProductionAjax.php",{supprimer: val},function (data) {
+                                        if(data == "?>true"){
+                                            $.notify({
+                                                    icon : "pe-7s-angle-down-circle",
+                                                    title : "Succès !",
+                                                    message : "Opération de suppression effectuée avec succès"
                                                 },{
-                                                    type : "danger",
+                                                    type : "success",
                                                     allow_dismiss : true,
                                                     placement: {
                                                         from: "top",
                                                         align: "center"
                                                     },
-                                                    timer : 5000
+                                                    timer : 2000
                                                 });
+                                            $("#typeProduction").trigger("change");
+                                        }
+                                        else{
+                                            $.notify({
+                                                icon : "pe-7s-close-circle",
+                                                title : "Echoué !",
+                                                message : "Opération de suppression a échoué"
+                                            },{
+                                                type : "danger",
+                                                allow_dismiss : true,
+                                                placement: {
+                                                    from: "top",
+                                                    align: "center"
+                                                },
+                                                timer : 5000
+                                            });
 
-                                            }
-                                        });  
-                                    }
-                                },
-                                retour : {
-                                    btnClass : 'btn-secondary',
-                                    
+                                        }
+                                    });  
                                 }
+                            },
+                            retour : {
+                                btnClass : 'btn-secondary',
+                                
                             }
-                        });
+                        }
                     });
                 });
+
             }
 
             function fr_table (){
+                var typeProduction = $("#typeProduction").val();
+                var columnDefs = [];
+                switch (typeProduction) {
+                    case 'publication':
+                        columnDefs=[
+                            {targets: [-1,-2], orderable: false, "width": "105px"},
+                            {targets: Array.from({length: 17}, (x,i) => i), visible: false}
+                        ]
+                    break;
+
+                    case 'communication':
+                        columnDefs=[
+                            {targets: [-1,-2], orderable: false, "width": "105px"},
+                            {targets: Array.from({length: 12}, (x,i) => i), visible: false}
+                        ]    
+                    break;
+
+                    default:
+                        break;
+                }
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
                     //"scrollX": true,  
-                    "columnDefs": [
-                        {targets: [-1,-2], orderable: false, "width": "105px"},
-                        {targets: Array.from({length: 17}, (x,i) => i), visible: false}
-                    ],
+                    "columnDefs": columnDefs,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                         "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",

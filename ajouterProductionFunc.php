@@ -156,7 +156,7 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO communication (codepro,titre,codeconf,url) VALUES ('".$codepro."','".$titreProduction."','".$codeconf."','".$urlProduction."')";
+        $sql = "INSERT INTO communication (codepro,titre,codeconf,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$codeconf."','".$urlProduction."','".$idspe."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
