@@ -577,11 +577,71 @@
             break;
 
             case 'ouvrage':
+                $sql = "SELECT * FROM ouvrage WHERE codepro='".$codepro."'";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_array($result);
+                    $idspe = $row["idspe"];
+                    $titre = $row["titre"];
+                    $nbpages = $row["nbpages"];
+                    $editeur = $row["editeur"];
+                    $url = $row["url"];
+                    $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                        SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                    )";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                    }
+                    $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                    }
+                    $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $motscles = array();
+                        while($row = mysqli_fetch_array($result2)){
+                            $motscles[] = $row["mot"];
+                        }
+                    }
+                    $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $date = mysqli_fetch_array($result2)["date"]; 
+                    }
+                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                        SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                    )";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $row2 = mysqli_fetch_array($result2);
+                        $auteurprinc = $row2["nom"];
+                        $idcherauteurprinc = $row2["idcher"];
+                    }
+                    else{
+                        $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                            $idcherauteurprinc = 0;
+                        }
+                    }
+                    $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $coauteurs = array();
+                        while($row2 = mysqli_fetch_array($result2)){
+                            $coauteurs[] = $row2;
+                        }
+                    }
+                }
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
-                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de l\'ouvrage">
+                        <input value="'.$titre.'" required class="form-control" name="titreProduction" type="text" placeholder="Titre de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -590,7 +650,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>éditeur</label>
-                        <input required class="form-control" name="editeurProduction" type="text" placeholder="Editeur de l\'ouvrage">
+                        <input value="'.$editeur.'" required class="form-control" name="editeurProduction" type="text" placeholder="Editeur de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -599,7 +659,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>nombres de pages</label>
-                        <input min="1" max="9999" required class="form-control" name="nbrePagesProduction" type="number" placeholder="Nombre de pages de l\'ouvrage">
+                        <input value="'.$nbpages.'" min="1" max="9999" required class="form-control" name="nbrePagesProduction" type="number" placeholder="Nombre de pages de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -608,7 +668,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>url</label>
-                        <input required class="form-control" name="urlProduction" type="text" placeholder="URL de l\'ouvrage">
+                        <input value="'.$url.'" required class="form-control" name="urlProduction" type="text" placeholder="URL de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -617,7 +677,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>domaine</label>
-                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de l\'ouvrage">
+                        <input value="'.$nomDomaine.'" required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -626,7 +686,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>spécialités</label>
-                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de l\'ouvrage">
+                        <input value="'.$nomspe.'" maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -635,7 +695,13 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
+                        <input value="';
+                        $length = count($motscles);
+                        for($i=0; $i<$length-1; $i++) {
+                            echo $motscles[$i].',';
+                        }
+                        echo $motscles[$length-1];
+                        echo'" required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -644,7 +710,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date</label>
-                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de publication de l\'ouvrage">
+                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de publication de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -653,9 +719,28 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Auteur Principal</label>
-                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
-                                <option value="autre">Autre</option>';
+                            <label>Auteur Principal</label>';
+                            if($idcherauteurprinc != 0){
+                                echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                                    <option value="autre">Autre</option>';
+                                    $sql = "SELECT * FROM chercheur";
+                                    $result = mysqli_query($db,$sql);
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_array($result)){
+                                            $nomcher = $row["nom"];
+                                            $idcher = $row["idcher"];
+                                            if($idcherauteurprinc == $idcher) echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                            else echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        }
+                                    }
+                                echo '</select>
+                                        </div>
+                                    </div>
+                                </div>';
+                            }
+                            else{
+                                echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                                    <option selected value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
@@ -665,20 +750,150 @@
                                             echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
                                         }
                                     }
-                            echo'</select>
-                        </div>
-                    </div>
-                </div>
-                <button value="0" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
+                                echo '</select>';
+                                echo '<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input value="'.$auteurprinc.'" required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l\'auteur principale">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                                    </div>
+                                </div>';
+                            }
+                            $position = 0;
+                            foreach ($coauteurs as $auteur) {
+                                $position++;
+                                if($auteur["idcher"] == 0){
+                                    $nomauteur = $auteur["nom"];
+                                    echo '<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                            <label>auteur '.$position.'</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <option selected value="autre">Autre</option>';
+                                                $sql = "SELECT * FROM chercheur";
+                                                $result = mysqli_query($db,$sql);
+                                                if(mysqli_num_rows($result) > 0){
+                                                    while($row = mysqli_fetch_array($result)){
+                                                        $nomcher = $row["nom"];
+                                                        $idcher = $row["idcher"];
+                                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                                    }
+                                                }
+                                            echo'</select>';
+                                        
+                                echo '<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                        <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur '.$position.'">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                    </div>
+                                </div>';
+                                }
+                                else{
+                                    $idcoauteur = $auteur["idcher"];
+                                    echo '<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                            <label>auteur '.$position.'</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <option selected value="autre">Autre</option>';
+                                                $sql = "SELECT * FROM chercheur";
+                                                $result = mysqli_query($db,$sql);
+                                                if(mysqli_num_rows($result) > 0){
+                                                    while($row = mysqli_fetch_array($result)){
+                                                        $nomcher = $row["nom"];
+                                                        $idcher = $row["idcher"];
+                                                        if($idcher == $idcoauteur)
+                                                        echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                                        else
+                                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                                    }
+                                                }
+                                            echo'</select>
+                                        </div>
+                                    </div>
+                                </div>';
+                                }
+                            }
+                echo'<button value="'.$position.'" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
             </div>';
             break;
 
             case 'chapitreOuvrage':
+                $sql = "SELECT * FROM chapitredouvrage WHERE codepro='".$codepro."'";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result)){
+                    $row = mysqli_fetch_array($result);
+                    $idspe = $row["idspe"];
+                    $titre = $row["titre"];
+                    $pages = $row["pages"];
+                    $editeur = $row["editeur"];
+                    $volume = $row["volume"];
+                    $url = $row["url"];
+                    $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                        SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                    )";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                    }
+                    $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                    }
+                    $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $motscles = array();
+                        while($row = mysqli_fetch_array($result2)){
+                            $motscles[] = $row["mot"];
+                        }
+                    }
+                    $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $date = mysqli_fetch_array($result2)["date"]; 
+                    }
+                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                        SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                    )";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $row2 = mysqli_fetch_array($result2);
+                        $auteurprinc = $row2["nom"];
+                        $idcherauteurprinc = $row2["idcher"];
+                    }
+                    else{
+                        $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                            $idcherauteurprinc = 0;
+                        }
+                    }
+                    $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $coauteurs = array();
+                        while($row2 = mysqli_fetch_array($result2)){
+                            $coauteurs[] = $row2;
+                        }
+                    }
+                }
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
-                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de l\'ouvrage">
+                        <input value="'.$titre.'" required class="form-control" name="titreProduction" type="text" placeholder="Titre de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -687,7 +902,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>éditeur</label>
-                        <input required class="form-control" name="editeurProduction" type="text" placeholder="Editeur de l\'ouvrage">
+                        <input value="'.$editeur.'" required class="form-control" name="editeurProduction" type="text" placeholder="Editeur de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -696,13 +911,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>pages</label>
-                        <input maxlength="40" required class="form-control" name="pagesProduction" type="text" placeholder="Pages écrite de l\'ouvrage">
+                        <input value="'.$pages.'" maxlength="40" required class="form-control" name="pagesProduction" type="text" placeholder="Pages écrite de l\'ouvrage">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>volume</label>
-                        <input min="1" required class="form-control" name="volumeProduction" type="number" placeholder="Volume de l\'ouvrage">
+                        <input value="'.$volume.'" min="1" required class="form-control" name="volumeProduction" type="number" placeholder="Volume de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -711,7 +926,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>url</label>
-                        <input required class="form-control" name="urlProduction" type="text" placeholder="URL de l\'ouvrage">
+                        <input value="'.$url.'" required class="form-control" name="urlProduction" type="text" placeholder="URL de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -720,7 +935,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>domaine</label>
-                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de l\'ouvrage">
+                        <input value="'.$nomDomaine.'" required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -729,7 +944,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>spécialités</label>
-                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de l\'ouvrage">
+                        <input value="'.$nomspe.'" maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -738,7 +953,13 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
+                        <input value="';
+                        $length = count($motscles);
+                        for($i=0; $i<$length-1; $i++) {
+                            echo $motscles[$i].',';
+                        }
+                        echo $motscles[$length-1];
+                        echo'" required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -747,7 +968,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date</label>
-                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de publication de l\'ouvrage">
+                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de publication de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -756,9 +977,28 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Auteur Principal</label>
-                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
-                                <option value="autre">Autre</option>';
+                            <label>Auteur Principal</label>';
+                            if($idcherauteurprinc != 0){
+                                echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                                    <option value="autre">Autre</option>';
+                                    $sql = "SELECT * FROM chercheur";
+                                    $result = mysqli_query($db,$sql);
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_array($result)){
+                                            $nomcher = $row["nom"];
+                                            $idcher = $row["idcher"];
+                                            if($idcherauteurprinc == $idcher) echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                            else echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        }
+                                    }
+                                echo '</select>
+                                        </div>
+                                    </div>
+                                </div>';
+                            }
+                            else{
+                                echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                                    <option selected value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
@@ -768,20 +1008,124 @@
                                             echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
                                         }
                                     }
-                            echo'</select>
-                        </div>
-                    </div>
-                </div>
-                <button value="0" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
+                                echo '</select>';
+                                echo '<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input value="'.$auteurprinc.'" required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l\'auteur principale">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                                    </div>
+                                </div>';
+                            }
+                            $position = 0;
+                            foreach ($coauteurs as $auteur) {
+                                $position++;
+                                if($auteur["idcher"] == 0){
+                                    $nomauteur = $auteur["nom"];
+                                    echo '<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                            <label>auteur '.$position.'</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <option selected value="autre">Autre</option>';
+                                                $sql = "SELECT * FROM chercheur";
+                                                $result = mysqli_query($db,$sql);
+                                                if(mysqli_num_rows($result) > 0){
+                                                    while($row = mysqli_fetch_array($result)){
+                                                        $nomcher = $row["nom"];
+                                                        $idcher = $row["idcher"];
+                                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                                    }
+                                                }
+                                            echo'</select>';
+                                        
+                                echo '<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                        <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur '.$position.'">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                    </div>
+                                </div>';
+                                }
+                                else{
+                                    $idcoauteur = $auteur["idcher"];
+                                    echo '<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                            <label>auteur '.$position.'</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <option selected value="autre">Autre</option>';
+                                                $sql = "SELECT * FROM chercheur";
+                                                $result = mysqli_query($db,$sql);
+                                                if(mysqli_num_rows($result) > 0){
+                                                    while($row = mysqli_fetch_array($result)){
+                                                        $nomcher = $row["nom"];
+                                                        $idcher = $row["idcher"];
+                                                        if($idcher == $idcoauteur)
+                                                        echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                                        else
+                                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                                    }
+                                                }
+                                            echo'</select>
+                                        </div>
+                                    </div>
+                                </div>';
+                                }
+                            }
+                echo'<button value="'.$position.'" type="button" class="btn btn-info btn-fill">Ajouter auteur</button>
             </div>';
             break;
 
             case 'doctorat':
+                $sql = "SELECT * FROM these WHERE codepro='".$codepro."'";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_array($result);
+                    $titre = $row["titre"];
+                    $lieusout = $row["lieusout"];
+                    $nordre = $row["nordre"];
+                    $encadreur = $row["encadreur"];
+                    $idspe = $row["idspe"];
+                    $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                        SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                    )";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                    }
+                    $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                    }
+                    $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $motscles = array();
+                        while($row = mysqli_fetch_array($result2)){
+                            $motscles[] = $row["mot"];
+                        }
+                    }
+                    $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $date = mysqli_fetch_array($result2)["date"]; 
+                    }
+                }
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
-                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
+                        <input value="'.$titre.'" required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
                     </div>
                 </div>
             </div>
@@ -790,7 +1134,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>№ ORDRE</label>
-                        <input required class="form-control" name="nordreProduction" type="number" placeholder="№ ordre">
+                        <input value="'.$nordre.'" required class="form-control" name="nordreProduction" type="number" placeholder="№ ordre">
                     </div>
                 </div>
             </div>
@@ -799,7 +1143,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>lieu</label>
-                        <input required class="form-control" name="lieusoutProduction" type="text" placeholder="Lieu de la soutenance">
+                        <input value="'.$lieusout.'" required class="form-control" name="lieusoutProduction" type="text" placeholder="Lieu de la soutenance">
                     </div>
                 </div>
             </div>
@@ -808,7 +1152,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>url</label>
-                        <input required class="form-control" name="urlProduction" type="text" placeholder="URL de la thèse">
+                        <input value="'.$lieusout.'" required class="form-control" name="urlProduction" type="text" placeholder="URL de la thèse">
                     </div>
                 </div>
             </div>
@@ -817,7 +1161,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>domaine</label>
-                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
+                        <input value="'.$nomDomaine.'" required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
                     </div>
                 </div>
             </div>
@@ -826,7 +1170,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>spécialités</label>
-                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
+                        <input value="'.$nomspe.'" maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
                     </div>
                 </div>
             </div>
@@ -835,7 +1179,13 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
+                        <input value="';
+                        $length = count($motscles);
+                        for($i=0; $i<$length-1; $i++) {
+                            echo $motscles[$i].',';
+                        }
+                        echo $motscles[$length-1];
+                        echo'" required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
                     </div>
                 </div>
             </div>
@@ -844,7 +1194,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date</label>
-                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
                     </div>
                 </div>
             </div>
@@ -854,14 +1204,17 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Encadreur</label>
-                        <select required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <select readonly required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur";
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = mysqli_fetch_array($result)){
                                         $nomcher = $row["nom"];
                                         $idcher = $row["idcher"];
-                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        if($encadreur == $idcher){
+                                            echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                            break;
+                                        }
                                     }
                                 }
                         echo'</select>
@@ -871,11 +1224,45 @@
             break;
 
             default:
+                $sql = "SELECT * FROM pfemaster WHERE codepro='".$codepro."'";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_array($result);
+                    $titre = $row["titre"];
+                    $lieusout = $row["lieusout"];
+                    $encadreur = $row["encadreur"];
+                    $idspe = $row["idspe"];
+                    $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                        SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                    )";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                    }
+                    $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                    }
+                    $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $motscles = array();
+                        while($row = mysqli_fetch_array($result2)){
+                            $motscles[] = $row["mot"];
+                        }
+                    }
+                    $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $date = mysqli_fetch_array($result2)["date"]; 
+                    }
+                }
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
-                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
+                        <input value="'.$titre.'" required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
                     </div>
                 </div>
             </div>
@@ -884,7 +1271,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>lieu</label>
-                        <input required class="form-control" name="lieusoutProduction" type="text" placeholder="Lieu de la soutenance">
+                        <input value="'.$lieusout.'" required class="form-control" name="lieusoutProduction" type="text" placeholder="Lieu de la soutenance">
                     </div>
                 </div>
             </div>
@@ -893,7 +1280,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>domaine</label>
-                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
+                        <input value="'.$nomDomaine.'" required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
                     </div>
                 </div>
             </div>
@@ -902,7 +1289,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>spécialités</label>
-                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
+                        <input value="'.$nomspe.'" maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
                     </div>
                 </div>
             </div>
@@ -911,7 +1298,13 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
+                        <input value="';
+                        $length = count($motscles);
+                        for($i=0; $i<$length-1; $i++) {
+                            echo $motscles[$i].',';
+                        }
+                        echo $motscles[$length-1];
+                        echo'" required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
                     </div>
                 </div>
             </div>
@@ -920,7 +1313,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date</label>
-                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
                     </div>
                 </div>
             </div>
@@ -930,14 +1323,17 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Encadreur</label>
-                        <select required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <select readonly required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur";
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = mysqli_fetch_array($result)){
                                         $nomcher = $row["nom"];
                                         $idcher = $row["idcher"];
-                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        if($idcher == $encadreur){
+                                            echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                            break;
+                                        }
                                     }
                                 }
                         echo'</select>

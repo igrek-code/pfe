@@ -942,7 +942,7 @@
                                     $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                                     $result3 = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result3) > 0){
-                                        $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                        $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                                     }
                                 }
                             }
@@ -1019,7 +1019,7 @@
                                     $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                                     $result3 = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result3) > 0){
-                                        $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                        $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                                     }
                                 }
                             }
@@ -1106,7 +1106,7 @@
                                     $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                                     $result3 = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result3) > 0){
-                                        $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                        $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                                     }
                                 }
                             }
@@ -1195,7 +1195,7 @@
                                     $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                                     $result3 = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result3) > 0){
-                                        $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                        $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                                     }
                                 }
                             }

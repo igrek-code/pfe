@@ -34,19 +34,19 @@
                     $error = modifier_communication($db,$codepro);
                 break;
                 case 'ouvrage':
-                    $error = ajouter_ouvrage($db);
+                    $error = modifier_ouvrage($db,$codepro);
                 break;
 
                 case 'chapitreOuvrage':
-                    $error = ajouter_chapitreOuvrage($db);
+                    $error = modifier_chapitreOuvrage($db,$codepro);
                 break;
 
                 case 'doctorat':
-                    $error = ajouter_doctorat($db);
+                    $error = modifier_doctorat($db,$codepro);
                 break;
 
                 default:
-                    $error = ajouter_master($db);
+                    $error = modifier_master($db,$codepro);
                 break;
             }
 
@@ -191,7 +191,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Modifier Production
+                        <h4 class="title">Modifier <?php echo $typeProduction;?>
                         <a id="revenir" href="gererProduction.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste productions </a> </h4>
                     </div>
 
