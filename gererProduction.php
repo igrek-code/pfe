@@ -451,6 +451,20 @@
                         ]    
                     break;
 
+                    case 'doctorat':
+                        columnDefs=[
+                            {targets: [-1,-2], orderable: false, "width": "105px"},
+                            {targets: Array.from({length: 6}, (x,i) => i), visible: false}
+                        ]    
+                    break;
+
+                    case 'master':
+                        columnDefs=[
+                            {targets: [-1,-2], orderable: false, "width": "105px"},
+                            {targets: Array.from({length: 5}, (x,i) => i), visible: false}
+                        ]    
+                    break;
+
                     default:
                         break;
                 }
