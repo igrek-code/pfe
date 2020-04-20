@@ -1,5 +1,6 @@
 <?php
     require_once("../config.php");
+    session_start();
     if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != ""){
         switch ($_GET["typeProduction"]) {
             case 'publication':
@@ -508,14 +509,18 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Encadreur</label>
-                        <select required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur";
+                                $thisId = $_SESSION["idcher"];
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = mysqli_fetch_array($result)){
                                         $nomcher = $row["nom"];
                                         $idcher = $row["idcher"];
-                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        if($idcher == $thisId){
+                                            echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                            break;
+                                        }
                                     }
                                 }
                         echo'</select>
@@ -584,16 +589,20 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Encadreur</label>
-                        <select required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
-                                $sql = "SELECT * FROM chercheur";
-                                $result = mysqli_query($db,$sql);
-                                if(mysqli_num_rows($result) > 0){
-                                    while($row = mysqli_fetch_array($result)){
-                                        $nomcher = $row["nom"];
-                                        $idcher = $row["idcher"];
-                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                        <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                            $sql = "SELECT * FROM chercheur";
+                            $thisId = $_SESSION["idcher"];
+                            $result = mysqli_query($db,$sql);
+                            if(mysqli_num_rows($result) > 0){
+                                while($row = mysqli_fetch_array($result)){
+                                    $nomcher = $row["nom"];
+                                    $idcher = $row["idcher"];
+                                    if($idcher == $thisId){
+                                        echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                        break;
                                     }
                                 }
+                            }
                         echo'</select>
                     </div>
                 </div>

@@ -13,9 +13,356 @@
                 afficher_communication($db,$idcher);
             break;
 
+            case 'ouvrage':
+                afficher_ouvrage($db,$idcher);
+            break;
+
+            case 'chapitreOuvrage':
+                afficher_chapitreOuvrage($db,$idcher);
+            break;
+
+            case 'doctorat':
+                afficher_doctorat($db,$idcher);
+            break;
+
+            case 'master':
+                afficher_master($db,$idcher);
+            break;
+
             default:
                 # code...
-                break;
+            break;
+        }
+    }
+
+    function afficher_doctorat($db,$idcher){
+        $sql = "SELECT * FROM these WHERE encadreur ='".$idcher."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            echo '<div class="content">
+            <table class="table table-hover">
+                <thead>
+                    <th>N Ordre</th>
+                    <th>Lieu</th>
+                    <th>Domaine</th>
+                    <th>Spécialités</th>
+                    <th>Mots-clè</th>
+                    <th>Encadreur</th>
+                    <th>Titre</th>
+                    <th>Date</th>
+                    <th>URL</th>
+                    <th>Action</th>
+                </thead>
+            <tbody>';
+            while($row = mysqli_fetch_array($result)){
+                $codepro = $row["codepro"];
+                $titre = $row["titre"];
+                $lieusout = $row["lieusout"];
+                $nordre = $row["nordre"];
+                $url = $row["url"];
+                $encadreur = $row["encadreur"];
+                $idspe = $row["idspe"];
+                $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                    SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                }
+                $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                }
+                $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $motscles = array();
+                    while($row = mysqli_fetch_array($result2)){
+                        $motscles[] = $row["mot"];
+                    }
+                }
+                $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $date = mysqli_fetch_array($result2)["date"]; 
+                }
+                echo    '<tr>';
+                echo    '<td>'.$nordre.'</td>';
+                echo    '<td>'.$lieusout.'</td>';
+                echo    '<td>'.$nomDomaine.'</td>';
+                echo    '<td>'.$nomspe.'</td>'; 
+                echo    '<td>';
+                foreach ($motscles as $mot) {
+                    echo $mot.', ';
+                }   
+                echo    '</td>';
+                echo    '<td>'.$encadreur.'</td>';
+                echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
+                echo    '<td>'.$date.'</td>';
+                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<a href="chercheurModifierPublication.php?modifier='.$codepro.'" title="modifier"><i class="pe-7s-file  btn-fill btn btn-info"></i></a>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="supprimer btn-fill btn btn-danger "><i class="pe-7s-trash  "></i></button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo    '</td>';
+                echo    '</tr>';
+            }
+            echo '</tbody></table></div>';
+        }        
+    }
+
+    function afficher_chapitreOuvrage($db,$idcher){
+        $sql = "SELECT * FROM chapitredouvrage WHERE codepro IN (
+            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
+        ) OR codepro IN (
+            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."'
+        )";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            echo '<div class="content">
+            <table class="table table-hover">
+                <thead>
+                    <th>Editeur</th>
+                    <th>Pages</th>
+                    <th>Volume</th>
+                    <th>Domaine</th>
+                    <th>Spécialités</th>
+                    <th>Mots-clè</th>
+                    <th>Auteur principal</th>
+                    <th>Co-auteurs</th>
+                    <th>Titre</th>
+                    <th>Date</th>
+                    <th>URL</th>
+                    <th>Action</th>
+                </thead>
+            <tbody>';
+            while($row = mysqli_fetch_array($result)){
+                $codepro = $row["codepro"];
+                $idspe = $row["idspe"];
+                $titre = $row["titre"];
+                $pages = $row["pages"];
+                $editeur = $row["editeur"];
+                $volume = $row["volume"];
+                $url = $row["url"];
+                $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                    SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                }
+                $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                }
+                $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $motscles = array();
+                    while($row = mysqli_fetch_array($result2)){
+                        $motscles[] = $row["mot"];
+                    }
+                }
+                $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $date = mysqli_fetch_array($result2)["date"]; 
+                }
+                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                    SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                }
+                else{
+                    $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $coauteurs = array();
+                    while($row2 = mysqli_fetch_array($result2)){
+                        if($row2["idcher"] == 0){
+                            $coauteurs[] = $row2["nom"];
+                        }
+                        else{
+                            $idcherco = $row2["idcher"];
+                            $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
+                            $result3 = mysqli_query($db,$sql);
+                            if(mysqli_num_rows($result3) > 0){
+                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                            }
+                        }
+                    }
+                }
+                echo    '<tr>';
+                echo    '<td>'.$editeur.'</td>';
+                echo    '<td>'.$pages.'</td>';
+                echo    '<td>'.$volume.'</td>';
+                echo    '<td>'.$nomDomaine.'</td>';
+                echo    '<td>'.$nomspe.'</td>'; 
+                echo    '<td>';
+                foreach ($motscles as $mot) {
+                    echo $mot.', ';
+                }   
+                echo    '</td>';
+                echo    '<td>'.$auteurprinc.'</td>';
+                echo    '<td>';
+                foreach ($coauteurs as $auteur) {
+                    echo $auteur.', ';
+                }
+                echo    '</td>';
+                echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
+                echo    '<td>'.$date.'</td>';
+                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<a href="chercheurModifierPublication.php?modifier='.$codepro.'" title="modifier"><i class="pe-7s-file  btn-fill btn btn-info"></i></a>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="supprimer btn-fill btn btn-danger "><i class="pe-7s-trash  "></i></button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo    '</td>';
+                echo    '</tr>';
+            }
+            echo '</tbody></table></div>';
+        }        
+    }
+
+    function afficher_ouvrage($db,$idcher){
+        $sql = "SELECT * FROM ouvrage WHERE codepro IN (
+            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
+        ) OR codepro IN (
+            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."'
+        )";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            echo '<div class="content">
+            <table class="table table-hover">
+                <thead>
+                    <th>Editeur</th>
+                    <th>Nombres de pages</th>
+                    <th>Domaine</th>
+                    <th>Spécialités</th>
+                    <th>Mots-clè</th>
+                    <th>Auteur principal</th>
+                    <th>Co-auteurs</th>
+                    <th>Titre</th>
+                    <th>Date</th>
+                    <th>URL</th>
+                    <th>Action</th>
+                </thead>
+            <tbody>';
+            while($row = mysqli_fetch_array($result)){
+                $codepro = $row["codepro"];
+                $idspe = $row["idspe"];
+                $titre = $row["titre"];
+                $nbpages = $row["nbpages"];
+                $editeur = $row["editeur"];
+                $url = $row["url"];
+                $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                    SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                }
+                $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                }
+                $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $motscles = array();
+                    while($row = mysqli_fetch_array($result2)){
+                        $motscles[] = $row["mot"];
+                    }
+                }
+                $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $date = mysqli_fetch_array($result2)["date"]; 
+                }
+                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                    SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                }
+                else{
+                    $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $coauteurs = array();
+                    while($row2 = mysqli_fetch_array($result2)){
+                        if($row2["idcher"] == 0){
+                            $coauteurs[] = $row2["nom"];
+                        }
+                        else{
+                            $idcherco = $row2["idcher"];
+                            $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
+                            $result3 = mysqli_query($db,$sql);
+                            if(mysqli_num_rows($result3) > 0){
+                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                            }
+                        }
+                    }
+                }
+                echo    '<tr>';
+                echo    '<td>'.$editeur.'</td>';
+                echo    '<td>'.$nbpages.'</td>';
+                echo    '<td>'.$nomDomaine.'</td>';
+                echo    '<td>'.$nomspe.'</td>'; 
+                echo    '<td>';
+                foreach ($motscles as $mot) {
+                    echo $mot.', ';
+                }   
+                echo    '</td>';
+                echo    '<td>'.$auteurprinc.'</td>';
+                echo    '<td>';
+                foreach ($coauteurs as $auteur) {
+                    echo $auteur.', ';
+                }
+                echo    '</td>';
+                echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
+                echo    '<td>'.$date.'</td>';
+                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<a href="chercheurModifierPublication.php?modifier='.$codepro.'" title="modifier"><i class="pe-7s-file  btn-fill btn btn-info"></i></a>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="supprimer btn-fill btn btn-danger "><i class="pe-7s-trash  "></i></button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo    '</td>';
+                echo    '</tr>';
+            }
+            echo '</tbody></table></div>';
         }
     }
 
@@ -601,6 +948,176 @@
                         echo '<div class="text-danger">information sur la communication non trouvée !</div>';
                     }
                 break;
+
+                case 'ouvrage':
+                    $sql = "SELECT * FROM ouvrage WHERE codepro='".$codepro."'";
+                    $result = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result) > 0){
+                        $row = mysqli_fetch_array($result);
+                        $idspe = $row["idspe"];
+                        $titre = $row["titre"];
+                        $nbpages = $row["nbpages"];
+                        $editeur = $row["editeur"];
+                        $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                            SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                        }
+                        $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                        }
+                        $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $date = mysqli_fetch_array($result2)["date"]; 
+                        }
+                        echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
+                        echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
+                        echo '<span class="text-info">Nombres de pages: </span>'.$nbpages.'<br>';
+                        echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
+                        echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
+                        /*-------------------------------------------*/
+                        echo '<span class="text-info">Mots-clès: </span>';
+                        $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            while($row = mysqli_fetch_array($result2)){
+                                $mot = $row["mot"];
+                                echo $mot.', ';
+                            }
+                        }
+                        echo '<br>';
+                        $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                            SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                        }
+                        else{
+                            $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                            $result2 = mysqli_query($db,$sql);
+                            if(mysqli_num_rows($result2) > 0){
+                                $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                            }
+                        }
+                        echo '<span class="text-info">Auteur principal: </span>'.$auteurprinc.'<br>';
+                        $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $coauteurs = array();
+                            while($row2 = mysqli_fetch_array($result2)){
+                                if($row2["idcher"] == 0){
+                                    $coauteurs[] = $row2["nom"];
+                                }
+                                else{
+                                    $idcherco = $row2["idcher"];
+                                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
+                                    $result3 = mysqli_query($db,$sql);
+                                    if(mysqli_num_rows($result3) > 0){
+                                        $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                    }
+                                }
+                            }
+                        }
+                        echo '<span class="text-info">Co-auteurs: </span>';
+                        foreach ($coauteurs as $auteur) {
+                            echo $auteur.', ';
+                        }
+                        echo '<br>';
+                    }
+                break;
+
+                case 'chapitreOuvrage':
+                    $sql = "SELECT * FROM chapitredouvrage WHERE codepro='".$codepro."'";
+                    $result = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result) > 0){
+                        $row = mysqli_fetch_array($result);
+                        $idspe = $row["idspe"];
+                        $titre = $row["titre"];
+                        $pages = $row["pages"];
+                        $volume = $row["volume"];
+                        $editeur = $row["editeur"];
+                        $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                            SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $nomDomaine = mysqli_fetch_array($result2)["nom"];
+                        }
+                        $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $nomspe = mysqli_fetch_array($result2)["nomspe"];
+                        }
+                        $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $date = mysqli_fetch_array($result2)["date"]; 
+                        }
+                        echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
+                        echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
+                        echo '<span class="text-info">Volume: </span>'.$volume.'<br>';
+                        echo '<span class="text-info">Pages: </span>'.$pages.'<br>';
+                        echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
+                        echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
+                        /*-------------------------------------------*/
+                        echo '<span class="text-info">Mots-clès: </span>';
+                        $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            while($row = mysqli_fetch_array($result2)){
+                                $mot = $row["mot"];
+                                echo $mot.', ';
+                            }
+                        }
+                        echo '<br>';
+                        $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                            SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                        }
+                        else{
+                            $sql = "SELECT * FROM auteurprinc WHERE codepro='".$codepro."'";
+                            $result2 = mysqli_query($db,$sql);
+                            if(mysqli_num_rows($result2) > 0){
+                                $auteurprinc = mysqli_fetch_array($result2)["nom"];
+                            }
+                        }
+                        echo '<span class="text-info">Auteur principal: </span>'.$auteurprinc.'<br>';
+                        $sql = "SELECT * FROM coauteurs WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $coauteurs = array();
+                            while($row2 = mysqli_fetch_array($result2)){
+                                if($row2["idcher"] == 0){
+                                    $coauteurs[] = $row2["nom"];
+                                }
+                                else{
+                                    $idcherco = $row2["idcher"];
+                                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
+                                    $result3 = mysqli_query($db,$sql);
+                                    if(mysqli_num_rows($result3) > 0){
+                                        $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                    }
+                                }
+                            }
+                        }
+                        echo '<span class="text-info">Co-auteurs: </span>';
+                        foreach ($coauteurs as $auteur) {
+                            echo $auteur.', ';
+                        }
+                        echo '<br>';
+                    }
+                break;
                 
                 default:
                     # code...
@@ -614,26 +1131,16 @@
 
     if(isset($_GET["supprimer"]) && $_GET["supprimer"] != ""){
         $codepro = mysqli_real_escape_string($db,$_GET["supprimer"]);
-        $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
-        $result = mysqli_query($db,$sql);
-        $typeProduction = "none";
-        if(mysqli_num_rows($result) > 0) $typeProduction = mysqli_fetch_array($result)["type"];
         $ok = "true";
-        switch ($typeProduction) {
-            case 'publication':
-                $sql = "DELETE FROM domaine WHERE codeDomaine IN (
-                    SELECT codeDomaine FROM specialite WHERE idspe IN (
-                        SELECT idspe FROM publication WHERE codepro='".$codepro."'
-                    )
-                )";
-                if(!mysqli_query($db,$sql)) {$ok = "false";break;}
-                $sql = "DELETE FROM production WHERE codepro='".$codepro."'";
-                if(!mysqli_query($db,$sql)) $ok = "false";
-                break;
-            
-            default:
-                # code...
-                break;
+        $sql = "DELETE FROM domaine WHERE codeDomaine IN (
+            SELECT codeDomaine FROM specialite WHERE idspe IN (
+                SELECT idspe FROM publication WHERE codepro='".$codepro."'
+            )
+        )";
+        if(!mysqli_query($db,$sql)) $ok = "false";
+        if($ok != "false"){
+            $sql = "DELETE FROM production WHERE codepro='".$codepro."'";
+            if(!mysqli_query($db,$sql)) $ok = "false";
         }
         echo $ok;
     }

@@ -254,6 +254,22 @@
                             init_communication();
                         break;
 
+                        case 'ouvrage':
+                            init_ouvrage();
+                        break;
+
+                        case 'chapitreOuvrage':
+                            init_chapitreOuvrage();
+                        break;
+
+                        case 'doctorat':
+                            init_doctorat();
+                        break;
+
+                        case 'master':
+                            init_master();
+                        break;
+
                         default:
                         break;
                     }
@@ -261,6 +277,22 @@
             });
 
             $("#typeProduction").trigger("change");
+
+            function init_ouvrage(){
+                init_supprimer_codepro();
+            }
+
+            function init_chapitreOuvrage(){
+                init_supprimer_codepro();
+            }
+
+            function init_doctorat(){
+                init_supprimer_codepro();
+            }
+
+            function init_master(){ 
+                init_supprimer_codepro();
+            }
 
             function init_communication(){
                 $('button[codeconf="codeconf"]').click(function(){
@@ -282,24 +314,7 @@
                     });
                 });
 
-                $('button[codepro="codepro"]').click(function(){
-                    var codepro = $(this).val();
-                    $.confirm({
-                        content: function(){
-                            var self = this;
-                            self.setTitle("Informations supplémentaires sur la publication");
-                            $.get("ajax/gererProductionAjax.php",{codepro: codepro},function(data){
-                                self.setContent(data.slice(2,-1));
-                            });
-                        },
-                        buttons:{
-                            ok: {
-                                text: "D'accord",
-                                keys: ["enter"]
-                            }
-                        }
-                    });
-                });
+                init_supprimer_codepro();
             }
 
             function init_publication(){
@@ -323,12 +338,17 @@
                     });
                 });
 
+                init_supprimer_codepro();
+
+            }
+
+            function init_supprimer_codepro(){
                 $('button[codepro="codepro"]').click(function(){
                     var codepro = $(this).val();
                     $.confirm({
                         content: function(){
                             var self = this;
-                            self.setTitle("Informations supplémentaires sur la publication");
+                            self.setTitle("Informations supplémentaires sur la production");
                             $.get("ajax/gererProductionAjax.php",{codepro: codepro},function(data){
                                 self.setContent(data.slice(2,-1));
                             });
@@ -397,7 +417,6 @@
                         }
                     });
                 });
-
             }
 
             function fr_table (){
@@ -415,6 +434,20 @@
                         columnDefs=[
                             {targets: [-1,-2], orderable: false, "width": "105px"},
                             {targets: Array.from({length: 12}, (x,i) => i), visible: false}
+                        ]    
+                    break;
+
+                    case 'ouvrage':
+                        columnDefs=[
+                            {targets: [-1,-2], orderable: false, "width": "105px"},
+                            {targets: Array.from({length: 7}, (x,i) => i), visible: false}
+                        ]    
+                    break;
+
+                    case 'chapitreOuvrage':
+                        columnDefs=[
+                            {targets: [-1,-2], orderable: false, "width": "105px"},
+                            {targets: Array.from({length: 8}, (x,i) => i), visible: false}
                         ]    
                     break;
 
