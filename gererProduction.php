@@ -264,7 +264,7 @@
                     var table = $("table").DataTable(fr_table());
                     switch (typeProduction) {
                         case 'publication':
-                            init_publication();    
+                            init_publication(table);    
                         break;
                         
                         case 'communication':
@@ -272,19 +272,19 @@
                         break;
 
                         case 'ouvrage':
-                            init_ouvrage();
+                            init_ouvrage(table);
                         break;
 
                         case 'chapitreOuvrage':
-                            init_chapitreOuvrage();
+                            init_chapitreOuvrage(table);
                         break;
 
                         case 'doctorat':
-                            init_doctorat();
+                            init_doctorat(table);
                         break;
 
                         case 'master':
-                            init_master();
+                            init_master(table);
                         break;
 
                         default:
@@ -295,19 +295,19 @@
 
             $("#typeProduction").trigger("change");
 
-            function init_ouvrage(){
+            function init_ouvrage(table){
                 init_supprimer_codepro();
             }
 
-            function init_chapitreOuvrage(){
+            function init_chapitreOuvrage(table){
                 init_supprimer_codepro();
             }
 
-            function init_doctorat(){
+            function init_doctorat(table){
                 init_supprimer_codepro();
             }
 
-            function init_master(){ 
+            function init_master(table){ 
                 init_supprimer_codepro();
             }
 
@@ -463,7 +463,158 @@
                 init_supprimer_codepro();
             }
 
-            function init_publication(){
+            function init_publication(table){
+
+                $('#searchInfo').html(`
+                    PUBLICATION: <br>
+                    -Titre, date, doi, volume, issue, domaine, spécialités, mots-clè, (co)auteur <br>
+                    REVUE: <br>
+                    -Nom, e-issn, issn print, éditeur, année, thème, périodicité, type, classe, pays
+                `);
+
+                $('#searchBox').html(`
+                <div class="form-group form-inline">
+                    <label>Publication: </label>
+                    <select id="searchPub" class="form-control selectpicker" title="Publication...">
+                        <option value="titre">Titre</option>
+                        <option value="date">Date</option>
+                        <option value="doi">Doi</option>
+                        <option value="volume">Volume</option>
+                        <option value="issue">N Issue</option>
+                        <option value="nomDomaine">Domaine</option>
+                        <option value="nomspe">Spécialités</option>
+                        <option value="motscle">Mots-clè</option>
+                        <option value="auteur">Auteur principal</option>
+                        <option value="coauteur">Co-auteur</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                <div class="form-group form-inline">
+                    <label>Revue: </label>
+                    <select id="searchRevue" class="form-control selectpicker" title="Revue...">
+                        <option value="nom">Nom</option>
+                        <option value="eissn">E-ISSN</option>
+                        <option value="issnprint">ISSN PRINT</option>
+                        <option value="editeur">Editeur</option>
+                        <option value="annee">Année</option>
+                        <option value="theme">Thème</option>
+                        <option value="periodicite">Périodicité</option>
+                        <option value="type">Type</option>
+                        <option value="classe">Classe</option>
+                        <option value="pays">Pays</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                `);
+
+                $('.selectpicker').selectpicker("refresh");
+
+                $("#searchRevue").change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'nom':
+                            column = 19;
+                        break;
+
+                        case 'eissn':
+                            column = 7;
+                        break;
+
+                        case 'issnprint':
+                            column = 8;
+                        break;
+
+                        case 'editeur':
+                            column = 9;
+                        break;
+
+                        case 'annee':
+                            column = 10;
+                        break;
+
+                        case 'theme':
+                            column = 11;
+                        break;
+
+                        case 'periodicite':
+                            column = 6;
+                        break;
+
+                        case 'type':
+                            column = 14;
+                        break;
+
+                        case 'classe':
+                            column = 15;
+                        break;
+
+                        case 'pays':
+                            column = 16;
+                        break;
+                    
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        table.column(column).search(data).draw();
+                    });
+                });
+
+                $('#searchPub').change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'titre':
+                            column = 17;
+                        break;
+                        
+                        case 'date':
+                            column = 18;
+                        break;
+
+                        case 'doi':
+                            column = 0;
+                        break;
+
+                        case 'volume':
+                            column = 1;
+                        break;
+
+                        case 'issue':
+                            column = 2;
+                        break;
+
+                        case 'nomDomaine':
+                            column = 12;
+                        break;
+
+                        case 'nomspe':
+                            column = 13;
+                        break;
+
+                        case 'motscle':
+                            column = 3;
+                        break;  
+
+                        case 'auteur':
+                            column = 4;
+                        break;
+
+                        case 'coauteur':
+                            column = 5;
+                        break;
+
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        console.log(data);
+                        table.column(column).search(data).draw();
+                    });
+                });
 
                 $('button[coderevue="coderevue"]').click(function(){
                     var coderevue = $(this).val();
