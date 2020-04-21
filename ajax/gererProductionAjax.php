@@ -288,7 +288,7 @@
                             $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                             $result3 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result3) > 0){
-                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                             }
                         }
                     }
@@ -301,13 +301,13 @@
                 echo    '<td>'.$nomspe.'</td>'; 
                 echo    '<td>';
                 foreach ($motscles as $mot) {
-                    echo $mot.', ';
+                    echo $mot.' ';
                 }   
                 echo    '</td>';
                 echo    '<td>'.$auteurprinc.'</td>';
                 echo    '<td>';
                 foreach ($coauteurs as $auteur) {
-                    echo $auteur.', ';
+                    echo $auteur.' ';
                 }
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
@@ -412,7 +412,7 @@
                             $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                             $result3 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result3) > 0){
-                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                             }
                         }
                     }
@@ -424,13 +424,13 @@
                 echo    '<td>'.$nomspe.'</td>'; 
                 echo    '<td>';
                 foreach ($motscles as $mot) {
-                    echo $mot.', ';
+                    echo $mot.' ';
                 }   
                 echo    '</td>';
                 echo    '<td>'.$auteurprinc.'</td>';
                 echo    '<td>';
                 foreach ($coauteurs as $auteur) {
-                    echo $auteur.', ';
+                    echo $auteur.' ';
                 }
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
@@ -540,7 +540,7 @@
                             $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                             $result3 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result3) > 0){
-                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                             }
                         }
                     }
@@ -565,13 +565,13 @@
                 echo    '<td>'.$nomspe.'</td>'; 
                 echo    '<td>';
                 foreach ($motscles as $mot) {
-                    echo $mot.', ';
+                    echo $mot.' ';
                 }   
                 echo    '</td>';
                 echo    '<td>'.$auteurprinc.'</td>';
                 echo    '<td>';
                 foreach ($coauteurs as $auteur) {
-                    echo $auteur.', ';
+                    echo $auteur.' ';
                 }
                 echo    '</td>';
                 echo    '<td>'.$abrvconf.'</td>';
@@ -745,7 +745,7 @@
                             $sql = "SELECT * FROM chercheur WHERE idcher='".$idcherco."'";
                             $result3 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result3) > 0){
-                                $coauteurs = mysqli_fetch_array($result3)["nom"];
+                                $coauteurs[] = mysqli_fetch_array($result3)["nom"];
                             }
                         }
                     }
@@ -772,13 +772,13 @@
                 echo    '<td>'.$nissue.'</td>';
                 echo    '<td>';
                 foreach ($motscles as $mot) {
-                    echo $mot.', ';
+                    echo $mot.' ';
                 }   
                 echo    '</td>';
                 echo    '<td>'.$auteurprinc.'</td>';
                 echo    '<td>';
                 foreach ($coauteurs as $auteur) {
-                    echo $auteur.', ';
+                    echo $auteur.' ';
                 }
                 echo    '</td>';
                 echo    '<td>'.$periodicite.'</td>';

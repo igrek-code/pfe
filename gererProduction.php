@@ -197,6 +197,9 @@
                                     <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterProduction.php" title="ajouter">+</a>
                                 </h4>
                                 <p class="category">Ajouter/modifier/supprimer</p>
+                                <p style="padding-left:0px;border:0px;text-decoration:underline;" class="btn category">options de recherche<i class="pe-7s-angle-up"></i></p>
+                                <p id="searchInfo" hidden style="margin-bottom:10px;" class="category"></p>
+                                <div id="searchBox"></div>
                             </div>
                             <div id="theTable"></div>
                         </div>
@@ -240,18 +243,32 @@
     <script>
         $(document).ready(function(){
 
+            $("p.btn.category").click(function(){
+                var next = $(this).next();
+                if(next.prop("hidden") == false) {
+                    next.prop("hidden",true);
+                    $(this).children('i').removeClass("pe-7s-angle-down").addClass("pe-7s-angle-up");
+                }
+                else {
+                    next.prop("hidden",false);
+                    $(this).children('i').removeClass("pe-7s-angle-up").addClass("pe-7s-angle-down");
+                }
+            });
+
             $("#typeProduction").change(function(){
+                $('#searchInfo').html('');
+                $('#searchBox').html('');
                 var typeProduction = $(this).val();
                 $.get("ajax/gererProductionAjax.php",{typeProduction: typeProduction},function(data){
                     $("#theTable").html(data.slice(2,-1));
-                    $("table").DataTable(fr_table());
+                    var table = $("table").DataTable(fr_table());
                     switch (typeProduction) {
                         case 'publication':
                             init_publication();    
                         break;
                         
                         case 'communication':
-                            init_communication();
+                            init_communication(table);
                         break;
 
                         case 'ouvrage':
@@ -294,7 +311,136 @@
                 init_supprimer_codepro();
             }
 
-            function init_communication(){
+            function init_communication(table){
+                //var search = $('#DataTables_Table_0_wrapper > div:nth-child(1) > div:nth-child(2)');
+                //search.hide();
+
+                $('#searchInfo').html(`
+                    COMMUNICATION: <br>
+                    -Titre, date, domaine, spécialités, mots-clè, (co)auteur <br>
+                    CONFERENCE: <br>
+                    -Nom, abréviation, année, thème, périodicité, type, classe, pays
+                `);
+
+                $('#searchBox').html(`
+                <div class="form-group form-inline">
+                    <label>Communication: </label>
+                    <select id="searchCom" class="form-control selectpicker" title="Communication...">
+                        <option value="titre">Titre</option>
+                        <option value="date">Date</option>
+                        <option value="nomDomaine">Domaine</option>
+                        <option value="nomspe">Spécialités</option>
+                        <option value="motscle">Mots-clè</option>
+                        <option value="auteur">Auteur principal</option>
+                        <option value="coauteur">Co-auteur</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                <div class="form-group form-inline">
+                    <label>Conférence: </label>
+                    <select id="searchConf" class="form-control selectpicker" title="Conférence...">
+                        <option value="nom">Nom</option>
+                        <option value="abrv">Abréviation</option>
+                        <option value="annee">Année</option>
+                        <option value="theme">Thème</option>
+                        <option value="periodicite">Périodicité</option>
+                        <option value="type">Type</option>
+                        <option value="classe">Classe</option>
+                        <option value="pays">Pays</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                `);
+
+                $('.selectpicker').selectpicker("refresh");
+
+                $("#searchConf").change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'nom':
+                            column = 14;
+                        break;
+
+                        case 'abrv':
+                            column = 5;
+                        break;
+
+                        case 'annee':
+                            column = 6;
+                        break;
+
+                        case 'theme':
+                            column = 7;
+                        break;
+
+                        case 'periodicite':
+                            column = 8;
+                        break;
+
+                        case 'type':
+                            column = 9;
+                        break;
+
+                        case 'classe':
+                            column = 10;
+                        break;
+
+                        case 'pays':
+                            column = 11;
+                        break;
+                    
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        table.column(column).search(data).draw();
+                    });
+                });
+
+                $('#searchCom').change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'titre':
+                            column = 12;
+                        break;
+                        
+                        case 'date':
+                            column = 13;
+                        break;
+
+                        case 'nomDomaine':
+                            column = 0;
+                        break;
+
+                        case 'nomspe':
+                            column = 1;
+                        break;
+
+                        case 'motscle':
+                            column = 2;
+                        break;  
+
+                        case 'auteur':
+                            column = 3;
+                        break;
+
+                        case 'coauteur':
+                            column = 4;
+                        break;
+
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        console.log(data);
+                        table.column(column).search(data).draw();
+                    });
+                });
+
                 $('button[codeconf="codeconf"]').click(function(){
                     var codeconf = $(this).val();
                     $.confirm({
