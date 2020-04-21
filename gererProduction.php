@@ -262,6 +262,7 @@
                 $.get("ajax/gererProductionAjax.php",{typeProduction: typeProduction},function(data){
                     $("#theTable").html(data.slice(2,-1));
                     var table = $("table").DataTable(fr_table());
+                    $('.dataTables_filter').hide();
                     switch (typeProduction) {
                         case 'publication':
                             init_publication(table);    
@@ -296,24 +297,310 @@
             $("#typeProduction").trigger("change");
 
             function init_ouvrage(table){
+
+                $('#searchInfo').html(`
+                    OUVRAGE: <br>
+                    -Titre, date, éditeur, nombre de pages, domaine, spécialités, mots-clè, (co)auteur
+                `);
+
+                $('#searchBox').html(`
+                <div class="form-group form-inline">
+                    <label>Ouvrage: </label>
+                    <select id="searchOuv" class="form-control selectpicker" title="Ouvrage...">
+                        <option value="titre">Titre</option>
+                        <option value="date">Date</option>
+                        <option value="editeur">Editeur</option>
+                        <option value="nbrepages">Nombre de pages</option>
+                        <option value="nomDomaine">Domaine</option>
+                        <option value="nomspe">Spécialités</option>
+                        <option value="motscle">Mots-clè</option>
+                        <option value="auteur">Auteur principal</option>
+                        <option value="coauteur">Co-auteur</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                `);
+
+                $('.selectpicker').selectpicker("refresh");
+
+                $('#searchOuv').change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'titre':
+                            column = 7;
+                        break;
+                        
+                        case 'date':
+                            column = 8;
+                        break;
+
+                        case 'editeur':
+                            column = 0;
+                        break;
+
+                        case 'nbrepages':
+                            column = 1;
+                        break;
+
+                        case 'nomDomaine':
+                            column = 2;
+                        break;
+
+                        case 'nomspe':
+                            column = 3;
+                        break;
+
+                        case 'motscle':
+                            column = 4;
+                        break;  
+
+                        case 'auteur':
+                            column = 5;
+                        break;
+
+                        case 'coauteur':
+                            column = 6;
+                        break;
+
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        table.column(column).search(data).draw();
+                    });
+                });
+
                 init_supprimer_codepro();
             }
 
             function init_chapitreOuvrage(table){
+                $('#searchInfo').html(`
+                    CHAPITRE D'OUVRAGE: <br>
+                    -Titre, date, éditeur, pages, volume, domaine, spécialités, mots-clè, (co)auteur
+                `);
+
+                $('#searchBox').html(`
+                <div class="form-group form-inline">
+                    <label>Chapitre d'ouvrage: </label>
+                    <select id="searchOuv" class="form-control selectpicker" title="Chapitre...">
+                        <option value="titre">Titre</option>
+                        <option value="date">Date</option>
+                        <option value="editeur">Editeur</option>
+                        <option value="pages">Pages</option>
+                        <option value="volume">Volume</option>
+                        <option value="nomDomaine">Domaine</option>
+                        <option value="nomspe">Spécialités</option>
+                        <option value="motscle">Mots-clè</option>
+                        <option value="auteur">Auteur principal</option>
+                        <option value="coauteur">Co-auteur</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                `);
+
+                $('.selectpicker').selectpicker("refresh");
+
+                $('#searchOuv').change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'titre':
+                            column = 8;
+                        break;
+                        
+                        case 'date':
+                            column = 9;
+                        break;
+
+                        case 'editeur':
+                            column = 0;
+                        break;
+
+                        case 'pages':
+                            column = 1;
+                        break;
+
+                        case 'volume':
+                            column = 2;
+                        break;
+
+                        case 'nomDomaine':
+                            column = 3;
+                        break;
+
+                        case 'nomspe':
+                            column = 4;
+                        break;
+
+                        case 'motscle':
+                            column = 5;
+                        break;  
+
+                        case 'auteur':
+                            column = 6;
+                        break;
+
+                        case 'coauteur':
+                            column = 7;
+                        break;
+
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        table.column(column).search(data).draw();
+                    });
+                });
                 init_supprimer_codepro();
             }
 
             function init_doctorat(table){
+
+                $('#searchInfo').html(`
+                    THESE DE DOCTORAT: <br>
+                    -Titre, date, n d'ordre,lieu, domaine, spécialités, mots-clè, encadreur
+                `);
+
+                $('#searchBox').html(`
+                <div class="form-group form-inline">
+                    <label>Thèse de doctorat: </label>
+                    <select id="searchOuv" class="form-control selectpicker" title="Thèse...">
+                        <option value="titre">Titre</option>
+                        <option value="date">Date</option>
+                        <option value="nordre">N ordre</option>
+                        <option value="lieusout">Lieu</option>
+                        <option value="nomDomaine">Domaine</option>
+                        <option value="nomspe">Spécialités</option>
+                        <option value="motscle">Mots-clè</option>
+                        <option value="encadreur">Encadreur</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                `);
+
+                $('.selectpicker').selectpicker("refresh");
+
+                $('#searchOuv').change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'titre':
+                            column = 6;
+                        break;
+                        
+                        case 'date':
+                            column = 7;
+                        break;
+
+                        case 'nordre':
+                            column = 0;
+                        break;
+
+                        case 'lieusout':
+                            column = 1;
+                        break;
+
+                        case 'nomDomaine':
+                            column = 2;
+                        break;
+
+                        case 'nomspe':
+                            column = 3;
+                        break;
+
+                        case 'motscle':
+                            column = 4;
+                        break;  
+
+                        case 'encadreur':
+                            column = 5;
+                        break;
+
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        table.column(column).search(data).draw();
+                    });
+                });
+
                 init_supprimer_codepro();
             }
 
             function init_master(table){ 
+
+                $('#searchInfo').html(`
+                    PFE MASTER: <br>
+                    -Titre, date, lieu, domaine, spécialités, mots-clè, encadreur
+                `);
+
+                $('#searchBox').html(`
+                <div class="form-group form-inline">
+                    <label>PFE Master: </label>
+                    <select id="searchOuv" class="form-control selectpicker" title="PFE...">
+                        <option value="titre">Titre</option>
+                        <option value="date">Date</option>
+                        <option value="lieusout">Lieu</option>
+                        <option value="nomDomaine">Domaine</option>
+                        <option value="nomspe">Spécialités</option>
+                        <option value="motscle">Mots-clè</option>
+                        <option value="encadreur">Encadreur</option>
+                    </select>
+                    <input class="form-control" type="text">
+                </div>
+                `);
+
+                $('.selectpicker').selectpicker("refresh");
+
+                $('#searchOuv').change(function(){
+                    var value = $(this).val();
+                    var input = $(this).parent().next();
+                    switch (value) {
+                        case 'titre':
+                            column = 5;
+                        break;
+                        
+                        case 'date':
+                            column = 6;
+                        break;
+
+                        case 'lieusout':
+                            column = 0;
+                        break;
+
+                        case 'nomDomaine':
+                            column = 1;
+                        break;
+
+                        case 'nomspe':
+                            column = 2;
+                        break;
+
+                        case 'motscle':
+                            column = 3;
+                        break;  
+
+                        case 'encadreur':
+                            column = 4;
+                        break;
+
+                        default:
+                            break;
+                    }
+                    input.keyup(function(){
+                        var data = $(this).val();
+                        table.column(column).search(data).draw();
+                    });
+                });
+
                 init_supprimer_codepro();
             }
 
             function init_communication(table){
-                //var search = $('#DataTables_Table_0_wrapper > div:nth-child(1) > div:nth-child(2)');
-                //search.hide();
 
                 $('#searchInfo').html(`
                     COMMUNICATION: <br>
@@ -436,7 +723,6 @@
                     }
                     input.keyup(function(){
                         var data = $(this).val();
-                        console.log(data);
                         table.column(column).search(data).draw();
                     });
                 });
@@ -611,7 +897,6 @@
                     }
                     input.keyup(function(){
                         var data = $(this).val();
-                        console.log(data);
                         table.column(column).search(data).draw();
                     });
                 });

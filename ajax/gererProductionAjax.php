@@ -233,6 +233,8 @@
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
                 $pages = $row["pages"];
+                $pages = str_replace(","," ",$pages);
+                $pages = str_replace("-"," ",$pages);
                 $editeur = $row["editeur"];
                 $volume = $row["volume"];
                 $url = $row["url"];
