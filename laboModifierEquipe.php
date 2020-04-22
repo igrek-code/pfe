@@ -12,28 +12,28 @@
         $sql = "SELECT * FROM equipe WHERE idequipe='".$idequipe."' AND idlabo='".$idlabo."'";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
-            $nomEquipe = mysqli_fetch_array($result)["nomequip"];
-            $sql = "SELECT * FROM specialite WHERE idspe IN (
-                SELECT idspe FROM specialiteequipe WHERE idequipe='".$idequipe."'
+            $row = mysqli_fetch_array($result);
+            $nomEquipe = $row["nomequip"];
+            $idspe = $row["idspe"];
+            
+            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $nomspe = mysqli_fetch_array($result)["nomspe"];
+            }
+
+            $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
+            ) AND idcher IN (
+                SELECT idcher FROM users WHERE actif='1'
             )";
             $result = mysqli_query($db,$sql);
             if(mysqli_num_rows($result) > 0){
-                $specialites = array();
-                while($row = mysqli_fetch_array($result)){
-                    $specialites[] = $row["idspe"];
-                }
-                $sql = "SELECT * FROM chercheur WHERE idcher IN (
-                    SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
-                ) AND idcher IN (
-                    SELECT idcher FROM users WHERE actif='1'
-                )";
-                $result = mysqli_query($db,$sql);
-                if(mysqli_num_rows($result) > 0){
-                    $row = mysqli_fetch_array($result);
-                    $nomchef = $row["nom"];
-                    $idchef = $row["idcher"];
-                }
+                $row = mysqli_fetch_array($result);
+                $nomchef = $row["nom"];
+                $idchef = $row["idcher"];
             }
+            
         }
         else header("location: laboGererEquipe.php");
     }
@@ -48,19 +48,15 @@
             $sql = "UPDATE equipe SET nomequip='".$nomEquipe."'WHERE idequipe='".$idequipe."'";
             if(!mysqli_query($db,$sql)) $error = true;
         }
-        $sql = "DELETE FROM specialiteequipe WHERE idequipe='".$idequipe."'";
-        if(mysqli_query($db,$sql)){
-            $idspe = $_POST["idspe"];
-            $nbreSpe = count($idspe);
-            for($i=0; $i<$nbreSpe; $i++){
-                $specialite = $idspe[$i];
-                $sql = "INSERT INTO specialiteequipe (idspe,idequipe) VALUES ('".$specialite."','".$idequipe."')";
-                if(!mysqli_query($db,$sql)){
-                    $error = true;
-                    break;
-                }
-            }
-        }else $error = true;
+
+        if($_POST["nomspe"] != $nomspe){
+            $nomspe = mysqli_real_escape_string($db,$_POST["nomspe"]);
+            $sql = "UPDATE specialite SET nomspe='".$nomspe."'WHERE idspe IN (
+                SELECT idspe FROM equipe WHERE idequipe = '".$idequipe."'
+            )";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+        
         if(isset($_POST["idcher"]) && $_POST["idcher"]!=""){
             $idchef = mysqli_real_escape_string($db,$_POST["idcher"]);
             $sql = "DELETE FROM chefequip WHERE idequipe='".$idequipe."'";
@@ -89,7 +85,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -143,16 +139,35 @@
             </div>
 
             <ul class="nav">
+
             <li>
-                    <a href="#">
+                    <a href="laboGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
                     </a>
                 </li>
+                <li>
+                    <a href="gererProduction.php">
+                        <i class="pe-7s-notebook"></i>
+                        <p>gerer production</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="recherche.php">
+                        <i class="pe-7s-search"></i>
+                        <p>recherche</p>
+                    </a>
+                </li>
                 <li class="active">
                     <a href="laboGererEquipe.php">
-                        <i class="pe-7s-science"></i>
+                        <i class="pe-7s-network"></i>
                         <p>Gerer Equipe</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="equipeGererMembre.php">
+                        <i class="pe-7s-users"></i>
+                        <p>Gerer Membre Equipe</p>
                     </a>
                 </li>
                 <li>
@@ -161,7 +176,7 @@
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -176,7 +191,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" >Admin</div>
+                    <div style="font-size:18px;" class="navbar-brand">
+                        <?php 
+                            echo $_SESSION["nom"];
+                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                        ?> 
+                    </div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -193,7 +214,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         
                     <li>
-                            <a href="adminCompte.php">
+                            <a href="chercheurCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>
@@ -235,35 +256,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>spécialités</label>
-                                        <select required multiple class="form-control selectpicker" data-live-search="true" name="idspe[]" id="idspe" title="Spécialité...">
-                                        <?php
-                                            $sql = "SELECT * FROM specialite WHERE codeDomaine IN (
-                                                SELECT codeDomaine FROM domaine WHERE codeDomaine IN (
-                                                    SELECT codeDomaine FROM specialite WHERE idspe IN (
-                                                        SELECT idspe FROM specialitelabo WHERE idlabo ='".$idlabo."'
-                                                    )
-                                                )
-                                            )";
-                                            $result = mysqli_query($db,$sql);
-                                            if(mysqli_num_rows($result) > 0){
-                                                while($row = mysqli_fetch_array($result)){
-                                                    $idspe = $row["idspe"];
-                                                    $nomspe = $row["nomspe"];
-                                                    $same = false;
-                                                    foreach ($specialites as $specialite) {
-                                                        if($specialite == $idspe){
-                                                            $same = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                    if($same)
-                                                        echo '<option selected value="'.$idspe.'">'.$nomspe.'</option>';
-                                                    else
-                                                    echo '<option value="'.$idspe.'">'.$nomspe.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                        </select>
+                                        <input value="<?php echo $nomspe;?>" name="nomspe" maxlength="255" required placeholder="Spécialités de l'équipe" class="form-control" type="text">
                                     </div>
                                 </div>
                             </div> 
@@ -274,29 +267,26 @@
                                         <label>Chef d'équipe</label>
                                         <select class="form-control selectpicker" data-live-search="true" name="idcher" id="idcher" title="Chef d'équipe...">
                                         <?php
-                                            if(isset($idchef) && isset($nomchef)){
-                                                echo '<optgroup label="chef d\'équipe">';
-                                                echo '<option selected value="'.$idchef.'">'.$nomchef.'</option>';
-                                                echo '</optgroup>';
-                                            }
-                                            $sql = "SELECT * FROM chercheur WHERE idcher IN (
-                                                SELECT idcher FROM menbrequip
-                                            )OR idcher IN (
-                                                SELECT idcher FROM chefequip
-                                            ) OR idcher IN (
-                                                SELECT idcher FROM cheflabo
-                                            ) AND idcher IN (
+                                            $sql = "SELECT * FROM menbrequip WHERE idequip='".$idequipe."' AND idcher IN (
                                                 SELECT idcher FROM users WHERE actif='1'
                                             )";
                                             $result = mysqli_query($db,$sql);
                                             if(mysqli_num_rows($result) > 0){
                                                 while($row = mysqli_fetch_array($result)){
-                                                    $nommembre = $row["nom"];
-                                                    $idmembre = $row["idcher"];
-                                                    echo '<optgroup label="membres du l\'aboratoire">';
-                                                    echo '<option value="'.$idmembre.'">'.$nommembre.'</option>';
-                                                    echo '</optgroup>';
+                                                    $idcher = $row["idcher"];
+                                                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idcher."'";
+                                                    $result2 = mysqli_query($db,$sql);
+                                                    if(mysqli_num_rows($result2) > 0){
+                                                        $nomcher = mysqli_fetch_array($result2)["nom"];
+                                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                                    }
                                                 }
+                                            }
+                                            if(isset($idchef)) echo '<option selected value="'.$idchef.'">'.$nomchef.'</option>';
+                                            else {
+                                                $idcher = $_SESSION["idcher"];
+                                                $nomcher = $_SESSION["nom"];
+                                                echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
                                             }
                                         ?>
                                         </select>
@@ -307,7 +297,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             
@@ -348,7 +338,7 @@
     
     <script>
         $(document).ready(function(){
-            $("#idcher").has("option").prop("required",true);
+            //$("#idcher").has("option").prop("required",true);
             <?php
                 if(isset($display_notif) && $display_notif == true)
                 {

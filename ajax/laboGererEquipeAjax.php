@@ -19,7 +19,7 @@
                 $idequipe = $row["idequipe"];
                 $nomequipe = $row["nomequip"];
                 $sql = "SELECT * FROM specialite WHERE idspe IN (
-                    SELECT idspe FROM specialiteequipe WHERE idequipe = '".$idequipe."'
+                    SELECT idspe FROM equipe WHERE idequipe = '".$idequipe."'
                 )";
                 $specialites = array();
                 if($result2 = mysqli_query($db,$sql)){

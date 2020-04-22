@@ -64,7 +64,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -118,16 +118,35 @@
             </div>
 
             <ul class="nav">
+
             <li>
-                    <a href="#">
+                    <a href="laboGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
                     </a>
                 </li>
                 <li class="active">
+                    <a href="gererProduction.php">
+                        <i class="pe-7s-notebook"></i>
+                        <p>gerer production</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="recherche.php">
+                        <i class="pe-7s-search"></i>
+                        <p>recherche</p>
+                    </a>
+                </li>
+                <li>
                     <a href="laboGererEquipe.php">
-                        <i class="pe-7s-science"></i>
+                        <i class="pe-7s-network"></i>
                         <p>Gerer Equipe</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="equipeGererMembre.php">
+                        <i class="pe-7s-users"></i>
+                        <p>Gerer Membre Equipe</p>
                     </a>
                 </li>
                 <li>
@@ -136,7 +155,7 @@
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -151,7 +170,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" >Admin</div>
+                    <div style="font-size:18px;" class="navbar-brand">
+                        <?php 
+                            echo $_SESSION["nom"];
+                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                        ?> 
+                    </div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -168,7 +193,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         
                     <li>
-                            <a href="adminCompte.php">
+                            <a href="chercheurCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>
@@ -205,7 +230,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             
@@ -286,7 +311,6 @@
             $("#clearBtn").click(function(){
                 $(".form-control").val("");
                 $(".selectpicker").selectpicker("refresh");
-                $("#saisirInfo").html("");
             });
 
             function page(){

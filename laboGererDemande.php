@@ -17,7 +17,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -73,6 +73,42 @@
             
             <ul class="nav">
                
+                <li class="active">
+                    <a href="laboGererDemande.php">
+                        <i class="pe-7s-id"></i>
+                        <p>Demande inscriptions</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="gererProduction.php">
+                        <i class="pe-7s-notebook"></i>
+                        <p>gerer production</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="recherche.php">
+                        <i class="pe-7s-search"></i>
+                        <p>recherche</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="laboGererEquipe.php">
+                        <i class="pe-7s-network"></i>
+                        <p>Gerer Equipe</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="equipeGererMembre.php">
+                        <i class="pe-7s-users"></i>
+                        <p>Gerer Membre Equipe</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="pe-7s-graph3"></i>
+                        <p>Bilan</p>
+                    </a>
+                </li>
                 
             </ul>
     	</div>
@@ -88,11 +124,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" href="#">Admin</div>
+                    <div style="font-size:18px;" class="navbar-brand">
+                        <?php 
+                            echo $_SESSION["nom"];
+                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                        ?> 
+                    </div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
-                    
                     
                         <li>
                            <a href="">
@@ -105,7 +146,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         
                     <li>
-                            <a href="adminCompte.php">
+                            <a href="chercheurCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>
@@ -139,6 +180,22 @@
                             <div id="theTable"></div>
                         </div>
                     </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Demandes en attente (chercheur)</h4>
+                                <p class="category">Accepter/Supprimer</p>      
+                            </div>
+
+                            
+
+                            <div id="theTable1"></div>
+                        </div>
+                    </div>
+                </div>
 
 
         
@@ -177,12 +234,16 @@
         $(document).ready(function(){
             
             refresh_table();
+            refresh_table1();
 
             function refresh_table() {
                 $("#theTable").html('');
                 $.get("ajax/laboGererDemandeAjax.php",{refresh: true},function(data){
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
+                    if( $.fn.dataTable.isDataTable( 'table' ))
+                    $("table").DataTable();
+                    else
                     $("table").DataTable(fr_table());
                     $('button[title="supprimer"]').click(function(){
                         var idcher = $(this).val();
@@ -298,13 +359,136 @@
                 });    
             }
 
+            function refresh_table1() {
+                $("#theTable1").html('');
+                $.get("ajax/laboGererDemandeAjax.php",{refresh1: true},function(data){
+                    $("#theTable1").html(data.slice(2,-1));
+                }).done(function(){
+                    if( $.fn.dataTable.isDataTable( 'table' ))
+                    $("table").DataTable();
+                    else
+                    $("table").DataTable(fr_table());
+                    $('button[title="supprimer"]').click(function(){
+                        var idcher = $(this).val();
+                        $.confirm({
+                            title : "Opération de suppression !",
+                            content : "Voulez vous vraiment supprimer cet élément",
+                            type : "red",
+                            typeAnimated : true,
+                            draggable : true,
+                            buttons : {
+                                supprimer : {
+                                    btnClass : 'btn-danger btn-fill',
+                                    action : function (){
+                                        $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "supprimer"},function (data) {
+                                            if(data == "?>true"){
+                                                $.notify({
+                                                        icon : "pe-7s-angle-down-circle",
+                                                        title : "Succès !",
+                                                        message : "Opération de suppression effectuée avec succès"
+                                                    },{
+                                                        type : "success",
+                                                        allow_dismiss : true,
+                                                        placement: {
+                                                            from: "top",
+                                                            align: "center"
+                                                        },
+                                                        timer : 2000
+                                                    });
+                                                    refresh_table1();
+                                            }
+                                            else{
+                                                $.notify({
+                                                    icon : "pe-7s-close-circle",
+                                                    title : "Echoué !",
+                                                    message : "Opération de suppression a échoué"
+                                                },{
+                                                    type : "danger",
+                                                    allow_dismiss : true,
+                                                    placement: {
+                                                        from: "top",
+                                                        align: "center"
+                                                    },
+                                                    timer : 5000
+                                                });
+
+                                            }
+                                        });  
+                                    }
+                                },
+                                retour : {
+                                    btnClass : 'btn-secondary',
+                                    
+                                }
+                            }
+                        });
+                    });
+
+                    $('button[title="accepter"]').click(function(){
+                        var idcher = $(this).val();
+                        $.confirm({
+                            title : "Opération d'ajout !",
+                            content : "Voulez vous vraiment accepter cette demande ?",
+                            type : "green",
+                            typeAnimated : true,
+                            draggable : true,
+                            buttons : {
+                                accepter : {
+                                    btnClass : 'btn-success btn-fill',
+                                    action : function (){
+                                        $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "accepter"},function (data) {
+                                            if(data == "?>true"){
+                                                $.notify({
+                                                        icon : "pe-7s-angle-down-circle",
+                                                        title : "Succès !",
+                                                        message : "Opération d'ajout effectuée avec succès"
+                                                    },{
+                                                        type : "success",
+                                                        allow_dismiss : true,
+                                                        placement: {
+                                                            from: "top",
+                                                            align: "center"
+                                                        },
+                                                        timer : 2000
+                                                    });
+                                                    refresh_table1();
+                                            }
+                                            else{
+                                                $.notify({
+                                                    icon : "pe-7s-close-circle",
+                                                    title : "Echoué !",
+                                                    message : "Opération d'ajout a échoué"
+                                                },{
+                                                    type : "danger",
+                                                    allow_dismiss : true,
+                                                    placement: {
+                                                        from: "top",
+                                                        align: "center"
+                                                    },
+                                                    timer : 5000
+                                                });
+
+                                            }
+                                        });  
+                                    }
+                                },
+                                retour : {
+                                    btnClass : 'btn-secondary',
+                                    
+                                }
+                            }
+                        });
+                    });
+                });    
+            }
+
             function fr_table (){
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
                     "scrollX": true,
                     "columnDefs": [
-                        {targets: -1, orderable: false, "width": "184px"}
+                        {targets: -1, orderable: false, "width": "190px"}
                     ],
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",

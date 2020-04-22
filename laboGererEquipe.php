@@ -16,7 +16,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -85,25 +85,25 @@
                 </li>
                 <li>
                     <a href="gererProduction.php">
-                        <i class="pe-7s-graph3"></i>
+                        <i class="pe-7s-notebook"></i>
                         <p>gerer production</p>
                     </a>
                 </li>
                 <li>
                     <a href="recherche.php">
-                        <i class="pe-7s-graph3"></i>
+                        <i class="pe-7s-search"></i>
                         <p>recherche</p>
                     </a>
                 </li>
                 <li class="active">
                     <a href="laboGererEquipe.php">
-                        <i class="pe-7s-science"></i>
+                        <i class="pe-7s-network"></i>
                         <p>Gerer Equipe</p>
                     </a>
                 </li>
                 <li>
                     <a href="equipeGererMembre.php">
-                        <i class="pe-7s-science"></i>
+                        <i class="pe-7s-users"></i>
                         <p>Gerer Membre Equipe</p>
                     </a>
                 </li>
@@ -151,7 +151,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         
                         <li>
-                            <a href="laboCompte.php">
+                            <a href="chercheurCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>

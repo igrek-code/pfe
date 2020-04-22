@@ -7,27 +7,30 @@
     }
     
     $idlabo = $_SESSION["idlabo"];
+    $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+        SELECT codeDomaine FROM specialite WHERE idspe IN (
+            SELECT idspe FROM laboratoire WHERE idlabo='".$idlabo."'
+        )
+    )";
+    $result = mysqli_query($db,$sql);
+    if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_array($result);
+        $nomDomaine = $row["nom"];
+        $codeDomaine = $row["codeDomaine"];
+    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
-        $error = false;
+        $error = true;
         $nomEquipe = mysqli_real_escape_string($db,$_POST["nomEquipe"]);
-        $specialites = array();
-        for ($i=0; $i < count($_POST["idspe"]); $i++) { 
-            $specialites[] = $_POST["idspe"][$i];
-        }
-
-        $sql = "INSERT INTO equipe (idlabo,nomequip) VALUES ('".$idlabo."','".$nomEquipe."')";
-        if(!mysqli_query($db,$sql)) $error = true;
-        $sql = "SELECT * FROM equipe ORDER BY idequipe DESC";
-        if($result = mysqli_query($db,$sql)){
-            $idequipe = mysqli_fetch_array($result)["idequipe"];
-            foreach ($specialites as $specialite) {
-                $sql = "INSERT INTO specialiteequipe (idequipe,idspe) VALUES ('".$idequipe."','".$specialite."')";
-                if(!mysqli_query($db,$sql)){
-                    $error = true;
-                    break;
-                }
+        $nomspe = mysqli_real_escape_string($db,$_POST["nomspe"]);
+        $sql = "INSERT INTO specialite (codeDomaine,nomspe) VALUES ('".$codeDomaine."','".$nomspe."')";
+        if(mysqli_query($db,$sql)){
+            $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+            if($result = mysqli_query($db,$sql)){
+                $idspe = mysqli_fetch_array($result)["idspe"];
+                $sql = "INSERT INTO equipe (nomequip,idspe,idlabo) VALUES ('".$nomEquipe."','".$idspe."','".$idlabo."')";
+                if(mysqli_query($db,$sql)) $error = false;
             }
         }
 
@@ -45,7 +48,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -99,16 +102,35 @@
             </div>
 
             <ul class="nav">
+
             <li>
-                    <a href="#">
+                    <a href="laboGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
                     </a>
                 </li>
+                <li>
+                    <a href="gererProduction.php">
+                        <i class="pe-7s-notebook"></i>
+                        <p>gerer production</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="recherche.php">
+                        <i class="pe-7s-search"></i>
+                        <p>recherche</p>
+                    </a>
+                </li>
                 <li class="active">
                     <a href="laboGererEquipe.php">
-                        <i class="pe-7s-science"></i>
+                        <i class="pe-7s-network"></i>
                         <p>Gerer Equipe</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="equipeGererMembre.php">
+                        <i class="pe-7s-users"></i>
+                        <p>Gerer Membre Equipe</p>
                     </a>
                 </li>
                 <li>
@@ -117,7 +139,7 @@
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -132,7 +154,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" >Admin</div>
+                    <div style="font-size:18px;" class="navbar-brand">
+                        <?php 
+                            echo $_SESSION["nom"];
+                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                        ?> 
+                    </div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -149,7 +177,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         
                     <li>
-                            <a href="adminCompte.php">
+                            <a href="chercheurCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>
@@ -190,26 +218,17 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label>Domaine</label>
+                                        <input placeholder="Domaine de l'équipe" disabled class="form-control" value="<?php if(isset($nomDomaine)) echo $nomDomaine;?>" type="text">
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <label>spécialités</label>
-                                        <select required multiple class="form-control selectpicker" data-live-search="true" name="idspe[]" id="idspe" title="Spécialité...">
-                                        <?php
-                                            $sql = "SELECT * FROM specialite WHERE codeDomaine IN (
-                                                SELECT codeDomaine FROM domaine WHERE codeDomaine IN (
-                                                    SELECT codeDomaine FROM specialite WHERE idspe IN (
-                                                        SELECT idspe FROM specialitelabo WHERE idlabo ='".$idlabo."'
-                                                    )
-                                                )
-                                            )";
-                                            $result = mysqli_query($db,$sql);
-                                            if(mysqli_num_rows($result) > 0){
-                                                while($row = mysqli_fetch_array($result)){
-                                                    $idspe = $row["idspe"];
-                                                    $nomspe = $row["nomspe"];
-                                                    echo '<option value="'.$idspe.'">'.$nomspe.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                        </select>
+                                        <input name="nomspe" maxlength="255" required placeholder="Spécialités de l'équipe" class="form-control" type="text">
                                     </div>
                                 </div>
                             </div> 
@@ -217,7 +236,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-success pull-right ">Ajouter</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             
@@ -292,7 +311,7 @@
                 }
             ?>
             $("#clearBtn").click(function(){
-                $(".form-control").val("");
+                $(".form-control").has(':not[name="nomDomaine"]').val("");
                 $(".selectpicker").selectpicker("refresh");
             });
 
