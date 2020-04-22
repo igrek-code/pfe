@@ -241,10 +241,10 @@
                 $.get("ajax/laboGererDemandeAjax.php",{refresh: true},function(data){
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
-                    if( $.fn.dataTable.isDataTable( 'table' ))
-                    $("table").DataTable();
+                    if( $.fn.dataTable.isDataTable( '#myTable' ))
+                    $("#myTable").DataTable();
                     else
-                    $("table").DataTable(fr_table());
+                    $("#myTable").DataTable(fr_table());
                     $('button[title="supprimer"]').click(function(){
                         var idcher = $(this).val();
                         $.confirm({
@@ -364,10 +364,10 @@
                 $.get("ajax/laboGererDemandeAjax.php",{refresh1: true},function(data){
                     $("#theTable1").html(data.slice(2,-1));
                 }).done(function(){
-                    if( $.fn.dataTable.isDataTable( 'table' ))
-                    $("table").DataTable();
+                    if( $.fn.dataTable.isDataTable( '#myTable1' ))
+                    $("#myTable1").DataTable();
                     else
-                    $("table").DataTable(fr_table());
+                    $("#myTable1").DataTable(fr_table());
                     $('button[title="supprimer"]').click(function(){
                         var idcher = $(this).val();
                         $.confirm({

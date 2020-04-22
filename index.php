@@ -56,7 +56,7 @@
                     $_SESSION["idlabo"] = $row["idlabo"];
                     $_SESSION["nomlabo"] = $row["nom"]; 
                 }
-                header("location: laboGererEquipe.php");
+                header("location: laboGererDemande.php");
             }
             else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
         break;
