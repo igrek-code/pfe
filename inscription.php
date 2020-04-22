@@ -12,7 +12,7 @@
             if(isset($_POST["nomcher"]) && $_POST["nomcher"] != ""){
                 $nomcher = mysqli_real_escape_string($db,$_POST["nomcher"]);
             }else $execute = false;
-            if(isset($_POST["gradecher"]) && $_POST["gradecher"] != ""){
+            if(isset($_POST["gradecher"])){
                 $gradecher = mysqli_real_escape_string($db,$_POST["gradecher"]);
             }else $execute = false;
             if(isset($_POST["profilcher"]) && $_POST["profilcher"] != ""){
@@ -163,6 +163,17 @@
 
                         <div class="row">
                             <div class="col-md-12">
+                                <div class="form-check form-check-inline">
+                                    <input required class="form-check-input" type="radio" name="profilcher" value="permanent">
+                                    <label class="form-check-label">Permanent</label>
+                                    <input required style="margin-left:10px;" class="form-check-input" type="radio" name="profilcher" value="doctorant">
+                                    <label class="form-check-label">Doctorant</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>grade</label>
                                     <select required class="form-control selectpicker" name="gradecher" id="gradecher">
@@ -173,17 +184,7 @@
                                         <option value="mca">MCA</option>
                                         <option value="prof">PROF.</option>
                                     </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-check form-check-inline">
-                                    <input required class="form-check-input" type="radio" name="profilcher" value="permanent">
-                                    <label class="form-check-label">Permanent</label>
-                                    <input required style="margin-left:10px;" class="form-check-input" type="radio" name="profilcher" value="doctorant">
-                                    <label class="form-check-label">Doctorant</label>
+                                    <input disabled hidden name="gradecher" value="" type="text">
                                 </div>
                             </div>
                         </div>
@@ -197,6 +198,7 @@
                                         <option value="chefequipe">Chef d'équipe</option>
                                         <option value="cheflabo">Chef de labo</option>
                                     </select>
+                                    <input disabled hidden name="statuscher" value="chercheur" type="text">
                                 </div>
                             </div>
                         </div>
@@ -259,7 +261,7 @@
                         <div class="row" style="margin-bottom:0px;margin-top:10px;">
                             <div class="col-md-12">
                                 <button style="width:30%;" type="submit" class="btn btn-fill btn-info pull-right ">S'inscrire</button>
-                                <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                             </div>
                         </div>
                         
@@ -315,14 +317,16 @@
                 var codeDomaine = $(this).val();
                 var nomDomaine = $('#codeDomaine option[value="'+codeDomaine+'"]').text();
                 var idetab = $("#etabcher").val();
+                var cheflabo = "false";
+                if($("#statuscher").val() == "cheflabo") cheflabo = "true";
                 if(codeDomaine != "all"){
-                    $.get("ajax/inscriptionAjax.php",{idetab: idetab, codeDomaine: codeDomaine, nomDomaine: nomDomaine},function(data){
+                    $.get("ajax/inscriptionAjax.php",{idetab: idetab, codeDomaine: codeDomaine, nomDomaine: nomDomaine, cheflabo: cheflabo},function(data){
                         $("#idlabo").html(data);
                         $("#idlabo").selectpicker("refresh");
                     });
                 }
                 else{
-                    $.get("ajax/inscriptionAjax.php",{idetab: idetab, codeDomaine: "all"},function(data){
+                    $.get("ajax/inscriptionAjax.php",{idetab: idetab, codeDomaine: "all", cheflabo: cheflabo},function(data){
                         $("#idlabo").html(data);
                         $("#idlabo").selectpicker("refresh");
                     });
@@ -331,13 +335,17 @@
 
             $("#idlabo").change(function(){
                 var idlabo = $(this).val();
-                $.get("ajax/inscriptionAjax.php",{idlabo: idlabo},function(data){
+                var chefequipe = "false";
+                if($('select[name="statuscher"]').val() == "chefequipe") chefequipe = "true";
+                $.get("ajax/inscriptionAjax.php",{idlabo: idlabo, chefequipe: chefequipe},function(data){
                     $("#idequip").html(data);
                     $("#idequip").selectpicker("refresh");
                 });
             });
             
             $("#statuscher").change(function(){
+                $("#codeDomaine").trigger("change");
+                $("#idlabo").trigger("change");
                 if($(this).val() == "cheflabo"){
                     $("#champEquipe").hide();
                     $("#idequip").prop("required",false);
@@ -360,6 +368,29 @@
                 else
                     $("#msgConfMdp").prop("hidden",true);
             }); 
+
+            $('.form-check-input[value="doctorant"]').click(function(){
+                if($(this).is(':checked')){
+                    $('select[name="gradecher"]').prop("disabled",true);
+                    $('input[name="gradecher"]').prop("disabled",false);
+                    $('select[name="statuscher"]').prop("disabled",true);
+                    $('input[name="statuscher"]').prop("disabled",false);
+                }
+                $("#statuscher").val("chercheur");
+                $("#gradecher").val("doctorant");
+                $('.selectpicker').selectpicker('refresh');
+                $("#statuscher").trigger("change");
+            });
+
+            $('.form-check-input[value="permanent"]').click(function(){
+                if($(this).is(':checked')){
+                    $('select[name="gradecher"]').prop("disabled",false);
+                    $('input[name="gradecher"]').prop("disabled",true);
+                    $('select[name="statuscher"]').prop("disabled",false);
+                    $('input[name="statuscher"]').prop("disabled",true);
+                }
+                $('.selectpicker').selectpicker('refresh');
+            });
 
             <?php
                 if(isset($display_notif) && $display_notif == true)

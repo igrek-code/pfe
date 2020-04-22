@@ -193,7 +193,7 @@ option{
         <button type="submit" class="btn btn-primary btn-block btn-large">Se connecter</button>
    
     </form>
-    <div style="margin-bottom : 10px;" ><a id="mdp-oublie" style="color:grey;" href="#">Mot de passe oublié ?</a> <a id="inscrire" href="inscription.php">S'inscrire</a></div>
+    <div style="margin-bottom : 10px;" ><a id="mdp-oublie" style="color:grey;" href="mdpoublie.php">Mot de passe oublié ?</a> <a id="inscrire" href="inscription.php">S'inscrire</a></div>
     <?php if(isset($erreurLogin)) echo $erreurLogin; ?>
 </div>
 <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
