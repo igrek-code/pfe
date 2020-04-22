@@ -32,7 +32,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -86,6 +86,7 @@
             </div>
 
             <ul class="nav">
+
             <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
@@ -105,24 +106,24 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminGererCompte.php">
                         <i class="pe-7s-users"></i>
                         <p>Gerer Compte</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminFixerNotation.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="bilan.php">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -187,13 +188,13 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>nom</label>
-                                        <input type="text" name="nomEtab" class="form-control" placeholder="Nom de l'établissement" required>
+                                        <input maxlength="255" type="text" name="nomEtab" class="form-control" placeholder="Nom de l'établissement" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="">abréviation</label>
-                                        <input type="text" name="abrvEtab" class="form-control" placeholder="ex: USTHB">
+                                        <input maxlength="20" type="text" name="abrvEtab" class="form-control" placeholder="ex: USTHB">
                                     </div>
                                 </div>
                             </div>
@@ -208,10 +209,10 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 pull-right">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="">Site Web</label>
-                                        <input type="text" name="sitewebEtab"  class="form-control" placeholder="ex: usthb.dz">
+                                        <input maxlength="40" type="text" name="sitewebEtab"  class="form-control" placeholder="ex: usthb.dz">
                                     </div>
                                 </div>
                             </div>
@@ -220,7 +221,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="">adresse</label>
-                                        <input type="text" name="addresseEtab"  class="form-control" placeholder="Adresse de l'établissement">
+                                        <input maxlength="255" type="text" name="addresseEtab"  class="form-control" placeholder="Adresse de l'établissement">
                                     </div>
                                 </div>
                             </div>
@@ -229,13 +230,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Tél.</label>
-                                        <input type="text" name="telEtab"  class="form-control" placeholder="Téléphone de l'établissement">
+                                        <input maxlength="12" type="text" name="telEtab"  class="form-control" placeholder="Téléphone de l'établissement">
                                     </div>
                                 </div> 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">fax.</label>
-                                        <input type="text" name="faxEtab"  class="form-control" placeholder="Fax de l'établissement">
+                                        <input maxlength="12" type="text" name="faxEtab"  class="form-control" placeholder="Fax de l'établissement">
                                     </div>
                                 </div> 
                             </div>
@@ -243,7 +244,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-success pull-right ">Ajouter</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             

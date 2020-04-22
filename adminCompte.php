@@ -113,7 +113,8 @@
             </div>
 
             <ul class="nav">
-                <li>
+                
+            <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
@@ -132,19 +133,19 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminGererCompte.php">
                         <i class="pe-7s-users"></i>
                         <p>Gerer Compte</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminFixerNotation.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="bilan.php">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
                     </a>
@@ -205,7 +206,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Modifier Compte
-                        <a id="revenir" href="adminGererEtab.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
+                        <a id="revenir" href="adminGererDemande.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
                     </div>
 
                     <div class="content">
@@ -251,7 +252,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             

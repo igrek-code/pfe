@@ -21,24 +21,26 @@
         $adresseLabo = mysqli_real_escape_string($db,$_POST["adresseLabo"]);
         $telLabo = mysqli_real_escape_string($db,$_POST["telLabo"]);
         $faxLabo = mysqli_real_escape_string($db,$_POST["faxLabo"]);
-        
-        
+        $codeDomaine = mysqli_real_escape_string($db,$_POST["codeDomaine"]);
+        $idspe = mysqli_real_escape_string($db,$_POST["idspe"]);
 
-        $sql = "INSERT INTO laboratoire (idetab,structure,nom,abrv,anneecrea,etat,mail,addresse,tel,fax) VALUES ('".$idetab."','".$structure."','".$nomLabo."','".$abrvLabo."','".$anneecrea."','".$etatLabo."','".$mailLabo."','".$adresseLabo."','".$telLabo."','".$faxLabo."')";
-        if(mysqli_query($db,$sql)){
-            $sql = "SELECT * FROM laboratoire ORDER BY idlabo DESC LIMIT 1";
-            if($result = mysqli_query($db,$sql)){
-                $display_type = "success";
-                $idLabo = mysqli_fetch_array($result)["idlabo"];
-                foreach ($_POST["idspe"] as $idspe) {
-                    $sql = "INSERT INTO specialitelabo (idspe,idlabo) VALUES ('".$idspe."','".$idLabo."')";
-                    if(!mysqli_query($db,$sql)) $display_type = "error";
+        $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaine."')";
+        mysqli_query($db,$sql);
+        $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $codeDomaine = mysqli_fetch_array($result)["codeDomaine"];
+            $sql = "INSERT INTO specialite (nomspe,codeDomaine) VALUES ('".$idspe."','".$codeDomaine."')";
+            mysqli_query($db,$sql);
+            $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $idspe = mysqli_fetch_array($result)["idspe"];
+                $sql = "INSERT INTO laboratoire (idetab,structure,nom,abrv,anneecrea,etat,mail,addresse,tel,fax,idspe) VALUES ('".$idetab."','".$structure."','".$nomLabo."','".$abrvLabo."','".$anneecrea."','".$etatLabo."','".$mailLabo."','".$adresseLabo."','".$telLabo."','".$faxLabo."','".$idspe."')";
+                if(mysqli_query($db,$sql)){
+                    $display_type = "success";
                 }
             }
-            
-            /*if(isset($_POST["idcher"])){
-
-            }*/  
         }
     }
 
@@ -51,7 +53,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -114,6 +116,7 @@
             </div>
 
             <ul class="nav">
+
             <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
@@ -133,24 +136,24 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminGererCompte.php">
                         <i class="pe-7s-users"></i>
                         <p>Gerer Compte</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminFixerNotation.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="bilan.php">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -233,7 +236,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>structure</label>
-                                        <input type="text" name="structure" class="form-control" placeholder="Structure d'affiliation">
+                                        <input maxlength="150" type="text" name="structure" class="form-control" placeholder="Structure d'affiliation">
                                     </div>
                                 </div>
                             </div>
@@ -242,13 +245,13 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>nom</label>
-                                        <input required class="form-control" type="text" name="nomLabo" placeholder="Nom du laboratoire">
+                                        <input maxlength="255" required class="form-control" type="text" name="nomLabo" placeholder="Nom du laboratoire">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>abreviation</label>
-                                        <input class="form-control" type="text" name="abrvLabo" placeholder="Abréviation du laboratoire">
+                                        <input maxlength="20" class="form-control" type="text" name="abrvLabo" placeholder="Abréviation du laboratoire">
                                     </div>
                                 </div>
                             </div> 
@@ -257,7 +260,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>année de création</label>
-                                        <input class="form-control" type="text" name="anneecrea" placeholder="Année de création du labo">
+                                        <input min="1991" max="<?php echo date("Y"); ?>" class="form-control" type="number" name="anneecrea" placeholder="Année de création du labo">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -272,7 +275,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>email</label>
-                                        <input type="text" class="form-control" name="mailLabo" placeholder="Email du laboratoire">
+                                        <input maxlength="150" type="email" class="form-control" name="mailLabo" placeholder="Email du laboratoire">
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +284,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Adresse</label>
-                                        <input class="form-control" type="text" name="adresseLabo" placeholder="Adresse du laboratoire">
+                                        <input maxlength="255" class="form-control" type="text" name="adresseLabo" placeholder="Adresse du laboratoire">
                                     </div>
                                 </div>
                             </div>
@@ -290,13 +293,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>tél. laboratoire</label>
-                                        <input class="form-control" type="text" name="telLabo" placeholder="Numéro téléphone labo">
+                                        <input maxlength="20" class="form-control" type="text" name="telLabo" placeholder="Numéro téléphone labo">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">fax. laboratoire</label>
-                                        <input class="form-control" type="text" name="faxLabo" placeholder="fax laboratoire">
+                                        <input maxlength="20" class="form-control" type="text" name="faxLabo" placeholder="fax laboratoire">
                                     </div>
                                 </div>
                             </div>   
@@ -305,26 +308,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>domaine</label>
-                                        <select class="selectpicker form-control" data-live-search="true" name="codeDomaine" title="Domaine..." id="codeDomaine" >
-                                             <?php
-                                                $sql = "SELECT * from domaine";
-                                                if($result = mysqli_query($db,$sql)){
-                                                    while($row = mysqli_fetch_array($result)){
-                                                        $nomDomaine = $row["nom"];
-                                                        $codeDomaine = $row["codeDomaine"];
-                                                        echo '<option value="'.$codeDomaine.'">'.$nomDomaine.'</option>';
-                                                    }
-                                                }
-                                             ?>   
-                                        </select>
+                                        <input placeholder="Domaine du laboratoire" maxlength="50" name="codeDomaine" class="form-control" type="text" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>spécialité</label>
-                                       <select multiple  required class="selectpicker form-control" data-live-search="true" name="idspe[ ]" title="Spécialité..." id="idspe">
-                                                
-                                        </select>
+                                        <label>spécialités</label>
+                                        <input maxlength="255" name="idspe" placeholder="Spécialités du laboratoire" class="form-control" type="text" required>
                                         <!--<input type="text" class="form-control" name="specialiteLabo" placeholder="Spécialité du laboratoire">-->
                                     </div>
                                 </div>
@@ -351,7 +341,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-success pull-right ">Ajouter</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             
@@ -439,7 +429,7 @@
                     $("#chefLabo").html("");
             });*/
 
-            $("#codeDomaine").change(function(){
+            /*$("#codeDomaine").change(function(){
                 $("#idspe").html("");
                 $("#idspe").selectpicker("refresh");
                 var values = $("#codeDomaine").val();
@@ -451,7 +441,7 @@
                         $("#idspe").selectpicker("refresh");
                     });
                 }
-            });
+            });*/
 
             $("#clearBtn").click(function(){
                 $(".form-control").val("");

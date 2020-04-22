@@ -10,32 +10,53 @@
     if(isset($_GET["modifier"]) && $_GET["modifier"] != ""){
         $idlabo = mysqli_real_escape_string($db,$_GET["modifier"]);
         $sql = "SELECT * FROM laboratoire WHERE idlabo='".$idlabo."'";
-        if($result = mysqli_query($db,$sql)){
-            if($row = mysqli_fetch_array($result)){
-                $nomLabo = $row["nom"];
-                $abrvLabo = $row["abrv"];
-                $adresseLabo = $row["addresse"];
-                $anneecreaLabo = $row["anneecrea"];
-                $telLabo = $row["tel"];
-                $etatLabo = $row["etat"];
-                $idetabLabo = $row["idetab"];
-                $structureLabo = $row["structure"];
-                $faxLabo = $row["fax"];
-                $mailLabo = $row["mail"];
-                $sql = "SELECT * FROM chercheur WHERE idcher IN (
-                    SELECT idcher FROM cheflabo WHERE idlabo ='".$idlabo."'
-                ) AND idcher IN (
-                    SELECT idcher FROM users
-                )";
-                if($result = mysqli_query($db,$sql)){
-                    if($row = mysqli_fetch_array($result)){
-                        $idChef = $row["idcher"];
-                    }
-                }
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_array($result);
+            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                SELECT codeDomaine FROM specialite WHERE idspe IN (
+                    SELECT idspe FROM laboratoire WHERE idlabo='".$idlabo."'
+                )
+            )";
+            $result = mysqli_query($db,$sql);
+            $row2 = mysqli_fetch_array($result);
+            $nomDomaine = $row2["nom"];
+            $codeDomaine = $row2["codeDomaine"];
+
+            $sql = "SELECT * FROM specialite WHERE idspe IN (
+                SELECT idspe FROM laboratoire WHERE idlabo='".$idlabo."'
+            )";
+            $result = mysqli_query($db,$sql);
+            $row2 = mysqli_fetch_array($result);
+            $nomspe = $row2["nomspe"];
+            $idspe = $row2["idspe"];
+
+            $nomLabo = $row["nom"];
+            $abrvLabo = $row["abrv"];
+            $adresseLabo = $row["addresse"];
+            $anneecreaLabo = $row["anneecrea"];
+            $telLabo = $row["tel"];
+            $etatLabo = $row["etat"];
+            $idetabLabo = $row["idetab"];
+            $structureLabo = $row["structure"];
+            $faxLabo = $row["fax"];
+            $mailLabo = $row["mail"];
+            $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM cheflabo WHERE idlabo ='".$idlabo."'
+            ) AND idcher IN (
+                SELECT idcher FROM users WHERE actif='1'
+            )";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $row = mysqli_fetch_array($result);
+                $idChef = $row["idcher"];
+                $nomChef = $row["nom"];
             }
+            
         }
+        else header("location: adminGererLabo.php");
     }
-    else header("location: adminGererEtab.php");
+    else header("location: adminGererLabo.php");
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
@@ -100,28 +121,24 @@
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
-        if(isset($_POST["idcher"]) && isset($idChef)){
-            $newidChef = mysqli_real_escape_string($db,$_POST["idcher"]);
-            $sql = "UPDATE cheflabo SET idcher='".$newidChef."' WHERE idcher='".$idChef."'";
+        if($_POST["nomDomaine"] != $nomDomaine){
+            $nomDomaine = mysqli_real_escape_string($db,$_POST["nomDomaine"]);
+            $sql = "UPDATE domaine SET nom='".$nomDomaine."'WHERE codeDomaine='".$codeDomaine."'";
             if(!mysqli_query($db,$sql)) $error = true;
-        }else {
-            if(isset($_POST["idcher"]) && $_POST["idcher"] != "" && !isset($idChef)){
-                $newidChef = mysqli_real_escape_string($db,$_POST["idcher"]);
-                $sql = "INSERT INTO cheflabo VALUES(idlabo,idcher) ('".$idlabo."','".$newidChef."')";
+        } 
+
+        if($_POST["nomspe"] != $nomspe){
+            $nomspe = mysqli_real_escape_string($db,$_POST["nomspe"]);
+            $sql = "UPDATE specialite SET nomspe='".$nomspe."'WHERE idspe='".$idspe."'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        } 
+
+        if(isset($_POST["idcher"]) && $_POST["idcher"] != ""){
+            $sql = "DELETE FROM cheflabo WHERE idlabo='".$idlabo."'";
+            if(mysqli_query($db,$sql)){
+                $sql = "INSERT INTO cheflabo (idlabo,idcher) VALUES ('".$idlabo."','".$idcher."')";
                 if(!mysqli_query($db,$sql)) $error = true;
-            } 
-        }
-        
-        $sql = "DELETE FROM specialitelabo WHERE idlabo='".$idlabo."'";
-        if(mysqli_query($db,$sql)){
-            for($i = 0 ; $i < count($_POST["idspe"]) ; $i++){
-                $idspe = mysqli_real_escape_string($db,$_POST["idspe"][$i]);
-                $sql = "INSERT INTO specialitelabo (idspe,idlabo) VALUES ('".$idspe."','".$idlabo."')";
-                if(!mysqli_query($db,$sql)){
-                    $error = true;
-                    break;
-                }
-            }
+            }else $error = true;
         }
         
         if(!$error) $display_type = "success";
@@ -138,7 +155,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -192,7 +209,8 @@
             </div>
 
             <ul class="nav">
-                <li>
+                     
+            <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
@@ -211,24 +229,24 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminGererCompte.php">
                         <i class="pe-7s-users"></i>
                         <p>Gerer Compte</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminFixerNotation.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="bilan.php">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -305,7 +323,7 @@
                                                     if($idetab == $idetabLabo)
                                                         echo '<option selected value="'.$idetab.'">'.$nometab.'</option>';
                                                     else 
-                                                        echo '<option selected value="'.$idetab.'">'.$nometab.'</option>';
+                                                        echo '<option value="'.$idetab.'">'.$nometab.'</option>';
                                                 }
                                             ?>
                                         </select>
@@ -314,7 +332,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>structure</label>
-                                        <input type="text" value ="<?php echo $structureLabo;?>" name="structure" class="form-control" placeholder="Structure d'affiliation">
+                                        <input maxlength="150" type="text" value ="<?php echo $structureLabo;?>" name="structure" class="form-control" placeholder="Structure d'affiliation">
                                     </div>
                                 </div>
                             </div>
@@ -323,13 +341,13 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>nom</label>
-                                        <input required value ="<?php echo $nomLabo;?>" class="form-control" type="text" name="nomLabo" placeholder="Nom du laboratoire">
+                                        <input maxlength="255" required value ="<?php echo $nomLabo;?>" class="form-control" type="text" name="nomLabo" placeholder="Nom du laboratoire">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>abreviation</label>
-                                        <input value ="<?php echo $abrvLabo;?>" class="form-control" type="text" name="abrvLabo" placeholder="Abréviation du laboratoire">
+                                        <input maxlength="20" value ="<?php echo $abrvLabo;?>" class="form-control" type="text" name="abrvLabo" placeholder="Abréviation du laboratoire">
                                     </div>
                                 </div>
                             </div> 
@@ -338,7 +356,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>année de création</label>
-                                        <input value ="<?php echo $anneecreaLabo;?>" class="form-control" type="text" name="anneecrea" placeholder="Année de création du labo">
+                                        <input min="1991" max="<?php echo date("Y"); ?>" value ="<?php echo $anneecreaLabo;?>" class="form-control" type="number" name="anneecrea" placeholder="Année de création du labo">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -364,7 +382,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>email</label>
-                                        <input value ="<?php echo $mailLabo;?>" type="text" class="form-control" name="mailLabo" placeholder="Email du laboratoire">
+                                        <input maxlength="150" value ="<?php echo $mailLabo;?>" type="email" class="form-control" name="mailLabo" placeholder="Email du laboratoire">
                                     </div>
                                 </div>
                             </div>
@@ -373,7 +391,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Adresse</label>
-                                        <input value ="<?php echo $adresseLabo;?>" class="form-control" type="text" name="adresseLabo" placeholder="Adresse du laboratoire">
+                                        <input maxlength="255" value ="<?php echo $adresseLabo;?>" class="form-control" type="text" name="adresseLabo" placeholder="Adresse du laboratoire">
                                     </div>
                                 </div>
                             </div>
@@ -382,69 +400,40 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>tél. laboratoire</label>
-                                        <input value ="<?php echo $telLabo;?>" class="form-control" type="text" name="telLabo" placeholder="Numéro téléphone labo">
+                                        <input maxlength="20" value ="<?php echo $telLabo;?>" class="form-control" type="text" name="telLabo" placeholder="Numéro téléphone labo">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">fax. laboratoire</label>
-                                        <input value ="<?php echo $faxLabo;?>" class="form-control" type="text" name="faxLabo" placeholder="fax laboratoire">
+                                        <input maxlength="20" value ="<?php echo $faxLabo;?>" class="form-control" type="text" name="faxLabo" placeholder="fax laboratoire">
                                     </div>
                                 </div>
                             </div>   
 
                             <div class="row">
+                                        
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>domaine</label>
-                                        <select class="selectpicker form-control" data-live-search="true" name="codeDomaine" title="Domaine..." id="codeDomaine" multiple>
-                                             <?php
-                                                $sql = "SELECT * from domaine";
-                                                if($result = mysqli_query($db,$sql)){
-                                                    $sql = "SELECT * FROM specialite WHERE idspe IN (
-                                                        SELECT idspe FROM specialitelabo WHERE idlabo ='".$idlabo."'
-                                                    )";
-                                                    if($result2 = mysqli_query($db,$sql)){
-                                                        $domaines = array();
-                                                        while($domaines[] = mysqli_fetch_array($result2)["codeDomaine"]);
-                                                        while($row = mysqli_fetch_array($result)){
-                                                            $nomDomaine = $row["nom"];
-                                                            $codeDomaine = $row["codeDomaine"];
-                                                            $sameDomaine = false;
-                                                            foreach ($domaines as $domaine) {
-                                                                if($domaine == $codeDomaine){
-                                                                    $sameDomaine = true;
-                                                                    break;
-                                                                }
-                                                            }
-                                                            if($sameDomaine)
-                                                                echo '<option selected value="'.$codeDomaine.'">'.$nomDomaine.'</option>';
-                                                            else   
-                                                                echo '<option value="'.$codeDomaine.'">'.$nomDomaine.'</option>';
-                                                        }
-                                                    }
-                                                }
-                                             ?>   
-                                        </select>
+                                        <input value="<?php echo $nomDomaine; ?>" placeholder="Domaine du laboratoire" maxlength="50" name="nomDomaine" class="form-control" type="text" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>spécialité</label>
-                                       <select multiple class="selectpicker form-control" data-live-search="true" name="idspe[ ]" title="Spécialité..." id="idspe">
-                                                
-                                        </select>
+                                        <label>spécialités</label>
+                                        <input value="<?php echo $nomspe; ?>" maxlength="255" name="nomspe" placeholder="Spécialités du laboratoire" class="form-control" type="text" required>
                                         <!--<input type="text" class="form-control" name="specialiteLabo" placeholder="Spécialité du laboratoire">-->
                                     </div>
                                 </div>
-                                
+
                             </div> 
                             
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Chef de laboratoire</label>
-                                        <select class="form-control selectpicker" name="idcher" id="idcher" data-live-search="true" title="Chef d'équipe...">
+                                        <select disabled class="form-control selectpicker" name="idcher" id="idcher" data-live-search="true" title="Chef d'équipe...">
                                             <?php
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                     SELECT idcher FROM chefequip WHERE idequip IN (
@@ -458,11 +447,14 @@
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         $idcher =  $row["idcher"]; 
                                                         $nomcher = $row["nom"];
-                                                        if($idcher = $idChef)
-                                                            echo '<option selected value="'.$idcher.'">.'.$nomcher.'.</option>';
+                                                        if(isset($idChef) && $idcher == $idChef)
+                                                            echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
                                                         else
-                                                            echo '<option value="'.$idcher.'">.'.$nomcher.'.</option>';
+                                                            echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
                                                     }
+                                                }else{
+                                                    if(isset($idChef))
+                                                    echo '<option selected value="'.$idChef.'">'.$nomChef.'</option>';
                                                 }
                                             ?>
                                         </select>
@@ -473,7 +465,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             
@@ -516,7 +508,7 @@
     
     <script>
         $(document).ready(function(){
-            refresh_spe();
+            //refresh_spe();
             <?php
                 if(isset($display_notif) && $display_notif == true)
                 {
@@ -562,9 +554,9 @@
                     $("#chefLabo").html("");
             });*/
 
-            $("#codeDomaine").change(function(){
+            /*$("#nomDomaine").change(function(){
                 refresh_spe();
-            });
+            });*/
 
             $("#clearBtn").click(function(){
                 $(".form-control").val("");
@@ -573,7 +565,7 @@
                 $(".selectpicker").selectpicker("refresh");
             });
 
-            function refresh_spe(){
+            /*function refresh_spe(){
                 $("#idspe").html("");
                 $("#idspe").selectpicker("resfresh");
                 var values = $("#codeDomaine").val();
@@ -585,9 +577,10 @@
                         $("#idspe").selectpicker("refresh");
                     });
                 }
-            } 
-            $("#idcher").has("option").prop("required",true);   
-
+            } */
+            /*$("#idcher").has("option").prop("required",true);   */
+            $('#idcher:has(option[class!="bs-title-option"])').prop("disabled",false);
+            $(".selectpicker").selectpicker("refresh");
         });
     </script>
 

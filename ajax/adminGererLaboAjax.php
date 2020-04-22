@@ -1,8 +1,6 @@
 <?php
     require_once("../config.php");
 
-    
-
     if(isset($_GET["idetab"]) && $_GET["idetab"] != "") {
         $idetab = mysqli_real_escape_string($db,$_GET["idetab"]);
         if(isset($_GET["codeDomaine"])){
@@ -10,9 +8,7 @@
                 
                 $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                     SELECT codeDomaine FROM specialite WHERE idspe IN (
-                        SELECT idspe FROM specialitelabo WHERE idlabo IN (
-                            SELECT idlabo FROM laboratoire WHERE idetab='".$idetab."'
-                        ) 
+                        SELECT idspe FROM laboratoire WHERE idetab='".$idetab."'
                     )
                 )";
                 if($result = mysqli_query($db,$sql)){
@@ -42,10 +38,8 @@
                             </thead>
                         ';
 
-                        $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idlabo IN (
-                            SELECT idlabo from specialitelabo WHERE idspe IN (
-                                SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
-                            )
+                        $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
+                            SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
                         )"; 
                         if($result2 = mysqli_query($db,$sql)){
                             echo '<tbody>';
@@ -105,10 +99,8 @@
             }    
             else{
                 $codeDomaine = mysqli_real_escape_string($db,$_GET["codeDomaine"]);
-                $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idlabo IN (
-                    SELECT idlabo FROM specialitelabo WHERE idspe IN (
-                        SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
-                    )
+                $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
+                    SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
                 )";
                 if($result = mysqli_query($db,$sql)){
                     echo '
@@ -183,9 +175,7 @@
         else{
             $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                 SELECT codeDomaine FROM specialite WHERE idspe IN (
-                    SELECT idspe FROM specialitelabo WHERE idlabo IN (
-                        SELECT idlabo FROM laboratoire WHERE idetab='".$idetab."'
-                    ) 
+                    SELECT idspe FROM laboratoire WHERE idetab='".$idetab."'
                 )
             )";
             if($result = mysqli_query($db,$sql)){

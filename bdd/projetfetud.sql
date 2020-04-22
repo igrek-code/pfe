@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 17 avr. 2020 à 15:56
+-- Généré le : mer. 22 avr. 2020 à 15:36
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -57,12 +57,12 @@ CREATE TABLE `auteurprinc` (
 --
 
 INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
-(0, 'CH PRINC', 7),
+(0, 'chamakh', 2),
+(16, '', 4),
+(16, '', 5),
+(16, '', 7),
 (0, 'CH PRINC', 8),
-(16, '', 1),
-(21, '', 1),
-(21, '', 4),
-(21, '', 5);
+(16, '', 20);
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE `chapitredouvrage` (
 --
 
 INSERT INTO `chapitredouvrage` (`codepro`, `titre`, `editeur`, `volume`, `url`, `idspe`, `pages`) VALUES
-(7, 'CH', '', 0, 'CH', 27, '129 230'),
+(7, 'CH9', 'ch9', 9, 'CH9', 27, '129 238'),
 (8, 'CH', 'CH', 4, 'CH', 28, '129 230');
 
 -- --------------------------------------------------------
@@ -123,7 +123,7 @@ CREATE TABLE `cheflabo` (
 
 INSERT INTO `cheflabo` (`idcher`, `idlabo`) VALUES
 (16, 37),
-(21, 33);
+(24, 38);
 
 -- --------------------------------------------------------
 
@@ -156,7 +156,10 @@ CREATE TABLE `chercheur` (
 
 INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `profil`) VALUES
 (16, 'Sid ahmed', 'sid.ahmedl@usthb.dz', 'MCA', 'permanent'),
-(21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'permanent');
+(21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'permanent'),
+(22, 'rabaoui', 'rabaoui@usthb.dz', 'DOC', 'doctorant'),
+(23, 'newdoc', 'newdoc@usthb.dz', '', 'doctorant'),
+(24, 'fleur', 'fleur@usthb.dz', 'PROF', 'permanent');
 
 -- --------------------------------------------------------
 
@@ -175,12 +178,13 @@ CREATE TABLE `coauteurs` (
 --
 
 INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
-(0, 'C2', 4),
-(0, 'CH CO', 7),
-(0, 'CH CO', 8),
-(0, 'com', 1),
-(0, 'moi meme', 5),
-(0, 's', 1);
+(0, 'another one', 5),
+(0, 'C23', 4),
+(0, 'CH CO9', 7),
+(0, 'yes bro', 20),
+(21, '', 4),
+(21, '', 5),
+(21, '', 20);
 
 -- --------------------------------------------------------
 
@@ -191,6 +195,7 @@ INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
 CREATE TABLE `communication` (
   `codepro` int(12) NOT NULL,
   `titre` varchar(255) NOT NULL,
+  `idspe` int(12) NOT NULL,
   `url` varchar(40) NOT NULL,
   `codeconf` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -199,9 +204,8 @@ CREATE TABLE `communication` (
 -- Déchargement des données de la table `communication`
 --
 
-INSERT INTO `communication` (`codepro`, `titre`, `url`, `codeconf`) VALUES
-(1, 'c', 'c', 0),
-(4, 'C2', 'C2', 1);
+INSERT INTO `communication` (`codepro`, `titre`, `idspe`, `url`, `codeconf`) VALUES
+(4, 'COM23', 22, 'COM23', 1);
 
 -- --------------------------------------------------------
 
@@ -263,15 +267,22 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (14, 'c'),
 (15, 'cc'),
 (16, 'cc'),
-(17, 'C2C'),
+(17, 'C2C3'),
 (18, 'C2C'),
 (19, 'C2'),
-(20, 'O'),
+(20, 'OU'),
 (21, 'CH'),
-(22, 'CH'),
+(22, 'CH9'),
 (23, 'CH'),
-(24, 'TD'),
-(25, 'PM');
+(24, 'TD10'),
+(25, 'PM15'),
+(26, 'PR2'),
+(28, 'P2'),
+(29, 'P2'),
+(30, 'P2'),
+(36, 'rpub'),
+(37, 'pub'),
+(38, 'mecanique');
 
 -- --------------------------------------------------------
 
@@ -282,6 +293,7 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 CREATE TABLE `equipe` (
   `idequipe` int(12) NOT NULL,
   `nomequip` varchar(40) NOT NULL,
+  `idspe` int(12) NOT NULL,
   `idlabo` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -289,11 +301,8 @@ CREATE TABLE `equipe` (
 -- Déchargement des données de la table `equipe`
 --
 
-INSERT INTO `equipe` (`idequipe`, `nomequip`, `idlabo`) VALUES
-(1, 'gl', 33),
-(8, 'Traitement du langage', 37),
-(9, 'newOne', 37),
-(10, 'newOne', 37);
+INSERT INTO `equipe` (`idequipe`, `nomequip`, `idspe`, `idlabo`) VALUES
+(8, 'Traitement du langage', 5, 37);
 
 -- --------------------------------------------------------
 
@@ -318,7 +327,7 @@ CREATE TABLE `etablissement` (
 
 INSERT INTO `etablissement` (`idetab`, `nom`, `abrv`, `type`, `addresse`, `tel`, `fax`, `siteweb`) VALUES
 (1, 'universite des sciences et technologies houari boumediene', 'USTHB', 'université', 'el alia bab ezzouar ', 21300, 21301, 'usthb.dz'),
-(41, 'CERIST', '', 'université', '', 213, 213, 'cerist.dz');
+(41, 'CERIST', '', 'université', '', 21355, 213, 'cerist.dz');
 
 -- --------------------------------------------------------
 
@@ -340,6 +349,7 @@ CREATE TABLE `index` (
 
 CREATE TABLE `laboratoire` (
   `idlabo` int(12) NOT NULL,
+  `idspe` int(12) NOT NULL,
   `nom` varchar(255) NOT NULL,
   `abrv` varchar(20) NOT NULL,
   `addresse` varchar(255) NOT NULL,
@@ -356,10 +366,11 @@ CREATE TABLE `laboratoire` (
 -- Déchargement des données de la table `laboratoire`
 --
 
-INSERT INTO `laboratoire` (`idlabo`, `nom`, `abrv`, `addresse`, `anneecrea`, `tel`, `etat`, `idetab`, `structure`, `fax`, `mail`) VALUES
-(33, 'sys info', 'lsi', '', 2001, 0, 'actif', 1, 'elec info', 0, ''),
-(35, 'holehola', '', '', 0000, 0, 'inactif', 1, '', 0, ''),
-(37, 'Intelligence artificielle', '', '', 0000, 0, 'actif', 1, '', 0, '');
+INSERT INTO `laboratoire` (`idlabo`, `idspe`, `nom`, `abrv`, `addresse`, `anneecrea`, `tel`, `etat`, `idetab`, `structure`, `fax`, `mail`) VALUES
+(37, 5, 'Intelligence artificielle', '', '', 0000, 0, 'actif', 1, '', 0, ''),
+(38, 7, 'vegeteble life', 'vlf', 'we here', 2020, 213, 'actif', 1, 'fac de biologie', 213, ''),
+(39, 43, 'nawawi and friends', '', '', 0000, 0, 'actif', 1, 'fac physique', 0, ''),
+(40, 44, 'mecanique and chill', '', '', 0000, 0, 'actif', 1, 'fac mecanique', 0, '');
 
 -- --------------------------------------------------------
 
@@ -383,6 +394,14 @@ CREATE TABLE `menbrequip` (
   `idequipe` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `menbrequip`
+--
+
+INSERT INTO `menbrequip` (`idcher`, `idequipe`) VALUES
+(22, 8),
+(23, 8);
+
 -- --------------------------------------------------------
 
 --
@@ -399,30 +418,25 @@ CREATE TABLE `motscle` (
 --
 
 INSERT INTO `motscle` (`codepro`, `mot`) VALUES
-(1, 'c'),
-(1, 'd'),
-(1, 'm'),
-(1, 'o'),
-(1, 's'),
-(4, 'C21'),
-(4, 'C22'),
+(4, '2'),
+(4, 'b'),
 (5, 'A'),
 (5, 'E'),
-(5, 'G'),
-(5, 'O'),
-(5, 'R'),
-(5, 'U'),
-(5, 'V'),
 (7, 'CH1'),
 (7, 'CH2'),
 (7, 'CH3'),
+(7, 'CH9'),
 (8, 'CH1'),
 (8, 'CH2'),
 (8, 'CH3'),
+(9, '10'),
 (9, 'D'),
 (9, 'T'),
+(10, '15'),
 (10, 'M'),
-(10, 'P');
+(20, 'b'),
+(20, 'p'),
+(20, 'u');
 
 -- --------------------------------------------------------
 
@@ -438,6 +452,13 @@ CREATE TABLE `ouvrage` (
   `editeur` varchar(40) NOT NULL,
   `url` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `ouvrage`
+--
+
+INSERT INTO `ouvrage` (`codepro`, `idspe`, `titre`, `nbpages`, `editeur`, `url`) VALUES
+(5, 25, 'ouv55', 500, 'five', 'five.5');
 
 -- --------------------------------------------------------
 
@@ -458,7 +479,7 @@ CREATE TABLE `pfemaster` (
 --
 
 INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) VALUES
-(10, 'PM', 30, 21, 'PM');
+(10, 'PM15', 30, 16, 'PM15');
 
 -- --------------------------------------------------------
 
@@ -477,16 +498,19 @@ CREATE TABLE `production` (
 --
 
 INSERT INTO `production` (`codepro`, `date`, `type`) VALUES
-(1, '111', 'master'),
 (2, '2020-04', 'publication'),
 (3, '2010-03', 'communication'),
-(4, '2020-04', 'communication'),
-(5, '2013-01', 'ouvrage'),
+(4, '2014-02', 'communication'),
+(5, '2009-01', 'ouvrage'),
 (6, '2020-03', 'chapitreOuvrage'),
-(7, '2020-03', 'chapitreOuvrage'),
+(7, '2017-03', 'chapitreOuvrage'),
 (8, '2020-03', 'chapitreOuvrage'),
-(9, '2020-04', 'doctorat'),
-(10, '2020-04', 'master');
+(9, '2015-04', 'doctorat'),
+(10, '2012-04', 'master'),
+(12, '2020-04', 'publication'),
+(13, '2020-04', 'publication'),
+(14, '2020-04', 'publication'),
+(20, '2005-04', 'publication');
 
 -- --------------------------------------------------------
 
@@ -513,6 +537,7 @@ CREATE TABLE `projrecher` (
 CREATE TABLE `publication` (
   `codepro` int(12) NOT NULL,
   `titre` varchar(20) NOT NULL,
+  `idspe` int(12) NOT NULL,
   `coderevue` int(12) NOT NULL,
   `doi` int(11) NOT NULL,
   `nvol` int(11) NOT NULL,
@@ -524,8 +549,9 @@ CREATE TABLE `publication` (
 -- Déchargement des données de la table `publication`
 --
 
-INSERT INTO `publication` (`codepro`, `titre`, `coderevue`, `doi`, `nvol`, `nissue`, `url`) VALUES
-(1, 's', 1, 0, 2, 1, 's');
+INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvol`, `nissue`, `url`) VALUES
+(2, 'p2', 5, 2, 0, 0, 0, 'p2'),
+(20, 'pub', 42, 3, 0, 12, 12, 'pub');
 
 -- --------------------------------------------------------
 
@@ -543,7 +569,7 @@ CREATE TABLE `revue` (
   `annee` varchar(4) NOT NULL,
   `theme` varchar(255) NOT NULL,
   `idspe` int(12) NOT NULL,
-  `classe` enum('AA','A','B','C') NOT NULL,
+  `classe` enum('A*','A','B','C') NOT NULL,
   `numindex` int(12) NOT NULL,
   `type` enum('nationale','internationale') NOT NULL,
   `pays` varchar(40) NOT NULL
@@ -554,7 +580,9 @@ CREATE TABLE `revue` (
 --
 
 INSERT INTO `revue` (`coderevue`, `nom`, `periodicite`, `issnonline`, `issnprint`, `editeur`, `annee`, `theme`, `idspe`, `classe`, `numindex`, `type`, `pays`) VALUES
-(1, '', 'annuel', 's', 's', 's', '1998', 's', 8, 'AA', 0, 'internationale', 'vide');
+(1, 's revue', 'annuel', 's', 's', 's', '1998', 's', 8, 'A*', 0, 'internationale', ''),
+(2, 'PR2', 'annuel', 'PR2', 'PR2', 'PR2', '1970', 'PR2', 31, '', 0, 'nationale', 'FRANCE'),
+(3, 'rpub', 'annuel', 'rpub', 'rpub', 'rpub', '1987', 'rpub', 41, 'A*', 0, 'internationale', '');
 
 -- --------------------------------------------------------
 
@@ -595,74 +623,23 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (19, 'c', '', 14),
 (20, 'cc', '', 15),
 (21, 'cc', '', 16),
-(22, 'C2C', '', 17),
+(22, 'C2C3', '', 17),
 (23, 'C2C', '', 18),
 (24, 'C2', '', 19),
-(25, 'O', '', 20),
+(25, 'OU', '', 20),
 (26, 'CH', '', 21),
-(27, 'CH', '', 22),
+(27, 'CH9', '', 22),
 (28, 'CH', '', 23),
-(29, 'TD', '', 24),
-(30, 'PM', '', 25);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `specialiteequipe`
---
-
-CREATE TABLE `specialiteequipe` (
-  `idspe` int(12) NOT NULL,
-  `idequipe` int(12) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `specialiteequipe`
---
-
-INSERT INTO `specialiteequipe` (`idspe`, `idequipe`) VALUES
-(1, 9),
-(1, 10),
-(2, 8),
-(3, 8),
-(3, 9),
-(3, 10),
-(4, 8),
-(4, 9),
-(4, 10),
-(5, 8);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `specialitelabo`
---
-
-CREATE TABLE `specialitelabo` (
-  `idspe` int(12) NOT NULL,
-  `idlabo` int(12) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `specialitelabo`
---
-
-INSERT INTO `specialitelabo` (`idspe`, `idlabo`) VALUES
-(1, 37),
-(2, 37),
-(4, 33),
-(7, 35);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `specialiteproduction`
---
-
-CREATE TABLE `specialiteproduction` (
-  `codepro` int(12) NOT NULL,
-  `idspe` int(12) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+(29, 'TD10', '', 24),
+(30, 'PM15', '', 25),
+(31, 'PR2', '', 26),
+(33, 'P2', '', 28),
+(34, 'P2', '', 29),
+(35, 'P2', '', 30),
+(41, 'rpub', '', 36),
+(42, 'pub', '', 37),
+(43, 'nawawi', '', 37),
+(44, 'culasse', '', 38);
 
 -- --------------------------------------------------------
 
@@ -714,7 +691,7 @@ CREATE TABLE `these` (
 --
 
 INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
-(9, 'TD', 16, 'TD', 5, 'TD', 29);
+(9, 'TD10', 16, 'TD', 8, 'TD', 29);
 
 -- --------------------------------------------------------
 
@@ -735,7 +712,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (16, 'sid.ahmedl@usthb.dz', 'lol', 1),
-(21, 'omar.rabhi@usthb.dz', 'lol', 0);
+(21, 'omar.rabhi@usthb.dz', 'lol', 0),
+(22, 'rabaoui@usthb.dz', 'lol', 0),
+(23, 'newdoc@usthb.dz', 'lol', 0),
+(24, 'fleur@usthb.dz', 'lol', 1);
 
 --
 -- Index pour les tables déchargées
@@ -745,7 +725,7 @@ INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 -- Index pour la table `auteurprinc`
 --
 ALTER TABLE `auteurprinc`
-  ADD PRIMARY KEY (`idcher`,`nom`,`codepro`),
+  ADD PRIMARY KEY (`codepro`),
   ADD KEY `codepro` (`codepro`);
 
 --
@@ -800,7 +780,8 @@ ALTER TABLE `coauteurs`
 ALTER TABLE `communication`
   ADD PRIMARY KEY (`codepro`),
   ADD KEY `codepro` (`codepro`),
-  ADD KEY `codeconf` (`codeconf`);
+  ADD KEY `codeconf` (`codeconf`),
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `conference`
@@ -820,7 +801,8 @@ ALTER TABLE `domaine`
 --
 ALTER TABLE `equipe`
   ADD PRIMARY KEY (`idequipe`),
-  ADD KEY `idlabo` (`idlabo`);
+  ADD KEY `idlabo` (`idlabo`),
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `etablissement`
@@ -839,7 +821,8 @@ ALTER TABLE `index`
 --
 ALTER TABLE `laboratoire`
   ADD PRIMARY KEY (`idlabo`),
-  ADD KEY `idetab` (`idetab`);
+  ADD KEY `idetab` (`idetab`),
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `membreproj`
@@ -900,7 +883,8 @@ ALTER TABLE `projrecher`
 ALTER TABLE `publication`
   ADD PRIMARY KEY (`codepro`),
   ADD KEY `codepro` (`codepro`),
-  ADD KEY `coderevue` (`coderevue`);
+  ADD KEY `coderevue` (`coderevue`),
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `revue`
@@ -916,30 +900,6 @@ ALTER TABLE `revue`
 ALTER TABLE `specialite`
   ADD PRIMARY KEY (`idspe`),
   ADD KEY `specialite_domaine_fk` (`codeDomaine`);
-
---
--- Index pour la table `specialiteequipe`
---
-ALTER TABLE `specialiteequipe`
-  ADD PRIMARY KEY (`idspe`,`idequipe`),
-  ADD KEY `idspe` (`idspe`),
-  ADD KEY `idequipe` (`idequipe`);
-
---
--- Index pour la table `specialitelabo`
---
-ALTER TABLE `specialitelabo`
-  ADD PRIMARY KEY (`idspe`,`idlabo`),
-  ADD KEY `idspe` (`idspe`),
-  ADD KEY `idlabo` (`idlabo`);
-
---
--- Index pour la table `specialiteproduction`
---
-ALTER TABLE `specialiteproduction`
-  ADD PRIMARY KEY (`codepro`,`idspe`),
-  ADD KEY `codepro` (`codepro`),
-  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `systemenotes`
@@ -971,7 +931,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `chercheur`
 --
 ALTER TABLE `chercheur`
-  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT pour la table `conference`
@@ -983,7 +943,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -1007,13 +967,13 @@ ALTER TABLE `index`
 -- AUTO_INCREMENT pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT pour la table `projrecher`
@@ -1025,13 +985,13 @@ ALTER TABLE `projrecher`
 -- AUTO_INCREMENT pour la table `revue`
 --
 ALTER TABLE `revue`
-  MODIFY `coderevue` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `coderevue` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -1081,14 +1041,15 @@ ALTER TABLE `chefproj`
 -- Contraintes pour la table `coauteurs`
 --
 ALTER TABLE `coauteurs`
-  ADD CONSTRAINT `coauteurs_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`);
+  ADD CONSTRAINT `coauteurs_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `communication`
 --
 ALTER TABLE `communication`
   ADD CONSTRAINT `communication_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `communication_ibfk_2` FOREIGN KEY (`codeconf`) REFERENCES `conference` (`codeconf`);
+  ADD CONSTRAINT `communication_ibfk_2` FOREIGN KEY (`codeconf`) REFERENCES `conference` (`codeconf`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `communication_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`);
 
 --
 -- Contraintes pour la table `conference`
@@ -1100,13 +1061,15 @@ ALTER TABLE `conference`
 -- Contraintes pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  ADD CONSTRAINT `equipe_ibfk_2` FOREIGN KEY (`idlabo`) REFERENCES `laboratoire` (`idlabo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `equipe_ibfk_2` FOREIGN KEY (`idlabo`) REFERENCES `laboratoire` (`idlabo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `equipe_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  ADD CONSTRAINT `laboratoire_ibfk_1` FOREIGN KEY (`idetab`) REFERENCES `etablissement` (`idetab`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `laboratoire_ibfk_1` FOREIGN KEY (`idetab`) REFERENCES `etablissement` (`idetab`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `laboratoire_spe_fk` FOREIGN KEY (`idetab`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `membreproj`
@@ -1133,7 +1096,7 @@ ALTER TABLE `motscle`
 --
 ALTER TABLE `ouvrage`
   ADD CONSTRAINT `ouvrage_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ouvrage_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ouvrage_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `pfemaster`
@@ -1153,8 +1116,9 @@ ALTER TABLE `projrecher`
 -- Contraintes pour la table `publication`
 --
 ALTER TABLE `publication`
-  ADD CONSTRAINT `publication_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`),
-  ADD CONSTRAINT `publication_ibfk_2` FOREIGN KEY (`coderevue`) REFERENCES `revue` (`coderevue`);
+  ADD CONSTRAINT `publication_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `publication_ibfk_2` FOREIGN KEY (`coderevue`) REFERENCES `revue` (`coderevue`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `publication_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `revue`
@@ -1167,27 +1131,6 @@ ALTER TABLE `revue`
 --
 ALTER TABLE `specialite`
   ADD CONSTRAINT `specialite_domaine_fk` FOREIGN KEY (`codeDomaine`) REFERENCES `domaine` (`codeDomaine`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `specialiteequipe`
---
-ALTER TABLE `specialiteequipe`
-  ADD CONSTRAINT `specialite_equipe_fk` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`idequipe`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `speequipe_specialite_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `specialitelabo`
---
-ALTER TABLE `specialitelabo`
-  ADD CONSTRAINT `this_laboratoire` FOREIGN KEY (`idlabo`) REFERENCES `laboratoire` (`idlabo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `this_specialite` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `specialiteproduction`
---
-ALTER TABLE `specialiteproduction`
-  ADD CONSTRAINT `specialite_production_fk` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `this_production_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`);
 
 --
 -- Contraintes pour la table `these`

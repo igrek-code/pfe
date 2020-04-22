@@ -16,7 +16,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -74,13 +74,14 @@
             </div>
             
             <ul class="nav">
-                <li>
-                    <a href="#">
+                
+            <li>
+                    <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
                     </a>
                 </li>
-                <li >
+                <li>
                     <a href="adminGererEtab.php">
                         <i class="pe-7s-culture"></i>
                         <p>Gerer Etablissement</p>
@@ -93,24 +94,24 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminGererCompte.php">
                         <i class="pe-7s-users"></i>
                         <p>Gerer Compte</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminFixerNotation.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="bilan.php">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>

@@ -112,7 +112,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>MySite</title>
+	<title>Plateforme Scientifique</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -173,7 +173,8 @@
             </div>
 
             <ul class="nav">
-                <li>
+                
+            <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
                         <p>Demande inscriptions</p>
@@ -192,24 +193,24 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="adminGererCompte.php">
                         <i class="pe-7s-users"></i>
                         <p>Gerer Compte</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#">
+                    <a href="adminFixerNotation.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Fixer Notation</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="bilan.php">
                         <i class="pe-7s-graph3"></i>
                         <p>Bilan</p>
                     </a>
                 </li>
-                
+
             </ul>
     	</div>
     </div>
@@ -264,8 +265,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Modifier Notes
-                        <a id="revenir" href="adminGererDemande.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'acceuil </a> </h4>
+                        <h4 class="title">Modifier Notes</h4>
                     </div>
 
                     <div class="content">
@@ -275,25 +275,25 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="inline-label">classe A*</label>
-                                        <input onClick="this.select();" value="<?php echo $revueInterAA;?>" class="form-control" type="text" name="revueInterAA" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $revueInterAA;?>" class="form-control" type="number" name="revueInterAA" required>
                                     </div>  
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="inline-label">classe A</label>
-                                        <input onClick="this.select();" value="<?php echo $revueInterA;?>" class="form-control" type="text" name="revueInterA" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $revueInterA;?>" class="form-control" type="number" name="revueInterA" required>
                                     </div>  
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="inline-label">classe b</label>
-                                        <input onClick="this.select();" value="<?php echo $revueInterB;?>" class="form-control" type="text" name="revueInterB" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $revueInterB;?>" class="form-control" type="number" name="revueInterB" required>
                                     </div>  
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="inline-label">classe C</label>
-                                        <input onClick="this.select();" value="<?php echo $revueInterC;?>" class="form-control" type="text" name="revueInterC" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $revueInterC;?>" class="form-control" type="number" name="revueInterC" required>
                                     </div>  
                                 </div>
                             </div>
@@ -304,7 +304,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input onClick="this.select();" value="<?php echo $revueNat;?>" class="form-control" type="text" name="revueNat" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $revueNat;?>" class="form-control" type="number" name="revueNat" required>
                                     </div>  
                                 </div>
                             </div>
@@ -316,19 +316,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="inline-label">classe a</label>
-                                        <input onClick="this.select();" value="<?php echo $comInterA;?>" class="form-control" type="text" name="comInterA" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $comInterA;?>" class="form-control" type="number" name="comInterA" required>
                                     </div>  
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="inline-label">classe b</label>
-                                        <input onClick="this.select();" value="<?php echo $comInterB;?>" class="form-control" type="text" name="comInterB" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $comInterB;?>" class="form-control" type="number" name="comInterB" required>
                                     </div>  
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="inline-label">classe c</label>
-                                        <input onClick="this.select();" value="<?php echo $comInterC;?>" class="form-control" type="text" name="comInterC" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $comInterC;?>" class="form-control" type="number" name="comInterC" required>
                                     </div>  
                                 </div>
                             </div>
@@ -337,7 +337,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input onClick="this.select();" value="<?php echo $comNat;?>" class="form-control" type="text" name="comNat" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $comNat;?>" class="form-control" type="number" name="comNat" required>
                                     </div>  
                                 </div>
                             </div>
@@ -349,13 +349,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="inline-label">complet</label>
-                                        <input onClick="this.select();" value="<?php echo $ouvrage;?>" class="form-control" type="text" name="ouvrage" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $ouvrage;?>" class="form-control" type="number" name="ouvrage" required>
                                     </div>  
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="inline-label">chapitre</label>
-                                        <input onClick="this.select();" value="<?php echo $chapitreOuvrage;?>" class="form-control" type="text" name="chapitreOuvrage" required>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $chapitreOuvrage;?>" class="form-control" type="number" name="chapitreOuvrage" required>
                                     </div>  
                                 </div>
                             </div>
@@ -366,7 +366,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                    <input onClick="this.select();" value="<?php echo $autre;?>" class="form-control" type="text" name="autre" required>
+                                    <input min="1" max="1000" onClick="this.select();" value="<?php echo $autre;?>" class="form-control" type="number" name="autre" required>
                                     </div>
                                 </div>
                             </div>
@@ -374,7 +374,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
-                                    <button id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
+                                    <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
                             
