@@ -6,7 +6,7 @@
         $error = true;
         if(isset($_POST["mail"]) && $_POST["mail"] != ""){
             $mail = mysqli_real_escape_string($db,$_POST["mail"]);
-            $sql = "SELECT * from users WHERE mail='".$mail."'";
+            $sql = "SELECT * from users WHERE mail='".$mail."' AND actif = 1";
             $result = mysqli_query($db,$sql);
             if(mysqli_num_rows($result) > 0){
                 $pwd = randomPassword();
