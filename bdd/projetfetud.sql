@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 23 avr. 2020 à 13:04
+-- Généré le : jeu. 23 avr. 2020 à 17:20
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -282,7 +282,9 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (30, 'P2'),
 (36, 'rpub'),
 (37, 'pub'),
-(38, 'mecanique');
+(38, 'mecanique'),
+(39, 'pm5'),
+(40, 'cherM');
 
 -- --------------------------------------------------------
 
@@ -437,7 +439,15 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (10, 'M'),
 (20, 'b'),
 (20, 'p'),
-(20, 'u');
+(20, 'u'),
+(21, '5'),
+(21, 'm'),
+(21, 'p'),
+(22, 'c'),
+(22, 'e'),
+(22, 'h'),
+(22, 'M'),
+(22, 'r');
 
 -- --------------------------------------------------------
 
@@ -480,7 +490,9 @@ CREATE TABLE `pfemaster` (
 --
 
 INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) VALUES
-(10, 'PM15', 30, 16, 'PM15');
+(10, 'PM15', 30, 16, 'PM15'),
+(21, 'pm5', 49, 16, 'pm5'),
+(22, 'cherM', 50, 26, 'cherM');
 
 -- --------------------------------------------------------
 
@@ -511,7 +523,9 @@ INSERT INTO `production` (`codepro`, `date`, `type`) VALUES
 (12, '2020-04', 'publication'),
 (13, '2020-04', 'publication'),
 (14, '2020-04', 'publication'),
-(20, '2005-04', 'publication');
+(20, '2005-04', 'publication'),
+(21, '2020-04', 'master'),
+(22, '2003-04', 'master');
 
 -- --------------------------------------------------------
 
@@ -644,7 +658,9 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (45, 'informatique', '', 1),
 (46, 'informatique', '', 1),
 (47, 'informatique', '', 1),
-(48, 'vision', '', 1);
+(48, 'vision', '', 1),
+(49, 'pm5', '', 39),
+(50, 'cherM', '', 40);
 
 -- --------------------------------------------------------
 
@@ -718,7 +734,6 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (16, 'sid.ahmedl@usthb.dz', 'lol', 1),
 (21, 'omar.rabhi@usthb.dz', 'lol', 0),
-(23, 'newdoc@usthb.dz', 'lol', 1),
 (24, 'fleur@usthb.dz', 'lol', 1),
 (26, 'newdoc@usthb.dz', 'lol', 1);
 
@@ -733,6 +748,13 @@ CREATE TABLE `validationproduction` (
   `idcher` int(12) NOT NULL,
   `type` enum('publication','communication','ouvrage','chapitreOuvrage','doctorat','master') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `validationproduction`
+--
+
+INSERT INTO `validationproduction` (`codepro`, `idcher`, `type`) VALUES
+(22, 26, 'master');
 
 --
 -- Index pour les tables déchargées
@@ -938,6 +960,7 @@ ALTER TABLE `these`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`idcher`),
+  ADD UNIQUE KEY `mail` (`mail`),
   ADD KEY `idcher` (`idcher`);
 
 --
@@ -968,7 +991,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -998,7 +1021,7 @@ ALTER TABLE `laboratoire`
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pour la table `projrecher`
@@ -1016,7 +1039,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`

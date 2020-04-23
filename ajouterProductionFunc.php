@@ -1,5 +1,5 @@
 <?php
-    function ajouter_publication($db){
+    function ajouter_publication($db,$needsValidation,$postedBy){
         if(isset($_POST["coderevue"]) && $_POST["coderevue"] == "autre"){
             $nomrevue = mysqli_real_escape_string($db,$_POST["nomrevue"]);
             $issnonline = mysqli_real_escape_string($db,$_POST["issnonline"]);
@@ -93,10 +93,14 @@
             }
             if(!mysqli_query($db,$sql)) return true;
         }
+        if($needsValidation){
+            $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','publication')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
         return false;
     }
 
-    function ajouter_communication($db){
+    function ajouter_communication($db,$needsValidation,$postedBy){
         if(isset($_POST["codeconf"]) && $_POST["codeconf"] == "autre"){
             $nomconf = mysqli_real_escape_string($db,$_POST["nomconf"]);
             $abrvConf = mysqli_real_escape_string($db,$_POST["abrvConf"]);
@@ -185,10 +189,14 @@
             }
             if(!mysqli_query($db,$sql)) return true;
         }
+        if($needsValidation){
+            $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','communication')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
         return false;
     }
 
-    function ajouter_ouvrage($db){
+    function ajouter_ouvrage($db,$needsValidation,$postedBy){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
         $editeurProduction = mysqli_real_escape_string($db,$_POST["editeurProduction"]);
         $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
@@ -241,10 +249,14 @@
             }
             if(!mysqli_query($db,$sql)) return true;
         }
+        if($needsValidation){
+            $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','ouvrage')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
         return false;
     }
 
-    function ajouter_chapitreOuvrage($db){
+    function ajouter_chapitreOuvrage($db,$needsValidation,$postedBy){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
         $editeurProduction = mysqli_real_escape_string($db,$_POST["editeurProduction"]);
         $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
@@ -298,10 +310,14 @@
             }
             if(!mysqli_query($db,$sql)) return true;
         }
+        if($needsValidation){
+            $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','chapitreOuvrage')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
         return false;
     }
 
-    function ajouter_doctorat($db){
+    function ajouter_doctorat($db,$needsValidation,$postedBy){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
         $encadreurProduction = mysqli_real_escape_string($db,$_POST["encadreurProduction"]);
         $nordreProduction = mysqli_real_escape_string($db,$_POST["nordreProduction"]);
@@ -333,10 +349,14 @@
             $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
             if(!mysqli_query($db,$sql)) return true;
         }
+        if($needsValidation){
+            $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','doctorat')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
         return false;
     }
 
-    function ajouter_master($db){
+    function ajouter_master($db,$needsValidation,$postedBy){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
         $encadreurProduction = mysqli_real_escape_string($db,$_POST["encadreurProduction"]);
         $lieusoutProduction = mysqli_real_escape_string($db,$_POST["lieusoutProduction"]);
@@ -364,6 +384,10 @@
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
             $sql = "INSERT INTO motscle (codepro,mot) VALUES ('".$codepro."','".$motcle."')";
+            if(!mysqli_query($db,$sql)) return true;
+        }
+        if($needsValidation){
+            $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','master')";
             if(!mysqli_query($db,$sql)) return true;
         }
         return false;

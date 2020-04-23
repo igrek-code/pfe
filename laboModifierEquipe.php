@@ -1,7 +1,10 @@
 <?php
     require_once("config.php");
     session_start();
-    if(!isset($_SESSION['loggedinlabo']) || !$_SESSION['loggedinlabo']){   
+    $session = false;
+    if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
+    if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
+    if(!$session){   
         session_destroy();
         header("location: index.php");
     }
@@ -35,9 +38,12 @@
             }
             
         }
-        else header("location: laboGererEquipe.php");
+        else header("location: index.php");
     }
-    else header("location: laboGererEquipe.php");
+    else{ 
+        if(isset($_SESSION["loggedinequipe"])) header("location: laboModifierEquipe.php?modifier=".$_SESSION["idequipe"]);  
+        else header("location: index.php");
+    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
@@ -140,43 +146,11 @@
 
             <ul class="nav">
 
-            <li>
-                    <a href="laboGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="gererProduction.php">
-                        <i class="pe-7s-notebook"></i>
-                        <p>gerer production</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="recherche.php">
-                        <i class="pe-7s-search"></i>
-                        <p>recherche</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="laboGererEquipe.php">
-                        <i class="pe-7s-network"></i>
-                        <p>Gerer Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="equipeGererMembre.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Membre Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
-
+            <?php 
+                require_once("menu.php");
+                if(isset($_SESSION['loggedinlabo'])) menu(4);
+                if(isset($_SESSION['loggedinequipe'])) menu(3);
+            ?>
             </ul>
     	</div>
     </div>
@@ -265,7 +239,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Chef d'équipe</label>
-                                        <select class="form-control selectpicker" data-live-search="true" name="idcher" id="idcher" title="Chef d'équipe...">
+                                        <select <?php if(isset($_SESSION['loggedinequipe'])) echo "disabled"; ?> class="form-control selectpicker" data-live-search="true" name="idcher" id="idcher" title="Chef d'équipe...">
                                         <?php
                                             $sql = "SELECT * FROM menbrequip WHERE idequip='".$idequipe."' AND idcher IN (
                                                 SELECT idcher FROM users WHERE actif='1'

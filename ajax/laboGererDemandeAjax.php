@@ -1,5 +1,8 @@
 <?php
+    session_start();
     require_once("../config.php");
+    $idlabo = $_SESSION["idlabo"];
+    $idchef = $_SESSION["idcher"];
 
     if(isset($_GET["idcher"]) && $_GET["idcher"] != ""){
         $idcher = mysqli_real_escape_string($db,$_GET["idcher"]);
@@ -29,7 +32,9 @@
         $sql = "SELECT * FROM chercheur WHERE idcher IN (
             SELECT idcher FROM users WHERE actif = 0
         ) AND idcher IN (
-            SELECT idcher FROM chefequip
+            SELECT idcher FROM chefequip WHERE idequipe IN (
+                SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -85,7 +90,9 @@
         $sql = "SELECT * FROM chercheur WHERE idcher IN (
             SELECT idcher FROM users WHERE actif = 0
         ) AND idcher IN (
-            SELECT idcher FROM menbrequip
+            SELECT idcher FROM menbrequip WHERE idequipe IN (
+                SELECT idequipe FROM chefequip WHERE idcher='".$idchef."'
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){

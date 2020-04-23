@@ -2,12 +2,13 @@
     
     require_once("config.php");
     session_start();
-
-    if(!isset($_SESSION['loggedinlabo']) || !$_SESSION['loggedinlabo'])
-        {   
-            session_destroy();
-            header("location: index.php");
-        }
+    $session = false;
+    if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
+    if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
+    if(!$session){   
+        session_destroy();
+        header("location: index.php");
+    }
 ?>
 
 <!doctype html>
@@ -73,42 +74,9 @@
             
             <ul class="nav">
                
-                <li class="active">
-                    <a href="laboGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="gererProduction.php">
-                        <i class="pe-7s-notebook"></i>
-                        <p>gerer production</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="recherche.php">
-                        <i class="pe-7s-search"></i>
-                        <p>recherche</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="laboGererEquipe.php">
-                        <i class="pe-7s-network"></i>
-                        <p>Gerer Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="equipeGererMembre.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Membre Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
+                <?php require_once("menu.php");
+                    menu(0);
+                ?>
                 
             </ul>
     	</div>
@@ -167,6 +135,7 @@
 
         <div class="content">
             <div class="container-fluid">
+            <?php if(isset($_SESSION["loggedinlabo"]) && $_SESSION["loggedinlabo"]) {?>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -181,6 +150,7 @@
                         </div>
                     </div>
                 </div>
+            <?php } ?>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -233,7 +203,7 @@
     <script>
         $(document).ready(function(){
             
-            refresh_table();
+            <?php if(isset($_SESSION['loggedinlabo'])) echo "refresh_table();\n";?>
             refresh_table1();
 
             function refresh_table() {

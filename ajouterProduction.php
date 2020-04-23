@@ -14,29 +14,32 @@
         require_once("ajouterProductionFunc.php");
         $display_notif = true;
         $error = false;
+        $postedBy = $_SESSION["idcher"];
+        $needsValidation = false;
+        if(isset($_SESSION['loggedinequipe']) || isset($_SESSION['loggedinchercheur'])) $needsValidation = true;
         if(isset($_POST["typeProduction"]) && $_POST["typeProduction"] != "") 
             switch ($_POST["typeProduction"]) {
                 case 'publication':
-                    $error = ajouter_publication($db);
+                    $error = ajouter_publication($db,$needsValidation,$postedBy);
                 break;
                 
                 case 'communication':
-                    $error = ajouter_communication($db);
+                    $error = ajouter_communication($db,$needsValidation,$postedBy);
                 break;
                 case 'ouvrage':
-                    $error = ajouter_ouvrage($db);
+                    $error = ajouter_ouvrage($db,$needsValidation,$postedBy);
                 break;
 
                 case 'chapitreOuvrage':
-                    $error = ajouter_chapitreOuvrage($db);
+                    $error = ajouter_chapitreOuvrage($db,$needsValidation,$postedBy);
                 break;
 
                 case 'doctorat':
-                    $error = ajouter_doctorat($db);
+                    $error = ajouter_doctorat($db,$needsValidation,$postedBy);
                 break;
 
                 default:
-                    $error = ajouter_master($db);
+                    $error = ajouter_master($db,$needsValidation,$postedBy);
                 break;
             }
 
@@ -109,43 +112,11 @@
 
             <ul class="nav">
 
-            <li>
-                    <a href="laboGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="gererProduction.php">
-                        <i class="pe-7s-notebook"></i>
-                        <p>gerer production</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="recherche.php">
-                        <i class="pe-7s-search"></i>
-                        <p>recherche</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="laboGererEquipe.php">
-                        <i class="pe-7s-network"></i>
-                        <p>Gerer Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="equipeGererMembre.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Membre Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
-
+            <?php require_once("menu.php");
+                    if(isset($_SESSION['loggedinlabo'])) menu(2);
+                    if(isset($_SESSION['loggedinequipe'])) menu(1);
+                    if(isset($_SESSION['loggedinchercheur'])) menu(0);
+                ?>
             </ul>
     	</div>
     </div>

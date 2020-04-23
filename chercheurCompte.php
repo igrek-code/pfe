@@ -26,7 +26,6 @@
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
         $error = false;
-
         if(isset($_POST["mdpCompte"]) && isset($pwd) && $_POST["mdpCompte"] != "" && $_POST["mdpCompte"] == $pwd){
             if(isset($_POST["mailcher"]) && $_POST["mailcher"] != ""){
                 $mailcher = mysqli_real_escape_string($db,$_POST["mailcher"]);
@@ -40,6 +39,7 @@
                 $_SESSION["nom"] = $nomcher;
                 $sql = "UPDATE chercheur SET nom='".$nomcher."' WHERE idcher='".$idcher."'";
                 if(!mysqli_query($db,$sql)) $error = true;
+                else $_SESSION["nom"] = $nomcher;
             }
             if(isset($_POST["gradecher"]) && $_POST["gradecher"] != ""){
                 $gradecher = mysqli_real_escape_string($db,$_POST["gradecher"]);
@@ -51,7 +51,7 @@
                 $sql = "UPDATE chercheur SET profil='".$profilcher."' WHERE idcher='".$idcher."'";
                 if(!mysqli_query($db,$sql)) $error = true;
             }
-            if(isset($_POST["mdpCompteNv"]) && isset($_POST["mdpCompteNvConf"]) && $_POST["mdpCompteNvConf"] == $_POST["mdpCompteNv"]){
+            if(isset($_POST["mdpCompteNv"]) && isset($_POST["mdpCompteNvConf"]) && $_POST["mdpCompteNvConf"] != "" && $_POST["mdpCompteNvConf"] == $_POST["mdpCompteNv"]){
                 $newpwd = mysqli_real_escape_string($db,$_POST["mdpCompteNv"]);
                 $sql = "UPDATE users SET password='".$newpwd."' WHERE idcher='".$idcher."'";
                 if(!mysqli_query($db,$sql)) $error = true;
@@ -124,8 +124,10 @@
             </div>
 
             <ul class="nav">
-                
-                
+                <?php 
+                    require_once("menu.php");
+                    menu(-1);
+                ?>                
             </ul>
     	</div>
     </div>
@@ -140,7 +142,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" >chef</div>
+                    <div style="font-size:18px;" class="navbar-brand">
+                        <?php 
+                            echo $_SESSION["nom"];
+                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                        ?> 
+                    </div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -181,7 +189,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Modifier Compte
-                        <a id="revenir" href="laboGererEquipe.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
+                        <a id="revenir" href="<?php if(isset($_SESSION["loggedinchercheur"])) echo "gererProduction.php"; else echo "laboGererEquipe.php";?>" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
                     </div>
 
                     <div class="content">

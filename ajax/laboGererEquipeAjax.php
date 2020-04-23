@@ -18,21 +18,14 @@
             while($row = mysqli_fetch_array($result)){
                 $idequipe = $row["idequipe"];
                 $nomequipe = $row["nomequip"];
-                $sql = "SELECT * FROM specialite WHERE idspe IN (
-                    SELECT idspe FROM equipe WHERE idequipe = '".$idequipe."'
-                )";
-                $specialites = array();
-                if($result2 = mysqli_query($db,$sql)){
-                    while($nomspe = mysqli_fetch_array($result2)){
-                        $specialites[] = $nomspe["nomspe"];
-                    }
+                $idspe = $row["idspe"];
+                $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){    
+                    $nomspe = mysqli_fetch_array($result2)["nomspe"];
                     echo    '<tr>';
                     echo    '<td>'.$nomequipe.'</td>';
-                    echo    '<td>';
-                    foreach ($specialites as $specialite) {
-                        echo    $specialite.", ";
-                    }
-                    echo    '</td>';
+                    echo    '<td>'.$nomspe.'</td>';
                     echo    '<td>';
                     echo    '<div class="btn-toolbar">';
                     echo    '<div class="btn-group">';

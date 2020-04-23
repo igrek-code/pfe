@@ -80,43 +80,10 @@
             
             <ul class="nav">
                 
-            <li>
-                    <a href="laboGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="gererProduction.php">
-                        <i class="pe-7s-notebook"></i>
-                        <p>gerer production</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="recherche.php">
-                        <i class="pe-7s-search"></i>
-                        <p>recherche</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="laboGererEquipe.php">
-                        <i class="pe-7s-network"></i>
-                        <p>Gerer Equipe</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="equipeGererMembre.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Membre Equipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
-
+            <?php require_once("menu.php");
+                if(isset($_SESSION['loggedinlabo'])) menu(5);
+                if(isset($_SESSION['loggedinequipe'])) menu(4);
+                ?>
             </ul>
     	</div>
     </div>
