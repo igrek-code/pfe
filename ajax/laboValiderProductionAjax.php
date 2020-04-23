@@ -1,30 +1,32 @@
 <?php
+    session_start();
     require_once("../config.php");
+    $idlabo = $_SESSION["idlabo"];
 
     if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != ""){
         switch ($_GET["typeProduction"]) {
             case 'publication':
-                afficher_publication($db);
+                afficher_publication($db,$idlabo);
             break;
             
             case 'communication':
-                afficher_communication($db);
+                afficher_communication($db,$idlabo);
             break;
 
             case 'ouvrage':
-                afficher_ouvrage($db);
+                afficher_ouvrage($db,$idlabo);
             break;
 
             case 'chapitreOuvrage':
-                afficher_chapitreOuvrage($db);
+                afficher_chapitreOuvrage($db,$idlabo);
             break;
 
             case 'doctorat':
-                afficher_doctorat($db);
+                afficher_doctorat($db,$idlabo);
             break;
 
             case 'master':
-                afficher_master($db);
+                afficher_master($db,$idlabo);
             break;
 
             default:
@@ -33,9 +35,17 @@
         }
     }
 
-    function afficher_master($db){
-        $sql = "SELECT * FROM pfemaster WHERE codepro NOT IN (
-            SELECT codepro FROM validationproduction
+    function afficher_master($db,$idlabo){
+        $sql = "SELECT * FROM pfemaster WHERE codepro IN (
+            SELECT codepro FROM validationproduction WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            ) OR idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -49,13 +59,15 @@
                     <th>Encadreur</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Posté par</th>
+                    <th>Action</th>
                 </thead>
             <tbody>';
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
                 $titre = $row["titre"];
                 $lieusout = $row["lieusout"];
-                $encadreur = $row["encadreur"];
+                $idencadreur = $encadreur = $row["encadreur"];
                 $sql = "SELECT * FROM chercheur WHERE idcher='".$encadreur."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
@@ -99,15 +111,34 @@
                 echo    '<td>'.$encadreur.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$codepro.'" title="valider" class="btn btn-fill btn-success">Valider</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="btn-fill btn btn-danger">Supprimer</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
         }
     }
 
-    function afficher_doctorat($db){
-        $sql = "SELECT * FROM these WHERE codepro NOT IN (
-            SELECT codepro FROM validationproduction
+    function afficher_doctorat($db,$idlabo){
+        $sql = "SELECT * FROM these WHERE codepro IN (
+            SELECT codepro FROM validationproduction WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            ) OR idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -123,6 +154,8 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>URL</th>
+                    <th>Posté par</th>
+                    <th>Action</th>
                 </thead>
             <tbody>';
             while($row = mysqli_fetch_array($result)){
@@ -131,7 +164,7 @@
                 $lieusout = $row["lieusout"];
                 $nordre = $row["nordre"];
                 $url = $row["url"];
-                $encadreur = $row["encadreur"];
+                $idencadreur = $encadreur = $row["encadreur"];
                 $sql = "SELECT * FROM chercheur WHERE idcher='".$encadreur."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
@@ -177,15 +210,24 @@
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
         }        
     }
 
-    function afficher_chapitreOuvrage($db){
-        $sql = "SELECT * FROM chapitredouvrage WHERE codepro NOT IN (
-            SELECT codepro FROM validationproduction
+    function afficher_chapitreOuvrage($db,$idlabo){
+        $sql = "SELECT * FROM chapitredouvrage WHERE codepro IN (
+            SELECT codepro FROM validationproduction WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            ) OR idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -203,10 +245,23 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>URL</th>
+                    <th>Posté par</th>
+                    <th>Action</th>
                 </thead>
             <tbody>';
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
+                $sql = "SELECT * FROM validationproduction WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $idpostedBy = mysqli_fetch_array($result2)["idcher"];
+                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idpostedBy."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $postedBy = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                /*-------------------------*/
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
                 $pages = $row["pages"];
@@ -292,15 +347,34 @@
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$codepro.'" title="valider" class="btn btn-fill btn-success">Valider</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="btn-fill btn btn-danger">Supprimer</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
         }        
     }
 
-    function afficher_ouvrage($db){
-        $sql = "SELECT * FROM ouvrage WHERE codepro NOT IN (
-            SELECT codepro FROM validationproduction
+    function afficher_ouvrage($db,$idlabo){
+        $sql = "SELECT * FROM ouvrage WHERE codepro IN (
+            SELECT codepro FROM validationproduction WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            ) OR idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -317,10 +391,23 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>URL</th>
+                    <th>Posté par</th>
+                    <th>Action</th>
                 </thead>
             <tbody>';
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
+                $sql = "SELECT * FROM validationproduction WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $idpostedBy = mysqli_fetch_array($result2)["idcher"];
+                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idpostedBy."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $postedBy = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                /* ----------------------------------------------------------- */
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
                 $nbpages = $row["nbpages"];
@@ -402,15 +489,34 @@
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$codepro.'" title="valider" class="btn btn-fill btn-success">Valider</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="btn-fill btn btn-danger">Supprimer</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
         }
     }
 
-    function afficher_communication($db){
-        $sql = "SELECT * FROM communication WHERE codepro NOT IN (
-            SELECT codepro FROM validationproduction
+    function afficher_communication($db,$idlabo){
+        $sql = "SELECT * FROM communication WHERE codepro IN (
+            SELECT codepro FROM validationproduction WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            ) OR idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -433,10 +539,23 @@
                     <th>Date</th>
                     <th>Conférence</th>
                     <th>URL</th>
+                    <th>Posté par</th>
+                    <th>Action</th>
                 </thead>
             <tbody>';
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
+                $sql = "SELECT * FROM validationproduction WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $idpostedBy = mysqli_fetch_array($result2)["idcher"];
+                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idpostedBy."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $postedBy = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                /* -------------------------------------------------------------- */
                 $codeconf = $row["codeconf"];
                 $titre = $row["titre"];
                 $url = $row["url"];
@@ -538,6 +657,17 @@
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$codeconf.'">'.$nomconf.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$codepro.'" title="valider" class="btn btn-fill btn-success">Valider</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="btn-fill btn btn-danger">Supprimer</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
@@ -592,9 +722,17 @@
         }
     }
 
-    function afficher_publication($db){
-        $sql = "SELECT * FROM publication WHERE codepro NOT IN (
-            SELECT codepro FROM validationproduction
+    function afficher_publication($db,$idlabo){
+        $sql = "SELECT * FROM publication WHERE codepro IN (
+            SELECT codepro FROM validationproduction WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            ) OR idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe IN (
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                )
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -622,10 +760,23 @@
                     <th>Date</th>
                     <th>Revue</th>
                     <th>URL</th>
+                    <th>Posté par</th>
+                    <th>Action</th>
                 </thead>
             <tbody>';
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
+                $sql = "SELECT * FROM validationproduction WHERE codepro='".$codepro."'";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $idpostedBy = mysqli_fetch_array($result2)["idcher"];
+                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idpostedBy."'";
+                    $result2 = mysqli_query($db,$sql);
+                    if(mysqli_num_rows($result2) > 0){
+                        $postedBy = mysqli_fetch_array($result2)["nom"];
+                    }
+                }
+                /*----------------------------------------------------------------------*/
                 $titre = $row["titre"];
                 $doi = $row["doi"];
                 $nvol = $row["nvol"];
@@ -736,6 +887,17 @@
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$codepro.'" title="valider" class="btn btn-fill btn-success">Valider</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="btn-fill btn btn-danger">Supprimer</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
                 echo    '</tr>';
             }
             echo '</tbody>
@@ -1259,5 +1421,45 @@
         else{
             echo '<div class="text-danger">information sur la production non trouvée !</div>';
         } 
+    }
+
+    if(isset($_GET["idcher"]) && $_GET["idcher"] != ""){
+        $idcher = mysqli_real_escape_string($db,$_GET["idcher"]);
+        $sql = "SELECT * FROM chercheur WHERE idcher='".$idcher."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_array($result);
+            $nom = $row["nom"];
+            $mail = $row["mail"];
+            $grade = $row["grade"];
+            $profil = $row["profil"];
+            $sql = "SELECT * FROM equipe WHERE idequipe IN (
+                SELECT idequipe FROM menbrequip WHERE idcher='".$idcher."'
+            ) OR idequipe IN (
+                SELECT idequipe FROM chefequip WHERE idcher='".$idcher."'
+            )";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0) $nomequip = mysqli_fetch_array($result)["nomequip"];
+            echo '<span class="text-info">Nom: </span>'.$nom.'<br>';
+            echo '<span class="text-info">Mail: </span>'.$mail.'<br>';
+            echo '<span class="text-info">Profil: </span>'.$profil.'<br>';
+            echo '<span class="text-info">Grade: </span>'.$grade.'<br>';
+            echo '<span class="text-info">Equipe: </span>'.$nomequip.'<br>';
+        }
+        else{
+            echo '<div class="text-danger">information sur le chercheur non disponible !</div>';
+        }
+    }
+
+    if(isset($_GET["supprimer"])){
+        $codepro = mysqli_real_escape_string($db,$_GET["supprimer"]);
+        $sql = "DELETE FROM production WHERE codepro='".$codepro."'";
+        if(mysqli_query($db,$sql)) echo "true";
+    }
+
+    if(isset($_GET["valider"])){
+        $codepro = mysqli_real_escape_string($db,$_GET["valider"]);
+        $sql = "DELETE FROM validationproduction WHERE codepro='".$codepro."'";
+        if(mysqli_query($db,$sql)) echo "true";
     }
 ?>

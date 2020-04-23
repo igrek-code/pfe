@@ -1204,7 +1204,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Encadreur</label>
-                        <select readonly required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur";
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
@@ -1218,6 +1218,7 @@
                                     }
                                 }
                         echo'</select>
+                        <input hidden value="'.$encadreur.'" type="text" name="encadreurProduction" required>
                     </div>
                 </div>
             </div>';
@@ -1323,7 +1324,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Encadreur</label>
-                        <select readonly required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur";
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
@@ -1337,6 +1338,7 @@
                                     }
                                 }
                         echo'</select>
+                        <input hidden value="'.$encadreur.'" type="text" name="encadreurProduction" required>
                     </div>
                 </div>
             </div>';
