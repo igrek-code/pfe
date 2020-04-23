@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 22 avr. 2020 à 15:36
+-- Généré le : jeu. 23 avr. 2020 à 13:04
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -157,9 +157,9 @@ CREATE TABLE `chercheur` (
 INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `profil`) VALUES
 (16, 'Sid ahmed', 'sid.ahmedl@usthb.dz', 'MCA', 'permanent'),
 (21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'permanent'),
-(22, 'rabaoui', 'rabaoui@usthb.dz', 'DOC', 'doctorant'),
 (23, 'newdoc', 'newdoc@usthb.dz', '', 'doctorant'),
-(24, 'fleur', 'fleur@usthb.dz', 'PROF', 'permanent');
+(24, 'fleur', 'fleur@usthb.dz', 'PROF', 'permanent'),
+(26, 'xwqinsosiqdioqsn', 'newdoc@usthb.dz', '', 'doctorant');
 
 -- --------------------------------------------------------
 
@@ -302,7 +302,8 @@ CREATE TABLE `equipe` (
 --
 
 INSERT INTO `equipe` (`idequipe`, `nomequip`, `idspe`, `idlabo`) VALUES
-(8, 'Traitement du langage', 5, 37);
+(8, 'Traitement du langage', 5, 37),
+(14, 'we see the future', 48, 37);
 
 -- --------------------------------------------------------
 
@@ -399,8 +400,8 @@ CREATE TABLE `menbrequip` (
 --
 
 INSERT INTO `menbrequip` (`idcher`, `idequipe`) VALUES
-(22, 8),
-(23, 8);
+(23, 8),
+(26, 8);
 
 -- --------------------------------------------------------
 
@@ -639,7 +640,11 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (41, 'rpub', '', 36),
 (42, 'pub', '', 37),
 (43, 'nawawi', '', 37),
-(44, 'culasse', '', 38);
+(44, 'culasse', '', 38),
+(45, 'informatique', '', 1),
+(46, 'informatique', '', 1),
+(47, 'informatique', '', 1),
+(48, 'vision', '', 1);
 
 -- --------------------------------------------------------
 
@@ -713,9 +718,21 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (16, 'sid.ahmedl@usthb.dz', 'lol', 1),
 (21, 'omar.rabhi@usthb.dz', 'lol', 0),
-(22, 'rabaoui@usthb.dz', 'lol', 0),
-(23, 'newdoc@usthb.dz', 'lol', 0),
-(24, 'fleur@usthb.dz', 'lol', 1);
+(23, 'newdoc@usthb.dz', 'lol', 1),
+(24, 'fleur@usthb.dz', 'lol', 1),
+(26, 'newdoc@usthb.dz', 'lol', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `validationproduction`
+--
+
+CREATE TABLE `validationproduction` (
+  `codepro` int(12) NOT NULL,
+  `idcher` int(12) NOT NULL,
+  `type` enum('publication','communication','ouvrage','chapitreOuvrage','doctorat','master') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Index pour les tables déchargées
@@ -924,6 +941,14 @@ ALTER TABLE `users`
   ADD KEY `idcher` (`idcher`);
 
 --
+-- Index pour la table `validationproduction`
+--
+ALTER TABLE `validationproduction`
+  ADD PRIMARY KEY (`codepro`),
+  ADD KEY `codepro` (`codepro`),
+  ADD KEY `idcher` (`idcher`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -931,7 +956,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `chercheur`
 --
 ALTER TABLE `chercheur`
-  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `conference`
@@ -949,7 +974,7 @@ ALTER TABLE `domaine`
 -- AUTO_INCREMENT pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `etablissement`
@@ -991,7 +1016,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -1145,6 +1170,13 @@ ALTER TABLE `these`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `validationproduction`
+--
+ALTER TABLE `validationproduction`
+  ADD CONSTRAINT `validation_chercheur_fk` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `validation_production_fk` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
