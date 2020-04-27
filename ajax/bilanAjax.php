@@ -45,15 +45,17 @@
 
     if(isset($_GET["bilancher"]) && $_GET["bilancher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
         class production{
-            public $codepro;
+            public $titre;
             public $type;
             public $date;
         }
         $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
         $deb = mysqli_real_escape_string($db,$_GET["deb"]);
+        if(strlen($deb) == 4)
+            $deb = $deb."-01";
         $fin = mysqli_real_escape_string($db,$_GET["fin"]);
-        echo '<script>alert("'.$deb.'");</script>';
-        echo '<script>alert("'.$fin.'");</script>';
+        if(strlen($fin) == 4)
+            $fin = $fin."-12";
         $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codepro IN (
             SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
         ) OR codepro IN (
@@ -65,8 +67,37 @@
             while($row = mysqli_fetch_array($result)){
                 $production = new production();
                 $production->type = $row["type"];
-                $production->codepro = $row["codepro"];
+                $codepro = $row["codepro"];
                 $production->date = $row["date"];
+                switch ($production->type) {
+                    case 'publication':
+                        $sql = "SELECT * FROM publication WHERE codepro='".$codepro."'";
+                    break;
+                    
+                    case 'communication':
+                        $sql = "SELECT * FROM communication WHERE codepro='".$codepro."'";
+                    break;
+
+                    case 'ouvrage':
+                        $sql = "SELECT * FROM ouvrage WHERE codepro='".$codepro."'";
+                    break;
+
+                    case 'chapitreOuvrage':
+                        $sql = "SELECT * FROM chapitredouvrage WHERE codepro='".$codepro."'";
+                    break;
+
+                    case 'doctorat':
+                        $sql = "SELECT * FROM these WHERE codepro='".$codepro."'";
+                    break;
+
+                    default:
+                        $sql = "SELECT * FROM pfemaster WHERE codepro='".$codepro."'";
+                    break;
+                }
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $production->titre = mysqli_fetch_array($result2)["titre"];
+                }
                 $productions[] = $production;
             }
         }

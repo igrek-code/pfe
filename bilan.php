@@ -47,6 +47,8 @@
 
     <!-- SELECT BOOTSTRAP -->
     <link rel="stylesheet" href="assets/select/bootstrap-select.min.css">
+    <!--  Charts Plugin -->
+    <link rel="stylesheet" href="assets/css/chartist.min.css">
     
     <style>
         th, td { 
@@ -181,7 +183,7 @@
                                     </div>
                                 </div>  
                                 <div id="filters"></div>
-                                <div id="graph"></div>
+                                <canvas id="graph"></canvas>
                             </div>
 
                             
@@ -224,23 +226,15 @@
 
     <!-- BOOTSTRAP SELECT -->
     <script src="assets/select/bootstrap-select.min.js"></script>
+
+    <!-- CHART JS -->
+    <script src="assets/chartjs/chartjs.js"></script>
     
     <script>
         $(document).ready(function(){
-            /*var data = {
-            // A labels array that can contain any sort of values
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-            // Our series array that contains series objects or in this case series data arrays
-            series: [
-                [5, 2, 4, 2, 0]
-            ]
-            };
+            var color = Chart.helpers.color;
+            var colors = ['#f58442','#f542bc','#eb4034','#4287f5','#32a852','#fcba03','#b342f5'];
 
-            // Create a new line chart object where as first parameter we pass in a selector
-            // that is resolving to our chart container element. The Second parameter
-            // is the actual data object.
-            new Chartist.Bar('.ct-chart', data);*/
-            
             $('#typeBilan').change(function(){
                 var typeBilan = $(this).val();
                 switch (typeBilan) {
@@ -290,21 +284,52 @@
                                 </div>
                             </div>
                         </div> 
+                        <div style="margin-top:5px;padding-bottom:10px;" class="row form-inline">
+                            <div style="margin-top:10px;" class="col-md-3">
+                                <div class="form-check form-check-inline">
+                                    <label>Afficher par: </label>
+                                    <input name="affiche" class="form-check-input" type="radio" value="annee">
+                                    <label class="form-check-label">Année</label>
+                                    <input name="affiche" style="margin-left:10px;" class="form-check-input" checked type="radio" value="mois">
+                                    <label class="form-check-label">Mois</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>type de production</label>
+                                    <select class="form-control selectpicker" id="typeProduction">
+                                        <option value="all">Toutes</option>
+                                        <option value="publication">Publication</option>
+                                        <option value="communication">Communication</option>
+                                        <option value="ouvrage">Ouvrage</option>
+                                        <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                        <option value="doctorat">Thèse</option>
+                                        <option value="master">PFE Master</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div style="padding-bottom:10px;" class="row form-inline">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Entre</label>
                                     <input min="1991-01" max="<?php echo date('Y-m'); ?>" id="periodeDeb" class="form-control" type="month">
+                                    <input disabled min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>et</label>
                                     <input min="1991-01" max="<?php echo date('Y-m'); ?>" id="periodeFin" class="form-control" type="month">
+                                    <input disabled min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
                                 </div>
                             </div>
                         </div>
                         `);
+                        
+                        var update = false;
+                        var graph = undefined;
+
                         $('#idetab').change(function(){
                             var idetab = $(this).val();
                             $.get("ajax/bilanAjax.php",{idetab: idetab},function(data){
@@ -326,54 +351,85 @@
                                 $('.selectpicker').selectpicker('refresh');
                             });
                         });
+
                         $('#idcher').change(function(){
-                            var deb = $('#periodeDeb').val();
-                            var fin = $('#periodeFin').val();
+                            var affichage = $('input[type="radio"]:checked').val();
+                            if(affichage == "mois"){
+                                var deb = $('#periodeDeb').val();
+                                var fin = $('#periodeFin').val();
+                            }else{
+                                var deb = $('#periodeDebY').val();
+                                var fin = $('#periodeFinY').val();
+                            }
                             var idcher = $('#idcher').val();
-                            if(idcher != "" && fin != "" && deb != "")
-                            $.get("ajax/bilanAjax.php",{bilancher: idcher,deb: deb, fin: fin},function(data){
-                                //$('#idcher').html(data.slice(2,-1));
-                                //data = data.slice(2,-1);
-                                //var productions = JSON.parse(data.slice(2,-1)+"]");
-                                alert(data);
-                                //console.log(productions);
-                            });
+                            if(idcher != "" && deb != "" && fin != ""){
+                                $.get("ajax/bilanAjax.php",{bilancher: idcher,deb: deb, fin: fin},function(data){
+                                    graph = drawChart(data,deb,fin,affichage,graph,update);
+                                    update = true;
+                                });
+                            }
                         });
+
+                        $('#periodeDebY').hide();
+                        $('#periodeFinY').hide();
+
+                        $('input[type="radio"]').click(function(){
+                            var val = $(this).val();
+                            var deb = $('#periodeDeb');
+                            var fin = $('#periodeFin');
+                            var debY = $('#periodeDebY');
+                            var finY = $('#periodeFinY');
+                            if(val == "annee"){
+                                deb.prop("disabled",true);
+                                deb.hide();
+                                fin.prop("disabled",true);
+                                fin.hide();
+                                debY.prop("disabled",false);
+                                debY.show();
+                                finY.prop("disabled",false);
+                                finY.show();
+                            }
+                            else{
+                                deb.prop("disabled",false);
+                                deb.show();
+                                fin.prop("disabled",false);
+                                fin.show();
+                                debY.prop("disabled",true);
+                                debY.hide();
+                                finY.prop("disabled",true);
+                                finY.hide();
+                            }
+                        });
+                        
                         $('#periodeDeb').change(function(){
                             var min = $(this).val();
                             $('#periodeFin').prop('min',min);
                             if(min>$('#periodeFin').val())
-                            $('#periodeFin').val(min);
-                            var deb = $('#periodeDeb').val();
-                            var fin = $('#periodeFin').val();
-                            var idcher = $('#idcher').val();
-                            if(idcher != "" && fin != "" && deb != "")
-                            $.get("ajax/bilanAjax.php",{bilancher: idcher,deb: deb, fin: fin},function(data){
-                                //$('#idcher').html(data.slice(2,-1));
-                                //data = data.slice(2,-1);
-                                //var productions = JSON.parse(data.slice(2,-1)+"]");
-                                alert(data);
-                                //console.log(productions);
-                            });
+                                $('#periodeFin').val(min);
+                            $('#idcher').trigger("change");
                         });
                         $('#periodeFin').change(function(){
                             var max = $(this).val();
                             $('#periodeDeb').prop('max',max);
                             if(max<$('#periodeDeb').val())
                             $('#periodeDeb').val(max);
-                            var deb = $('#periodeDeb').val();
-                            var fin = $('#periodeFin').val();
-                            var idcher = $('#idcher').val();
-                            if(idcher != "" && fin != "" && deb != "")
-                            $.get("ajax/bilanAjax.php",{bilancher: idcher,deb: deb, fin: fin},function(data){
-                                //$('#idcher').html(data.slice(2,-1));
-                                //data = data.slice(2,-1);
-                                //var productions = JSON.parse(data.slice(2,-1)+"]");
-                                alert(data);
-                                //console.log(productions);
-
-                            });
+                            $('#idcher').trigger("change");
                         });
+                        $('#periodeDebY').change(function(){
+                            var min = $(this).val();
+                            $('#periodeFinY').prop('min',min);
+                            if(min>$('#periodeFinY').val())
+                            $('#periodeFinY').val(min);
+                            $('#idcher').trigger("change");
+                        });
+                        $('#periodeFinY').change(function(){
+                            var max = $(this).val();
+                            $('#periodeDeb').prop('max',max);
+                            if(max<$('#periodeDeb').val())
+                            $('#periodeDeb').val(max);
+                            $('#idcher').trigger("change");
+                        });
+
                     break;
                 
                     case 'equipe':
@@ -386,7 +442,146 @@
                 }
                 $('.selectpicker').selectpicker('refresh');
             });
+
             $('#typeBilan').trigger('change');
+
+            function drawChart(data,deb,fin,affichage,graph,update) {
+                var productions = JSON.parse(data.slice(2,-1)+"]");
+                deb = new Date(deb);
+                fin = new Date(fin);
+                var labels = [];
+                if(affichage == "mois"){
+                    for(var d= new Date(deb); (d.getFullYear()<fin.getFullYear())||(d.getFullYear()==fin.getFullYear() && d.getMonth()<=fin.getMonth()); d.setMonth(d.getMonth()+1)){
+                        var label = new Date(d);
+                        var month = label.toLocaleString('fr', { month: 'short' });
+                        var year = label.getFullYear();
+                        labels.push(month+" "+year);
+                    }
+
+                    var series = {};
+                    productions.forEach(production => {
+                        var d = new Date(production.date);
+                        var month = d.toLocaleString('fr', { month: 'short' });
+                        var year = d.getFullYear();
+                        if(!(production.type in series))
+                            series[production.type] = {};
+                        if(month+" "+year in series[production.type])
+                            series[production.type][month+" "+year] += 1;
+                        else
+                            series[production.type][month+" "+year] = 1;
+                    });
+
+                    var output = [];
+                    var tempo = [];
+                    for (serie in series){
+                        labels.forEach(label => {
+                            if(label in series[serie])
+                                tempo.push(series[serie][label]);
+                            else
+                                tempo.push(0);
+                        });
+                        output.push(tempo);
+                    }
+                }
+                else{
+                    for(var d= new Date(deb); d.getFullYear()<= fin.getFullYear(); d.setFullYear(d.getFullYear()+1)){
+                        var year = d.getFullYear();
+                        labels.push(year);
+                    }
+                    labels.sort();
+                    labels = Array.from(new Set(labels));
+                    
+                    var series = {};
+                    productions.forEach(production => {
+                        var d = new Date(production.date);
+                        var year = d.getFullYear();
+                        if(!(production.type in series))
+                            series[production.type] = {};
+                        if(year in series[production.type])
+                            series[production.type][year] += 1;
+                        else
+                            series[production.type][year] = 1;
+                    });
+                    console.log(series);
+
+                   /* var labels = [];
+                    for(serie in series){
+                        for(label in series[serie]){
+                            if(!(label in labels)) labels.push(label);
+                        }
+                    }
+                    labels.sort();
+                    labels = Array.from(new Set(labels));
+                    console.log(labels);*/
+
+                    var output = [];
+                    var i = 0;
+                    for (serie in series){
+                        console.log("production: "+serie);
+                        var tempo = [];
+                        labels.forEach(label => {
+                            console.log("anée: "+label);
+                            if(label in series[serie]){
+                                console.log("nbre: "+series[serie][label]);
+                                tempo.push({
+                                    x: label,
+                                    y: series[serie][label]
+                                });
+                            }
+                            else{
+                                tempo.push({
+                                    x: label,
+                                    y: 0
+                                });
+                            }
+                        });
+                        output.push({
+                            label: serie,
+                            backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
+                            borderColor: colors[i],
+                            borderWidth: 1,
+                            data: tempo
+                        });
+                        i++;
+                    }
+                    console.log(output);
+                }
+
+                var barChartData = {
+                    labels: labels,
+                    datasets: output
+                }
+
+                if(update){
+                    graph['data'] = barChartData;
+                    graph.update(); 
+                }
+                else{
+                    graph = new Chart($('#graph'), {
+                        type: 'bar',
+                        data: barChartData,
+                        options: {
+                            responsive: true,
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Production'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function(value) {if (value % 1 === 0) {return value;}}
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+                return graph;
+            }
         });
     </script>
 
