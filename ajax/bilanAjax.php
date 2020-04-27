@@ -102,4 +102,102 @@
             echo json_encode($productions);
         else echo "[]";
     }
+
+    if(isset($_GET["pointCher"]) && $_GET["pointCher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
+        class production{
+            public $type;
+            public $classe;
+            public $inter;
+        }
+        $idcher = mysqli_real_escape_string($db,$_GET["pointCher"]);
+        $deb = mysqli_real_escape_string($db,$_GET["deb"]);
+        $fin = mysqli_real_escape_string($db,$_GET["fin"]);
+
+        $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codepro IN (
+            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
+        ) OR codepro IN (
+            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."'
+        )";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $productions = array();
+            while($row = mysqli_fetch_array($result)){
+                $production = new production();
+                $production->type = $row['type'];
+                $codepro = $row['codepro'];
+                switch ($production->type) {
+                    case 'publication':
+                        $sql = "SELECT * FROM revue WHERE coderevue IN (
+                            SELECT coderevue FROM publication WHERE codepro='".$codepro."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->classe = $row2['classe'];
+                            $production->inter = $row2['type'];
+                        }
+                    break;
+
+                    case 'communication':
+                        $sql = "SELECT * FROM conference WHERE codeconf IN (
+                            SELECT codeconf FROM communication WHERE codepro='".$codepro."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->classe = $row2['classe'];
+                            $production->inter = $row2['type'];
+                        }
+                    break;
+
+                    default:
+                        $production->classe = '';
+                        $production->inter = '';
+                    break;
+                }
+                $productions[] = $production;
+            }
+        }
+        if(isset($productions))
+            echo json_encode($productions);
+        else echo "[]";
+    }
+
+    if(isset($_GET['sysNotes'])){
+        class Notes{
+            public $revueInterAA;
+            public $revueInterA;
+            public $revueInterB;
+            public $revueInterC;
+            public $revueNat;
+            public $autre;
+            public $comInterA;
+            public $comInterB;
+            public $comInterC;
+            public $comNat;
+            public $chapitreOuvrage;
+            public $ouvrage;
+        }
+        $sql = "SELECT * FROM systemenotes WHERE id='1'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_array($result);
+            $notes = new Notes();
+            $notes->revueInterAA = $row['revueInterAA'];
+            $notes->revueInterA = $row['revueInterA'];
+            $notes->revueInterB = $row['revueInterB'];
+            $notes->revueInterC = $row['revueInterC'];
+            $notes->revueNat = $row['revueNat'];
+            $notes->autre = $row['autre'];
+            $notes->comInterA = $row['comInterA'];
+            $notes->comInterB = $row['comInterB'];
+            $notes->comInterC = $row['comInterC'];
+            $notes->comNat = $row['comNat'];
+            $notes->chapitreOuvrage = $row['chapitreOuvrage'];
+            $notes->ouvrage = $row['ouvrage'];
+        }
+        if(isset($notes))
+            echo json_encode($notes);
+        else echo "{}";
+    }
 ?>

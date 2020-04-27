@@ -181,10 +181,34 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>  
+                                </div> 
                                 <div id="filters"></div>
-                                <canvas id="graph"></canvas>
                             </div>
+
+                                
+                            <div id="stats" class="content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <canvas id="graph"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <canvas id="pie"></canvas>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="header">
+                                                <h4 class="title">Total des points</h4>
+                                            </div>
+                                            <div id="notes"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
 
                             
                             
@@ -359,8 +383,10 @@
                         </div>
                         `);
                         
+                        $('#stats').hide();
                         var update = false;
                         var graph = undefined;
+                        var pie = undefined;
 
                         $('#idetab').change(function(){
                             var idetab = $(this).val();
@@ -399,11 +425,22 @@
                                 var fin = parseInt($('#periodeFinY').val())+"-12";
                             }
                             var idcher = $('#idcher').val();
-                            if(idcher != "" && deb != "" && fin != "" && year != ""){
-                                $.get("ajax/bilanAjax.php",{bilancher: idcher,deb: deb, fin: fin},function(data){
+                            var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
+
+                            if( idcher != "" && format.test(deb) && format.test(fin) ){
+                                $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin},function(data){
                                     graph = drawChart(data,deb,fin,affichage,graph,update);
+                                    pie = drawPie(data,pie,update);
                                     update = true;
                                 });
+                                $.get("ajax/bilanAjax.php",{pointCher: idcher,deb: deb,fin: fin},function(data){
+                                    getPoints(data);
+                                });
+
+                                $('#stats').show();
+                            }
+                            else{
+                                $('#stats').hide();
                             }
                         });
 
@@ -419,6 +456,7 @@
                                 $('#byYear').hide();
                                 $('#byMonth').show();
                             }
+                            $('#idcher').trigger('change');
                         });
                         
                         $('#periodeY').change(function(){
@@ -434,6 +472,7 @@
                             else{
                                 finM.prop('max',12);
                             }
+                            $('#idcher').trigger('change');
                         });
 
                         $('#periodeDebM').change(function(){
@@ -481,6 +520,142 @@
             });
 
             $('#typeBilan').trigger('change');
+
+            function getPoints(data){
+                var affichage = $('#notes');
+                affichage.html('');
+                var notes;
+                var productions = JSON.parse(data.slice(2,-1)+"]");
+                $.get("ajax/bilanAjax.php",{sysNotes: 'true'},function(data){
+                    notes = JSON.parse(data.slice(2,-1)+'}');
+                    console.log('LES NOTES:');
+                    console.log(notes);
+                    console.log(productions);
+
+                    var result = {};
+                    productions.forEach((production) => {
+                        console.log('IN FOR EACH');
+                        console.log(production);
+                        console.log(notes);
+                        var tempo = 0;
+                        switch (production.type) {
+                            case 'publication':
+                                if(production.inter == 'nationale'){
+                                    tempo += notes.revueNat;
+                                }
+                                else{
+                                    switch (production.classe) {
+                                        case 'A*':
+                                            tempo += notes.revueInterAA;
+                                        break;
+                                        case 'A':
+                                            tempo += notes.revueInterA;
+                                        break;
+                                        case 'B':
+                                            tempo += notes.revueInterB;
+                                        break;
+                                        case 'C':
+                                            tempo += notes.revueInterC;
+                                        break;
+                                    }
+                                }
+                            break;
+                            
+                            case 'communication':
+                                if(production.inter == 'nationale'){
+                                    tempo += notes.comNat;
+                                }
+                                else{
+                                    switch (production.classe) {
+                                        case 'A':
+                                            tempo += notes.comInterA;
+                                        break;
+                                        case 'B':
+                                            tempo += notes.comInterB;
+                                        break;
+                                        case 'C':
+                                            tempo += notes.comInterC;
+                                        break;
+                                    }
+                                }
+                            break;
+
+                            case 'chapitreOuvrage':
+                                tempo += notes.chapitreOuvrage;
+                            break;
+
+                            case 'ouvrage':
+                                tempo += notes.ouvrage;
+                            break;
+
+                            default:
+                                tempo += notes.ouvrage;
+                            break;
+                        }
+                        if(production.type in result)
+                            result[production.type] += parseInt(tempo);
+                        else 
+                            result[production.type] = parseInt(tempo);
+                    });
+                    console.log('POINTS RESULT: ');
+                    console.log(result);
+                });
+
+            }
+
+            function drawPie(data,pie,update){
+                var productions = JSON.parse(data.slice(2,-1)+"]");
+                var labels = [];
+                var output = [];
+                var backgroundColor = [];
+                var series = {};
+                var i = 0;
+
+                console.log("PIE CHART");
+                productions.forEach(production => {
+                    if(production.type in series){
+                        series[production.type] += 1;
+                    }
+                    else{
+                        series[production.type] = 1;
+                    }
+                });
+
+                for(production in series){
+                    console.log(production+": "+series[production]);
+                    labels.push(production);
+                    output.push(series[production]);
+                    backgroundColor.push(colors[i]);
+                    i++;
+                }
+
+                console.log(labels);
+                console.log(output);
+                console.log(backgroundColor);
+
+                if(update){
+                    pie.data.labels = labels;
+                    pie.data.datasets[0].data = output;
+                    pie.data.datasets[0].backgroundColor = backgroundColor;
+                    pie.update();
+                }
+                else{
+                    pie = new Chart($('#pie'),{
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: output,
+                                backgroundColor: backgroundColor
+                            }]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
+                }
+                return pie;
+            }
 
             function drawChart(data,deb,fin,affichage,graph,update) {
                 var productions = JSON.parse(data.slice(2,-1)+"]");
@@ -534,36 +709,36 @@
                 }
 
                 var output = [];
-                    var i = 0;
-                    for (serie in series){
-                        console.log("production: "+serie);
-                        var tempo = [];
-                        labels.forEach(label => {
-                            console.log("anée: "+label);
-                            if(label in series[serie]){
-                                console.log("nbre: "+series[serie][label]);
-                                tempo.push({
-                                    x: label,
-                                    y: series[serie][label]
-                                });
-                            }
-                            else{
-                                tempo.push({
-                                    x: label,
-                                    y: 0
-                                });
-                            }
-                        });
-                        output.push({
-                            label: serie,
-                            backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
-                            borderColor: colors[i],
-                            borderWidth: 1,
-                            data: tempo
-                        });
-                        i++;
-                    }
-                    console.log(output);
+                var i = 0;
+                for (serie in series){
+                    console.log("production: "+serie);
+                    var tempo = [];
+                    labels.forEach(label => {
+                        console.log("anée: "+label);
+                        if(label in series[serie]){
+                            console.log("nbre: "+series[serie][label]);
+                            tempo.push({
+                                x: label,
+                                y: series[serie][label]
+                            });
+                        }
+                        else{
+                            tempo.push({
+                                x: label,
+                                y: 0
+                            });
+                        }
+                    });
+                    output.push({
+                        label: serie,
+                        backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
+                        borderColor: colors[i],
+                        borderWidth: 1,
+                        data: tempo
+                    });
+                    i++;
+                }
+                console.log(output);
 
                 var barChartData = {
                     labels: labels,
