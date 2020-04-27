@@ -51,11 +51,8 @@
         }
         $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
         $deb = mysqli_real_escape_string($db,$_GET["deb"]);
-        if(strlen($deb) == 4)
-            $deb = $deb."-01";
         $fin = mysqli_real_escape_string($db,$_GET["fin"]);
-        if(strlen($fin) == 4)
-            $fin = $fin."-12";
+
         $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codepro IN (
             SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
         ) OR codepro IN (

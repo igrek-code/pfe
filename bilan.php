@@ -309,19 +309,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="padding-bottom:10px;" class="row form-inline">
-                            <div class="col-md-4">
+                        <div id="byMonth" style="padding-bottom:10px;" class="row">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Entre</label>
-                                    <input min="1991-01" max="<?php echo date('Y-m'); ?>" id="periodeDeb" class="form-control" type="month">
-                                    <input disabled min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                    <label>Année</label>
+                                    <input value="2020" min="1991" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Entre</label>
+                                    <input value="01" min="1" max="<?php echo date('m'); ?>" id="periodeDebM" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-1">
                                 <div class="form-group">
                                     <label>et</label>
-                                    <input min="1991-01" max="<?php echo date('Y-m'); ?>" id="periodeFin" class="form-control" type="month">
-                                    <input disabled min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
+                                    <input value="<?php echo date('m'); ?>" min="1" max="<?php echo date('m'); ?>" id="periodeFinM" class="form-control" type="number">
+                                    <!--<select id="periodeFinM" class="form-group selectpicker">
+                                        <option selected value="01">Janvier</option>
+                                        <option value="02">Février</option>
+                                        <option value="03">Mars</option>
+                                        <option value="04">Avril</option>
+                                        <option value="05">Mai</option>
+                                        <option value="06">Juin</option>
+                                        <option value="07">Juillet</option>
+                                        <option value="08">Aout</option>
+                                        <option value="09">Septembre</option>
+                                        <option value="10">Octobre</option>
+                                        <option value="11">Novembre</option>
+                                        <option value="12">Décembre</option>
+                                    </select>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="byYear" style="padding-bottom:10px;" class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Entre</label>
+                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>et</label>
+                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
                                 </div>
                             </div>
                         </div>
@@ -355,14 +387,19 @@
                         $('#idcher').change(function(){
                             var affichage = $('input[type="radio"]:checked').val();
                             if(affichage == "mois"){
-                                var deb = $('#periodeDeb').val();
-                                var fin = $('#periodeFin').val();
+                                var year = parseInt($('#periodeY').val());
+                                var deb = parseInt($('#periodeDebM').val());
+                                var fin = parseInt($('#periodeFinM').val());
+                                if(deb < 10) deb = "0"+deb;
+                                if(fin < 10) fin = "0"+fin;
+                                deb = year+"-"+deb;
+                                fin = year+"-"+fin;
                             }else{
-                                var deb = $('#periodeDebY').val();
-                                var fin = $('#periodeFinY').val();
+                                var deb = parseInt($('#periodeDebY').val())+"-01";
+                                var fin = parseInt($('#periodeFinY').val())+"-12";
                             }
                             var idcher = $('#idcher').val();
-                            if(idcher != "" && deb != "" && fin != ""){
+                            if(idcher != "" && deb != "" && fin != "" && year != ""){
                                 $.get("ajax/bilanAjax.php",{bilancher: idcher,deb: deb, fin: fin},function(data){
                                     graph = drawChart(data,deb,fin,affichage,graph,update);
                                     update = true;
@@ -370,49 +407,49 @@
                             }
                         });
 
-                        $('#periodeDebY').hide();
-                        $('#periodeFinY').hide();
+                        $('#byYear').hide();
 
                         $('input[type="radio"]').click(function(){
                             var val = $(this).val();
-                            var deb = $('#periodeDeb');
-                            var fin = $('#periodeFin');
-                            var debY = $('#periodeDebY');
-                            var finY = $('#periodeFinY');
                             if(val == "annee"){
-                                deb.prop("disabled",true);
-                                deb.hide();
-                                fin.prop("disabled",true);
-                                fin.hide();
-                                debY.prop("disabled",false);
-                                debY.show();
-                                finY.prop("disabled",false);
-                                finY.show();
+                                $('#byYear').show();
+                                $('#byMonth').hide();
                             }
                             else{
-                                deb.prop("disabled",false);
-                                deb.show();
-                                fin.prop("disabled",false);
-                                fin.show();
-                                debY.prop("disabled",true);
-                                debY.hide();
-                                finY.prop("disabled",true);
-                                finY.hide();
+                                $('#byYear').hide();
+                                $('#byMonth').show();
                             }
                         });
                         
-                        $('#periodeDeb').change(function(){
+                        $('#periodeY').change(function(){
+                            var finM = $('#periodeFinM');
+                            var year = $(this).val();
+                            var maxMonth = <?php echo date('m');?>;
+                            var currentYear = <?php echo date('Y');?>;
+                            if(year == currentYear){
+                                finM.prop('max',maxMonth);
+                                if(parseInt(finM.val()) > parseInt(maxMonth))
+                                    finM.val(maxMonth);
+                            }
+                            else{
+                                finM.prop('max',12);
+                            }
+                        });
+
+                        $('#periodeDebM').change(function(){
                             var min = $(this).val();
-                            $('#periodeFin').prop('min',min);
-                            if(min>$('#periodeFin').val())
-                                $('#periodeFin').val(min);
+                            var finM = $('#periodeFinM');
+                            finM.prop('min',min);
+                            if(parseInt(min) > parseInt(finM.val()))
+                                finM.val(min);
                             $('#idcher').trigger("change");
                         });
-                        $('#periodeFin').change(function(){
+                        $('#periodeFinM').change(function(){
                             var max = $(this).val();
-                            $('#periodeDeb').prop('max',max);
-                            if(max<$('#periodeDeb').val())
-                            $('#periodeDeb').val(max);
+                            var debM = $('#periodeDebM');
+                            debM.prop('max',max);
+                            if(parseInt(max) < parseInt(debM.val()))
+                                debM.val(max);
                             $('#idcher').trigger("change");
                         });
                         $('#periodeDebY').change(function(){
@@ -457,6 +494,7 @@
                         var year = label.getFullYear();
                         labels.push(month+" "+year);
                     }
+                    console.log(labels);
 
                     var series = {};
                     productions.forEach(production => {
@@ -470,18 +508,8 @@
                         else
                             series[production.type][month+" "+year] = 1;
                     });
+                    console.log(series);
 
-                    var output = [];
-                    var tempo = [];
-                    for (serie in series){
-                        labels.forEach(label => {
-                            if(label in series[serie])
-                                tempo.push(series[serie][label]);
-                            else
-                                tempo.push(0);
-                        });
-                        output.push(tempo);
-                    }
                 }
                 else{
                     for(var d= new Date(deb); d.getFullYear()<= fin.getFullYear(); d.setFullYear(d.getFullYear()+1)){
@@ -503,18 +531,9 @@
                             series[production.type][year] = 1;
                     });
                     console.log(series);
+                }
 
-                   /* var labels = [];
-                    for(serie in series){
-                        for(label in series[serie]){
-                            if(!(label in labels)) labels.push(label);
-                        }
-                    }
-                    labels.sort();
-                    labels = Array.from(new Set(labels));
-                    console.log(labels);*/
-
-                    var output = [];
+                var output = [];
                     var i = 0;
                     for (serie in series){
                         console.log("production: "+serie);
@@ -545,7 +564,6 @@
                         i++;
                     }
                     console.log(output);
-                }
 
                 var barChartData = {
                     labels: labels,
