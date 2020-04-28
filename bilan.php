@@ -187,7 +187,7 @@
 
                                 
                             <div id="stats" class="content">
-                                <div class="row">
+                                <div style="margin-bottom:20px;" class="row">
                                     <div class="col-md-12">
                                         <canvas id="graph"></canvas>
                                     </div>
@@ -198,11 +198,13 @@
                                         <canvas id="pie"></canvas>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="card">
+                                        <div class="card text-center">
                                             <div class="header">
                                                 <h4 class="title">Total des points</h4>
                                             </div>
-                                            <div id="notes"></div>
+                                            <div class="content">
+                                                <div id="notes"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -411,6 +413,7 @@
                         });
 
                         $('#idcher').change(function(){
+                            var typeProduction = $('#typeProduction').val();
                             var affichage = $('input[type="radio"]:checked').val();
                             if(affichage == "mois"){
                                 var year = parseInt($('#periodeY').val());
@@ -427,15 +430,16 @@
                             var idcher = $('#idcher').val();
                             var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
-                            if( idcher != "" && format.test(deb) && format.test(fin) ){
-                                $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin},function(data){
-                                    graph = drawChart(data,deb,fin,affichage,graph,update);
-                                    pie = drawPie(data,pie,update);
+                            if( idcher != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
+                                $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    graph = drawChart(data,deb,fin,affichage,graph,update,typeProduction);
+                                    pie = drawPie(data,pie,update,typeProduction);
+                                    getPoints(data,typeProduction);
                                     update = true;
                                 });
-                                $.get("ajax/bilanAjax.php",{pointCher: idcher,deb: deb,fin: fin},function(data){
+                                /*$.get("ajax/bilanAjax.php",{pointCher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                     getPoints(data);
-                                });
+                                });*/
 
                                 $('#stats').show();
                             }
@@ -506,6 +510,9 @@
                             $('#idcher').trigger("change");
                         });
 
+                        $('#typeProduction').change(function(){
+                            $('#idcher').trigger('change');
+                        });
                     break;
                 
                     case 'equipe':
@@ -521,89 +528,149 @@
 
             $('#typeBilan').trigger('change');
 
-            function getPoints(data){
+            function getPoints(data,typeProduction){
                 var affichage = $('#notes');
                 affichage.html('');
                 var notes;
                 var productions = JSON.parse(data.slice(2,-1)+"]");
                 $.get("ajax/bilanAjax.php",{sysNotes: 'true'},function(data){
                     notes = JSON.parse(data.slice(2,-1)+'}');
-                    console.log('LES NOTES:');
-                    console.log(notes);
-                    console.log(productions);
-
-                    var result = {};
-                    productions.forEach((production) => {
-                        console.log('IN FOR EACH');
-                        console.log(production);
-                        console.log(notes);
-                        var tempo = 0;
-                        switch (production.type) {
-                            case 'publication':
-                                if(production.inter == 'nationale'){
-                                    tempo += notes.revueNat;
-                                }
-                                else{
-                                    switch (production.classe) {
-                                        case 'A*':
-                                            tempo += notes.revueInterAA;
-                                        break;
-                                        case 'A':
-                                            tempo += notes.revueInterA;
-                                        break;
-                                        case 'B':
-                                            tempo += notes.revueInterB;
-                                        break;
-                                        case 'C':
-                                            tempo += notes.revueInterC;
-                                        break;
+                    var results = {};
+                    if(typeProduction == 'publication' || typeProduction == 'communication'){
+                        productions.forEach((production) => {
+                            var tempo = '';
+                            switch (production.type) {
+                                case 'publication':
+                                    if(production.inter == 'nationale'){
+                                        tempo += notes.revueNat;
                                     }
-                                }
-                            break;
-                            
-                            case 'communication':
-                                if(production.inter == 'nationale'){
-                                    tempo += notes.comNat;
-                                }
-                                else{
-                                    switch (production.classe) {
-                                        case 'A':
-                                            tempo += notes.comInterA;
-                                        break;
-                                        case 'B':
-                                            tempo += notes.comInterB;
-                                        break;
-                                        case 'C':
-                                            tempo += notes.comInterC;
-                                        break;
+                                    else{
+                                        switch (production.classe) {
+                                            case 'A*':
+                                                tempo += notes.revueInterAA;
+                                            break;
+                                            case 'A':
+                                                tempo += notes.revueInterA;
+                                            break;
+                                            case 'B':
+                                                tempo += notes.revueInterB;
+                                            break;
+                                            case 'C':
+                                                tempo += notes.revueInterC;
+                                            break;
+                                        }
                                     }
-                                }
-                            break;
+                                break;
+                                
+                                case 'communication':
+                                    if(production.inter == 'nationale'){
+                                        tempo += notes.comNat;
+                                    }
+                                    else{
+                                        switch (production.classe) {
+                                            case 'A':
+                                                tempo += notes.comInterA;
+                                            break;
+                                            case 'B':
+                                                tempo += notes.comInterB;
+                                            break;
+                                            case 'C':
+                                                tempo += notes.comInterC;
+                                            break;
+                                        }
+                                    }
+                                break;
+                            }
+                            if(production.inter == 'internationale'){
+                                if(production.type+' internationale '+production.classe in results)
+                                    results[production.type+' internationale '+production.classe] += parseInt(tempo);
+                                else 
+                                    results[production.type+' internationale '+production.classe] = parseInt(tempo);
+                            }
+                            else{
+                                if(production.type+' nationale' in results)
+                                    results[production.type+' nationale'] += parseInt(tempo);
+                                else 
+                                    results[production.type+' nationale'] = parseInt(tempo);
+                            }
+                        });
+                    }
+                    else{
+                        productions.forEach((production) => {
+                            var tempo = '';
+                            switch (production.type) {
+                                case 'publication':
+                                    if(production.inter == 'nationale'){
+                                        tempo += notes.revueNat;
+                                    }
+                                    else{
+                                        switch (production.classe) {
+                                            case 'A*':
+                                                tempo += notes.revueInterAA;
+                                            break;
+                                            case 'A':
+                                                tempo += notes.revueInterA;
+                                            break;
+                                            case 'B':
+                                                tempo += notes.revueInterB;
+                                            break;
+                                            case 'C':
+                                                tempo += notes.revueInterC;
+                                            break;
+                                        }
+                                    }
+                                break;
+                                
+                                case 'communication':
+                                    if(production.inter == 'nationale'){
+                                        tempo += notes.comNat;
+                                    }
+                                    else{
+                                        switch (production.classe) {
+                                            case 'A':
+                                                tempo += notes.comInterA;
+                                            break;
+                                            case 'B':
+                                                tempo += notes.comInterB;
+                                            break;
+                                            case 'C':
+                                                tempo += notes.comInterC;
+                                            break;
+                                        }
+                                    }
+                                break;
 
-                            case 'chapitreOuvrage':
-                                tempo += notes.chapitreOuvrage;
-                            break;
+                                case 'chapitreOuvrage':
+                                    tempo += notes.chapitreOuvrage;
+                                break;
 
-                            case 'ouvrage':
-                                tempo += notes.ouvrage;
-                            break;
+                                case 'ouvrage':
+                                    tempo += notes.ouvrage;
+                                break;
 
-                            default:
-                                tempo += notes.ouvrage;
-                            break;
-                        }
-                        if(production.type in result)
-                            result[production.type] += parseInt(tempo);
-                        else 
-                            result[production.type] = parseInt(tempo);
-                    });
-                    console.log('POINTS RESULT: ');
-                    console.log(result);
+                                default:
+                                    tempo += notes.autre;
+                                break;
+                            }
+                            if(production.type in results)
+                                results[production.type] += parseInt(tempo);
+                            else 
+                                results[production.type] = parseInt(tempo);
+                        });
+                    }
+                    
+                    var total = 0;
+                    affichage.append('<div class="text-center" style="margin-top:10px;">');
+                    for(result in results){
+                        affichage.append('<p class="category">'+result+': <span style="font-weight:bold;color:black">'+results[result]+'</span><p>');
+                        total += results[result];
+                    }
+                    affichage.append('<h4 class="title">Total: <span style="font-weight:bold">'+total+'</span></h4></div>');
                 });
 
             }
 
-            function drawPie(data,pie,update){
+            function drawPie(data,pie,update,typeProduction){
                 var productions = JSON.parse(data.slice(2,-1)+"]");
                 var labels = [];
                 var output = [];
@@ -611,27 +678,43 @@
                 var series = {};
                 var i = 0;
 
-                console.log("PIE CHART");
-                productions.forEach(production => {
-                    if(production.type in series){
-                        series[production.type] += 1;
-                    }
-                    else{
-                        series[production.type] = 1;
-                    }
-                });
+                if(typeProduction == 'publication' || typeProduction == 'communication'){
+                    productions.forEach(production => {
+                        if(production.inter == 'internationale'){
+                            if(production.type+' internationale '+production.classe in series){
+                                series[production.type+' internationale '+production.classe] += 1;
+                            }
+                            else{
+                                series[production.type+' internationale '+production.classe] = 1;
+                            }
+                        }
+                        else{
+                            if(production.type+' nationale' in series){
+                                series[production.type+' nationale'] += 1;
+                            }
+                            else{
+                                series[production.type+' nationale'] = 1;
+                            }
+                        }
+                    });
+                }
+                else{
+                    productions.forEach(production => {
+                        if(production.type in series){
+                            series[production.type] += 1;
+                        }
+                        else{
+                            series[production.type] = 1;
+                        }
+                    });
+                }
 
                 for(production in series){
-                    console.log(production+": "+series[production]);
                     labels.push(production);
                     output.push(series[production]);
                     backgroundColor.push(colors[i]);
                     i++;
                 }
-
-                console.log(labels);
-                console.log(output);
-                console.log(backgroundColor);
 
                 if(update){
                     pie.data.labels = labels;
@@ -657,7 +740,7 @@
                 return pie;
             }
 
-            function drawChart(data,deb,fin,affichage,graph,update) {
+            function drawChart(data,deb,fin,affichage,graph,update,typeProduction) {
                 var productions = JSON.parse(data.slice(2,-1)+"]");
                 deb = new Date(deb);
                 fin = new Date(fin);
@@ -669,22 +752,45 @@
                         var year = label.getFullYear();
                         labels.push(month+" "+year);
                     }
-                    console.log(labels);
-
+                    
                     var series = {};
-                    productions.forEach(production => {
-                        var d = new Date(production.date);
-                        var month = d.toLocaleString('fr', { month: 'short' });
-                        var year = d.getFullYear();
-                        if(!(production.type in series))
-                            series[production.type] = {};
-                        if(month+" "+year in series[production.type])
-                            series[production.type][month+" "+year] += 1;
-                        else
-                            series[production.type][month+" "+year] = 1;
-                    });
-                    console.log(series);
-
+                    if(typeProduction == 'publication' || typeProduction == 'communication'){
+                        productions.forEach(production => {
+                            var d = new Date(production.date);
+                            var month = d.toLocaleString('fr', { month: 'short' });
+                            var year = d.getFullYear();
+                            if(production.inter == 'internationale'){
+                                if(!(production.type+' internationale '+production.classe in series))
+                                    series[production.type+' internationale '+production.classe] = {};
+                                if(month+" "+year in series[production.type+' internationale '+production.classe])
+                                    series[production.type+' internationale '+production.classe][month+" "+year] += 1;
+                                else
+                                    series[production.type+' internationale '+production.classe][month+" "+year] = 1;
+                            }
+                            else{
+                                if(!(production.type+' nationale' in series))
+                                    series[production.type+' nationale'] = {};
+                                if(month+" "+year in series[production.type+' nationale'])
+                                    series[production.type+' nationale'][month+" "+year] += 1;
+                                else
+                                    series[production.type+' nationale'][month+" "+year] = 1;
+                            }
+                        });
+                    }
+                    else{
+                        productions.forEach(production => {
+                            var d = new Date(production.date);
+                            var month = d.toLocaleString('fr', { month: 'short' });
+                            var year = d.getFullYear();
+                            if(!(production.type in series))
+                                series[production.type] = {};
+                            if(month+" "+year in series[production.type])
+                                series[production.type][month+" "+year] += 1;
+                            else
+                                series[production.type][month+" "+year] = 1;
+                        });
+                    }
+                    
                 }
                 else{
                     for(var d= new Date(deb); d.getFullYear()<= fin.getFullYear(); d.setFullYear(d.getFullYear()+1)){
@@ -695,28 +801,49 @@
                     labels = Array.from(new Set(labels));
                     
                     var series = {};
-                    productions.forEach(production => {
-                        var d = new Date(production.date);
-                        var year = d.getFullYear();
-                        if(!(production.type in series))
-                            series[production.type] = {};
-                        if(year in series[production.type])
-                            series[production.type][year] += 1;
-                        else
-                            series[production.type][year] = 1;
-                    });
-                    console.log(series);
+                    if(typeProduction == 'publication' || typeProduction == 'communication'){
+                        productions.forEach(production => {
+                            var d = new Date(production.date);
+                            var year = d.getFullYear();
+                            if(production.inter == 'internationale'){
+                                if(!(production.type+' internationale '+production.classe in series))
+                                    series[production.type+' internationale '+production.classe] = {};
+                                if(year in series[production.type+' internationale '+production.classe])
+                                    series[production.type+' internationale '+production.classe][year] += 1;
+                                else
+                                    series[production.type+' internationale '+production.classe][year] = 1;
+                            }
+                            else{
+                                if(!(production.type+' nationale' in series))
+                                    series[production.type+' nationale'] = {};
+                                if(year in series[production.type+' nationale'])
+                                    series[production.type+' nationale'][year] += 1;
+                                else
+                                    series[production.type+' nationale'][year] = 1;
+                            }
+                        });
+                    }
+                    else{
+                        productions.forEach(production => {
+                            var d = new Date(production.date);
+                            var year = d.getFullYear();
+                            if(!(production.type in series))
+                                series[production.type] = {};
+                            if(year in series[production.type])
+                                series[production.type][year] += 1;
+                            else
+                                series[production.type][year] = 1;
+                        });
+                    }
+                    
                 }
 
                 var output = [];
                 var i = 0;
                 for (serie in series){
-                    console.log("production: "+serie);
                     var tempo = [];
                     labels.forEach(label => {
-                        console.log("anée: "+label);
                         if(label in series[serie]){
-                            console.log("nbre: "+series[serie][label]);
                             tempo.push({
                                 x: label,
                                 y: series[serie][label]
@@ -734,24 +861,32 @@
                         backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
                         borderColor: colors[i],
                         borderWidth: 1,
-                        data: tempo
+                        data: tempo,
+                        fill: false
                     });
                     i++;
                 }
-                console.log(output);
-
+                
                 var barChartData = {
                     labels: labels,
                     datasets: output
                 }
 
-                if(update){
-                    graph['data'] = barChartData;
-                    graph.update(); 
+                var type = 'line';
+                if(typeProduction == 'publication' || typeProduction == 'communication' || typeProduction == 'all'){
+                    type = 'bar';
                 }
-                else{
-                    graph = new Chart($('#graph'), {
-                        type: 'bar',
+
+                var titre = 'Production';
+                if(typeProduction != 'all')
+                    titre = typeProduction.charAt(0).toUpperCase() + typeProduction.slice(1);
+
+                var xlabel = 'Année';
+                if(affichage == 'mois')
+                    xlabel = 'Mois';
+
+                var config = {
+                        type: type,
                         data: barChartData,
                         options: {
                             responsive: true,
@@ -760,19 +895,33 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Production'
+                                text: titre
                             },
                             scales: {
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
                                         callback: function(value) {if (value % 1 === 0) {return value;}}
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Nombre'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: xlabel
                                     }
                                 }]
                             }
                         }
-                    });
+                    };
+
+                if(update){
+                    graph.destroy(); 
                 }
+                graph = new Chart($('#graph'), config);
                 return graph;
             }
         });

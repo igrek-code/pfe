@@ -43,9 +43,10 @@
         }
     }
 
-    if(isset($_GET["bilancher"]) && $_GET["bilancher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
+    /* -------------------------------------------------------------------------------------------------------- */
+
+    /*if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] == "all" && isset($_GET["bilancher"]) && $_GET["bilancher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
         class production{
-            public $titre;
             public $type;
             public $date;
         }
@@ -54,9 +55,13 @@
         $fin = mysqli_real_escape_string($db,$_GET["fin"]);
 
         $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codepro IN (
-            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
+            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."' AND idcher IN (
+                SELECT idcher FROM users WHERE actif='1'
+            )
         ) OR codepro IN (
-            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."'
+            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."' AND idcher IN (
+                SELECT idcher FROM users WHERE actif='1'
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -101,22 +106,34 @@
         if(isset($productions))
             echo json_encode($productions);
         else echo "[]";
-    }
+    }*/
 
-    if(isset($_GET["pointCher"]) && $_GET["pointCher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
+    if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != "" && isset($_GET["bilancher"]) && $_GET["bilancher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
         class production{
             public $type;
             public $classe;
             public $inter;
+            public $date;
         }
-        $idcher = mysqli_real_escape_string($db,$_GET["pointCher"]);
+        $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
         $deb = mysqli_real_escape_string($db,$_GET["deb"]);
         $fin = mysqli_real_escape_string($db,$_GET["fin"]);
+        $typeProduction = mysqli_real_escape_string($db,$_GET["typeProduction"]);
+        if($typeProduction == "all"){
+            $typeProduction= "";
+        }
+        else{
+            $typeProduction = " AND type='".$typeProduction."' ";
+        }
 
-        $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codepro IN (
-            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
+        $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' ".$typeProduction." AND codepro IN (
+            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."' AND idcher IN (
+                SELECT idcher FROM users WHERE actif='1'
+            )
         ) OR codepro IN (
-            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."'
+            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."' AND idcher IN (
+                SELECT idcher FROM users WHERE actif='1'
+            )
         )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
@@ -124,6 +141,7 @@
             while($row = mysqli_fetch_array($result)){
                 $production = new production();
                 $production->type = $row['type'];
+                $production->date = $row['date'];
                 $codepro = $row['codepro'];
                 switch ($production->type) {
                     case 'publication':
@@ -200,4 +218,5 @@
             echo json_encode($notes);
         else echo "{}";
     }
+
 ?>
