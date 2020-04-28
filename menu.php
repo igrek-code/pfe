@@ -41,7 +41,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="bilanLabo.php">
                     <i class="pe-7s-graph3"></i>
                     <p>Bilan</p>
                 </a>
@@ -94,7 +94,7 @@
                  </a>
              </li>
              <li '.$class[6].'>
-                 <a href="#">
+                 <a href="bilanLabo.php">
                      <i class="pe-7s-graph3"></i>
                      <p>Bilan</p>
                  </a>
@@ -140,7 +140,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="bilanEquipe.php">
                     <i class="pe-7s-graph3"></i>
                     <p>Bilan</p>
                 </a>
@@ -186,7 +186,7 @@
                  </a>
              </li>
              <li '.$class[5].'>
-                 <a href="#">
+                 <a href="bilanEquipe.php">
                      <i class="pe-7s-graph3"></i>
                      <p>Bilan</p>
                  </a>
@@ -215,7 +215,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="bilanCher.php">
                     <i class="pe-7s-graph3"></i>
                     <p>Bilan</p>
                 </a>
@@ -244,7 +244,7 @@
                  </a>
              </li>
              <li '.$class[2].'>
-                 <a href="#">
+                 <a href="bilanCher.php">
                      <i class="pe-7s-graph3"></i>
                      <p>Bilan</p>
                  </a>
