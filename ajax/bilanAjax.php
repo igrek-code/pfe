@@ -45,77 +45,14 @@
 
     /* -------------------------------------------------------------------------------------------------------- */
 
-    /*if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] == "all" && isset($_GET["bilancher"]) && $_GET["bilancher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
-        class production{
-            public $type;
-            public $date;
-        }
-        $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
-        $deb = mysqli_real_escape_string($db,$_GET["deb"]);
-        $fin = mysqli_real_escape_string($db,$_GET["fin"]);
-
-        $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codepro IN (
-            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."' AND idcher IN (
-                SELECT idcher FROM users WHERE actif='1'
-            )
-        ) OR codepro IN (
-            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."' AND idcher IN (
-                SELECT idcher FROM users WHERE actif='1'
-            )
-        )";
-        $result = mysqli_query($db,$sql);
-        if(mysqli_num_rows($result) > 0){
-            $productions = array();
-            while($row = mysqli_fetch_array($result)){
-                $production = new production();
-                $production->type = $row["type"];
-                $codepro = $row["codepro"];
-                $production->date = $row["date"];
-                switch ($production->type) {
-                    case 'publication':
-                        $sql = "SELECT * FROM publication WHERE codepro='".$codepro."'";
-                    break;
-                    
-                    case 'communication':
-                        $sql = "SELECT * FROM communication WHERE codepro='".$codepro."'";
-                    break;
-
-                    case 'ouvrage':
-                        $sql = "SELECT * FROM ouvrage WHERE codepro='".$codepro."'";
-                    break;
-
-                    case 'chapitreOuvrage':
-                        $sql = "SELECT * FROM chapitredouvrage WHERE codepro='".$codepro."'";
-                    break;
-
-                    case 'doctorat':
-                        $sql = "SELECT * FROM these WHERE codepro='".$codepro."'";
-                    break;
-
-                    default:
-                        $sql = "SELECT * FROM pfemaster WHERE codepro='".$codepro."'";
-                    break;
-                }
-                $result2 = mysqli_query($db,$sql);
-                if(mysqli_num_rows($result2) > 0){
-                    $production->titre = mysqli_fetch_array($result2)["titre"];
-                }
-                $productions[] = $production;
-            }
-        }
-        if(isset($productions))
-            echo json_encode($productions);
-        else echo "[]";
-    }*/
-
-    if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != "" && isset($_GET["bilancher"]) && $_GET["bilancher"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
+    if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
         class production{
             public $type;
             public $classe;
             public $inter;
             public $date;
         }
-        $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
+
         $deb = mysqli_real_escape_string($db,$_GET["deb"]);
         $fin = mysqli_real_escape_string($db,$_GET["fin"]);
         $typeProduction = mysqli_real_escape_string($db,$_GET["typeProduction"]);
@@ -125,16 +62,69 @@
         else{
             $typeProduction = " AND type='".$typeProduction."' ";
         }
+        if(isset($_GET["bilancher"]) && $_GET["bilancher"] != ""){
+            $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
+            $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' ".$typeProduction." AND (codepro IN (
+                SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."' AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ) OR codepro IN (
+                SELECT codepro FROM coauteurs WHERE idcher='".$idcher."' AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ))";
+        }
 
-        $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' ".$typeProduction." AND codepro IN (
-            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."' AND idcher IN (
-                SELECT idcher FROM users WHERE actif='1'
-            )
-        ) OR codepro IN (
-            SELECT codepro FROM coauteurs WHERE idcher='".$idcher."' AND idcher IN (
-                SELECT idcher FROM users WHERE actif='1'
-            )
-        )";
+        if(isset($_GET["bilanequipe"]) && $_GET["bilanequipe"] != ""){
+            $idequipe = mysqli_real_escape_string($db,$_GET["bilanequipe"]);
+            $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' ".$typeProduction." AND (codepro IN (
+                SELECT codepro FROM auteurprinc WHERE (idcher IN (
+                    SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
+                ) OR idcher IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
+                )) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ) OR codepro IN (
+                SELECT codepro FROM coauteurs WHERE (idcher IN (
+                    SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
+                ) OR idcher IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
+                )) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ))";
+        }
+        
+        if(isset($_GET["bilanlabo"]) && $_GET["bilanlabo"] != ""){
+            $idlabo = mysqli_real_escape_string($db,$_GET["bilanlabo"]);
+            $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' ".$typeProduction." AND (codepro IN (
+                SELECT codepro FROM auteurprinc WHERE (idcher IN (
+                    SELECT idcher FROM chefequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                ) OR idcher IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                )) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ) OR codepro IN (
+                SELECT codepro FROM coauteurs WHERE (idcher IN (
+                    SELECT idcher FROM chefequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                ) OR idcher IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                )) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ))";
+        }
+
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
             $productions = array();

@@ -432,9 +432,10 @@
 
                             if( idcher != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
                                 $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
-                                    graph = drawChart(data,deb,fin,affichage,graph,update,typeProduction);
-                                    pie = drawPie(data,pie,update,typeProduction);
-                                    getPoints(data,typeProduction);
+                                    var productions = JSON.parse(data.slice(2,-1)+"]");
+                                    graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
+                                    pie = drawPie(productions,pie,update,typeProduction);
+                                    getPoints(productions,typeProduction);
                                     update = true;
                                 });
                                 /*$.get("ajax/bilanAjax.php",{pointCher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
@@ -516,11 +517,453 @@
                     break;
                 
                     case 'equipe':
+                        $('#filters').html(`
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>établissement</label>
+                                    <select data-live-search="true" title="Etablissement..." class="form-control selectpicker" id="idetab">
+                                    <?php
+                                        $sql = "SELECT * FROM etablissement";
+                                        $result = mysqli_query($db,$sql);
+                                        if(mysqli_num_rows($result) > 0){
+                                            while($row = mysqli_fetch_array($result)){
+                                                $idetab = $row["idetab"];
+                                                $nom = $row["nom"];
+                                                echo '<option value="'.$idetab.'">'.$nom.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>laboratoire</label>
+                                    <select data-live-search="true" title="Laboratoire..." class="form-control selectpicker" id="idlabo">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>équipe</label>
+                                    <select data-live-search="true" title="Equipe..." class="form-control selectpicker" id="idequipe">
+                                    </select>
+                                </div>
+                            </div>
+                        </div> 
+                        <div style="margin-top:5px;padding-bottom:10px;" class="row form-inline">
+                            <div style="margin-top:10px;" class="col-md-3">
+                                <div class="form-check form-check-inline">
+                                    <label>Afficher par: </label>
+                                    <input name="affiche" class="form-check-input" type="radio" value="annee">
+                                    <label class="form-check-label">Année</label>
+                                    <input name="affiche" style="margin-left:10px;" class="form-check-input" checked type="radio" value="mois">
+                                    <label class="form-check-label">Mois</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>type de production</label>
+                                    <select class="form-control selectpicker" id="typeProduction">
+                                        <option value="all">Toutes</option>
+                                        <option value="publication">Publication</option>
+                                        <option value="communication">Communication</option>
+                                        <option value="ouvrage">Ouvrage</option>
+                                        <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                        <option value="doctorat">Thèse</option>
+                                        <option value="master">PFE Master</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="byMonth" style="padding-bottom:10px;" class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Année</label>
+                                    <input value="2020" min="1991" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Entre</label>
+                                    <input value="01" min="1" max="<?php echo date('m'); ?>" id="periodeDebM" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>et</label>
+                                    <input value="<?php echo date('m'); ?>" min="1" max="<?php echo date('m'); ?>" id="periodeFinM" class="form-control" type="number">
+                                    <!--<select id="periodeFinM" class="form-group selectpicker">
+                                        <option selected value="01">Janvier</option>
+                                        <option value="02">Février</option>
+                                        <option value="03">Mars</option>
+                                        <option value="04">Avril</option>
+                                        <option value="05">Mai</option>
+                                        <option value="06">Juin</option>
+                                        <option value="07">Juillet</option>
+                                        <option value="08">Aout</option>
+                                        <option value="09">Septembre</option>
+                                        <option value="10">Octobre</option>
+                                        <option value="11">Novembre</option>
+                                        <option value="12">Décembre</option>
+                                    </select>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="byYear" style="padding-bottom:10px;" class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Entre</label>
+                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>et</label>
+                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                        $('#stats').hide();
+                        var update = false;
+                        var graph = undefined;
+                        var pie = undefined;
+
+                        $('#idetab').change(function(){
+                            var idetab = $(this).val();
+                            $.get("ajax/bilanAjax.php",{idetab: idetab},function(data){
+                                $('#idlabo').html(data.slice(2,-1));
+                                $('.selectpicker').selectpicker('refresh');
+                            });
+                        });
+                        $('#idlabo').change(function(){
+                            var idlabo = $(this).val();
+                            $.get("ajax/bilanAjax.php",{idlabo: idlabo},function(data){
+                                $('#idequipe').html(data.slice(2,-1));
+                                $('.selectpicker').selectpicker('refresh');
+                            });
+                        });
+                        $('#idequipe').change(function(){
+                            var typeProduction = $('#typeProduction').val();
+                            var affichage = $('input[type="radio"]:checked').val();
+                            if(affichage == "mois"){
+                                var year = parseInt($('#periodeY').val());
+                                var deb = parseInt($('#periodeDebM').val());
+                                var fin = parseInt($('#periodeFinM').val());
+                                if(deb < 10) deb = "0"+deb;
+                                if(fin < 10) fin = "0"+fin;
+                                deb = year+"-"+deb;
+                                fin = year+"-"+fin;
+                            }else{
+                                var deb = parseInt($('#periodeDebY').val())+"-01";
+                                var fin = parseInt($('#periodeFinY').val())+"-12";
+                            }
+                            var idequipe = $(this).val();
+                            var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
+
+                            if( idequipe != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
+                                $.get("ajax/bilanAjax.php",{bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    var productions = JSON.parse(data.slice(2,-1)+"]");
+                                    graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
+                                    pie = drawPie(productions,pie,update,typeProduction);
+                                    getPoints(productions,typeProduction);
+                                    update = true;
+                                });
+
+                                $('#stats').show();
+                            }
+                            else{
+                                $('#stats').hide();
+                            }
+                        });
+
+                        $('#byYear').hide();
+
+                        $('input[type="radio"]').click(function(){
+                            var val = $(this).val();
+                            if(val == "annee"){
+                                $('#byYear').show();
+                                $('#byMonth').hide();
+                            }
+                            else{
+                                $('#byYear').hide();
+                                $('#byMonth').show();
+                            }
+                            $('#idequipe').trigger('change');
+                        });
+                        
+                        $('#periodeY').change(function(){
+                            var finM = $('#periodeFinM');
+                            var year = $(this).val();
+                            var maxMonth = <?php echo date('m');?>;
+                            var currentYear = <?php echo date('Y');?>;
+                            if(year == currentYear){
+                                finM.prop('max',maxMonth);
+                                if(parseInt(finM.val()) > parseInt(maxMonth))
+                                    finM.val(maxMonth);
+                            }
+                            else{
+                                finM.prop('max',12);
+                            }
+                            $('#idequipe').trigger('change');
+                        });
+
+                        $('#periodeDebM').change(function(){
+                            var min = $(this).val();
+                            var finM = $('#periodeFinM');
+                            finM.prop('min',min);
+                            if(parseInt(min) > parseInt(finM.val()))
+                                finM.val(min);
+                            $('#idequipe').trigger("change");
+                        });
+                        $('#periodeFinM').change(function(){
+                            var max = $(this).val();
+                            var debM = $('#periodeDebM');
+                            debM.prop('max',max);
+                            if(parseInt(max) < parseInt(debM.val()))
+                                debM.val(max);
+                            $('#idequipe').trigger("change");
+                        });
+                        $('#periodeDebY').change(function(){
+                            var min = $(this).val();
+                            $('#periodeFinY').prop('min',min);
+                            if(min>$('#periodeFinY').val())
+                            $('#periodeFinY').val(min);
+                            $('#idequipe').trigger("change");
+                        });
+                        $('#periodeFinY').change(function(){
+                            var max = $(this).val();
+                            $('#periodeDeb').prop('max',max);
+                            if(max<$('#periodeDeb').val())
+                            $('#periodeDeb').val(max);
+                            $('#idequipe').trigger("change");
+                        });
+
+                        $('#typeProduction').change(function(){
+                            $('#idequipe').trigger('change');
+                        });
                     break;
 
                     default:
+                    $('#filters').html(`
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>établissement</label>
+                                    <select data-live-search="true" title="Etablissement..." class="form-control selectpicker" id="idetab">
+                                    <?php
+                                        $sql = "SELECT * FROM etablissement";
+                                        $result = mysqli_query($db,$sql);
+                                        if(mysqli_num_rows($result) > 0){
+                                            while($row = mysqli_fetch_array($result)){
+                                                $idetab = $row["idetab"];
+                                                $nom = $row["nom"];
+                                                echo '<option value="'.$idetab.'">'.$nom.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>laboratoire</label>
+                                    <select data-live-search="true" title="Laboratoire..." class="form-control selectpicker" id="idlabo">
+                                    </select>
+                                </div>
+                            </div>
+                        </div> 
+                        <div style="margin-top:5px;padding-bottom:10px;" class="row form-inline">
+                            <div style="margin-top:10px;" class="col-md-3">
+                                <div class="form-check form-check-inline">
+                                    <label>Afficher par: </label>
+                                    <input name="affiche" class="form-check-input" type="radio" value="annee">
+                                    <label class="form-check-label">Année</label>
+                                    <input name="affiche" style="margin-left:10px;" class="form-check-input" checked type="radio" value="mois">
+                                    <label class="form-check-label">Mois</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>type de production</label>
+                                    <select class="form-control selectpicker" id="typeProduction">
+                                        <option value="all">Toutes</option>
+                                        <option value="publication">Publication</option>
+                                        <option value="communication">Communication</option>
+                                        <option value="ouvrage">Ouvrage</option>
+                                        <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                        <option value="doctorat">Thèse</option>
+                                        <option value="master">PFE Master</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="byMonth" style="padding-bottom:10px;" class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Année</label>
+                                    <input value="2020" min="1991" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Entre</label>
+                                    <input value="01" min="1" max="<?php echo date('m'); ?>" id="periodeDebM" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>et</label>
+                                    <input value="<?php echo date('m'); ?>" min="1" max="<?php echo date('m'); ?>" id="periodeFinM" class="form-control" type="number">
+                                    <!--<select id="periodeFinM" class="form-group selectpicker">
+                                        <option selected value="01">Janvier</option>
+                                        <option value="02">Février</option>
+                                        <option value="03">Mars</option>
+                                        <option value="04">Avril</option>
+                                        <option value="05">Mai</option>
+                                        <option value="06">Juin</option>
+                                        <option value="07">Juillet</option>
+                                        <option value="08">Aout</option>
+                                        <option value="09">Septembre</option>
+                                        <option value="10">Octobre</option>
+                                        <option value="11">Novembre</option>
+                                        <option value="12">Décembre</option>
+                                    </select>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="byYear" style="padding-bottom:10px;" class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Entre</label>
+                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>et</label>
+                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                        $('#stats').hide();
+                        var update = false;
+                        var graph = undefined;
+                        var pie = undefined;
+
+                        $('#idetab').change(function(){
+                            var idetab = $(this).val();
+                            $.get("ajax/bilanAjax.php",{idetab: idetab},function(data){
+                                $('#idlabo').html(data.slice(2,-1));
+                                $('.selectpicker').selectpicker('refresh');
+                            });
+                        });
+                        $('#idlabo').change(function(){
+                            var typeProduction = $('#typeProduction').val();
+                            var affichage = $('input[type="radio"]:checked').val();
+                            if(affichage == "mois"){
+                                var year = parseInt($('#periodeY').val());
+                                var deb = parseInt($('#periodeDebM').val());
+                                var fin = parseInt($('#periodeFinM').val());
+                                if(deb < 10) deb = "0"+deb;
+                                if(fin < 10) fin = "0"+fin;
+                                deb = year+"-"+deb;
+                                fin = year+"-"+fin;
+                            }else{
+                                var deb = parseInt($('#periodeDebY').val())+"-01";
+                                var fin = parseInt($('#periodeFinY').val())+"-12";
+                            }
+                            var idlabo = $(this).val();
+                            var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
+
+                            if( idlabo != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
+                                $.get("ajax/bilanAjax.php",{bilanlabo: idlabo, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    var productions = JSON.parse(data.slice(2,-1)+"]");
+                                    console.log(productions);
+                                    graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
+                                    pie = drawPie(productions,pie,update,typeProduction);
+                                    getPoints(productions,typeProduction);
+                                    update = true;
+                                });
+
+                                $('#stats').show();
+                            }
+                            else{
+                                $('#stats').hide();
+                            }
+                        });
+
+                        $('#byYear').hide();
+
+                        $('input[type="radio"]').click(function(){
+                            var val = $(this).val();
+                            if(val == "annee"){
+                                $('#byYear').show();
+                                $('#byMonth').hide();
+                            }
+                            else{
+                                $('#byYear').hide();
+                                $('#byMonth').show();
+                            }
+                            $('#idlabo').trigger('change');
+                        });
+                        
+                        $('#periodeY').change(function(){
+                            var finM = $('#periodeFinM');
+                            var year = $(this).val();
+                            var maxMonth = <?php echo date('m');?>;
+                            var currentYear = <?php echo date('Y');?>;
+                            if(year == currentYear){
+                                finM.prop('max',maxMonth);
+                                if(parseInt(finM.val()) > parseInt(maxMonth))
+                                    finM.val(maxMonth);
+                            }
+                            else{
+                                finM.prop('max',12);
+                            }
+                            $('#idlabo').trigger('change');
+                        });
+
+                        $('#periodeDebM').change(function(){
+                            var min = $(this).val();
+                            var finM = $('#periodeFinM');
+                            finM.prop('min',min);
+                            if(parseInt(min) > parseInt(finM.val()))
+                                finM.val(min);
+                            $('#idlabo').trigger("change");
+                        });
+                        $('#periodeFinM').change(function(){
+                            var max = $(this).val();
+                            var debM = $('#periodeDebM');
+                            debM.prop('max',max);
+                            if(parseInt(max) < parseInt(debM.val()))
+                                debM.val(max);
+                            $('#idlabo').trigger("change");
+                        });
+                        $('#periodeDebY').change(function(){
+                            var min = $(this).val();
+                            $('#periodeFinY').prop('min',min);
+                            if(min>$('#periodeFinY').val())
+                            $('#periodeFinY').val(min);
+                            $('#idlabo').trigger("change");
+                        });
+                        $('#periodeFinY').change(function(){
+                            var max = $(this).val();
+                            $('#periodeDeb').prop('max',max);
+                            if(max<$('#periodeDeb').val())
+                            $('#periodeDeb').val(max);
+                            $('#idlabo').trigger("change");
+                        });
+
+                        $('#typeProduction').change(function(){
+                            $('#idlabo').trigger('change');
+                        });
                     break;
                 }
                 $('.selectpicker').selectpicker('refresh');
@@ -528,11 +971,10 @@
 
             $('#typeBilan').trigger('change');
 
-            function getPoints(data,typeProduction){
+            function getPoints(productions,typeProduction){
                 var affichage = $('#notes');
                 affichage.html('');
                 var notes;
-                var productions = JSON.parse(data.slice(2,-1)+"]");
                 $.get("ajax/bilanAjax.php",{sysNotes: 'true'},function(data){
                     notes = JSON.parse(data.slice(2,-1)+'}');
                     var results = {};
@@ -670,8 +1112,7 @@
 
             }
 
-            function drawPie(data,pie,update,typeProduction){
-                var productions = JSON.parse(data.slice(2,-1)+"]");
+            function drawPie(productions,pie,update,typeProduction){
                 var labels = [];
                 var output = [];
                 var backgroundColor = [];
@@ -740,8 +1181,7 @@
                 return pie;
             }
 
-            function drawChart(data,deb,fin,affichage,graph,update,typeProduction) {
-                var productions = JSON.parse(data.slice(2,-1)+"]");
+            function drawChart(productions,deb,fin,affichage,graph,update,typeProduction) {
                 deb = new Date(deb);
                 fin = new Date(fin);
                 var labels = [];
