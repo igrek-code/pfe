@@ -10,7 +10,7 @@
                     SELECT codeDomaine FROM specialite WHERE idspe IN (
                         SELECT idspe FROM laboratoire WHERE idetab='".$idetab."'
                     )
-                )";
+                ) GROUP BY nom";
                 if($result = mysqli_query($db,$sql)){
                     while ($row = mysqli_fetch_array($result)) {
                         $nomDomaine = $row["nom"];
@@ -39,7 +39,9 @@
                         ';
 
                         $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
-                            SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
+                            SELECT idspe FROM specialite WHERE codeDomaine IN (
+                                SELECT codeDomaine FROM domaine WHERE nom = '".$nomDomaine."'
+                            )
                         )"; 
                         if($result2 = mysqli_query($db,$sql)){
                             echo '<tbody>';
@@ -100,7 +102,9 @@
             else{
                 $codeDomaine = mysqli_real_escape_string($db,$_GET["codeDomaine"]);
                 $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
-                    SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
+                    SELECT idspe FROM specialite WHERE codeDomaine IN (
+                        SELECT codeDomaine FROM domaine WHERE nom = '".$codeDomaine."'
+                    )
                 )";
                 if($result = mysqli_query($db,$sql)){
                     echo '
@@ -177,12 +181,12 @@
                 SELECT codeDomaine FROM specialite WHERE idspe IN (
                     SELECT idspe FROM laboratoire WHERE idetab='".$idetab."'
                 )
-            )";
+            ) GROUP BY nom";
             if($result = mysqli_query($db,$sql)){
                 while ($row = mysqli_fetch_array($result)) {
                     $codeDomaine = $row["codeDomaine"];
                     $nomDomaine = $row["nom"];
-                    echo '<option value="'.$codeDomaine.'">'.$nomDomaine.'</option>';
+                    echo '<option value="'.$nomDomaine.'">'.$nomDomaine.'</option>';
                 }
             }
         }

@@ -308,6 +308,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>domaine</label>
+                                        <!--<select title="Domaine..." required name="idspe" class="form-control selectpicker" id="codeDomaine">
+                                        
+                                        </select>-->
                                         <input placeholder="Domaine du laboratoire" maxlength="50" name="codeDomaine" class="form-control" type="text" required>
                                     </div>
                                 </div>

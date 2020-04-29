@@ -266,11 +266,6 @@
                 setTimeout(function() {
                     $(".table").DataTable(fr_table(codeDomaine));
                 },100);
-                /*setTimeout(function(){
-                    $("body").animate({
-                    scrollTop: $("h4:eq(1)").offset().top-50
-                    }, 500);
-                },200);*/
             });
 
             function refresh_table(){
