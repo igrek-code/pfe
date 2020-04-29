@@ -422,7 +422,9 @@
                                 <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur`+position+`" auteur="`+position+`">
                                 <option value="autre">Autre</option>
                                 <?php
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){

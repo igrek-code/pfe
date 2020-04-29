@@ -1,7 +1,7 @@
 <?php
     require_once("config.php");
     session_start();
-
+    
     $session = false;
     if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
     if(!$session){   
@@ -78,9 +78,7 @@
             <ul class="nav">
                 <?php
                     require_once('menu.php');
-                    if(isset($_SESSION['loggedinlabo'])) menu(6);
-                    //if(isset($_SESSION['loggedinequipe'])) menu(5);
-                    //if(isset($_SESSION['loggedinchercheur'])) menu(2);
+                     menu(6);
                 ?>
             </ul>
     	</div>
@@ -96,7 +94,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <div class="navbar-brand" href="#">Admin</div>
+                    <div style="font-size:18px;" class="navbar-brand">
+                        <?php 
+                            echo $_SESSION["nom"];
+                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                        ?> 
+                    </div>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -113,7 +117,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         
                     <li>
-                            <a href="adminCompte.php">
+                            <a href="chercheurCompte.php">
                                 <p>Compte</p>
                             </a>
                         </li>

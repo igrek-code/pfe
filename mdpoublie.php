@@ -1,5 +1,6 @@
 <?php
     require_once("config.php");
+    require_once('phpmailer/PHPMailerAutoload.php');
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
@@ -13,14 +14,13 @@
                 $sql = "UPDATE users SET password='".$pwd."' WHERE mail='".$mail."'";
                 if(mysqli_query($db,$sql)) {
                     // the message
-                    //$msg = "Votre nouveau mot de passe:\n".$pwd;
-                    //$subject = "Mot de passe réinitialiser (Plateforme scientifique)";
-                    // use wordwrap() if lines are longer than 70 characters
-                    //$msg = wordwrap($msg,70);
-
-                    // send email
-                    //mail($mail,$subject,$msg);
-                    $error = false;
+                    $to   = 'plateformescientifiquepfe@gmail.com';
+                    $from = 'plateformescientifiquepfe@gmail.com';
+                    $name = 'Plateforme Scientifique';
+                    $subj = 'Mot de passe réinitialiser (Plateforme scientifique)';
+                    $msg = "Votre nouveau mot de passe:\n".$pwd;
+                    
+                    $error=smtpmailer($to,$from, $name ,$subj, $msg);
                 }
             }
         }
@@ -38,6 +38,42 @@
             $pass[] = $alphabet[$n];
         }
         return implode($pass); //turn the array into a string
+    }
+
+    function smtpmailer($to, $from, $from_name, $subject, $body)
+    {
+        $mail = new PHPMailer();
+        $mail->CharSet="UTF-8";
+        $mail->IsSMTP();
+        $mail->SMTPAuth = true; 
+ 
+        $mail->SMTPSecure = 'ssl'; 
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 465;  
+        $mail->Username = 'plateformescientifiquepfe@gmail.com';
+        $mail->Password = '3Rh4X#r2pF-7E/}M';   
+   
+   //   $path = 'reseller.pdf';
+   //   $mail->AddAttachment($path);
+   
+        $mail->IsHTML(true);
+        $mail->From="plateformescientifiquepfe@gmail.com";
+        $mail->FromName=$from_name;
+        $mail->Sender=$from;
+        $mail->AddReplyTo($from, $from_name);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->AddAddress($to);
+        if(!$mail->Send())
+        {
+            //$error ="Please try Later, Error Occured while Processing...";
+            return true; 
+        }
+        else 
+        {
+            //$error = "Thanks You !! Your email is sent.";  
+            return false;
+        }
     }
 ?>
 

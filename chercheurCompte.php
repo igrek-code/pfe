@@ -1,6 +1,7 @@
 <?php
     require_once("config.php");
     session_start();
+    
     $session = false;
     if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
     if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
@@ -189,7 +190,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Modifier Compte
-                        <a id="revenir" href="<?php if(isset($_SESSION["loggedinchercheur"])) echo "gererProduction.php"; else echo "laboGererEquipe.php";?>" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
+                        <a id="revenir" href="<?php if(isset($_SESSION["loggedinchercheur"])) echo "gererProduction.php"; else echo "laboGererDemande.php";?>" class="pull-right text-muted"><i class="pe-7s-back"></i> page d'accueil </a> </h4>
                     </div>
 
                     <div class="content">

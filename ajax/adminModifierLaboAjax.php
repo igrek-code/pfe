@@ -36,9 +36,9 @@
         }
     }
     
-    if(isset($_GET["all"]) && $_GET["all"] == "all"){
+    /*if(isset($_GET["all"]) && $_GET["all"] == "all"){
         echo '<select class="form-control selectpicker" data-live-search="true" name="idcher" id="idcher" title="Chercheur...">';
-        $sql = "SELECT * FROM chercheur WHERE profil='permanent'";
+        $sql = "SELECT * FROM chercheur WHERE profil='permanent' AND actif=1";
         if($result = mysqli_query($db,$sql)){
             while($row = mysqli_fetch_array($result)){
                 $nomcher = $row["nom"];
@@ -47,6 +47,6 @@
             }
         }
         echo '</select>';
-    }
+    }*/
 ?>
         

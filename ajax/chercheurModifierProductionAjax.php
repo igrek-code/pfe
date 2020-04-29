@@ -189,7 +189,9 @@
                             if($idcherauteurprinc != 0){
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -207,7 +209,9 @@
                             else{
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -240,7 +244,9 @@
                                 <label>auteur '.$position.'</label>
                                 <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -271,7 +277,9 @@
                                 <label>auteur '.$position.'</label>
                                 <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -448,7 +456,9 @@
                             if($idcherauteurprinc != 0){
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -466,7 +476,9 @@
                             else{
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -499,7 +511,9 @@
                                 <label>auteur '.$position.'</label>
                                 <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -530,7 +544,9 @@
                                 <label>auteur '.$position.'</label>
                                 <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -723,7 +739,9 @@
                             if($idcherauteurprinc != 0){
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -741,7 +759,9 @@
                             else{
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -774,7 +794,9 @@
                                             <label>auteur '.$position.'</label>
                                             <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
-                                                $sql = "SELECT * FROM chercheur";
+                                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                    SELECT idcher FROM users WHERE actif=1
+                                                )";
                                                 $result = mysqli_query($db,$sql);
                                                 if(mysqli_num_rows($result) > 0){
                                                     while($row = mysqli_fetch_array($result)){
@@ -805,7 +827,9 @@
                                             <label>auteur '.$position.'</label>
                                             <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
-                                                $sql = "SELECT * FROM chercheur";
+                                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                    SELECT idcher FROM users WHERE actif=1
+                                                )";
                                                 $result = mysqli_query($db,$sql);
                                                 if(mysqli_num_rows($result) > 0){
                                                     while($row = mysqli_fetch_array($result)){
@@ -981,7 +1005,9 @@
                             if($idcherauteurprinc != 0){
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -999,7 +1025,9 @@
                             else{
                                 echo '<select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                     <option selected value="autre">Autre</option>';
-                                    $sql = "SELECT * FROM chercheur";
+                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                        SELECT idcher FROM users WHERE actif=1
+                                    )";
                                     $result = mysqli_query($db,$sql);
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_array($result)){
@@ -1032,7 +1060,9 @@
                                             <label>auteur '.$position.'</label>
                                             <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
-                                                $sql = "SELECT * FROM chercheur";
+                                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                    SELECT idcher FROM users WHERE actif=1
+                                                )";
                                                 $result = mysqli_query($db,$sql);
                                                 if(mysqli_num_rows($result) > 0){
                                                     while($row = mysqli_fetch_array($result)){
@@ -1063,7 +1093,9 @@
                                             <label>auteur '.$position.'</label>
                                             <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
-                                                $sql = "SELECT * FROM chercheur";
+                                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                    SELECT idcher FROM users WHERE actif=1
+                                                )";
                                                 $result = mysqli_query($db,$sql);
                                                 if(mysqli_num_rows($result) > 0){
                                                     while($row = mysqli_fetch_array($result)){
@@ -1205,7 +1237,9 @@
                     <div class="form-group">
                         <label>Encadreur</label>
                         <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
-                                $sql = "SELECT * FROM chercheur";
+                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                    SELECT idcher FROM users WHERE actif=1
+                                )";
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = mysqli_fetch_array($result)){
@@ -1325,7 +1359,9 @@
                     <div class="form-group">
                         <label>Encadreur</label>
                         <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
-                                $sql = "SELECT * FROM chercheur";
+                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                    SELECT idcher FROM users WHERE actif=1
+                                )";
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = mysqli_fetch_array($result)){
