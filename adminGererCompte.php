@@ -77,7 +77,7 @@
             <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
+                        <p style="font-size:11px">Demandes d'inscription</p>
                     </a>
                 </li>
                 <li>
@@ -148,7 +148,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -242,7 +242,7 @@
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",
-                            content : "Voulez vous vraiment supprimer cet élément",
+                            content : "Voulez-vous vraiment supprimer cet élément ?",
                             type : "red",
                             typeAnimated : true,
                             draggable : true,

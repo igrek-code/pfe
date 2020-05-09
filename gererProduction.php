@@ -125,7 +125,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -147,7 +147,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Type production</label>
+                                            <label>Type de production</label>
                                             <select class="form-control selectpicker" name="typeProduction" id="typeProduction">
                                                 <option value="publication">Publication</option>
                                                 <option value="communication">Communication</option>
@@ -269,7 +269,7 @@
 
                 $('#searchInfo').html(`
                     OUVRAGE: <br>
-                    -Titre, date, éditeur, nombre de pages, domaine, spécialités, mots-clè, (co)auteur
+                    -Titre, date, éditeur, nombre de pages, domaine, spécialités, mots-clés, (co)auteurs
                 `);
 
                 $('#searchBox').html(`
@@ -282,9 +282,9 @@
                         <option value="nbrepages">Nombre de pages</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>
-                        <option value="motscle">Mots-clè</option>
+                        <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
-                        <option value="coauteur">Co-auteur</option>
+                        <option value="coauteur">Co-auteurs</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -347,7 +347,7 @@
             function init_chapitreOuvrage(table){
                 $('#searchInfo').html(`
                     CHAPITRE D'OUVRAGE: <br>
-                    -Titre, date, éditeur, pages, volume, domaine, spécialités, mots-clè, (co)auteur
+                    -Titre, date, éditeur, pages, volume, domaine, spécialités, mots-clés, (co)auteurs
                 `);
 
                 $('#searchBox').html(`
@@ -361,9 +361,9 @@
                         <option value="volume">Volume</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>
-                        <option value="motscle">Mots-clè</option>
+                        <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
-                        <option value="coauteur">Co-auteur</option>
+                        <option value="coauteur">Co-auteurs</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -430,7 +430,7 @@
 
                 $('#searchInfo').html(`
                     THESE DE DOCTORAT: <br>
-                    -Titre, date, n d'ordre,lieu, domaine, spécialités, mots-clè, encadreur
+                    -Titre, date, n° d'ordre,lieu, domaine, spécialités, mots-clés, encadreur
                 `);
 
                 $('#searchBox').html(`
@@ -439,11 +439,11 @@
                     <select id="searchOuv" class="form-control selectpicker" title="Thèse...">
                         <option value="titre">Titre</option>
                         <option value="date">Date</option>
-                        <option value="nordre">N ordre</option>
+                        <option value="nordre">N° d'ordre</option>
                         <option value="lieusout">Lieu</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>
-                        <option value="motscle">Mots-clè</option>
+                        <option value="motscle">Mots-clés</option>
                         <option value="encadreur">Encadreur</option>
                     </select>
                     <input class="form-control" type="text">
@@ -504,7 +504,7 @@
 
                 $('#searchInfo').html(`
                     PFE MASTER: <br>
-                    -Titre, date, lieu, domaine, spécialités, mots-clè, encadreur
+                    -Titre, date, lieu, domaine, spécialités, mots-clés, encadreur
                 `);
 
                 $('#searchBox').html(`
@@ -516,7 +516,7 @@
                         <option value="lieusout">Lieu</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>
-                        <option value="motscle">Mots-clè</option>
+                        <option value="motscle">Mots-clés</option>
                         <option value="encadreur">Encadreur</option>
                     </select>
                     <input class="form-control" type="text">
@@ -573,7 +573,7 @@
 
                 $('#searchInfo').html(`
                     COMMUNICATION: <br>
-                    -Titre, date, domaine, spécialités, mots-clè, (co)auteur <br>
+                    -Titre, date, domaine, spécialités, mots-clés, (co)auteurs <br>
                     CONFERENCE: <br>
                     -Nom, abréviation, année, thème, périodicité, type, classe, pays
                 `);
@@ -586,9 +586,9 @@
                         <option value="date">Date</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>
-                        <option value="motscle">Mots-clè</option>
+                        <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
-                        <option value="coauteur">Co-auteur</option>
+                        <option value="coauteur">Co-auteurs</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -708,7 +708,7 @@
                         },
                         buttons:{
                             ok: {
-                                text: "D'accord",
+                                text: "Fermer",
                                 keys: ["enter"]
                             }
                         }
@@ -722,7 +722,7 @@
 
                 $('#searchInfo').html(`
                     PUBLICATION: <br>
-                    -Titre, date, doi, volume, issue, domaine, spécialités, mots-clè, (co)auteur <br>
+                    -Titre, date, doi, volume, issue, domaine, spécialités, mots-clés, (co)auteurs <br>
                     REVUE: <br>
                     -Nom, e-issn, issn print, éditeur, année, thème, périodicité, type, classe, pays
                 `);
@@ -735,12 +735,12 @@
                         <option value="date">Date</option>
                         <option value="doi">Doi</option>
                         <option value="volume">Volume</option>
-                        <option value="issue">N Issue</option>
+                        <option value="issue">N° Issue</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>
-                        <option value="motscle">Mots-clè</option>
+                        <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
-                        <option value="coauteur">Co-auteur</option>
+                        <option value="coauteur">Co-auteurs</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -882,7 +882,7 @@
                         },
                         buttons:{
                             ok: {
-                                text: "D'accord",
+                                text: "Fermer",
                                 keys: ["enter"]
                             }
                         }
@@ -906,7 +906,7 @@
                         },
                         buttons:{
                             ok: {
-                                text: "D'accord",
+                                text: "Fermer",
                                 keys: ["enter"]
                             }
                         }
@@ -917,7 +917,7 @@
                     var val = $(this).val();
                     $.confirm({
                         title : "Opération de suppression !",
-                        content : "Voulez vous vraiment supprimer cet élément",
+                        content : "Voulez-vous vraiment supprimer cet élément ?",
                         type : "red",
                         typeAnimated : true,
                         draggable : true,

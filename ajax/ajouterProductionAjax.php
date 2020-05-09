@@ -69,7 +69,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la publication">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de la publication">
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Date publication</label>
+                        <label>Date</label>
                         <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la publication">
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Auteur Principal</label>
-                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                            <select required data-live-search="true" title="Auteur principal" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                 <option value="autre">Autre</option>';
                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                     SELECT idcher FROM users WHERE actif=1
@@ -174,7 +174,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la communication">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de la communication">
                     </div>
                 </div>
             </div>
@@ -182,7 +182,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Date communication</label>
+                        <label>Date</label>
                         <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la communication">
                     </div>
                 </div>
@@ -193,7 +193,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Auteur Principal</label>
-                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                            <select required data-live-search="true" title="Auteur principal" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                 <option value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -294,7 +294,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -313,7 +313,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Auteur Principal</label>
-                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                            <select required data-live-search="true" title="Auteur principal" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                 <option value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -356,8 +356,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>pages</label>
-                        <input maxlength="40" required class="form-control" name="pagesProduction" type="text" placeholder="Pages écrite de l\'ouvrage">
+                        <label>N° de pages</label>
+                        <input maxlength="40" required class="form-control" name="pagesProduction" type="text" placeholder="ex: 129-300,500-640">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -399,7 +399,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de l\'ouvrage">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de l\'ouvrage">
                     </div>
                 </div>
             </div>
@@ -418,7 +418,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Auteur Principal</label>
-                            <select required data-live-search="true" title="Auteur principale" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
+                            <select required data-live-search="true" title="Auteur principal" name="auteurprincSelect" id="auteurprinc" class="form-control selectpicker">
                                 <option value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -452,8 +452,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>№ ORDRE</label>
-                        <input required class="form-control" name="nordreProduction" type="number" placeholder="№ ordre">
+                        <label>№ d\'ORDRE</label>
+                        <input required class="form-control" name="nordreProduction" type="number" placeholder="№ d\'ordre">
                     </div>
                 </div>
             </div>
@@ -498,7 +498,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de la thèse">
                     </div>
                 </div>
             </div>
@@ -581,7 +581,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de la thèse">
                     </div>
                 </div>
             </div>
@@ -665,7 +665,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label>thémes</label>
+                <label>thèmes</label>
                 <input maxlength="255" required class="form-control" name="theme" type="text" placeholder="thèmes de la revue">
             </div>
         </div>
@@ -684,7 +684,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>spécialités</label>
-                <input maxlength="255" class="form-control" name="idspeRevue" type="text" placeholder="Spécialités de la production">
+                <input maxlength="255" class="form-control" name="idspeRevue" type="text" placeholder="Spécialités de la revue">
             </div>
         </div>
     </div>
@@ -692,7 +692,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
-                <label>année REVUE</label>
+                <label>année</label>
                 <input maxlength="4" required class="form-control" name="anneeRevue" type="text" placeholder="Année de la revue">
             </div>
         </div>
@@ -700,9 +700,9 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>périodicité</label>
-                <select required title="Périodicite..." name="periodiciteRevue" id="periodiciteRevue" class="form-control selectpicker">
-                    <option value="annuel">Annuel</option>
-                    <option value="semestriel">Semestriel</option>
+                <select required title="Périodicité..." name="periodiciteRevue" id="periodiciteRevue" class="form-control selectpicker">
+                    <option value="annuel">Annuelle</option>
+                    <option value="semestriel">Semestrielle</option>
                 </select>
             </div>
         </div>
@@ -744,7 +744,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label>thémes</label>
+                <label>thèmes</label>
                 <input maxlength="255" required class="form-control" name="themeConf" type="text" placeholder="thèmes de la conférence">
             </div>
         </div>
@@ -771,7 +771,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
-                <label>année conférence</label>
+                <label>année</label>
                 <input maxlength="4" required class="form-control" name="anneeConf" type="text" placeholder="Année de la conférence">
             </div>
         </div>
@@ -779,9 +779,9 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>périodicité</label>
-                <select required title="Périodicite..." name="periodiciteConf" id="periodiciteConf" class="form-control selectpicker">
-                    <option value="annuel">Annuel</option>
-                    <option value="semestriel">Semestriel</option>
+                <select required title="Périodicité..." name="periodiciteConf" id="periodiciteConf" class="form-control selectpicker">
+                    <option value="annuel">Annuelle</option>
+                    <option value="semestriel">Semestrielle</option>
                 </select>
             </div>
         </div>

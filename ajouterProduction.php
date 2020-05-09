@@ -161,7 +161,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -178,8 +178,8 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Ajouter Production
-                        <a id="revenir" href="gererProduction.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste productions </a> </h4>
+                        <h4 class="title">Nouvelle production
+                        <a id="revenir" href="gererProduction.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste des productions </a> </h4>
                     </div>
 
                     <div class="content">
@@ -187,8 +187,8 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="typeProduction">Type production</label>
-                                        <select required class="form-control selectpicker" name="typeProduction" id="typeProduction" title="Type de la production...">
+                                        <label for="typeProduction">Type de production</label>
+                                        <select required class="form-control selectpicker" name="typeProduction" id="typeProduction" title="Type de production...">
                                             <option value="publication">Publication</option>
                                             <option value="communication">Communication</option>
                                             <option value="ouvrage">Ouvrage</option>
@@ -402,7 +402,7 @@
                         $(".bootstrap-select").has(this).after(`<div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l'auteur principale">
+                                    <input required class="form-control" name="auteurprincInput" type="text" placeholder="Nom de l'auteur principal">
                                 </div>
                             </div>
                         </div>`);

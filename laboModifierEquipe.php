@@ -194,7 +194,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -212,7 +212,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Modifier Équipe
-                        <a id="revenir" href="laboGererEquipe.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste équipes </a> </h4>
+                        <a id="revenir" href="laboGererEquipe.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste des équipes </a> </h4>
                     </div>
 
                     <div class="content">

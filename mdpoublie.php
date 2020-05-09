@@ -17,7 +17,7 @@
                     $to   = 'plateformescientifiquepfe@gmail.com';
                     $from = 'plateformescientifiquepfe@gmail.com';
                     $name = 'Plateforme Scientifique';
-                    $subj = 'Mot de passe réinitialiser (Plateforme scientifique)';
+                    $subj = 'Mot de passe réinitialisé (Plateforme scientifique)';
                     $msg = "Votre nouveau mot de passe:\n".$pwd;
                     
                     $error=smtpmailer($to,$from, $name ,$subj, $msg);
@@ -199,7 +199,7 @@
                         echo '$.notify({
                             icon : "pe-7s-angle-down-circle",
                             title : "Succès !",
-                            message : "Votre mot de passe a été réinitialiser !"
+                            message : "Votre mot de passe a été réinitialisé !"
                         },{
                             type : "success",
                             allow_dismiss : true,
@@ -213,7 +213,7 @@
                         echo '$.notify({
                             icon : "pe-7s-close-circle",
                             title : "Echoué !",
-                            message : "Votre mot de passe n\'a pas pu être réinitialiser !"
+                            message : "Votre mot de passe n\'a pas pu être réinitialisé !"
                         },{
                             type : "danger",
                             allow_dismiss : true,

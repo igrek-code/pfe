@@ -28,7 +28,7 @@
                 $_SESSION["loggedinadmin"] = true;
                 header("location: adminGererDemande.php");
             }
-            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';  
+            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorrect</div>';  
         break;
         case 'chefLabo':
             $sql = "SELECT * FROM chercheur WHERE idcher IN (
@@ -62,7 +62,7 @@
                 }
                 header("location: laboGererDemande.php");
             }
-            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
+            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorrect</div>';
         break;
 
         case 'chefEquipe':
@@ -101,7 +101,7 @@
                 }
                 header("location: laboGererDemande.php");
             }
-            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
+            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorrect</div>';
         break;
 
         case 'chercheur':
@@ -138,7 +138,7 @@
                 }
                 header("location: gererProduction.php");
             }
-            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorect</div>';
+            else $erreurLogin = '<div id="incorrect">Email ou mot de passe incorrect</div>';
         break;
 
         default:

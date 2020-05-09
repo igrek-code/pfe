@@ -588,7 +588,7 @@
             }
         }
         else{
-            echo '<div class="text-danger">information sur la revue non trouvée !</div>';
+            echo '<div class="text-danger">Informations indisponibles !</div>';
         }
     }
 
@@ -792,7 +792,7 @@
             }
         }
         else{
-            echo '<div class="text-danger">information sur la revue non trouvée !</div>';
+            echo '<div class="text-danger">Informations indisponibles !</div>';
         }
     }
 
@@ -833,8 +833,8 @@
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
                         echo '<span class="text-info">DOI: </span>'.$doi.'<br>';
                         echo '<span class="text-info">Volume: </span>'.$nvol.'<br>';
-                        echo '<span class="text-info">N ISSUE: </span>'.$nissue.'<br>';
-                        echo '<span class="text-info">Mots-clès: </span>';
+                        echo '<span class="text-info">N° ISSUE: </span>'.$nissue.'<br>';
+                        echo '<span class="text-info">Mots-clés: </span>';
                         $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                         $result2 = mysqli_query($db,$sql);
                         if(mysqli_num_rows($result2) > 0){
@@ -884,7 +884,7 @@
                         echo '<br>';
                     }
                     else{
-                        echo '<div class="text-danger">information sur la publication non trouvée !</div>';
+                        echo '<div class="text-danger">Informations indisponibles !</div>';
                     }
                 break;
 
@@ -911,7 +911,7 @@
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
-                        echo '<span class="text-info">Mots-clès: </span>';
+                        echo '<span class="text-info">Mots-clés: </span>';
                         $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                         $result2 = mysqli_query($db,$sql);
                         if(mysqli_num_rows($result2) > 0){
@@ -961,7 +961,7 @@
                         echo '<br>';
                     }
                     else{
-                        echo '<div class="text-danger">information sur la communication non trouvée !</div>';
+                        echo '<div class="text-danger">Informations indisponibles !</div>';
                     }
                 break;
 
@@ -994,11 +994,11 @@
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
-                        echo '<span class="text-info">Nombres de pages: </span>'.$nbpages.'<br>';
+                        echo '<span class="text-info">Nombre de pages: </span>'.$nbpages.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
                         /*-------------------------------------------*/
-                        echo '<span class="text-info">Mots-clès: </span>';
+                        echo '<span class="text-info">Mots-clés: </span>';
                         $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                         $result2 = mysqli_query($db,$sql);
                         if(mysqli_num_rows($result2) > 0){
@@ -1048,7 +1048,7 @@
                         echo '<br>';
                     }
                     else{
-                        echo '<div class="text-danger">information sur l\'ouvrage non trouvée !</div>';
+                        echo '<div class="text-danger">Informations indisponibles !</div>';
                     }
                 break;
 
@@ -1083,11 +1083,11 @@
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Volume: </span>'.$volume.'<br>';
-                        echo '<span class="text-info">Pages: </span>'.$pages.'<br>';
+                        echo '<span class="text-info">N° de pages: </span>'.$pages.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
                         /*-------------------------------------------*/
-                        echo '<span class="text-info">Mots-clès: </span>';
+                        echo '<span class="text-info">Mots-clés: </span>';
                         $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                         $result2 = mysqli_query($db,$sql);
                         if(mysqli_num_rows($result2) > 0){
@@ -1137,7 +1137,7 @@
                         echo '<br>';
                     }
                     else{
-                        echo '<div class="text-danger">information sur le chapitre non trouvée !</div>';
+                        echo '<div class="text-danger">Informations indisponibles !</div>';
                     }
                 break;
                 
@@ -1175,12 +1175,12 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
-                        echo '<span class="text-info">N ordre: </span>'.$nordre.'<br>';
+                        echo '<span class="text-info">N° d\'ordre: </span>'.$nordre.'<br>';
                         echo '<span class="text-info">Lieu: </span>'.$lieusout.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
                         /*-------------------------------------------*/
-                        echo '<span class="text-info">Mots-clès: </span>';
+                        echo '<span class="text-info">Mots-clés: </span>';
                         $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                         $result2 = mysqli_query($db,$sql);
                         if(mysqli_num_rows($result2) > 0){
@@ -1193,7 +1193,7 @@
                         echo '<span class="text-info">Encadreur: </span>'.$encadreur.'<br>';
                     }
                     else{
-                        echo '<div class="text-danger">information sur la thèse non trouvée !</div>';
+                        echo '<div class="text-danger">Informations indisponibles !</div>';
                     }
                 break;
 
@@ -1234,7 +1234,7 @@
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
                         /*-------------------------------------------*/
-                        echo '<span class="text-info">Mots-clès: </span>';
+                        echo '<span class="text-info">Mots-clés: </span>';
                         $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                         $result2 = mysqli_query($db,$sql);
                         if(mysqli_num_rows($result2) > 0){
@@ -1247,7 +1247,7 @@
                         echo '<span class="text-info">Encadreur: </span>'.$encadreur.'<br>';
                     }
                     else{
-                        echo '<div class="text-danger">information sur la thèse non trouvée !</div>';
+                        echo '<div class="text-danger">Informations indisponibles !</div>';
                     }
                 break;
 
@@ -1257,7 +1257,7 @@
             }
         }
         else{
-            echo '<div class="text-danger">information sur la production non trouvée !</div>';
+            echo '<div class="text-danger">Informations indisponibles !</div>';
         } 
     }
 ?>

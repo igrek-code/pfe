@@ -90,7 +90,7 @@
             <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
+                        <p style="font-size:11px">Demandes d'inscription</p>
                     </a>
                 </li>
                 <li class="active">
@@ -161,7 +161,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -178,8 +178,8 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Ajouter Établissement
-                        <a id="revenir" href="adminGererEtab.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste établissements </a> </h4>
+                        <h4 class="title">Nouvel établissement
+                        <a id="revenir" href="adminGererEtab.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste des établissements </a> </h4>
                     </div>
 
                     <div class="content">

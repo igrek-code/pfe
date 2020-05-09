@@ -213,7 +213,7 @@
             <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
+                        <p style="font-size:11px">Demandes d'inscription</p>
                     </a>
                 </li>
                 <li>
@@ -284,7 +284,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -302,7 +302,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Modifier Laboratoire 
-                            <a id="revenir" href="adminGererLabo.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste laboratoires </a> 
+                            <a id="revenir" href="adminGererLabo.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste des laboratoires </a> 
                         </h4>
                     </div>
 
@@ -346,7 +346,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>abreviation</label>
+                                        <label>abréviation</label>
                                         <input maxlength="20" value ="<?php echo $abrvLabo;?>" class="form-control" type="text" name="abrvLabo" placeholder="Abréviation du laboratoire">
                                     </div>
                                 </div>
@@ -433,7 +433,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Chef de laboratoire</label>
-                                        <select disabled class="form-control selectpicker" name="idcher" id="idcher" data-live-search="true" title="Chef d'équipe...">
+                                        <select class="form-control selectpicker" name="idcher" id="idcher" data-live-search="true" title="Chef d'équipe...">
                                             <?php
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                     SELECT idcher FROM chefequip WHERE idequip IN (
@@ -516,7 +516,7 @@
                         echo '$.notify({
                             icon : "pe-7s-angle-down-circle",
                             title : "Succès !",
-                            message : "Opération d\'ajout effectuée avec succès"
+                            message : "Opération de modification effectuée avec succès"
                         },{
                             type : "success",
                             allow_dismiss : true,
@@ -530,7 +530,7 @@
                         echo '$.notify({
                             icon : "pe-7s-close-circle",
                             title : "Echoué !",
-                            message : "Opération d\'ajout a échoué"
+                            message : "Opération de modification a échoué"
                         },{
                             type : "danger",
                             allow_dismiss : true,

@@ -118,7 +118,7 @@
                     <h4 class="title">Inscription
                         <a id="revenir" href="index.php" class="pull-right text-muted"><i class="pe-7s-back"></i> page de connexion</a> 
                     </h4>
-                    <p class="category">* Tous les champs sont obligatoire</p>
+                    <p class="category">* Tous les champs sont obligatoires</p>
                 </div>
 
                 <div class="content">
@@ -155,8 +155,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>nom</label>
-                                    <input type="text" name="nomcher" class="form-control" placeholder="Votre Nom" required>
+                                    <label>nom et prénom</label>
+                                    <input type="text" name="nomcher" class="form-control" placeholder="Nom et prénom" required>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>status</label>
+                                    <label>statut</label>
                                     <select required class="form-control selectpicker" name="statuscher" id="statuscher">
                                         <option selected value="chercheur">Chercheur</option>
                                         <option value="chefequipe">Chef d'équipe</option>

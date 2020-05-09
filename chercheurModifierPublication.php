@@ -170,7 +170,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -187,8 +187,8 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Modifier <?php echo $typeProduction;?>
-                        <a id="revenir" href="gererProduction.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste productions </a> </h4>
+                        <h4 class="title">Modifier <?php if($typeProduction === 'chapitreOuvrage') echo "chapitre d'ouvrage"; else echo $typeProduction;?>
+                        <a id="revenir" href="gererProduction.php" class="pull-right text-muted"><i class="pe-7s-back"></i> liste des productions </a> </h4>
                     </div>
 
                     <div class="content">
@@ -250,7 +250,7 @@
                         echo '$.notify({
                             icon : "pe-7s-angle-down-circle",
                             title : "Succès !",
-                            message : "Opération d\'ajout effectuée avec succès"
+                            message : "Opération de modification effectuée avec succès"
                         },{
                             type : "success",
                             allow_dismiss : true,
@@ -264,7 +264,7 @@
                         echo '$.notify({
                             icon : "pe-7s-close-circle",
                             title : "Echoué !",
-                            message : "Opération d\'ajout a échoué"
+                            message : "Opération de modification a échoué"
                         },{
                             type : "danger",
                             allow_dismiss : true,

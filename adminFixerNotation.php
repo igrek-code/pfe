@@ -177,7 +177,7 @@
             <li>
                     <a href="adminGererDemande.php">
                         <i class="pe-7s-id"></i>
-                        <p>Demande inscriptions</p>
+                        <p style="font-size:11px">Demandes d'inscription</p>
                     </a>
                 </li>
                 <li>
@@ -248,7 +248,7 @@
                         </li>
                         <li>
                             <a id="seDeconnecter" href="index.php?logout=1">
-                                <p>Se deconnecter</p>
+                                <p>Se déconnecter</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
@@ -270,7 +270,7 @@
 
                     <div class="content">
                         <form action="" id="mainForm" method="post">
-                            <p class="category">Revue Internationelle</p>
+                            <p class="category">Revue Internationale</p>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -300,7 +300,7 @@
 
                             
 
-                            <p class="category">Revue nationalle</p>
+                            <p class="category">Revue nationale</p>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -311,7 +311,7 @@
 
                             <div style="background:grey;width:100%;height:1px;margin-bottom:5px;"></div>
 
-                            <p class="category">Communication internationalle</p>
+                            <p class="category">Communication internationale</p>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -333,7 +333,7 @@
                                 </div>
                             </div>
 
-                            <p class="category">Communication nationalle</p>
+                            <p class="category">Communication nationale</p>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">

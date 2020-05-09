@@ -108,7 +108,7 @@
         }
         if($needsValidation){
             $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','publication')";
-            if(!mysqli_query($db,$sql)) return true;
+            mysqli_query($db,$sql);
         }
         return false;
     }
@@ -211,7 +211,7 @@
         }
         if($needsValidation){
             $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','communication')";
-            if(!mysqli_query($db,$sql)) return true;
+            mysqli_query($db,$sql);
         }
         return false;
     }
@@ -274,7 +274,7 @@
         }
         if($needsValidation){
             $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','ouvrage')";
-            if(!mysqli_query($db,$sql)) return true;
+            mysqli_query($db,$sql);
         }
         return false;
     }
@@ -338,7 +338,7 @@
         }
         if($needsValidation){
             $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','chapitreOuvrage')";
-            if(!mysqli_query($db,$sql)) return true;
+            mysqli_query($db,$sql);
         }
         return false;
     }
@@ -376,7 +376,7 @@
         }
         if($needsValidation){
             $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','doctorat')";
-            if(!mysqli_query($db,$sql)) return true;
+            mysqli_query($db,$sql);
         }
         return false;
     }
@@ -412,7 +412,7 @@
         }
         if($needsValidation){
             $sql = "INSERT INTO validationproduction (codepro,idcher,type) VALUES ('".$codepro."','".$postedBy."','master')";
-            if(!mysqli_query($db,$sql)) return true;
+            mysqli_query($db,$sql);
         }
         return false;
     }

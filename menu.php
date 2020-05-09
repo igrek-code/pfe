@@ -5,7 +5,7 @@
                 echo '<li>
                 <a href="laboGererDemande.php">
                     <i class="pe-7s-id"></i>
-                    <p>Demande inscriptions</p>
+                    <p style="font-size:11px">Demandes d\'inscription</p>
                 </a>
             </li>
     
@@ -58,7 +58,7 @@
                  echo '<li '.$class[0].'>
                  <a href="laboGererDemande.php">
                      <i class="pe-7s-id"></i>
-                     <p>Demande inscriptions</p>
+                     <p style="font-size:11px">Demandes d\'inscription</p>
                  </a>
              </li>
      
@@ -111,7 +111,7 @@
                 echo '<li>
                 <a href="laboGererDemande.php">
                     <i class="pe-7s-id"></i>
-                    <p>Demande inscriptions</p>
+                    <p style="font-size:11px">Demandes d\'inscription</p>
                 </a>
             </li>
     
@@ -157,7 +157,7 @@
                  echo '<li '.$class[0].'>
                  <a href="laboGererDemande.php">
                      <i class="pe-7s-id"></i>
-                     <p>Demande inscriptions</p>
+                     <p style="font-size:11px">Demandes d\'inscription</p>
                  </a>
              </li>
      

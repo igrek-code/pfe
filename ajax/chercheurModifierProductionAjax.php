@@ -175,7 +175,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Date publication</label>
+                        <label>Date</label>
                         <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de la publication">
                     </div>
                 </div>
@@ -442,7 +442,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Date communication</label>
+                        <label>Date</label>
                         <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de la communication">
                     </div>
                 </div>
@@ -934,7 +934,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>pages</label>
+                        <label>n° de pages</label>
                         <input value="'.$pages.'" maxlength="40" required class="form-control" name="pagesProduction" type="text" placeholder="Pages écrite de l\'ouvrage">
                     </div>
                 </div>

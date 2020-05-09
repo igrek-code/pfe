@@ -72,6 +72,10 @@
                 SELECT codepro FROM coauteurs WHERE idcher='".$idcher."' AND idcher IN (
                     SELECT idcher FROM users WHERE actif='1'
                 )
+            ) OR codepro IN (
+                SELECT codepro FROM pfemaster WHERE encadreur='".$idcher."'
+            )OR codepro IN (
+                SELECT codepro FROM these WHERE encadreur='".$idcher."'
             ))";
         }
 
@@ -91,6 +95,22 @@
                 ) OR idcher IN (
                     SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
                 )) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ) OR codepro IN (
+                SELECT codepro FROM pfemaster WHERE (encadreur IN (
+                    SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
+                ) OR encadreur IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
+                )) AND encadreur IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            )OR codepro IN (
+                SELECT codepro FROM these WHERE (encadreur IN (
+                    SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
+                ) OR encadreur IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
+                )) AND encadreur IN (
                     SELECT idcher FROM users WHERE actif='1'
                 )
             ))";
@@ -120,6 +140,30 @@
                         SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
                     )
                 )) AND idcher IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            ) OR codepro IN (
+                SELECT codepro FROM pfemaster WHERE (encadreur IN (
+                    SELECT idcher FROM chefequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                ) OR encadreur IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                )) AND encadreur IN (
+                    SELECT idcher FROM users WHERE actif='1'
+                )
+            )OR codepro IN (
+                SELECT codepro FROM these WHERE (encadreur IN (
+                    SELECT idcher FROM chefequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                ) OR encadreur IN (
+                    SELECT idcher FROM menbrequip WHERE idequipe IN (
+                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                    )
+                )) AND encadreur IN (
                     SELECT idcher FROM users WHERE actif='1'
                 )
             ))";

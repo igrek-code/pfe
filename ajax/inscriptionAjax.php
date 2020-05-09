@@ -5,15 +5,18 @@
         $idetab = mysqli_real_escape_string($db,$_GET["idetab"]);
         if(isset($_GET["codeDomaine"])){
             if(isset($_GET["nomDomaine"])){
-                $codeDomaine = mysqli_real_escape_string($db,$_GET["codeDomaine"]);
                 $nomDomaine = mysqli_real_escape_string($db,$_GET["nomDomaine"]);
                 if($_GET["cheflabo"] != "true")
                     $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
-                        SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
+                        SELECT idspe FROM specialite WHERE codeDomaine IN (
+                            SELECT codeDomaine FROM domaine WHERE nom = '".$nomDomaine."'
+                        )
                     )"; 
                 else  
                     $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
-                        SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
+                        SELECT idspe FROM specialite WHERE codeDomaine IN (
+                            SELECT codeDomaine FROM domaine WHERE nom = '".$nomDomaine."'
+                        )
                     ) AND idlabo NOT IN (
                         SELECT idlabo FROM cheflabo
                     )";         
@@ -30,19 +33,22 @@
                     SELECT codeDomaine FROM specialite WHERE idspe IN (
                         SELECT idspe FROM laboratoire WHERE idetab='".$idetab."'
                     )
-                )";
+                ) GROUP BY nom";
                 if($result = mysqli_query($db,$sql)){
                     while($row = mysqli_fetch_array($result)){
-                        $codeDomaine = $row["codeDomaine"];
                         $nomDomaine = $row["nom"];
                         if($_GET["cheflabo"] != "true"){
                             $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
-                                SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
+                                SELECT idspe FROM specialite WHERE codeDomaine IN (
+                                    SELECT codeDomaine FROM domaine WHERE nom = '".$nomDomaine."'
+                                )
                             )"; 
                         }
                         else{  
                             $sql = "SELECT * FROM laboratoire WHERE idetab='".$idetab."' AND idspe IN (
-                                SELECT idspe FROM specialite WHERE codeDomaine ='".$codeDomaine."'
+                                SELECT idspe FROM specialite WHERE codeDomaine IN (
+                                    SELECT codeDomaine FROM domaine WHERE nom = '".$nomDomaine."'
+                                )
                             ) AND idlabo NOT IN (
                                 SELECT idlabo FROM cheflabo
                             )"; 
@@ -65,12 +71,11 @@
                 SELECT codeDomaine FROM specialite WHERE idspe IN (
                     SELECT idspe FROM laboratoire WHERE idetab='".$idetab."'
                 )
-            )";
+            )GROUP BY nom";
             if($result = mysqli_query($db,$sql)){
                 while($row = mysqli_fetch_array($result)){
-                    $codeDomaine = $row["codeDomaine"];
                     $nomDomaine = $row["nom"];
-                    echo '<option value="'.$codeDomaine.'">'.$nomDomaine.'</option>';
+                    echo '<option value="'.$nomDomaine.'">'.$nomDomaine.'</option>';
                 }
             }
         }
