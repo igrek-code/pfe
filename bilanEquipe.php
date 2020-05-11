@@ -843,6 +843,10 @@
                         }
                     });
                 }
+
+                if(typeProduction === 'all' || typeProduction === 'publication' || typeProduction === 'communication') $('#pie').show();
+                else $('#pie').hide();
+
                 return pie;
             }
 
