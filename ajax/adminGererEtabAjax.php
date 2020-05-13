@@ -14,6 +14,7 @@
                 <th>Nom</th>
                 <th>Abréviation</th>
                 <th>Type</th>
+                <th>URL</th>
                 <th>Action</th>
             </thead>
             <tbody>';
@@ -32,7 +33,7 @@
         echo    '<td>'.$nom.'</td>';
         echo    '<td>'.$abrv.'</td>';
         echo    '<td>'.$type.'</td>';
-        //echo    '<td><a rel="external" target="_blank" href="http://www.'.$siteweb.'">'.$siteweb.'</a></td>';
+        echo    '<td><a rel="external" target="_blank" href="http://www.'.$siteweb.'">lien</a></td>';
         echo    '<td>';
         echo    '<div class="btn-toolbar">';
         echo    '<div class="btn-group">';

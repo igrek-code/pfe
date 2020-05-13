@@ -75,42 +75,10 @@
             
             <ul class="nav">
                 
-            <li>
-                    <a href="adminGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p style="font-size:11px">Demandes d'inscription</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererEtab.php">
-                        <i class="pe-7s-culture"></i>
-                        <p>Gerer Etablissement</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="adminGererLabo.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Gerer Laboratoire</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererCompte.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Compte</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminFixerNotation.php">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Fixer Notation</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="bilan.php">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
+            <?php
+                require_once('menuAdmin.php');
+                menu(2);
+            ?>
 
             </ul>
     	</div>
@@ -265,6 +233,7 @@
                 refresh_table();
                 setTimeout(function() {
                     $(".table").DataTable(fr_table(codeDomaine));
+                    init_idlabo();
                 },100);
             });
 
@@ -351,7 +320,8 @@
                         "scrollCollapse": true,
                         "scrollX": true,
                         "columnDefs": [
-                            {targets: -1, orderable: false, "width": "105px"}
+                            {targets: -1, orderable: false, "width": "105px"},
+                            {targets: [2, 3, 5, 6, 7, 8], visible: false}
                         ],
                         "language" : {
                             "sEmptyTable":     "Aucune donnée disponible dans le tableau",
@@ -390,7 +360,8 @@
                         "scrollCollapse": true,
                         "scrollX": true,
                         "columnDefs": [
-                            {targets: -1, orderable: false, "width": "105px"}
+                            {targets: -1, orderable: false, "width": "105px"},
+                            {targets: [2, 3, 5, 6, 7, 8], visible: false}
                         ],
                         "language" : {
                             "sEmptyTable":     "Aucune donnée disponible dans le tableau",
@@ -424,6 +395,27 @@
                         }
                     } 
                 } 
+            }
+
+            function init_idlabo(){
+                $('button[idlabo="idlabo"]').click(function(){
+                    var idlabo = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle('Informations supplémentaires sur le laboratoire');
+                            $.get("ajax/adminGererLaboAjax.php",{idlabo: idlabo},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "Fermer",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
             }
 
         });

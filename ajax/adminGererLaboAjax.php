@@ -59,7 +59,7 @@
 
                                 
                                 echo    '<tr>';
-                                echo    '<td>'.$nomLabo.'</td>';
+                                echo    '<td><button idlabo="idlabo" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idLabo.'">'.$nomLabo.'</button></td>';
                                 echo    '<td>'.$abrvLabo.'</td>';
                                 echo    '<td>'.$structure.'</td>';
                                 echo    '<td>'.$anneedecrea.'</td>';
@@ -140,7 +140,7 @@
                         $adresseLabo = $row["addresse"];
                         
                         echo    '<tr>';
-                        echo    '<td>'.$nomLabo.'</td>';
+                        echo    '<td><button idlabo="idlabo" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idLabo.'">'.$nomLabo.'</button></td>';
                         echo    '<td>'.$abrvLabo.'</td>';
                         echo    '<td>'.$structure.'</td>';
                         echo    '<td>'.$anneedecrea.'</td>';
@@ -197,5 +197,58 @@
         $sql = "DELETE FROM laboratoire WHERE idlabo='".$codeLabo."'";
         if(mysqli_query($db,$sql))
             echo 'true';
+    }
+
+    if(isset($_GET['idlabo']) && $_GET['idlabo'] != ''){
+        $idlabo = mysqli_real_escape_string($db,$_GET['idlabo']);
+        $sql = "SELECT * FROM laboratoire WHERE idlabo='".$idlabo."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_array($result);
+            $nomLabo = $row["nom"];
+            $idLabo = $row["idlabo"];
+            $abrvLabo = $row["abrv"];
+            $etatLabo = $row["etat"];
+            $structure = $row["structure"];
+            $anneedecrea = $row["anneecrea"];
+            $telLabo = $row["tel"];
+            $faxLabo = $row["fax"];
+            $mailLabo = $row["mail"];
+            $adresseLabo = $row["addresse"];
+            $idspe = $row["idspe"];
+            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
+                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result2) > 0){
+                $nomDomaine = mysqli_fetch_array($result2)["nom"];
+            }
+            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
+            $result2 = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result2) > 0){
+                $nomspe = mysqli_fetch_array($result2)["nomspe"];
+            }
+            echo '<span class="text-info">Nom: </span>'.$nomLabo.'<br>';
+            echo '<span class="text-info">Abréviation: </span>'.$abrvLabo.'<br>';
+            echo '<span class="text-info">Etat: </span>';
+            if($etatLabo == "actif")    
+                echo    '<span class="text-success">Actif</span>';
+            else
+                echo    '<span class="text-danger">Inactif</span>';
+            echo '<br>';
+            echo '<span class="text-info">Structure: </span>'.$structure.'<br>';
+            echo '<span class="text-info">Année de création: </span>'.$anneedecrea.'<br>';
+            echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
+            echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';
+            echo '<span class="text-info">Tél.: </span>'.$telLabo.'<br>';
+            echo '<span class="text-info">Fax.: </span>'.$faxLabo.'<br>';
+            echo '<span class="text-info">Email: </span>'.$mailLabo.'<br>';
+            echo '<span class="text-info">Adresse: </span>'.$adresseLabo.'<br>';
+            
+        }
+        else{
+            echo '<div class="text-danger">Informations indisponibles !</div>';
+        }
+        
     }
 ?>

@@ -86,44 +86,10 @@
             </div>
 
             <ul class="nav">
-
-            <li>
-                    <a href="adminGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p style="font-size:11px">Demandes d'inscription</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="adminGererEtab.php">
-                        <i class="pe-7s-culture"></i>
-                        <p>Gerer Etablissement</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererLabo.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Gerer Laboratoire</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererCompte.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Compte</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminFixerNotation.php">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Fixer Notation</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="bilan.php">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
-
+            <?php
+                    require_once('menuAdmin.php');
+                    menu(1);
+                ?>
             </ul>
     	</div>
     </div>

@@ -13,11 +13,13 @@
         $revueInterA = $row["revueInterA"];
         $revueInterB = $row["revueInterB"];
         $revueInterC = $row["revueInterC"];
+        $revueInterAutre = $row["revueInterAutre"];
         $revueNat = $row["revueNat"];
         $autre = $row["autre"];
         $comInterA = $row["comInterA"];
         $comInterB = $row["comInterB"];
         $comInterC = $row["comInterC"];
+        $comInterAutre = $row["comInterAutre"];
         $comNat = $row["comNat"];
         $chapitreOuvrage = $row["chapitreOuvrage"];
         $ouvrage = $row["ouvrage"];
@@ -26,6 +28,19 @@
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $display_notif = true;
         $error = false;
+
+        if($_POST["revueInterAutre"] != $revueInterAutre){
+            $revueInterAutre = mysqli_real_escape_string($db,$_POST["revueInterAutre"]);
+            $sql = "UPDATE systemeNotes SET revueInterAutre='".$revueInterAutre."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["comInterAutre"] != $comInterAutre){
+            $comInterAutre = mysqli_real_escape_string($db,$_POST["comInterAutre"]);
+            $sql = "UPDATE systemeNotes SET comInterAutre='".$comInterAutre."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
         if($_POST["revueInterAA"] != $revueInterAA){
             $revueInterAA = mysqli_real_escape_string($db,$_POST["revueInterAA"]);
             $sql = "UPDATE systemeNotes SET revueInterAA='".$revueInterAA."'WHERE id='1'";
@@ -173,44 +188,10 @@
             </div>
 
             <ul class="nav">
-                
-            <li>
-                    <a href="adminGererDemande.php">
-                        <i class="pe-7s-id"></i>
-                        <p style="font-size:11px">Demandes d'inscription</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererEtab.php">
-                        <i class="pe-7s-culture"></i>
-                        <p>Gerer Etablissement</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererLabo.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Gerer Laboratoire</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="adminGererCompte.php">
-                        <i class="pe-7s-users"></i>
-                        <p>Gerer Compte</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="adminFixerNotation.php">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Fixer Notation</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="bilan.php">
-                        <i class="pe-7s-graph3"></i>
-                        <p>Bilan</p>
-                    </a>
-                </li>
-
+            <?php
+                    require_once('menuAdmin.php');
+                    menu(4);
+                ?>
             </ul>
     	</div>
     </div>
@@ -298,7 +279,14 @@
                                 </div>
                             </div>
 
-                            
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="inline-label">autre classe</label>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $revueInterAutre;?>" class="form-control" type="number" name="revueInterAutre" required>
+                                    </div>  
+                                </div>
+                            </div>
 
                             <p class="category">Revue nationale</p>
                             <div class="row">
@@ -329,6 +317,16 @@
                                     <div class="form-group">
                                         <label class="inline-label">classe c</label>
                                         <input min="1" max="1000" onClick="this.select();" value="<?php echo $comInterC;?>" class="form-control" type="number" name="comInterC" required>
+                                    </div>  
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="inline-label">autre classe</label>
+                                        <input min="1" max="1000" onClick="this.select();" value="<?php echo $comInterAutre;?>" class="form-control" type="number" name="comInterAutre" required>
                                     </div>  
                                 </div>
                             </div>
