@@ -305,7 +305,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Année</label>
-                                    <input value="2020" min="1991" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
+                                    <input value="2020" min="2000" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -339,13 +339,13 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Entre</label>
-                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                    <input min="2000" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>et</label>
-                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
+                                    <input min="2000" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
                                 </div>
                             </div>
                         </div>
@@ -549,7 +549,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Année</label>
-                                    <input value="2020" min="1991" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
+                                    <input value="2020" min="2000" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -583,13 +583,13 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Entre</label>
-                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                    <input min="2000" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>et</label>
-                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
+                                    <input min="2000" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
                                 </div>
                             </div>
                         </div>
@@ -773,7 +773,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Année</label>
-                                    <input value="2020" min="1991" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
+                                    <input value="2020" min="2000" max="<?php echo date('Y'); ?>" id="periodeY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -807,13 +807,13 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Entre</label>
-                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
+                                    <input min="2000" max="<?php echo date('Y'); ?>" id="periodeDebY" class="form-control" type="number">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>et</label>
-                                    <input min="1991" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
+                                    <input min="2000" max="<?php echo date('Y'); ?>" id="periodeFinY" class="form-control" type="number">
                                 </div>
                             </div>
                         </div>
