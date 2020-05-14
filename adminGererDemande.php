@@ -186,7 +186,7 @@
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
                     $("table").DataTable(fr_table());
-                    $('button[title="supprimer"]').click(function(){
+                    $('#theTable tbody').on('click', 'button[title="supprimer"]',function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",
@@ -242,7 +242,7 @@
                         });
                     });
 
-                    $('button[title="accepter"]').click(function(){
+                    $('#theTable tbody').on('click', 'button[title="accepter"]',function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération d'ajout !",

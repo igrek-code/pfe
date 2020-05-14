@@ -253,7 +253,7 @@
 
             function init_click(){
 
-                $('button[title="supprimer"]').click(function(){
+                $('tbody').on('click', 'button[title="supprimer"]', function(){
                     var val = $(this).val();
                     $.confirm({
                         title : "Opération de suppression !",
@@ -398,7 +398,7 @@
             }
 
             function init_idlabo(){
-                $('button[idlabo="idlabo"]').click(function(){
+                $('tbody').on('click', 'button[idlabo="idlabo"]', function(){
                     var idlabo = $(this).val();
                     $.confirm({
                         content: function(){

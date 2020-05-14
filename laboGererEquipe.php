@@ -197,7 +197,7 @@
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
                     $("table").dataTable(fr_table());
-                    $('button[title="supprimer"]').click(function(){
+                    $('tbody').on('click', 'button[title="supprimer"]', function(){
                         var val = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",

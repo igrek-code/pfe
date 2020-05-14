@@ -2,6 +2,15 @@
     require_once("config.php");
     session_start();
 
+    if (isset($_SESSION["loggedinadmin"]) && $_SESSION["loggedinadmin"] == true)
+        header("location: adminGererDemande.php");
+    if (isset($_SESSION["loggedinlabo"]) && $_SESSION["loggedinlabo"] == true)
+        header("location: laboGererDemande.php");
+    if (isset($_SESSION["loggedinequipe"]) && $_SESSION["loggedinequipe"] == true)
+        header("location: laboGererDemande.php");
+    if (isset($_SESSION["loggedinchercheur"]) && $_SESSION["loggedinchercheur"] == true)
+        header("location: gererProduction.php");
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
             $display_notif = true;
             $error = true;

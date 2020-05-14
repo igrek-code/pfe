@@ -696,7 +696,7 @@
                     });
                 });
 
-                $('button[codeconf="codeconf"]').click(function(){
+                $('#theTable tbody').on('click', 'button[codeconf="codeconf"]', function(){
                     var codeconf = $(this).val();
                     $.confirm({
                         content: function(){
@@ -871,7 +871,7 @@
                     });
                 });
 
-                $('button[coderevue="coderevue"]').click(function(){
+                $('#theTable tbody').on('click', 'button[coderevue="coderevue"]',function(){
                     var coderevue = $(this).val();
                     $.confirm({
                         content: function(){
@@ -895,7 +895,7 @@
             }
 
             function init_codepro(){
-                $('button[codepro="codepro"]').click(function(){
+                $('#theTable tbody').on('click', 'button[codepro="codepro"]', function(){
                     var codepro = $(this).val();
                     $.confirm({
                         content: function(){
@@ -917,7 +917,7 @@
             }
 
             function init_cher(){
-                $('button[postedBy="postedBy"]').click(function(){
+                $('#theTable tbody').on('click', 'button[postedBy="postedBy"]', function(){
                     var idcher = $(this).val();
                     $.confirm({
                         content: function(){

@@ -214,9 +214,6 @@
 	<script src="assets/js/demo.js"></script>
 
     <!-- DATA TABLE JS -->
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/b-1.6.2/b-html5-1.6.2/datatables.min.js"></script>-->
     <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
 
     <!-- J-CONFIRM JS -->
@@ -227,9 +224,6 @@
 
     <!-- CHART JS -->
     <script src="assets/chartjs/chartjs.js"></script>
-
-    <!-- TABLE TO EXCEL -->
-    <!--<script src="assets/js/jquery.tableToExcel.js"></script>-->
     
     <script>
         $(document).ready(function(){
@@ -442,7 +436,7 @@
                                     pie = drawPie(productions,pie,update,typeProduction);
                                     getPoints(productions,typeProduction);
                                     update = true;
-                                    $('#table').html();
+                                    $('#table').html('');
                                     $('#table').html(`
                                     <div class="row">
                                         <div class="col-md-12">
@@ -457,10 +451,10 @@
 
                                             <div class="header">
                                                 <h4 class="title">Liste des productions</h4>
-                                                <p><button class="btn btn-success btn-fill" type="button" onclick="tblToExcel('toExport');">Export to excel</button></p>
                                             </div>
 
                                             <div class="content">
+                                            <p><button class="btn btn-success btn-fill">Export to excel</button></p>
                                                 <table id="showTable" class="table table-hover">
                                                     <thead>
                                                         <th>Titre</th>
@@ -485,6 +479,9 @@
                                     $('#showTable').DataTable(fr_table());
                                     $('#toExport').hide();
                                     init_codepro();
+                                    $('.btn-success').click(function(){
+                                        tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                    });
                                 });
 
                                 $('#stats').show();
@@ -717,6 +714,52 @@
                                     pie = drawPie(productions,pie,update,typeProduction);
                                     getPoints(productions,typeProduction);
                                     update = true;
+                                    $('#table').html('');
+                                    $('#table').html(`
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table id="toExport" class="table table-hover">
+                                                <thead>
+                                                    <th>Titre</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+
+                                            <div class="header">
+                                                <h4 class="title">Liste des productions</h4>
+                                            </div>
+
+                                            <div class="content">
+                                            <p><button class="btn btn-success btn-fill">Export to excel</button></p>
+                                                <table id="showTable" class="table table-hover">
+                                                    <thead>
+                                                        <th>Titre</th>
+                                                        <th>Date</th>
+                                                        <th>Type</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `);
+                                    productions.forEach(production => {
+                                        $('tbody').append(`
+                                            <tr>
+                                            <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                            <td>${production.date}</td>
+                                            <td>${production.type}</td>
+                                            </tr>
+                                        `);                    
+                                    });
+                                    $('#showTable').DataTable(fr_table());
+                                    $('#toExport').hide();
+                                    init_codepro();
+                                    $('.btn-success').click(function(){
+                                        tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                    });
                                 });
 
                                 $('#stats').show();
@@ -934,6 +977,52 @@
                                     pie = drawPie(productions,pie,update,typeProduction);
                                     getPoints(productions,typeProduction);
                                     update = true;
+                                    $('#table').html('');
+                                    $('#table').html(`
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table id="toExport" class="table table-hover">
+                                                <thead>
+                                                    <th>Titre</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+
+                                            <div class="header">
+                                                <h4 class="title">Liste des productions</h4>
+                                            </div>
+
+                                            <div class="content">
+                                            <p><button class="btn btn-success btn-fill">Export to excel</button></p>
+                                                <table id="showTable" class="table table-hover">
+                                                    <thead>
+                                                        <th>Titre</th>
+                                                        <th>Date</th>
+                                                        <th>Type</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `);
+                                    productions.forEach(production => {
+                                        $('tbody').append(`
+                                            <tr>
+                                            <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                            <td>${production.date}</td>
+                                            <td>${production.type}</td>
+                                            </tr>
+                                        `);                    
+                                    });
+                                    $('#showTable').DataTable(fr_table());
+                                    $('#toExport').hide();
+                                    init_codepro();
+                                    $('.btn-success').click(function(){
+                                        tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                    });
                                 });
 
                                 $('#stats').show();
@@ -1450,7 +1539,7 @@
             }
 
             function init_codepro(){
-                $('button[codepro="codepro"]').click(function(){
+                $('#showTable tbody').on('click', 'button[codepro="codepro"]',function(){
                     var codepro = $(this).val();
                     $.confirm({
                         content: function(){

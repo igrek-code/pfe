@@ -212,10 +212,10 @@
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
                     if( $.fn.dataTable.isDataTable( '#myTable' ))
-                    $("#myTable").DataTable();
+                        $("#myTable").DataTable();
                     else
-                    $("#myTable").DataTable(fr_table());
-                    $('button[title="supprimer"]').click(function(){
+                        $("#myTable").DataTable(fr_table());
+                    $('#myTable tbody').on('click', 'button[title="supprimer"]', function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",
@@ -271,7 +271,7 @@
                         });
                     });
 
-                    $('button[title="accepter"]').click(function(){
+                    $('#myTable tbody').on('click', 'button[title="accepter"]', function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération d'ajout !",
@@ -338,7 +338,7 @@
                     $("#myTable1").DataTable();
                     else
                     $("#myTable1").DataTable(fr_table());
-                    $('button[title="supprimer"]').click(function(){
+                    $('#myTable1 tbody').on('click', 'button[title="supprimer"]', function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération de suppression !",
@@ -394,7 +394,7 @@
                         });
                     });
 
-                    $('button[title="accepter"]').click(function(){
+                    $('#myTable1 tbody').on('click', 'button[title="accepter"]', function(){
                         var idcher = $(this).val();
                         $.confirm({
                             title : "Opération d'ajout !",
