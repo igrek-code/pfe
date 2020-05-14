@@ -116,6 +116,13 @@
             </li>
     
             <li>
+                <a href="laboValiderProduction.php">
+                    <i class="pe-7s-check"></i>
+                    <p>Valider Production</p>
+                </a>
+            </li>
+
+            <li>
                 <a href="gererProduction.php">
                     <i class="pe-7s-notebook"></i>
                     <p>gerer production</p>
@@ -160,32 +167,39 @@
                      <p style="font-size:11px">Demandes d\'inscription</p>
                  </a>
              </li>
-     
+
              <li '.$class[1].'>
+                <a href="laboValiderProduction.php">
+                    <i class="pe-7s-check"></i>
+                    <p>Valider Production</p>
+                </a>
+            </li>
+     
+             <li '.$class[2].'>
                  <a href="gererProduction.php">
                      <i class="pe-7s-notebook"></i>
                      <p>gerer production</p>
                  </a>
              </li>
-             <li '.$class[2].'>
+             <li '.$class[3].'>
                  <a href="recherche.php">
                      <i class="pe-7s-search"></i>
                      <p>recherche</p>
                  </a>
              </li>
-             <li '.$class[3].'>
+             <li '.$class[4].'>
                  <a href="laboModifierEquipe.php">
                      <i class="pe-7s-network"></i>
                      <p>Modifier Equipe</p>
                  </a>
              </li>
-             <li '.$class[4].'>
+             <li '.$class[5].'>
                  <a href="equipeGererMembre.php">
                      <i class="pe-7s-users"></i>
                      <p>Gerer Membre Equipe</p>
                  </a>
              </li>
-             <li '.$class[5].'>
+             <li '.$class[6].'>
                  <a href="bilanEquipe.php">
                      <i class="pe-7s-graph3"></i>
                      <p>Bilan</p>

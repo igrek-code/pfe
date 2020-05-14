@@ -83,7 +83,6 @@
                 <th>Profil</th>
                 <th>Grade</th>
                 <th>Email</th>
-                <th>Equipe</th>
                 <th>Action</th>
             </thead>
             <tbody>';
@@ -98,33 +97,26 @@
         if(mysqli_num_rows($result) > 0){
             while ($row = mysqli_fetch_array($result)) {
                 $idcher = $row["idcher"];
-                $sql = "SELECT * FROM equipe WHERE idequipe IN (
-                    SELECT idequipe FROM menbrequip WHERE idcher='".$idcher."'
-                )";
-                if($result3 = mysqli_query($db,$sql)){
-                    $nomLabo =mysqli_fetch_array($result3)["nomequip"];
-                    $nomcher = $row["nom"];
-                    $profilcher = $row["profil"];
-                    $gradecher = $row["grade"];
-                    $mailcher = $row["mail"];
-                    echo   '<tr>';
-                    echo   '<td>'.$nomcher.'</td>';
-                    echo   '<td>'.$profilcher.'</td>';
-                    echo   '<td>'.$gradecher.'</td>';
-                    echo   '<td>'.$mailcher.'</td>';
-                    echo   '<td>'.$nomLabo.'</td>';
-                    echo   '<td>';
-                    echo    '<div class="btn-toolbar">';
-                    echo    '<div class="btn-group">';
-                    echo    '<button value="'.$idcher.'" title="accepter" class="btn btn-fill btn-success">Accepter</button>';
-                    echo    '</div>';
-                    echo    '<div class="btn-group">';
-                    echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger">Décliner</button>';
-                    echo    '</div>';
-                    echo    '</div>';
-                    echo   '</td>';
-                    echo   '</tr>';
-                }
+                $nomcher = $row["nom"];
+                $profilcher = $row["profil"];
+                $gradecher = $row["grade"];
+                $mailcher = $row["mail"];
+                echo   '<tr>';
+                echo   '<td>'.$nomcher.'</td>';
+                echo   '<td>'.$profilcher.'</td>';
+                echo   '<td>'.$gradecher.'</td>';
+                echo   '<td>'.$mailcher.'</td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$idcher.'" title="accepter" class="btn btn-fill btn-success">Accepter</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$idcher.'" title="supprimer" class="btn-fill btn btn-danger">Décliner</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
+                echo   '</tr>';
                 
             }
         }

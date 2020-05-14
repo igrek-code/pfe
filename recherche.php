@@ -79,7 +79,7 @@
                 
             <?php require_once("menu.php");
                 if(isset($_SESSION['loggedinlabo'])) menu(3);
-                if(isset($_SESSION['loggedinequipe'])) menu(2);
+                if(isset($_SESSION['loggedinequipe'])) menu(3);
                 if(isset($_SESSION['loggedinchercheur'])) menu(1);
                 ?>
             </ul>

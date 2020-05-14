@@ -1,32 +1,32 @@
 <?php
     session_start();
     require_once("../config.php");
-    $idlabo = $_SESSION["idlabo"];
+    $idequipe = $_SESSION["idequipe"];
 
     if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != ""){
         switch ($_GET["typeProduction"]) {
             case 'publication':
-                afficher_publication($db,$idlabo);
+                afficher_publication($db,$idequipe);
             break;
             
             case 'communication':
-                afficher_communication($db,$idlabo);
+                afficher_communication($db,$idequipe);
             break;
 
             case 'ouvrage':
-                afficher_ouvrage($db,$idlabo);
+                afficher_ouvrage($db,$idequipe);
             break;
 
             case 'chapitreOuvrage':
-                afficher_chapitreOuvrage($db,$idlabo);
+                afficher_chapitreOuvrage($db,$idequipe);
             break;
 
             case 'doctorat':
-                afficher_doctorat($db,$idlabo);
+                afficher_doctorat($db,$idequipe);
             break;
 
             case 'master':
-                afficher_master($db,$idlabo);
+                afficher_master($db,$idequipe);
             break;
 
             default:
@@ -35,15 +35,15 @@
         }
     }
 
-    function afficher_master($db,$idlabo){
+    function afficher_master($db,$idequipe){
         $sql = "SELECT * FROM pfemaster WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idequipe."'
                 )
             ) OR idcher IN (
                 SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                    SELECT idequipe FROM equipe WHERE idlabo ='".$idequipe."'
                 )
             )
         )";
@@ -128,16 +128,12 @@
         }
     }
 
-    function afficher_doctorat($db,$idlabo){
+    function afficher_doctorat($db,$idequipe){
         $sql = "SELECT * FROM these WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
-                SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
             ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -217,16 +213,12 @@
         }        
     }
 
-    function afficher_chapitreOuvrage($db,$idlabo){
+    function afficher_chapitreOuvrage($db,$idequipe){
         $sql = "SELECT * FROM chapitredouvrage WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
-                SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
             ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -364,16 +356,12 @@
         }        
     }
 
-    function afficher_ouvrage($db,$idlabo){
+    function afficher_ouvrage($db,$idequipe){
         $sql = "SELECT * FROM ouvrage WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
-                SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
             ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -506,16 +494,12 @@
         }
     }
 
-    function afficher_communication($db,$idlabo){
+    function afficher_communication($db,$idequipe){
         $sql = "SELECT * FROM communication WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
-                SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
             ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -722,16 +706,12 @@
         }
     }
 
-    function afficher_publication($db,$idlabo){
+    function afficher_publication($db,$idequipe){
         $sql = "SELECT * FROM publication WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
-                SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
             ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
-                )
+                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
