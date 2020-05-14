@@ -41,6 +41,8 @@
 
     <!-- DATA TABLE CSS -->
     <link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/b-1.6.2/b-html5-1.6.2/datatables.min.css"/>-->
+
 
     <!-- J-CONFIRM CSS -->
     <link rel="stylesheet" href="assets/j-confirm/j-confirm.css">
@@ -174,6 +176,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="table"></div>
                             </div>
 
                             
@@ -211,6 +214,9 @@
 	<script src="assets/js/demo.js"></script>
 
     <!-- DATA TABLE JS -->
+    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/b-1.6.2/b-html5-1.6.2/datatables.min.js"></script>-->
     <script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
 
     <!-- J-CONFIRM JS -->
@@ -221,9 +227,42 @@
 
     <!-- CHART JS -->
     <script src="assets/chartjs/chartjs.js"></script>
+
+    <!-- TABLE TO EXCEL -->
+    <!--<script src="assets/js/jquery.tableToExcel.js"></script>-->
     
     <script>
         $(document).ready(function(){
+            function tblToExcel(tableID, filename = ''){
+                var downloadLink;
+                var dataType = 'application/vnd.ms-excel';
+                var tableSelect = document.getElementById(tableID);
+                var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+                
+                // Specify file name
+                filename = filename?filename+'.xls':'excel_data.xls';
+                
+                // Create download link element
+                downloadLink = document.createElement("a");
+                
+                document.body.appendChild(downloadLink);
+                
+                if(navigator.msSaveOrOpenBlob){
+                    var blob = new Blob(['\ufeff', tableHTML], {
+                        type: dataType
+                    });
+                    navigator.msSaveOrOpenBlob( blob, filename);
+                }else{
+                    // Create a link to the file
+                    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                
+                    // Setting the file name
+                    downloadLink.download = filename;
+                    
+                    //triggering the function
+                    downloadLink.click();
+                }
+            }
             var color = Chart.helpers.color;
             var colors = ['#f58442','#f542bc','#eb4034','#4287f5','#32a852','#fcba03','#b342f5'];
 
@@ -403,10 +442,50 @@
                                     pie = drawPie(productions,pie,update,typeProduction);
                                     getPoints(productions,typeProduction);
                                     update = true;
+                                    $('#table').html();
+                                    $('#table').html(`
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table id="toExport" class="table table-hover">
+                                                <thead>
+                                                    <th>Titre</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+
+                                            <div class="header">
+                                                <h4 class="title">Liste des productions</h4>
+                                                <p><button class="btn btn-success btn-fill" type="button" onclick="tblToExcel('toExport');">Export to excel</button></p>
+                                            </div>
+
+                                            <div class="content">
+                                                <table id="showTable" class="table table-hover">
+                                                    <thead>
+                                                        <th>Titre</th>
+                                                        <th>Date</th>
+                                                        <th>Type</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `);
+                                    productions.forEach(production => {
+                                        $('tbody').append(`
+                                            <tr>
+                                            <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                            <td>${production.date}</td>
+                                            <td>${production.type}</td>
+                                            </tr>
+                                        `);                    
+                                    });
+                                    $('#showTable').DataTable(fr_table());
+                                    $('#toExport').hide();
+                                    init_codepro();
                                 });
-                                /*$.get("ajax/bilanAjax.php",{pointCher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
-                                    getPoints(data);
-                                });*/
 
                                 $('#stats').show();
                             }
@@ -851,7 +930,6 @@
                             if( idlabo != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
                                 $.get("ajax/bilanAjax.php",{bilanlabo: idlabo, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                     var productions = JSON.parse(data.slice(2,-1)+"]");
-                                    console.log(productions);
                                     graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                                     pie = drawPie(productions,pie,update,typeProduction);
                                     getPoints(productions,typeProduction);
@@ -1330,6 +1408,70 @@
                 graph = new Chart($('#graph'), config);
                 return graph;
             }
+
+            function fr_table (){
+                
+                return {
+                    //"scrollY" : "500px",
+                    //"scrollCollapse": true,
+                    //"scrollX": true,
+                    "language" : {
+                        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ",",
+                        "sLengthMenu":     "Afficher _MENU_ éléments",
+                        "sLoadingRecords": "Chargement...",
+                        "sProcessing":     "Traitement...",
+                        "sSearch":         "Rechercher :",
+                        "sZeroRecords":    "Aucun élément correspondant trouvé",
+                        "oPaginate": {
+                            "sFirst":    "Premier",
+                            "sLast":     "Dernier",
+                            "sNext":     "Suivant",
+                            "sPrevious": "Précédent"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                        },
+                        "select": {
+                                "rows": {
+                                    "_": "%d lignes sélectionnées",
+                                    "0": "Aucune ligne sélectionnée",
+                                    "1": "1 ligne sélectionnée"
+                                } 
+                        }
+                    }
+
+                };
+            }
+
+            function init_codepro(){
+                $('button[codepro="codepro"]').click(function(){
+                    var codepro = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle("Informations supplémentaires sur la production");
+                            $.get("ajax/rechercheAjax.php",{codepro: codepro},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "Fermer",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
+
+            }
+
+
         });
     </script>
 

@@ -47,6 +47,8 @@
 
     if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != "" && isset($_GET["deb"]) && $_GET["deb"] != "" && isset($_GET["fin"]) && $_GET["fin"] != ""){
         class production{
+            public $codepro;
+            public $titre;
             public $type;
             public $classe;
             public $inter;
@@ -76,7 +78,9 @@
                 SELECT codepro FROM pfemaster WHERE encadreur='".$idcher."'
             )OR codepro IN (
                 SELECT codepro FROM these WHERE encadreur='".$idcher."'
-            ))";
+            )) AND codepro NOT IN (
+                SELECT codepro FROM validationproduction
+            )";
         }
 
         if(isset($_GET["bilanequipe"]) && $_GET["bilanequipe"] != ""){
@@ -113,7 +117,9 @@
                 )) AND encadreur IN (
                     SELECT idcher FROM users WHERE actif='1'
                 )
-            ))";
+            )) AND codepro NOT IN (
+                SELECT codepro FROM validationproduction
+            )";
         }
         
         if(isset($_GET["bilanlabo"]) && $_GET["bilanlabo"] != ""){
@@ -166,7 +172,9 @@
                 )) AND encadreur IN (
                     SELECT idcher FROM users WHERE actif='1'
                 )
-            ))";
+            )) AND codepro NOT IN (
+                SELECT codepro FROM validationproduction
+            )";
         }
 
         $result = mysqli_query($db,$sql);
@@ -177,6 +185,66 @@
                 $production->type = $row['type'];
                 $production->date = $row['date'];
                 $codepro = $row['codepro'];
+                $production->codepro = $codepro;
+                switch ($production->type) {
+                    case 'publication':
+                        $sql = "SELECT * FROM publication WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->titre = $row2['titre'];
+                        }
+                    break;
+                    
+                    case 'communication':
+                        $sql = "SELECT * FROM communication WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->titre = $row2['titre'];
+                        }
+                    break;   
+
+                    case 'ouvrage':
+                        $sql = "SELECT * FROM ouvrage WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->titre = $row2['titre'];
+                        }
+                    break;
+
+                    case 'chapitreOuvrage':
+                        $sql = "SELECT * FROM chapitredouvrage WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->titre = $row2['titre'];
+                        }
+                    break;
+
+                    case 'doctorat':
+                        $sql = "SELECT * FROM these WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->titre = $row2['titre'];
+                        }
+                    break;
+
+                    case 'master':
+                        $sql = "SELECT * FROM pfemaster WHERE codepro='".$codepro."'";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $row2 = mysqli_fetch_array($result2);
+                            $production->titre = $row2['titre'];
+                        }
+                    break;
+
+                    default:
+                        # code...
+                    break;
+                }
                 switch ($production->type) {
                     case 'publication':
                         $sql = "SELECT * FROM revue WHERE coderevue IN (
