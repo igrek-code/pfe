@@ -54,8 +54,30 @@
                  for ($j=$i+1; $j < 7; $j++) { 
                      $class[$j] =  "";
                  }
-     
-                 echo '<li '.$class[0].'>
+                 $db = mysqli_connect('localhost','root','','projetfetud');
+                 $sql = "SELECT count(*) FROM notification WHERE admin=1";
+                 $result = mysqli_query($db,$sql);
+                 $count = mysqli_fetch_array($result)['count(*)'];
+                 echo '
+                 <li '.$class[0].'>
+                 <a href="notification.php">
+                     <i class="pe-7s-bell"></i>
+                     <p>Notifications <span style="position: absolute;
+                     background-color: #FB404B;
+                     text-align: center;
+                     border-radius: 10px;
+                     min-width: 18px;
+                     padding: 0 5px;
+                     height: 18px;
+                     font-size: 12px;
+                     color: #FFFFFF;
+                     font-weight: bold;
+                     line-height: 18px;
+                     top: 6px;
+                     left: 10px;">'.$count.'</span></p>
+                 </a>
+             </li>
+                 <li>
                  <a href="laboGererDemande.php">
                      <i class="pe-7s-id"></i>
                      <p style="font-size:11px">Demandes d\'inscription</p>
