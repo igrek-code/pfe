@@ -4,6 +4,8 @@
     $session = false;
     if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
     if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
+    if(isset($_SESSION['loggedinchercheur']) && $_SESSION['loggedinchercheur']) $session = true;
+    if(isset($_SESSION['loggedinadmin']) && $_SESSION['loggedinadmin']) $session = true;
     if(!$session){   
         session_destroy();
         header("location: index.php");
@@ -14,12 +16,22 @@
         $error = true;
 
         $titre = mysqli_real_escape_string($db,$_POST['titreNotif']);
-        $idcher = $_SESSION['idcher'];
+        if(isset($_SESSION['idcher'])){
+            $idcher = $_SESSION['idcher'];
+            $admin = 0;
+        }
+        else{
+            $idcher = 0;
+            $admin = 1;
+        }
+        if(isset($_POST['forEquipe']))
+            $forEquipe = mysqli_real_escape_string($db,$_POST['forEquipe']);
+        else    
+            $forEquipe = 0;
         $date = mysqli_real_escape_string($db,$_POST['dateNotif']);
         $type = mysqli_real_escape_string($db,$_POST['typeNotif']);
-        $admin = 0;
 
-        $sql = "INSERT INTO notification (idcher, titre, date, type, admin) VALUES ('".$idcher."','".$titre."','".$date."','".$type."','".$admin."')";
+        $sql = "INSERT INTO notification (idcher, titre, date, type, admin, forEquipe) VALUES ('".$idcher."','".$titre."','".$date."','".$type."','".$admin."', '".$forEquipe."')";
         if(mysqli_query($db,$sql)) $error = false;
 
         if(!$error) $display_type = "success";
@@ -97,9 +109,16 @@
             
             <ul class="nav">
                 
-            <?php require_once("menu.php");
-                if(isset($_SESSION['loggedinlabo'])) menu(0);
-                if(isset($_SESSION['loggedinequipe'])) menu(0);
+            <?php 
+                if(!isset($_SESSION['loggedinadmin'])){
+                    require_once("menu.php");    
+                    if(isset($_SESSION['loggedinlabo'])) menu(0);
+                    if(isset($_SESSION['loggedinequipe'])) menu(0);
+                    if(isset($_SESSION['loggedinchercheur'])) menu(0);
+                }else{
+                    require_once('menuAdmin.php');
+                    menu(0);
+                }
                 ?>
             </ul>
     	</div>
@@ -117,9 +136,11 @@
                     </button>
                     <div style="font-size:18px;" class="navbar-brand">
                         <?php 
-                            echo $_SESSION["nom"];
-                            if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
-                            if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                            if(!isset($_SESSION["loggedinadmin"])){
+                                echo $_SESSION["nom"];
+                                if(isset($_SESSION["nomequip"])) echo ' Equipe: '.$_SESSION["nomequip"];
+                                if(isset($_SESSION["nomlabo"])) echo ' Labo: '.$_SESSION["nomlabo"];
+                            }else echo 'Admin';
                         ?> 
                     </div>
                 </div>
@@ -162,12 +183,31 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card" style="padding-bottom:20px;">
+                            <?php if(!isset($_SESSION['loggedinchercheur'])) {?>
                             <div class="header">
                                 <h4 class="title">Nouvelle notification</h4>
-                                <p class="category">envoyer au chefs d'équipe</p>
+                                <?php
+                                    if(isset($_SESSION['loggedinlabo'])) echo '<p class="category">envoyer au chefs d\'équipe ou chercheurs</p>';
+                                    if(isset($_SESSION['loggedinequipe'])) echo '<p class="category">envoyer au chercheurs</p>';
+                                    if(isset($_SESSION['loggedinadmin'])) echo '<p class="category">envoyer au chefs de labo</p>';
+                                ?>
+                                
                             </div>
                             <div class="content">
                                 <form action="" method="post">
+                                <?php if(isset($_SESSION['loggedinlabo'])) {?>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group form-inline">
+                                                <label for="">envoyer à: </label>
+                                                <select required class="form-control selectpicker" name="forEquipe">
+                                                    <option value="1">Chefs d'équipe</option>
+                                                    <option value="0">Chercheurs</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php }?>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -195,16 +235,54 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="header">
-                                <h4 class="title">Liste des notifications</h4>
-                                <p class="category">envoyé par l'admin</p>
-                            </div>
-                            <div id="theTable"></div>
+                            <?php }?>
+                            <?php if(!isset($_SESSION['loggedinadmin'])){?>
+                                <div class="header">
+                                    <h4 class="title">Liste des notifications</h4>
+                                    <?php
+                                        if(isset($_SESSION['loggedinlabo'])) echo '<p class="category">envoyé par l\'admin</p>';
+                                        if(isset($_SESSION['loggedinequipe'])) echo '<p class="category">envoyé par le chef de labo</p>';
+                                        if(isset($_SESSION['loggedinchercheur'])) echo '<p class="category">envoyé par le chef d\'équipe</p>';
+                                    ?>
+                                </div>
+                                <div id="theTable"></div>
+                            <?php }?>
+                            <?php if(!isset($_SESSION['loggedinchercheur'])) {?>
                             <div class="header">
                                 <h4 class="title">Mes notifications</h4>
                                 <p class="category">modifier/supprimer</p>
                             </div>
+                            <div id="modifierNotif" class="content">
+                                <form action="" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input minlength="5" maxlength="255" placeholder="Titre" required name="titreNotif" class="form-control" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <select title="Type..." required class="form-control selectpicker" name="typeNotif">
+                                                    <option value="urgent">Urgent</option>
+                                                    <option value="pasUrgent">Pas urgent</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input min="<?php echo date('Y-m-d');?>" title="Dernier délai" required name="dateNotif" class="form-control" type="date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" modifier="modifier" class="form-control btn btn-info btn-fill">Modifier</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <div id="theTable1"></div>
+                            <?php }?>
                         </div>
                     </div>
                 </div>
@@ -246,6 +324,8 @@
     <script>
         $(document).ready(function(){
 
+            $('#modifierNotif').hide();
+
             <?php
                 if(isset($display_notif) && $display_notif == true)
                 {
@@ -267,7 +347,7 @@
                         echo '$.notify({
                             icon : "pe-7s-close-circle",
                             title : "Echoué !",
-                            message : "L\'envoi de la notificationa échoué"
+                            message : "L\'envoi de la notification a échoué"
                         },{
                             type : "danger",
                             allow_dismiss : true,
@@ -305,6 +385,64 @@
             }
 
             function init_buttons(){
+                $('#theTable1 tbody').on('click', 'button[title="modifier"]',function(){
+                    var values = $(this).val().split(',');
+                    var titre = values[0];
+                    var date = values[1];
+                    var type = values[2];
+                    console.log(values);
+                    $('#modifierNotif').show();
+                    var form = $('#modifierNotif');
+                    form.find('input[name="titreNotif"]').val(titre);
+                    form.find('input[name="titreNotif"]').prop("oldTitre",titre);
+                    console.log(form.find('input[name="titreNotif"]').prop("oldTitre"));
+                    form.find('input[name="dateNotif"]').val(date);
+                    form.find('select[name="typeNotif"]').val(type);
+                    $('.selectpicker').selectpicker('refresh');
+                });
+                $('#modifierNotif button[modifier="modifier"]').click(function(){
+                    var form = $('#modifierNotif');
+                    var oldTitre = form.find('input[name="titreNotif"]').prop("oldTitre");
+                    var titre = form.find('input[name="titreNotif"]').val();
+                    var date = form.find('input[name="dateNotif"]').val();
+                    var type = form.find('select[name="typeNotif"]').val();
+                    var idcher = <?php if(isset($_SESSION['idcher'])) echo $_SESSION['idcher']; else echo 0;?>;
+
+                    $.get('ajax/notificationAjax.php',{idcher: idcher, oldTitre: oldTitre, titre: titre, date: date, type: type},function(data){
+                        if(data == '?>true'){
+                            $.notify({
+                                icon : "pe-7s-angle-down-circle",
+                                title : "Succès !",
+                                message : "Notification modifiée avec succès"
+                            },{
+                                type : "success",
+                                allow_dismiss : true,
+                                placement: {
+                                    from: "top",
+                                    align: "center"
+                                },
+                                timer : 2000
+                            });
+                            refresh_table1();
+                            $('#modifierNotif').hide();
+                        }
+                        else{
+                            $.notify({
+                                icon : "pe-7s-close-circle",
+                                title : "Echoué !",
+                                message : "La modification de la notification a échoué"
+                            },{
+                                type : "danger",
+                                allow_dismiss : true,
+                                placement: {
+                                    from: "top",
+                                    align: "center"
+                                },
+                                timer : 5000
+                            });
+                        }
+                    });
+                });
                 /*$(':checkbox[value="all"]').click(function(){
                     if($(this).prop('checked'))
                         $(':checkbox').prop('checked',true);
@@ -312,6 +450,7 @@
                         $(':checkbox').prop('checked',false);
                 })*/
                 $('#theTable1 tbody').on('click', 'button[title="supprimer"]',function(){
+                    $('#modifierNotif').hide();
                     var titre = $(this).val();
                     $.confirm({
                         title : "Opération de suppression !",
@@ -324,8 +463,6 @@
                                 btnClass : 'btn-danger btn-fill',
                                 action : function (){
                                     var idcher = <?php if(isset($_SESSION['idcher'])) echo $_SESSION['idcher']; else echo 0;?>;
-                                    console.log(idcher);
-                                    console.log(titre);
                                     $.get("ajax/notificationAjax.php",{idcher : idcher, titre: titre},function (data) {
                                         if(data == "?>true"){
                                             $.notify({
@@ -341,7 +478,7 @@
                                                     },
                                                     timer : 2000
                                                 });
-                                                refreshTable1();
+                                                refresh_table1();
                                         }
                                         else{
                                             $.notify({

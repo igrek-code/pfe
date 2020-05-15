@@ -1,7 +1,14 @@
 <?php 
     function menu($i){
         if($i == -1){
-            echo '<li>
+            echo '
+            <li >
+                 <a href="notification.php">
+                     <i class="pe-7s-bell"></i>
+                     <p>Notifications</p>
+                 </a>
+             </li>
+            <li>
             <a href="adminGererDemande.php">
                 <i class="pe-7s-id"></i>
                 <p style="font-size:11px">Demandes d\'inscription</p>
@@ -44,40 +51,47 @@
                 $class[$j] = ''; 
             }
             $class[$i] = 'class="active"';
-            for ($j=++$i; $j < 6; $j++) { 
+            for ($j=++$i; $j < 7; $j++) { 
                 $class[$j] = ''; 
             }
-            echo '<li '.$class[0].'>
+            echo '
+            <li '.$class[0].'>
+                 <a href="notification.php">
+                     <i class="pe-7s-bell"></i>
+                     <p>Notifications</p>
+                 </a>
+             </li>
+            <li '.$class[1].'>
             <a href="adminGererDemande.php">
                 <i class="pe-7s-id"></i>
                 <p style="font-size:11px">Demandes d\'inscription</p>
             </a>
             </li>
-            <li '.$class[1].'>
+            <li '.$class[2].'>
                 <a href="adminGererEtab.php">
                     <i class="pe-7s-culture"></i>
                     <p>Gerer Etablissement</p>
                 </a>
             </li>
-            <li '.$class[2].'>
+            <li '.$class[3].'>
                 <a href="adminGererLabo.php">
                     <i class="pe-7s-science"></i>
                     <p>Gerer Laboratoire</p>
                 </a>
             </li>
-            <li '.$class[3].'>
+            <li '.$class[4].'>
                 <a href="adminGererCompte.php">
                     <i class="pe-7s-users"></i>
                     <p>Gerer Compte</p>
                 </a>
             </li>
-            <li '.$class[4].'>
+            <li '.$class[5].'>
                 <a href="adminFixerNotation.php">
                     <i class="pe-7s-news-paper"></i>
                     <p style="font-size:9px">Fixer le barème de notation</p>
                 </a>
             </li>
-            <li '.$class[5].'>
+            <li '.$class[6].'>
                 <a href="bilan.php">
                     <i class="pe-7s-graph3"></i>
                     <p>Bilan</p>
