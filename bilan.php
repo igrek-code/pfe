@@ -1133,6 +1133,9 @@
                                             case 'C':
                                                 tempo += notes.revueInterC;
                                             break;
+                                            default:
+                                                tempo += notes.revueInterAutre;
+                                            break;
                                         }
                                     }
                                 break;
@@ -1151,6 +1154,9 @@
                                             break;
                                             case 'C':
                                                 tempo += notes.comInterC;
+                                            break;
+                                            default:
+                                                tempo += notes.comInterAutre;
                                             break;
                                         }
                                     }
@@ -1192,6 +1198,9 @@
                                             case 'C':
                                                 tempo += notes.revueInterC;
                                             break;
+                                            default:
+                                                tempo += notes.revueInterAutre;
+                                            break;
                                         }
                                     }
                                 break;
@@ -1211,6 +1220,9 @@
                                             case 'C':
                                                 tempo += notes.comInterC;
                                             break;
+                                            default:
+                                                tempo += notes.comInterAutre;
+                                            break;
                                         }
                                     }
                                 break;
@@ -1221,6 +1233,14 @@
 
                                 case 'ouvrage':
                                     tempo += notes.ouvrage;
+                                break;
+
+                                case 'doctorat':
+                                    tempo += notes.doctorat;
+                                break;
+
+                                case 'master':
+                                    tempo += notes.master;
                                 break;
 
                                 default:

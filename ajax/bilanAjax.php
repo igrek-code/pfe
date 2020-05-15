@@ -289,14 +289,18 @@
             public $revueInterA;
             public $revueInterB;
             public $revueInterC;
+            public $revueInterAutre;
             public $revueNat;
             public $autre;
             public $comInterA;
             public $comInterB;
             public $comInterC;
+            public $comInterAutre;
             public $comNat;
             public $chapitreOuvrage;
             public $ouvrage;
+            public $master;
+            public $doctorat;
         }
         $sql = "SELECT * FROM systemenotes WHERE id='1'";
         $result = mysqli_query($db,$sql);
@@ -307,14 +311,18 @@
             $notes->revueInterA = $row['revueInterA'];
             $notes->revueInterB = $row['revueInterB'];
             $notes->revueInterC = $row['revueInterC'];
+            $notes->revueInterAutre = $row['revueInterAutre'];
             $notes->revueNat = $row['revueNat'];
             $notes->autre = $row['autre'];
             $notes->comInterA = $row['comInterA'];
             $notes->comInterB = $row['comInterB'];
             $notes->comInterC = $row['comInterC'];
+            $notes->comInterAutre = $row['comInterAutre'];
             $notes->comNat = $row['comNat'];
             $notes->chapitreOuvrage = $row['chapitreOuvrage'];
             $notes->ouvrage = $row['ouvrage'];
+            $notes->doctorat = $row['doctorat'];
+            $notes->master = $row['master'];
         }
         if(isset($notes))
             echo json_encode($notes);

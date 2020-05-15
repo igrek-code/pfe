@@ -23,6 +23,8 @@
         $comNat = $row["comNat"];
         $chapitreOuvrage = $row["chapitreOuvrage"];
         $ouvrage = $row["ouvrage"];
+        $master = $row["master"];
+        $doctorat = $row["doctorat"];
     }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -110,6 +112,18 @@
         if($_POST["chapitreOuvrage"] != $chapitreOuvrage){
             $chapitreOuvrage = mysqli_real_escape_string($db,$_POST["chapitreOuvrage"]);
             $sql = "UPDATE systemeNotes SET chapitreOuvrage='".$chapitreOuvrage."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["doctorat"] != $doctorat){
+            $doctorat = mysqli_real_escape_string($db,$_POST["doctorat"]);
+            $sql = "UPDATE systemeNotes SET doctorat='".$doctorat."'WHERE id='1'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["master"] != $master){
+            $master = mysqli_real_escape_string($db,$_POST["master"]);
+            $sql = "UPDATE systemeNotes SET master='".$master."'WHERE id='1'";
             if(!mysqli_query($db,$sql)) $error = true;
         }
 
@@ -360,10 +374,23 @@
 
                             <div style="background:grey;width:100%;height:1px;margin-bottom:5px;"></div>
 
-                            <p class="category">Autre</p>
+                            <!--<p class="category">Autre</p>-->
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
+                                    <label for="">doctorat</label>
+                                    <input min="1" max="1000" onClick="this.select();" value="<?php echo $doctorat;?>" class="form-control" type="number" name="doctorat" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="">master</label>
+                                    <input min="1" max="1000" onClick="this.select();" value="<?php echo $master;?>" class="form-control" type="number" name="master" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="">autre</label>
                                     <input min="1" max="1000" onClick="this.select();" value="<?php echo $autre;?>" class="form-control" type="number" name="autre" required>
                                     </div>
                                 </div>
