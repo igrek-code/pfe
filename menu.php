@@ -28,7 +28,7 @@
                 <li>
                 <a href="laboGererDemande.php">
                     <i class="pe-7s-id"></i>
-                    <p style="font-size:11px">Demandes d\'inscription</p>
+                    <p style="font-size:10px">Demandes d\'inscription</p>
                 </a>
             </li>
     
@@ -60,7 +60,7 @@
             <li>
                 <a href="equipeGererMembre.php">
                     <i class="pe-7s-users"></i>
-                    <p>Gerer Membre Equipe</p>
+                    <p style="font-size:11px;">Gerer Membre Equipe</p>
                 </a>
             </li>
             <li>
@@ -103,7 +103,7 @@
                  <li '.$class[1].'>
                  <a href="laboGererDemande.php">
                      <i class="pe-7s-id"></i>
-                     <p style="font-size:11px">Demandes d\'inscription</p>
+                     <p style="font-size:10px">Demandes d\'inscription</p>
                  </a>
              </li>
      
@@ -135,7 +135,7 @@
              <li '.$class[6].'>
                  <a href="equipeGererMembre.php">
                      <i class="pe-7s-users"></i>
-                     <p>Gerer Membre Equipe</p>
+                     <p style="font-size:11px;">Gerer Membre Equipe</p>
                  </a>
              </li>
              <li '.$class[7].'>
@@ -183,7 +183,7 @@
              <li>
                 <a href="laboGererDemande.php">
                     <i class="pe-7s-id"></i>
-                    <p style="font-size:11px">Demandes d\'inscription</p>
+                    <p style="font-size:10px">Demandes d\'inscription</p>
                 </a>
             </li>
     
@@ -215,7 +215,7 @@
             <li>
                 <a href="equipeGererMembre.php">
                     <i class="pe-7s-users"></i>
-                    <p>Gerer Membre Equipe</p>
+                    <p style="font-size:11px;">Gerer Membre Equipe</p>
                 </a>
             </li>
             <li>
@@ -262,7 +262,7 @@
                  <li '.$class[1].'>
                  <a href="laboGererDemande.php">
                      <i class="pe-7s-id"></i>
-                     <p style="font-size:11px">Demandes d\'inscription</p>
+                     <p style="font-size:10px">Demandes d\'inscription</p>
                  </a>
              </li>
 
@@ -294,7 +294,7 @@
              <li '.$class[6].'>
                  <a href="equipeGererMembre.php">
                      <i class="pe-7s-users"></i>
-                     <p>Gerer Membre Equipe</p>
+                     <p style="font-size:11px;">Gerer Membre Equipe</p>
                  </a>
              </li>
              <li '.$class[7].'>

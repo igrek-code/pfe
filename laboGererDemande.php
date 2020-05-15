@@ -273,6 +273,10 @@
 
                     $('#myTable tbody').on('click', 'button[title="accepter"]', function(){
                         var idcher = $(this).val();
+                        /*var values = $(this).val().split(',');
+                        var idcher = values[0];
+                        var idequipe = values[1];
+                        console.log(idequipe);*/
                         $.confirm({
                             title : "Opération d'ajout !",
                             content : "Voulez vous vraiment accepter cette demande ?",

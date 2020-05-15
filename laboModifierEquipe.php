@@ -65,8 +65,24 @@
         
         if(isset($_POST["idcher"]) && $_POST["idcher"]!=""){
             $idchef = mysqli_real_escape_string($db,$_POST["idcher"]);
-            $sql = "DELETE FROM chefequip WHERE idequipe='".$idequipe."'";
-            if(!mysqli_query($db,$sql)) $error = true;
+            $sql = "SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $idOldChef = mysqli_fetch_array($result)['idcher'];
+                $sql = "INSERT INTO menbrequip (idcher,idequipe) VALUES ('".$idOldChef."','".$idequipe."')";
+                if(!mysqli_query($db,$sql)) $error = true;
+                else{
+                    $sql = "DELETE FROM chefequip WHERE idequipe='".$idequipe."'";
+                    if(!mysqli_query($db,$sql)) $error = true;
+                }
+            }
+
+            $sql = "DELETE FROM chefequip WHERE idcher='".$idchef."'";
+            mysqli_query($db,$sql);
+
+            $sql = "DELETE FROM menbrequip WHERE idcher='".$idchef."'";
+            mysqli_query($db,$sql);
+            
             $sql = "INSERT INTO chefequip (idcher,idequipe) VALUES ('".$idchef."','".$idequipe."')";
             if(!mysqli_query($db,$sql)) $error = true;
             if($idchef == $_SESSION["idcher"]) {
@@ -241,19 +257,25 @@
                                         <label>Chef d'équipe</label>
                                         <select <?php if(isset($_SESSION['loggedinequipe'])) echo "disabled"; ?> class="form-control selectpicker" data-live-search="true" name="idcher" id="idcher" title="Chef d'équipe...">
                                         <?php
-                                            $sql = "SELECT * FROM menbrequip WHERE idequip='".$idequipe."' AND idcher IN (
-                                                SELECT idcher FROM users WHERE actif='1'
+                                            $sql = "SELECT * FROM chercheur WHERE (
+                                                idcher IN (
+                                                    SELECT idcher FROM menbrequip WHERE idequipe IN (
+                                                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                                                    )
+                                                ) OR idcher IN (
+                                                    SELECT idcher FROM chefequip WHERE idequipe IN (
+                                                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                                                    )
+                                                )
+                                            ) AND idcher NOT IN (
+                                                SELECT idcher FROM users WHERE actif=0
                                             )";
                                             $result = mysqli_query($db,$sql);
                                             if(mysqli_num_rows($result) > 0){
                                                 while($row = mysqli_fetch_array($result)){
                                                     $idcher = $row["idcher"];
-                                                    $sql = "SELECT * FROM chercheur WHERE idcher='".$idcher."'";
-                                                    $result2 = mysqli_query($db,$sql);
-                                                    if(mysqli_num_rows($result2) > 0){
-                                                        $nomcher = mysqli_fetch_array($result2)["nom"];
-                                                        echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
-                                                    }
+                                                    $nomcher = $row["nom"];
+                                                    echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
                                                 }
                                             }
                                             if(isset($idchef)) echo '<option selected value="'.$idchef.'">'.$nomchef.'</option>';

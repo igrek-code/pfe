@@ -44,7 +44,9 @@
                     SELECT idequipe FROM chefequip WHERE idcher='".$idcher."'
                 )";
                 if($result3 = mysqli_query($db,$sql)){
-                    $nomLabo =mysqli_fetch_array($result3)["nomequip"];
+                    $row3 = mysqli_fetch_array($result3);
+                    $nomLabo = $row3["nomequip"];
+                    $idequipe = $row3['idequipe'];
                     $nomcher = $row["nom"];
                     $profilcher = $row["profil"];
                     $gradecher = $row["grade"];

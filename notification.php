@@ -253,7 +253,20 @@
                                 <p class="category">modifier/supprimer</p>
                             </div>
                             <div id="modifierNotif" class="content">
-                                <form action="" method="post">
+                                <form>
+                                <?php if(isset($_SESSION['loggedinlabo'])) {?>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group form-inline">
+                                                <label for="">envoyer à: </label>
+                                                <select required class="form-control selectpicker" name="forEquipe">
+                                                    <option value="1">Chefs d'équipe</option>
+                                                    <option value="0">Chercheurs</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php }?>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -390,25 +403,25 @@
                     var titre = values[0];
                     var date = values[1];
                     var type = values[2];
-                    console.log(values);
+                    var forEquipe = values[3];
                     $('#modifierNotif').show();
                     var form = $('#modifierNotif');
                     form.find('input[name="titreNotif"]').val(titre);
                     form.find('input[name="titreNotif"]').prop("oldTitre",titre);
-                    console.log(form.find('input[name="titreNotif"]').prop("oldTitre"));
                     form.find('input[name="dateNotif"]').val(date);
                     form.find('select[name="typeNotif"]').val(type);
+                    form.find('select[name="forEquipe"]').val(forEquipe);
                     $('.selectpicker').selectpicker('refresh');
                 });
-                $('#modifierNotif button[modifier="modifier"]').click(function(){
+                $('#modifierNotif button[modifier="modifier"]').unbind().click(function(){
                     var form = $('#modifierNotif');
                     var oldTitre = form.find('input[name="titreNotif"]').prop("oldTitre");
                     var titre = form.find('input[name="titreNotif"]').val();
                     var date = form.find('input[name="dateNotif"]').val();
                     var type = form.find('select[name="typeNotif"]').val();
                     var idcher = <?php if(isset($_SESSION['idcher'])) echo $_SESSION['idcher']; else echo 0;?>;
-
-                    $.get('ajax/notificationAjax.php',{idcher: idcher, oldTitre: oldTitre, titre: titre, date: date, type: type},function(data){
+                    var forEquipe = form.find('select[name="forEquipe"]').val() === undefined ? 0:form.find('select[name="forEquipe"]').val();
+                    $.get('ajax/notificationAjax.php',{idcher: idcher, oldTitre: oldTitre, titre: titre, date: date, type: type, forEquipe: forEquipe},function(data){
                         if(data == '?>true'){
                             $.notify({
                                 icon : "pe-7s-angle-down-circle",

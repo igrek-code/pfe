@@ -8,6 +8,21 @@
         session_destroy();
         header("location: index.php");
     }
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $display_notif = true ;
+        $error = true;
+
+        if(isset($_SESSION['idequipe'])){
+            $idequipe = $_SESSION['idequipe'];
+            $newCher = mysqli_real_escape_string($db,$_POST['newCher']);
+            $sql = "UPDATE menbrequip SET idequipe='".$idequipe."' WHERE idcher='".$newCher."'";
+            if(mysqli_query($db,$sql)) $error = false;
+        }
+        
+        if(!$error) $display_type = "success";
+        else $display_type = "error";
+    }
     
 ?>
 
@@ -146,6 +161,53 @@
                     <div class="col-md-12">
                         <div class="card" style="padding-bottom:20px;">
                             <div class="header">
+                                <h4 class="title">Nouveau membre</h4>
+                                <p class="category">ajouter</p>
+                            </div>
+                            <div class="content">
+                                <form action="" method="POST">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select data-live-search="true" title="Chercheur..." class="form-control selectpicker" name="newCher">
+                                                <?php
+                                                    if(isset($_SESSION['idequipe'])){
+                                                        $idequipe = $_SESSION['idequipe'];
+                                                        $equipeSql = "AND idcher NOT IN (
+                                                            SELECT idcher FROM menbrequip WHERE idequipe = '".$idequipe."'
+                                                        )";
+                                                    }else{
+                                                        $equipeSql = '';
+                                                    }
+                                                    $idlabo = $_SESSION['idlabo'];
+                                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                        SELECT idcher FROM menbrequip WHERE idequipe IN (
+                                                            SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
+                                                        )
+                                                    ) AND idcher NOT IN (
+                                                        SELECT idcher FROM users WHERE actif=0
+                                                    )".$equipeSql;
+                                                    $result = mysqli_query($db,$sql);
+                                                    if(mysqli_num_rows($result) > 0){
+                                                        while($row = mysqli_fetch_array($result)){
+                                                            $nomCher = $row['nom'];
+                                                            $idcher = $row['idcher'];
+                                                            echo '<option value="'.$idcher.'">'.$nomCher.'</option>';
+                                                        }
+                                                    }
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button ajouterCher="ajouterCher" class="form-control btn btn-success btn-fill">Ajouter</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="header">
                                 <h4 class="title">Liste des membres</h4>
                                 <p class="category">supprimer</p>
                             </div>
@@ -190,6 +252,40 @@
     
     <script>
         $(document).ready(function(){
+
+            <?php
+                if(isset($display_notif) && $display_notif == true)
+                {
+                    if($display_type == "success")
+                        echo '$.notify({
+                            icon : "pe-7s-angle-down-circle",
+                            title : "Succès !",
+                            message : "Membre ajouté avec succès"
+                        },{
+                            type : "success",
+                            allow_dismiss : true,
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            timer : 2000
+                        });';
+                    else
+                        echo '$.notify({
+                            icon : "pe-7s-close-circle",
+                            title : "Echoué !",
+                            message : "L\'opération d\'ajout a échoué"
+                        },{
+                            type : "danger",
+                            allow_dismiss : true,
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            timer : 5000
+                        });';
+                }
+            ?>
             
             refresh_table();
 

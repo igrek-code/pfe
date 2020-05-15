@@ -85,7 +85,7 @@
                 echo '<td class="alert alert-'.$alert.'">'.$textType.'</td>';
                 if(isset($_SESSION['loggedinlabo']))
                 {
-                    if($forEquipe == 0)
+                    if($forEquipe == 1)
                         echo '<td class="alert alert-'.$alert.'">Chefs d\'équipes</td>';
                     else
                         echo '<td class="alert alert-'.$alert.'">Chercheurs</td>';
@@ -93,7 +93,7 @@
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';
-                echo    '<button value="'.$titre.','.$date.','.$type.'" title="modifier" class="btn-fill btn btn-info"><i class="pe-7s-file"></i></button>';
+                echo    '<button value="'.$titre.','.$date.','.$type.','.$forEquipe.'" title="modifier" class="btn-fill btn btn-info"><i class="pe-7s-file"></i></button>';
                 echo    '</div>';
                 echo    '<div class="btn-group">';
                 echo    '<button  value="'.$titre.'" title="supprimer" class="supprimer btn-fill btn btn-danger "><i class="pe-7s-trash  "></i></button>';
@@ -111,10 +111,12 @@
         $type = mysqli_real_escape_string($db,$_GET['type']);
         $date = mysqli_real_escape_string($db,$_GET['date']);
         $idcher = mysqli_real_escape_string($db,$_GET['idcher']);
+        $forEquipe = mysqli_real_escape_string($db,$_GET['forEquipe']);
+
         if($idcher == 0)
             $sql = "UPDATE notification SET titre='".$titre."', type='".$type."', date='".$date."' WHERE admin=1 AND titre='".$oldTitre."'";
         else
-            $sql = "UPDATE notification SET titre='".$titre."', type='".$type."', date='".$date."' WHERE admin=0 AND idcher='".$idcher."' AND titre='".$oldTitre."'";
+            $sql = "UPDATE notification SET forEquipe='".$forEquipe."', titre='".$titre."', type='".$type."', date='".$date."' WHERE admin=0 AND idcher='".$idcher."' AND titre='".$oldTitre."'";
         
         if(mysqli_query($db,$sql)) echo 'true';
         else echo 'false';
@@ -123,7 +125,7 @@
     if(!isset($_GET['oldTitre']) && isset($_GET['idcher']) && isset($_GET['titre'])){
         $idcher = mysqli_real_escape_string($db,$_GET['idcher']);
         $titre = mysqli_real_escape_string($db,$_GET['titre']);
-        if($idcher == 0)
+        if($idcher != 0)
             $sql = "DELETE FROM notification WHERE admin=0 AND idcher='".$idcher."' AND titre='".$titre."'";
         else
             $sql = "DELETE FROM notification WHERE admin=1 AND titre='".$titre."'";
