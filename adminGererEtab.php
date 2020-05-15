@@ -76,7 +76,7 @@
                 
             <?php
                     require_once('menuAdmin.php');
-                    menu(1);
+                    menu(2);
                 ?>
                 
             </ul>

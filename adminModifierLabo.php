@@ -211,7 +211,7 @@
             <ul class="nav">
             <?php
                     require_once('menuAdmin.php');
-                    menu(2);
+                    menu(3);
                 ?>
             </ul>
     	</div>

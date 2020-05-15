@@ -75,7 +75,7 @@
             <ul class="nav">
             <?php
                     require_once('menuAdmin.php');
-                    menu(3);
+                    menu(4);
                 ?>
             </ul>
     	</div>

@@ -148,8 +148,8 @@
 
             <?php 
                 require_once("menu.php");
-                if(isset($_SESSION['loggedinlabo'])) menu(4);
-                if(isset($_SESSION['loggedinequipe'])) menu(4);
+                if(isset($_SESSION['loggedinlabo'])) menu(5);
+                if(isset($_SESSION['loggedinequipe'])) menu(5);
             ?>
             </ul>
     	</div>

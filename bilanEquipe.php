@@ -78,7 +78,7 @@
             <ul class="nav">
                 <?php
                     require_once('menu.php');
-                    menu(6);
+                    menu(7);
                 ?>
             </ul>
     	</div>

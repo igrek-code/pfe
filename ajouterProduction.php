@@ -113,9 +113,9 @@
             <ul class="nav">
 
             <?php require_once("menu.php");
-                    if(isset($_SESSION['loggedinlabo'])) menu(2);
-                    if(isset($_SESSION['loggedinequipe'])) menu(1);
-                    if(isset($_SESSION['loggedinchercheur'])) menu(0);
+                    if(isset($_SESSION['loggedinlabo'])) menu(3);
+                    if(isset($_SESSION['loggedinequipe'])) menu(3);
+                    if(isset($_SESSION['loggedinchercheur'])) menu(1);
                 ?>
             </ul>
     	</div>

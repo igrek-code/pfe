@@ -79,7 +79,7 @@
             <ul class="nav">
             <?php
                     require_once('menuAdmin.php');
-                    menu(5);
+                    menu(6);
                 ?>
             </ul>
     	</div>
