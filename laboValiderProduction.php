@@ -4,7 +4,6 @@
     $session = false;
     if(isset($_SESSION['loggedinlabo']) && $_SESSION['loggedinlabo']) $session = true;
     if(isset($_SESSION['loggedinequipe']) && $_SESSION['loggedinequipe']) $session = true;
-    if(isset($_SESSION['loggedinchercheur']) && $_SESSION['loggedinchercheur']) $session = true;
     if(!$session){   
         session_destroy();
         header("location: index.php");

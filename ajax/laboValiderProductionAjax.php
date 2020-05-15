@@ -41,10 +41,6 @@
                 SELECT idcher FROM menbrequip WHERE idequipe IN (
                     SELECT idequipe FROM equipe WHERE idlabo ='".$idequipe."'
                 )
-            ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idequipe."'
-                )
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -132,8 +128,6 @@
         $sql = "SELECT * FROM these WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
-            ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -217,8 +211,6 @@
         $sql = "SELECT * FROM chapitredouvrage WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
-            ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -360,8 +352,6 @@
         $sql = "SELECT * FROM ouvrage WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
-            ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -498,8 +488,6 @@
         $sql = "SELECT * FROM communication WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
-            ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);
@@ -710,8 +698,6 @@
         $sql = "SELECT * FROM publication WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
-            ) OR idcher IN (
-                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
             )
         )";
         $result = mysqli_query($db,$sql);

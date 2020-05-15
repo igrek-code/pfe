@@ -16,7 +16,7 @@
         $error = false;
         $postedBy = $_SESSION["idcher"];
         $needsValidation = false;
-        if(isset($_SESSION['loggedinequipe']) || isset($_SESSION['loggedinchercheur'])) $needsValidation = true;
+        if(isset($_SESSION['loggedinchercheur'])) $needsValidation = true;
         if(isset($_POST["typeProduction"]) && $_POST["typeProduction"] != "") 
             switch ($_POST["typeProduction"]) {
                 case 'publication':
