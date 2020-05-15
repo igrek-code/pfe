@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 23 avr. 2020 à 17:20
+-- Généré le : sam. 16 mai 2020 à 01:27
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -62,7 +62,13 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (16, '', 5),
 (16, '', 7),
 (0, 'CH PRINC', 8),
-(16, '', 20);
+(16, '', 51),
+(16, '', 52),
+(16, '', 53),
+(16, '', 54),
+(16, '', 55),
+(16, '', 56),
+(16, '', 58);
 
 -- --------------------------------------------------------
 
@@ -104,7 +110,8 @@ CREATE TABLE `chefequip` (
 --
 
 INSERT INTO `chefequip` (`idcher`, `idequipe`) VALUES
-(16, 8);
+(16, 8),
+(28, 14);
 
 -- --------------------------------------------------------
 
@@ -159,7 +166,9 @@ INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `profil`) VALUES
 (21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'permanent'),
 (23, 'newdoc', 'newdoc@usthb.dz', '', 'doctorant'),
 (24, 'fleur', 'fleur@usthb.dz', 'PROF', 'permanent'),
-(26, 'xwqinsosiqdioqsn', 'newdoc@usthb.dz', '', 'doctorant');
+(26, 'xwqinsosiqdioqsn', 'newdoc@usthb.dz', '', 'doctorant'),
+(27, 'new doc 5', 'newdoc5@usthb.dz', 'MCA', 'permanent'),
+(28, 'omar rabhi', 'omar@usthb.dz', 'MCB', 'permanent');
 
 -- --------------------------------------------------------
 
@@ -181,10 +190,14 @@ INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
 (0, 'another one', 5),
 (0, 'C23', 4),
 (0, 'CH CO9', 7),
-(0, 'yes bro', 20),
+(0, 'com8', 58),
 (21, '', 4),
 (21, '', 5),
-(21, '', 20);
+(23, '', 52),
+(23, '', 53),
+(23, '', 54),
+(23, '', 55),
+(23, '', 56);
 
 -- --------------------------------------------------------
 
@@ -205,7 +218,8 @@ CREATE TABLE `communication` (
 --
 
 INSERT INTO `communication` (`codepro`, `titre`, `idspe`, `url`, `codeconf`) VALUES
-(4, 'COM23', 22, 'COM23', 1);
+(4, 'COM23', 22, 'COM23', 1),
+(58, 'com8', 89, 'com8', 1);
 
 -- --------------------------------------------------------
 
@@ -220,9 +234,9 @@ CREATE TABLE `conference` (
   `annee` varchar(4) NOT NULL,
   `idspe` int(12) NOT NULL,
   `theme` varchar(255) NOT NULL,
-  `periodicite` enum('annuel','semestriel') NOT NULL,
+  `periodicite` enum('annuel','semestriel','biannuel','quadrimestriel','trimestriel','bimestriel','mensuel','bimensuel') NOT NULL,
   `type` enum('nationale','internationale') NOT NULL,
-  `classe` enum('A','B','C') NOT NULL,
+  `classe` enum('A','B','C','Autre') NOT NULL,
   `pays` varchar(40) NOT NULL,
   `numindex` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -281,10 +295,47 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (29, 'P2'),
 (30, 'P2'),
 (36, 'rpub'),
-(37, 'pub'),
 (38, 'mecanique'),
 (39, 'pm5'),
-(40, 'cherM');
+(40, 'cherMi'),
+(41, 'MB'),
+(42, 'MB2'),
+(43, 'MB2'),
+(44, 'MB2'),
+(45, 'MB2'),
+(46, 'MB2'),
+(47, 'MB2'),
+(48, 'MB2'),
+(49, 'MB2'),
+(50, 'MB2'),
+(51, 'MB2'),
+(52, 'MB2'),
+(53, 'MB2'),
+(54, 'MB2'),
+(55, 'MB2'),
+(56, 'MB2'),
+(57, 'MB2'),
+(58, 'MB2'),
+(59, 'MB2'),
+(60, 'MB2'),
+(61, 'MB2'),
+(62, 'MB3'),
+(63, 'MB3'),
+(64, 'MB3'),
+(65, 'MB3'),
+(66, 'MB3'),
+(67, 'MB3'),
+(68, 'DB'),
+(69, 'OB'),
+(70, 'OB2'),
+(71, 'OB2'),
+(72, 'OB2'),
+(73, 'OB2'),
+(74, 'OB2'),
+(75, 'INFORMATIQUE'),
+(76, 'informatique'),
+(77, 'com8'),
+(78, 'com8');
 
 -- --------------------------------------------------------
 
@@ -330,7 +381,8 @@ CREATE TABLE `etablissement` (
 
 INSERT INTO `etablissement` (`idetab`, `nom`, `abrv`, `type`, `addresse`, `tel`, `fax`, `siteweb`) VALUES
 (1, 'universite des sciences et technologies houari boumediene', 'USTHB', 'université', 'el alia bab ezzouar ', 21300, 21301, 'usthb.dz'),
-(41, 'CERIST', '', 'université', '', 21355, 213, 'cerist.dz');
+(41, 'CERIST', '', 'université', '', 21355, 213, 'cerist.dz'),
+(42, 'Universitéd\'oran', 'usto', 'université', 'oran', 213, 213, 'usto.dz');
 
 -- --------------------------------------------------------
 
@@ -373,7 +425,9 @@ INSERT INTO `laboratoire` (`idlabo`, `idspe`, `nom`, `abrv`, `addresse`, `anneec
 (37, 5, 'Intelligence artificielle', '', '', 0000, 0, 'actif', 1, '', 0, ''),
 (38, 7, 'vegeteble life', 'vlf', 'we here', 2020, 213, 'actif', 1, 'fac de biologie', 213, ''),
 (39, 43, 'nawawi and friends', '', '', 0000, 0, 'actif', 1, 'fac physique', 0, ''),
-(40, 44, 'mecanique and chill', '', '', 0000, 0, 'actif', 1, 'fac mecanique', 0, '');
+(40, 44, 'mecanique and chill', '', '', 0000, 0, 'actif', 1, 'fac mecanique', 0, ''),
+(41, 85, 'new info', 'inf', '', 0000, 0, 'actif', 1, '', 0, ''),
+(42, 87, 'fzefzefzefze', '', '', 2010, 0, 'actif', 1, '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -403,7 +457,8 @@ CREATE TABLE `menbrequip` (
 
 INSERT INTO `menbrequip` (`idcher`, `idequipe`) VALUES
 (23, 8),
-(26, 8);
+(26, 8),
+(27, 8);
 
 -- --------------------------------------------------------
 
@@ -437,17 +492,72 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (9, 'T'),
 (10, '15'),
 (10, 'M'),
-(20, 'b'),
-(20, 'p'),
-(20, 'u'),
 (21, '5'),
 (21, 'm'),
 (21, 'p'),
-(22, 'c'),
-(22, 'e'),
-(22, 'h'),
-(22, 'M'),
-(22, 'r');
+(23, 'MB'),
+(24, 'MB2'),
+(25, 'MB2'),
+(26, 'MB2'),
+(27, 'MB2'),
+(28, 'MB2'),
+(29, 'MB2'),
+(30, 'MB2'),
+(31, 'MB2'),
+(32, 'MB2'),
+(33, 'MB2'),
+(34, 'MB2'),
+(35, 'MB2'),
+(36, 'MB2'),
+(37, 'MB2'),
+(38, 'MB2'),
+(39, 'MB2'),
+(40, 'MB2'),
+(41, 'MB2'),
+(42, 'MB2'),
+(43, 'MB2'),
+(44, 'MB3'),
+(45, 'MB3'),
+(46, 'MB3'),
+(47, 'MB3'),
+(48, 'MB3'),
+(49, 'MB3'),
+(50, 'DB'),
+(51, 'OB'),
+(52, 'OB2'),
+(53, 'OB2'),
+(54, 'OB2'),
+(55, 'OB2'),
+(56, 'OB2'),
+(58, '8'),
+(58, 'c'),
+(58, 'm'),
+(58, 'o');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `notification`
+--
+
+CREATE TABLE `notification` (
+  `idcher` int(12) NOT NULL DEFAULT 0,
+  `titre` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `type` enum('urgent','pasUrgent') NOT NULL,
+  `admin` int(1) NOT NULL,
+  `forEquipe` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `notification`
+--
+
+INSERT INTO `notification` (`idcher`, `titre`, `date`, `type`, `admin`, `forEquipe`) VALUES
+(16, 'bilan svp faite vite', '2020-05-31', 'pasUrgent', 0, 0),
+(16, 'ddzdaz', '2020-05-26', 'urgent', 0, 1),
+(16, 'whateverlol', '2020-05-28', 'pasUrgent', 0, 0),
+(28, 'vous devez yes', '2020-05-30', 'urgent', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -469,7 +579,13 @@ CREATE TABLE `ouvrage` (
 --
 
 INSERT INTO `ouvrage` (`codepro`, `idspe`, `titre`, `nbpages`, `editeur`, `url`) VALUES
-(5, 25, 'ouv55', 500, 'five', 'five.5');
+(5, 25, 'ouv55', 500, 'five', 'five.5'),
+(51, 79, 'OB', 200, 'OB', 'OB'),
+(52, 80, 'OB2', 500, 'OB2', 'OB2'),
+(53, 81, 'OB2', 500, 'OB2', 'OB2'),
+(54, 82, 'OB2', 500, 'OB2', 'OB2'),
+(55, 83, 'OB2', 500, 'OB2', 'OB2'),
+(56, 84, 'OB2', 500, 'OB2', 'OB2');
 
 -- --------------------------------------------------------
 
@@ -492,7 +608,33 @@ CREATE TABLE `pfemaster` (
 INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) VALUES
 (10, 'PM15', 30, 16, 'PM15'),
 (21, 'pm5', 49, 16, 'pm5'),
-(22, 'cherM', 50, 26, 'cherM');
+(23, 'MB', 51, 16, 'MB'),
+(24, 'MB2', 52, 16, 'MB2'),
+(25, 'MB2', 53, 16, 'MB2'),
+(26, 'MB2', 54, 16, 'MB2'),
+(27, 'MB2', 55, 16, 'MB2'),
+(28, 'MB2', 56, 16, 'MB2'),
+(29, 'MB2', 57, 16, 'MB2'),
+(30, 'MB2', 58, 16, 'MB2'),
+(31, 'MB2', 59, 16, 'MB2'),
+(32, 'MB2', 60, 16, 'MB2'),
+(33, 'MB2', 61, 16, 'MB2'),
+(34, 'MB2', 62, 16, 'MB2'),
+(35, 'MB2', 63, 16, 'MB2'),
+(36, 'MB2', 64, 16, 'MB2'),
+(37, 'MB2', 65, 16, 'MB2'),
+(38, 'MB2', 66, 16, 'MB2'),
+(39, 'MB2', 67, 16, 'MB2'),
+(40, 'MB2', 68, 16, 'MB2'),
+(41, 'MB2', 69, 16, 'MB2'),
+(42, 'MB2', 70, 16, 'MB2'),
+(43, 'MB2', 71, 16, 'MB2'),
+(44, 'MB3', 72, 16, 'MB3'),
+(45, 'MB3', 73, 16, 'MB3'),
+(46, 'MB3', 74, 16, 'MB3'),
+(47, 'MB3', 75, 16, 'MB3'),
+(48, 'MB3', 76, 16, 'MB3'),
+(49, 'MB3', 77, 16, 'MB3');
 
 -- --------------------------------------------------------
 
@@ -523,9 +665,43 @@ INSERT INTO `production` (`codepro`, `date`, `type`) VALUES
 (12, '2020-04', 'publication'),
 (13, '2020-04', 'publication'),
 (14, '2020-04', 'publication'),
-(20, '2005-04', 'publication'),
 (21, '2020-04', 'master'),
-(22, '2003-04', 'master');
+(23, '2020-04', 'master'),
+(24, '2020-04', 'master'),
+(25, '2020-04', 'master'),
+(26, '2020-04', 'master'),
+(27, '2020-04', 'master'),
+(28, '2020-04', 'master'),
+(29, '2020-04', 'master'),
+(30, '2020-04', 'master'),
+(31, '2020-04', 'master'),
+(32, '2020-04', 'master'),
+(33, '2020-04', 'master'),
+(34, '2020-04', 'master'),
+(35, '2020-04', 'master'),
+(36, '2020-04', 'master'),
+(37, '2020-04', 'master'),
+(38, '2020-04', 'master'),
+(39, '2020-04', 'master'),
+(40, '2020-04', 'master'),
+(41, '2020-04', 'master'),
+(42, '2020-04', 'master'),
+(43, '2020-04', 'master'),
+(44, '2020-04', 'master'),
+(45, '2020-04', 'master'),
+(46, '2020-04', 'master'),
+(47, '2020-04', 'master'),
+(48, '2020-04', 'master'),
+(49, '2020-04', 'master'),
+(50, '2020-04', 'doctorat'),
+(51, '2020-04', 'ouvrage'),
+(52, '2020-04', 'ouvrage'),
+(53, '2020-04', 'ouvrage'),
+(54, '2020-04', 'ouvrage'),
+(55, '2020-04', 'ouvrage'),
+(56, '2020-04', 'ouvrage'),
+(57, '2020-05', 'communication'),
+(58, '2020-05', 'communication');
 
 -- --------------------------------------------------------
 
@@ -565,8 +741,7 @@ CREATE TABLE `publication` (
 --
 
 INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvol`, `nissue`, `url`) VALUES
-(2, 'p2', 5, 2, 0, 0, 0, 'p2'),
-(20, 'pub', 42, 3, 0, 12, 12, 'pub');
+(2, 'p2', 5, 2, 0, 0, 0, 'p2');
 
 -- --------------------------------------------------------
 
@@ -577,14 +752,14 @@ INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvo
 CREATE TABLE `revue` (
   `coderevue` int(12) NOT NULL,
   `nom` varchar(20) NOT NULL,
-  `periodicite` varchar(20) NOT NULL,
+  `periodicite` enum('annuel','semestriel','biannuel','quadrimestriel','trimestriel','bimestriel','mensuel','bimensuel') NOT NULL,
   `issnonline` varchar(40) NOT NULL,
   `issnprint` varchar(40) NOT NULL,
   `editeur` varchar(40) NOT NULL,
   `annee` varchar(4) NOT NULL,
   `theme` varchar(255) NOT NULL,
   `idspe` int(12) NOT NULL,
-  `classe` enum('A*','A','B','C') NOT NULL,
+  `classe` enum('A*','A','B','C','Autre') NOT NULL,
   `numindex` int(12) NOT NULL,
   `type` enum('nationale','internationale') NOT NULL,
   `pays` varchar(40) NOT NULL
@@ -652,15 +827,52 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (34, 'P2', '', 29),
 (35, 'P2', '', 30),
 (41, 'rpub', '', 36),
-(42, 'pub', '', 37),
-(43, 'nawawi', '', 37),
 (44, 'culasse', '', 38),
 (45, 'informatique', '', 1),
 (46, 'informatique', '', 1),
 (47, 'informatique', '', 1),
 (48, 'vision', '', 1),
 (49, 'pm5', '', 39),
-(50, 'cherM', '', 40);
+(50, 'cherMi', '', 40),
+(51, 'MB', '', 41),
+(52, 'MB2', '', 42),
+(53, 'MB2', '', 43),
+(54, 'MB2', '', 44),
+(55, 'MB2', '', 45),
+(56, 'MB2', '', 46),
+(57, 'MB2', '', 47),
+(58, 'MB2', '', 48),
+(59, 'MB2', '', 49),
+(60, 'MB2', '', 50),
+(61, 'MB2', '', 51),
+(62, 'MB2', '', 52),
+(63, 'MB2', '', 53),
+(64, 'MB2', '', 54),
+(65, 'MB2', '', 55),
+(66, 'MB2', '', 56),
+(67, 'MB2', '', 57),
+(68, 'MB2', '', 58),
+(69, 'MB2', '', 59),
+(70, 'MB2', '', 60),
+(71, 'MB2', '', 61),
+(72, 'MB3', '', 62),
+(73, 'MB3', '', 63),
+(74, 'MB3', '', 64),
+(75, 'MB3', '', 65),
+(76, 'MB3', '', 66),
+(77, 'MB3', '', 67),
+(78, 'DB', '', 68),
+(79, 'OB', '', 69),
+(80, 'OB2', '', 70),
+(81, 'OB2', '', 71),
+(82, 'OB2', '', 72),
+(83, 'OB2', '', 73),
+(84, 'OB2', '', 74),
+(85, 'intelligence artificielle', '', 75),
+(86, 'vision etc', '', 1),
+(87, 'secutzefze', '', 76),
+(88, 'com8', '', 77),
+(89, 'com8', '', 78);
 
 -- --------------------------------------------------------
 
@@ -673,14 +885,18 @@ CREATE TABLE `systemenotes` (
   `revueInterA` int(2) NOT NULL,
   `revueInterB` int(2) NOT NULL,
   `revueInterC` int(2) NOT NULL,
+  `revueInterAutre` int(2) NOT NULL,
   `revueNat` int(2) NOT NULL,
   `autre` int(2) NOT NULL,
   `comInterA` int(2) NOT NULL,
   `comInterB` int(2) NOT NULL,
   `comInterC` int(2) NOT NULL,
+  `comInterAutre` int(2) NOT NULL,
   `comNat` int(2) NOT NULL,
   `chapitreOuvrage` int(2) NOT NULL,
   `ouvrage` int(2) NOT NULL,
+  `doctorat` int(2) NOT NULL,
+  `master` int(2) NOT NULL,
   `id` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -688,8 +904,8 @@ CREATE TABLE `systemenotes` (
 -- Déchargement des données de la table `systemenotes`
 --
 
-INSERT INTO `systemenotes` (`revueInterAA`, `revueInterA`, `revueInterB`, `revueInterC`, `revueNat`, `autre`, `comInterA`, `comInterB`, `comInterC`, `comNat`, `chapitreOuvrage`, `ouvrage`, `id`) VALUES
-(60, 50, 40, 20, 20, 10, 30, 20, 10, 10, 30, 100, 1);
+INSERT INTO `systemenotes` (`revueInterAA`, `revueInterA`, `revueInterB`, `revueInterC`, `revueInterAutre`, `revueNat`, `autre`, `comInterA`, `comInterB`, `comInterC`, `comInterAutre`, `comNat`, `chapitreOuvrage`, `ouvrage`, `doctorat`, `master`, `id`) VALUES
+(60, 50, 40, 20, 10, 20, 5, 30, 20, 10, 10, 10, 30, 100, 15, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -712,7 +928,8 @@ CREATE TABLE `these` (
 --
 
 INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
-(9, 'TD10', 16, 'TD', 8, 'TD', 29);
+(9, 'TD10', 16, 'TD', 8, 'TD', 29),
+(50, 'DB', 16, 'DB', 5, 'DB', 78);
 
 -- --------------------------------------------------------
 
@@ -733,9 +950,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (16, 'sid.ahmedl@usthb.dz', 'lol', 1),
-(21, 'omar.rabhi@usthb.dz', 'lol', 0),
-(24, 'fleur@usthb.dz', 'lol', 1),
-(26, 'newdoc@usthb.dz', 'lol', 1);
+(26, 'newdoc@usthb.dz', 'lol', 1),
+(27, 'newdoc5@usthb.dz', 'lol', 1),
+(28, 'omar@usthb.dz', 'lol', 1);
 
 -- --------------------------------------------------------
 
@@ -748,13 +965,6 @@ CREATE TABLE `validationproduction` (
   `idcher` int(12) NOT NULL,
   `type` enum('publication','communication','ouvrage','chapitreOuvrage','doctorat','master') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `validationproduction`
---
-
-INSERT INTO `validationproduction` (`codepro`, `idcher`, `type`) VALUES
-(22, 26, 'master');
 
 --
 -- Index pour les tables déchargées
@@ -887,6 +1097,12 @@ ALTER TABLE `motscle`
   ADD KEY `codepro` (`codepro`);
 
 --
+-- Index pour la table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`idcher`,`titre`);
+
+--
 -- Index pour la table `ouvrage`
 --
 ALTER TABLE `ouvrage`
@@ -979,7 +1195,7 @@ ALTER TABLE `validationproduction`
 -- AUTO_INCREMENT pour la table `chercheur`
 --
 ALTER TABLE `chercheur`
-  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT pour la table `conference`
@@ -991,19 +1207,19 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `etablissement`
 --
 ALTER TABLE `etablissement`
-  MODIFY `idetab` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `idetab` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT pour la table `index`
@@ -1015,13 +1231,13 @@ ALTER TABLE `index`
 -- AUTO_INCREMENT pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT pour la table `projrecher`
@@ -1039,7 +1255,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -1200,6 +1416,14 @@ ALTER TABLE `users`
 ALTER TABLE `validationproduction`
   ADD CONSTRAINT `validation_chercheur_fk` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `validation_production_fk` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+--
+-- Évènements
+--
+CREATE DEFINER=`root`@`localhost` EVENT `suppNotif` ON SCHEDULE EVERY 1 HOUR STARTS '2020-05-14 14:52:39' ON COMPLETION NOT PRESERVE ENABLE DO DELETE FROM `projetfetud`.`notification` WHERE `date` < CURDATE()$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
