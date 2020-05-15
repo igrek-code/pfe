@@ -702,7 +702,13 @@
                 <label>périodicité</label>
                 <select required title="Périodicité..." name="periodiciteRevue" id="periodiciteRevue" class="form-control selectpicker">
                     <option value="annuel">Annuelle</option>
+                    <option value="biannuel">Biannuelle</option>
                     <option value="semestriel">Semestrielle</option>
+                    <option value="quadrimestrielle">Quadrimestrielle</option>
+                    <option value="trimestrielle">Trimestrielle</option>
+                    <option value="bimestrielle">Bimestrielle</option>
+                    <option value="mensuelle">Mensuelle</option>
+                    <option value="bimensuelle">Bimensuelle</option>
                 </select>
             </div>
         </div>
@@ -781,7 +787,13 @@
                 <label>périodicité</label>
                 <select required title="Périodicité..." name="periodiciteConf" id="periodiciteConf" class="form-control selectpicker">
                     <option value="annuel">Annuelle</option>
+                    <option value="biannuel">Biannuelle</option>
                     <option value="semestriel">Semestrielle</option>
+                    <option value="quadrimestriel">Quadrimestrielle</option>
+                    <option value="trimestriel">Trimestrielle</option>
+                    <option value="bimestriel">Bimestrielle</option>
+                    <option value="mensuel">Mensuelle</option>
+                    <option value="bimensuel">Bimensuelle</option>
                 </select>
             </div>
         </div>
@@ -822,6 +834,7 @@
                         <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
+                        <option value="Autre">Autre</option>
                     </select>
                 </div>
             </div>
@@ -849,6 +862,7 @@
                         <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
+                        <option value="Autre">Autre</option>
                     </select>
                 </div>
             </div>
