@@ -69,12 +69,20 @@
                     <p>Bilan</p>
                 </a>
             </li>';
+            if(isset($_SESSION['ddr']) && $_SESSION['ddr'])
+            echo '<li>
+                <a href="gererProjet.php">
+                    <i class="pe-7s-share"></i>
+                    <p style="font-size:8px;">Gerer projet de recherche</p>
+                </a>
+            </li>
+            ';
             }else{
                 for ($j=0; $j < $i; $j++) { 
                     $class[$j] =  "";
                  }
                  $class[$i] =  'class="active"';
-                 for ($j=$i+1; $j < 8; $j++) { 
+                 for ($j=$i+1; $j < 9; $j++) { 
                      $class[$j] =  "";
                  }
                  $db = mysqli_connect('localhost','root','','projetfetud');
@@ -144,6 +152,14 @@
                      <p>Bilan</p>
                  </a>
              </li>';
+             if(isset($_SESSION['ddr']) && $_SESSION['ddr'])
+            echo '<li '.$class[8].' >
+                <a href="gererProjet.php">
+                    <i class="pe-7s-share"></i>
+                    <p style="font-size:8px;">Gerer projet de recherche</p>
+                </a>
+            </li>
+            ';
             }
 
 
@@ -224,12 +240,20 @@
                     <p>Bilan</p>
                 </a>
             </li>';
+            if(isset($_SESSION['ddr']) && $_SESSION['ddr'])
+            echo '<li>
+                <a href="gererProjet.php">
+                    <i class="pe-7s-share"></i>
+                    <p style="font-size:8px;">Gerer projet de recherche</p>
+                </a>
+            </li>
+            ';
             }else{
                 for ($j=0; $j < $i; $j++) { 
                     $class[$j] =  "";
                  }
                  $class[$i] =  'class="active"';
-                 for ($j=$i+1; $j < 8; $j++) { 
+                 for ($j=$i+1; $j < 9; $j++) { 
                      $class[$j] =  "";
                  }
                  $db = mysqli_connect('localhost','root','','projetfetud');
@@ -303,6 +327,14 @@
                      <p>Bilan</p>
                  </a>
              </li>';
+             if(isset($_SESSION['ddr']) && $_SESSION['ddr'])
+            echo '<li '.$class[8].'>
+                <a href="gererProjet.php">
+                    <i class="pe-7s-share"></i>
+                    <p style="font-size:8px;">Gerer projet de recherche</p>
+                </a>
+            </li>
+            ';
             }
 
 
@@ -358,12 +390,20 @@
                     <p>Bilan</p>
                 </a>
             </li>';
+            if(isset($_SESSION['ddr']) && $_SESSION['ddr'])
+            echo '<li>
+                <a href="gererProjet.php">
+                    <i class="pe-7s-share"></i>
+                    <p style="font-size:8px;">Gerer projet de recherche</p>
+                </a>
+            </li>
+            ';
             }else{
                 for ($j=0; $j < $i; $j++) { 
                     $class[$j] =  "";
                  }
                  $class[$i] =  'class="active"';
-                 for ($j=$i+1; $j < 4; $j++) { 
+                 for ($j=$i+1; $j < 5; $j++) { 
                      $class[$j] =  "";
                  }
      
@@ -414,6 +454,14 @@
                      <p>Bilan</p>
                  </a>
              </li>';
+             if(isset($_SESSION['ddr']) && $_SESSION['ddr'])
+            echo '<li '.$class[4].'>
+                <a href="gererProjet.php">
+                    <i class="pe-7s-share"></i>
+                    <p style="font-size:8px;">Gerer projet de recherche</p>
+                </a>
+            </li>
+            ';
             }
 
 

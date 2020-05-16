@@ -18,6 +18,7 @@
         $nomcher = $row["nom"];
         $mailcher = $row["mail"];
         $gradecher = $row["grade"];
+        $gradecherC = $row["gradeC"];
         $profilcher = $row["profil"];
     }
     $sql = "SELECT * FROM users WHERE idcher='".$idcher."'";
@@ -46,6 +47,17 @@
                 $gradecher = mysqli_real_escape_string($db,$_POST["gradecher"]);
                 $sql = "UPDATE chercheur SET grade='".$gradecher."' WHERE idcher='".$idcher."'";
                 if(!mysqli_query($db,$sql)) $error = true;
+            }
+            if(isset($_POST["gradecherC"]) && $_POST["gradecherC"] != ""){
+                $gradecherC = mysqli_real_escape_string($db,$_POST["gradecherC"]);
+                $sql = "UPDATE chercheur SET gradeC='".$gradecherC."' WHERE idcher='".$idcher."'";
+                if(!mysqli_query($db,$sql)) $error = true;
+                else {
+                    if($gradecherC == 'Directeur de recherche')
+                        $_SESSION['ddr'] = true;
+                    else
+                        unset($_SESSION['ddr']);
+                }
             }
             if(isset($_POST["profilcher"]) && $_POST["profilcher"] != ""){
                 $profilcher = mysqli_real_escape_string($db,$_POST["profilcher"]);
@@ -223,7 +235,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>grade</label>
                                         <select required class="form-control selectpicker" name="gradecher" id="gradecher">
@@ -234,6 +246,20 @@
                                             <option <?php if($gradecher == "MCA") echo 'selected';?> value="MCA">MCA</option>
                                             <option <?php if($gradecher == "PROF") echo 'selected';?> value="PROF">PROF.</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                    <label>grade C</label>
+                                    <select required class="form-control selectpicker" name="gradecherC" id="gradecherC">
+                                        <option <?php if($gradecherC == "Directeur de recherche") echo 'selected';?> >Directeur de recherche</option>
+                                        <option <?php if($gradecherC == "Maitre de recherche") echo 'selected';?> >Maitre de recherche</option>
+                                        <option <?php if($gradecherC == "Chargé de recherche") echo 'selected';?> >Chargé de recherche</option>
+                                        <option <?php if($gradecherC == "Attaché de recherche") echo 'selected';?> >Attaché de recherche</option>
+                                        <option <?php if($gradecherC == "Docteur") echo 'selected';?> >Docteur</option>
+                                        <option <?php if($gradecherC == "Doctorant") echo 'selected';?> >Doctorant</option>
+                                    </select>
                                     </div>
                                 </div>
                             </div>

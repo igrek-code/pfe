@@ -39,6 +39,8 @@
             $result = mysqli_query($db,$sql);
             if(mysqli_num_rows($result) == 1) {
                 $row = mysqli_fetch_array($result);
+                if($row['gradeC'] == 'Directeur de recherche')
+                    $_SESSION['ddr'] = true;
                 $_SESSION["idcher"]= $idcher = $row["idcher"];
                 $_SESSION["nom"] = $row["nom"];
                 $_SESSION["loggedinlabo"] = true;
@@ -76,6 +78,8 @@
             $result = mysqli_query($db,$sql);
             if(mysqli_num_rows($result) == 1) {
                 $row = mysqli_fetch_array($result);
+                if($row['gradeC'] == 'Directeur de recherche')
+                    $_SESSION['ddr'] = true;
                 $_SESSION["idcher"]= $idcher = $row["idcher"];
                 $_SESSION["nom"] = $row["nom"];
                 $_SESSION["loggedinequipe"] = true;
@@ -113,6 +117,8 @@
             $result = mysqli_query($db,$sql);
             if(mysqli_num_rows($result) == 1) {
                 $row = mysqli_fetch_array($result);
+                if($row['gradeC'] == 'Directeur de recherche')
+                    $_SESSION['ddr'] = true;
                 $_SESSION["idcher"]= $idcher = $row["idcher"];
                 $_SESSION["nom"] = $row["nom"];
                 $_SESSION["loggedinchercheur"] = true;
