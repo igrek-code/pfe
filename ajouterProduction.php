@@ -187,6 +187,31 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">
+                                            <?php
+                                                $idcher = $_SESSION['idcher'];
+                                                $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                    SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                                ) OR codeproj IN (
+                                                    SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                                )";
+                                                $result = mysqli_query($db,$sql);
+                                                if(mysqli_num_rows($result) > 0){
+                                                    while($row = mysqli_fetch_array($result)){
+                                                        $codeproj = $row['codeproj'];
+                                                        $intitule = $row['intitule'];
+                                                        echo '<option value="'.$codeproj.'">'.$intitule.'</option>';
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
                                         <label for="typeProduction">Type de production</label>
                                         <select required class="form-control selectpicker" name="typeProduction" id="typeProduction" title="Type de production...">
                                             <option value="publication">Publication</option>

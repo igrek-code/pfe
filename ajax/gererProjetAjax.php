@@ -6,6 +6,7 @@
         echo '<div class="content">
         <table class="table table-hover">
             <thead>
+                <th>Code</th>
                 <th>Intitulé</th>
                 <th>Date</th>
                 <th>Durée (mois)</th>
@@ -17,7 +18,8 @@
         $sql = "SELECT * FROM projrecher WHERE codeproj IN (
             SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
         )";
-        if($result = mysqli_query($db,$sql)){
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
             while($row = mysqli_fetch_array($result)){
                 $intitule = $row['intitule'];
                 $date = $row['date'];
@@ -29,6 +31,7 @@
                 if(mysqli_num_rows($result2) > 0){    
                     $nomspe = mysqli_fetch_array($result2)["nomspe"];*/
                 echo    '<tr>';
+                echo    '<td>'.$codeproj.'</td>';
                 echo    '<td>'.$intitule.'</td>';
                 echo    '<td>'.$date.'</td>';
                 echo    '<td>'.$duree.'</td>';

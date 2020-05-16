@@ -49,6 +49,9 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
+        
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -59,7 +62,7 @@
         $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','publication')";
+        $sql = "INSERT INTO production (date,type,codeproj) VALUES ('".$dateProduction."','publication',".$codeproj.")";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
@@ -145,6 +148,9 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
+
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -155,7 +161,7 @@
         $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','communication')";
+        $sql = "INSERT INTO production (date,type,codeproj) VALUES ('".$dateProduction."','communication',".$codeproj.")";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
@@ -205,6 +211,9 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
+
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -215,7 +224,7 @@
         $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','ouvrage')";
+        $sql = "INSERT INTO production (date,type,codeproj) VALUES ('".$dateProduction."','ouvrage',".$codeproj.")";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
@@ -266,6 +275,9 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
+
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -276,7 +288,7 @@
         $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','chapitreOuvrage')";
+        $sql = "INSERT INTO production (date,type,codeproj) VALUES ('".$dateProduction."','chapitreOuvrage',".$codeproj.")";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
@@ -327,6 +339,9 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
+
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -337,7 +352,7 @@
         $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','doctorat')";
+        $sql = "INSERT INTO production (date,type,codeproj) VALUES ('".$dateProduction."','doctorat',".$codeproj.")";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
@@ -364,6 +379,9 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
+
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -374,7 +392,7 @@
         $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $idspeProduction = mysqli_fetch_array($result)["idspe"];
-        $sql = "INSERT INTO production (date,type) VALUES ('".$dateProduction."','master')";
+        $sql = "INSERT INTO production (date,type,codeproj) VALUES ('".$dateProduction."','master',".$codeproj.")";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;

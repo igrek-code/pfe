@@ -13,6 +13,7 @@
     }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $codeproj = mysqli_real_escape_string($db,$_GET['modifier']);
         $idcher = $_SESSION['idcher'];
         $display_notif = true;
         $error = true;
@@ -21,11 +22,13 @@
         $description = mysqli_real_escape_string($db,$_POST['description']);
         $date = mysqli_real_escape_string($db,$_POST['date']);
         $duree = mysqli_real_escape_string($db,$_POST['duree']);
-        $codeproj = mysqli_real_escape_string($db,$_POST['codeproj']);
+        $newCode = mysqli_real_escape_string($db,$_POST['codeproj']);
+        
 
-        $sql = "INSERT INTO projrecher (intitule,description,date,duree) VALUES ('".$intitule."','".$description."','".$date."','".$duree."')";
+        $sql = "UPDATE projrecher SET codeproj='".$newCode."', intitule='".$intitule."', description='".$description."', date='".$date."', duree='".$duree."' WHERE codeproj='".$codeproj."'";
         if(mysqli_query($db,$sql)){
-            $sql = "INSERT INTO chefproj (idcher,codeproj) VALUES ('".$idcher."','".$codeproj."')";
+            $codeproj = $newCode;
+            $sql = "DELETE FROM membreproj WHERE codeproj='".$codeproj."'";
             if(mysqli_query($db,$sql)){
                 $error = false;
                 if(isset($_POST['membreproj'])){
@@ -36,13 +39,44 @@
                     }
                 }
             }
-            
         }
 
         if(!$error) $display_type = "success";
         else $display_type = "error";
     }
-    
+
+    if(isset($_GET['modifier']) && $_GET['modifier'] != ''){
+        $idcher = $_SESSION['idcher'];
+        if(!isset($error))
+            $codeproj = mysqli_real_escape_string($db,$_GET['modifier']);
+        $sql = "SELECT * FROM chefproj WHERE codeproj='".$codeproj."'";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            if(mysqli_fetch_array($result)['idcher'] != $idcher) header("location: gererProjet.php");
+            $sql = "SELECT * FROM projrecher WHERE codeproj='".$codeproj."'";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                $row = mysqli_fetch_array($result);
+                $intitule = $row['intitule'];
+                $date = $row['date'];
+                $duree = $row['duree'];
+                $description = $row['description'];
+                $sql = "SELECT * FROM membreproj WHERE codeproj='".$codeproj."'";
+                $result = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result) > 0){
+                    $membres = array();
+                    while($row = mysqli_fetch_array($result)){
+                        $membres[] = $row['idcher'];
+                    }
+                }
+            }
+        }else{
+            header("location: gererProjet.php");
+        }
+    }else{
+        header("location: gererProjet.php");
+    }
+
 
 ?>
 
@@ -184,7 +218,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>code</label>
-                                        <input type="text" name="codeproj" class="form-control" placeholder="Code du projet" required>
+                                        <input value="<?php echo $codeproj; ?>" type="text" name="codeproj" class="form-control" placeholder="Code du projet" required>
                                     </div>
                                 </div>
                             </div>  
@@ -192,7 +226,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>intitulé</label>
-                                        <input minlength="5" maxlength="50" type="text" name="intitule" class="form-control" placeholder="Intitulé du projet" required>
+                                        <input value="<?php echo $intitule; ?>" minlength="5" maxlength="50" type="text" name="intitule" class="form-control" placeholder="Intitulé du projet" required>
                                     </div>
                                 </div>
                             </div>  
@@ -201,7 +235,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>date</label>
-                                        <input min="2000-01" max="<?php echo date('Y-m'); ?>" type="month" name="date" class="form-control" placeholder="Date de début du projet" required>
+                                        <input value="<?php echo $date; ?>" min="2000-01" max="<?php echo date('Y-m'); ?>" type="month" name="date" class="form-control" placeholder="Date de début du projet" required>
                                     </div>
                                 </div>
                             </div>  
@@ -210,7 +244,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>durée (en mois)</label>
-                                        <input min="1" max="9999" type="number" name="duree" class="form-control" placeholder="Durée du projet" required>
+                                        <input value="<?php echo $duree; ?>" min="1" max="9999" type="number" name="duree" class="form-control" placeholder="Durée du projet" required>
                                     </div>
                                 </div>
                             </div>  
@@ -219,7 +253,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>description</label>
-                                        <textarea minlength="50" rows="5" name="description" class="form-control" placeholder="Description du projet..." required></textarea>
+                                        <textarea rows="5" name="description" class="form-control" placeholder="Description du projet..." required><?php echo $description; ?></textarea>
                                     </div>
                                 </div>
                             </div> 
@@ -235,7 +269,55 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button value="0" type="button" class="btn btn-info btn-fill">Ajouter membre</button>
+                                <?php
+                                    if(isset($membres)){
+                                        $position = 0;
+                                        foreach ($membres as $membre) {
+                                           $position++;
+                                        
+                                
+                                        echo'<div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                                    <label>membre '.$position.'</label>
+                                                    <select required data-live-search="true" class="form-control selectpicker" name="membreproj[]" title="Membre '.$position.'" membre="'.$position.'">
+                                                    <!--<option value="autre">Autre</option>-->';
+                                                    
+                                                        $idlabo = $_SESSION['idlabo'];
+                                                        $idcher = $_SESSION['idcher'];
+                                                        $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                                            SELECT idcher FROM users WHERE actif=1
+                                                        ) AND (
+                                                            idcher IN (
+                                                                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                                                                    SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                                                                ) 
+                                                            )
+                                                            OR
+                                                            idcher IN (
+                                                                SELECT idcher FROM chefequip WHERE idequipe IN (
+                                                                    SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
+                                                                ) 
+                                                            )
+                                                        ) AND idcher <> '".$idcher."'";
+                                                        $result = mysqli_query($db,$sql);
+                                                        if(mysqli_num_rows($result) > 0){
+                                                            while($row = mysqli_fetch_array($result)){
+                                                                $nomcher = $row["nom"];
+                                                                $idcher = $row["idcher"];
+                                                                if($idcher == $membre)
+                                                                    echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
+                                                                else echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                                            }
+                                                        }
+                                                    
+                                                    echo'</select>
+                                                </div>
+                                            </div>
+                                        </div>';
+                                   } } ?>
+                                <button value="<?php if(isset($position)) echo $position; else echo 0;?>" type="button" class="btn btn-info btn-fill">Ajouter membre</button>
                             </div>
 
                             <!--<div class="row">
@@ -258,7 +340,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button style="width:20%;" type="submit" class="btn btn-fill btn-success pull-right ">Ajouter</button>
+                                    <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right">Modifier</button>
                                     <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>
@@ -307,7 +389,7 @@
                         echo '$.notify({
                             icon : "pe-7s-angle-down-circle",
                             title : "Succès !",
-                            message : "Opération d\'ajout effectuée avec succès"
+                            message : "Opération de modification effectuée avec succès"
                         },{
                             type : "success",
                             allow_dismiss : true,
@@ -321,7 +403,7 @@
                         echo '$.notify({
                             icon : "pe-7s-close-circle",
                             title : "Echoué !",
-                            message : "Opération d\'ajout a échoué"
+                            message : "L\'opération de modification a échoué"
                         },{
                             type : "danger",
                             allow_dismiss : true,
@@ -343,7 +425,13 @@
 
             function init_auteur(){
 
-                $('.btn-info').click(function(){
+                $('.form-group .btn-danger').click(function(){
+                    var button = $(this);
+                    $(".row").has(button).remove();
+                });
+                $(".selectpicker").selectpicker("refresh");
+
+                $('.btn-info[type="button"]').click(function(){
                     var position = $(this).val();
                     position++;
                     $(this).val(position);
@@ -403,6 +491,7 @@
                     });*/
 
                     $('.form-group .btn-danger').click(function(){
+                        console.log('im in click');
                         var button = $(this);
                         $(".row").has(button).remove();
                     });

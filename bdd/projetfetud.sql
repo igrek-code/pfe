@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 16 mai 2020 à 14:08
+-- Généré le : Dim 17 mai 2020 à 00:34
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -68,7 +68,8 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (16, '', 54),
 (16, '', 55),
 (16, '', 56),
-(16, '', 58);
+(16, '', 58),
+(0, 'verifP', 101);
 
 -- --------------------------------------------------------
 
@@ -140,8 +141,15 @@ INSERT INTO `cheflabo` (`idcher`, `idlabo`) VALUES
 
 CREATE TABLE `chefproj` (
   `idcher` int(12) NOT NULL,
-  `codeproj` int(12) NOT NULL
+  `codeproj` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `chefproj`
+--
+
+INSERT INTO `chefproj` (`idcher`, `codeproj`) VALUES
+(16, '18');
 
 -- --------------------------------------------------------
 
@@ -192,7 +200,7 @@ INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
 (0, 'C23', 4),
 (0, 'CH CO9', 7),
 (0, 'com8', 58),
-(21, '', 4),
+(0, 'what ', 4),
 (21, '', 5),
 (23, '', 52),
 (23, '', 53),
@@ -336,7 +344,11 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (75, 'INFORMATIQUE'),
 (76, 'informatique'),
 (77, 'com8'),
-(78, 'com8');
+(78, 'com8'),
+(79, 'verifP'),
+(80, 'verifP'),
+(81, 'verifP'),
+(82, 'verif2');
 
 -- --------------------------------------------------------
 
@@ -438,8 +450,15 @@ INSERT INTO `laboratoire` (`idlabo`, `idspe`, `nom`, `abrv`, `addresse`, `anneec
 
 CREATE TABLE `membreproj` (
   `idcher` int(11) NOT NULL,
-  `codepro` int(11) NOT NULL
+  `codeproj` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `membreproj`
+--
+
+INSERT INTO `membreproj` (`idcher`, `codeproj`) VALUES
+(28, '18');
 
 -- --------------------------------------------------------
 
@@ -533,7 +552,9 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (58, '8'),
 (58, 'c'),
 (58, 'm'),
-(58, 'o');
+(58, 'o'),
+(101, 'verifP'),
+(102, 'verif2');
 
 -- --------------------------------------------------------
 
@@ -635,7 +656,8 @@ INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) V
 (46, 'MB3', 74, 16, 'MB3'),
 (47, 'MB3', 75, 16, 'MB3'),
 (48, 'MB3', 76, 16, 'MB3'),
-(49, 'MB3', 77, 16, 'MB3');
+(49, 'MB3', 77, 16, 'MB3'),
+(102, 'verif2', 93, 16, 'verif2');
 
 -- --------------------------------------------------------
 
@@ -647,7 +669,7 @@ CREATE TABLE `production` (
   `codepro` int(12) NOT NULL,
   `date` varchar(7) NOT NULL,
   `type` enum('communication','ouvrage','chapitreOuvrage','publication','doctorat','master') NOT NULL,
-  `codeproj` int(12) DEFAULT NULL
+  `codeproj` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -703,7 +725,10 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (55, '2020-04', 'ouvrage', NULL),
 (56, '2020-04', 'ouvrage', NULL),
 (57, '2020-05', 'communication', NULL),
-(58, '2020-05', 'communication', NULL);
+(58, '2020-05', 'communication', NULL),
+(100, '2010-05', 'master', NULL),
+(101, '2020-05', 'publication', NULL),
+(102, '2020-05', 'master', NULL);
 
 -- --------------------------------------------------------
 
@@ -712,12 +737,19 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 --
 
 CREATE TABLE `projrecher` (
-  `codeproj` int(12) NOT NULL,
+  `codeproj` varchar(40) NOT NULL,
   `date` varchar(7) NOT NULL,
   `intitule` varchar(50) NOT NULL,
   `description` text NOT NULL,
   `duree` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `projrecher`
+--
+
+INSERT INTO `projrecher` (`codeproj`, `date`, `intitule`, `description`, `duree`) VALUES
+('18', '2020-05', 'anotherp', 'anotherp\r\nnanotherp\r\nnanotherp', 50);
 
 -- --------------------------------------------------------
 
@@ -741,7 +773,8 @@ CREATE TABLE `publication` (
 --
 
 INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvol`, `nissue`, `url`) VALUES
-(2, 'p2', 5, 2, 0, 0, 0, 'p2');
+(2, 'p2', 5, 2, 0, 0, 0, 'p2'),
+(101, 'verifP', 92, 1, 0, 3, 3, 'verifP');
 
 -- --------------------------------------------------------
 
@@ -872,7 +905,11 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (86, 'vision etc', '', 1),
 (87, 'secutzefze', '', 76),
 (88, 'com8', '', 77),
-(89, 'com8', '', 78);
+(89, 'com8', '', 78),
+(90, 'verifP', '', 79),
+(91, 'verifP', '', 80),
+(92, 'verifP', '', 81),
+(93, 'verif2', '', 82);
 
 -- --------------------------------------------------------
 
@@ -1077,9 +1114,9 @@ ALTER TABLE `laboratoire`
 -- Index pour la table `membreproj`
 --
 ALTER TABLE `membreproj`
-  ADD PRIMARY KEY (`idcher`,`codepro`),
+  ADD PRIMARY KEY (`idcher`,`codeproj`),
   ADD KEY `idcher` (`idcher`),
-  ADD KEY `codepro` (`codepro`);
+  ADD KEY `codeproj` (`codeproj`);
 
 --
 -- Index pour la table `menbrequip`
@@ -1207,7 +1244,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -1237,13 +1274,7 @@ ALTER TABLE `laboratoire`
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
-
---
--- AUTO_INCREMENT pour la table `projrecher`
---
-ALTER TABLE `projrecher`
-  MODIFY `codeproj` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT pour la table `revue`
@@ -1255,7 +1286,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -1298,8 +1329,8 @@ ALTER TABLE `cheflabo`
 -- Contraintes pour la table `chefproj`
 --
 ALTER TABLE `chefproj`
-  ADD CONSTRAINT `chefproj_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `chefproj_ibfk_2` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `chef_projet_fk` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chefproj_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `coauteurs`
@@ -1339,7 +1370,7 @@ ALTER TABLE `laboratoire`
 -- Contraintes pour la table `membreproj`
 --
 ALTER TABLE `membreproj`
-  ADD CONSTRAINT `membreproj_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `membre_projet_fk` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `membreproj_ibfk_2` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
