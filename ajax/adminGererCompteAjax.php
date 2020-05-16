@@ -7,6 +7,7 @@
                 <th>Nom</th>
                 <th>Mail</th>
                 <th>Grade</th>
+                <th>Grade C</th>
                 <th>Profil</th>';
                 if($_GET["statuscher"] != "cheflabo")
                     echo '<th>Equipe</th>';
@@ -46,11 +47,13 @@
                                     $nomcher = $row["nom"];
                                     $mailcher = $row["mail"];
                                     $gradecher = $row["grade"];
+                                    $gradecherC = $row["gradeC"];
                                     $profilcher = $row["profil"];
                                     echo    '<tr>';
                                     echo    '<td>'.$nomcher.'</td>';
                                     echo    '<td>'.$mailcher.'</td>';
                                     echo    '<td>'.$gradecher.'</td>';
+                                    echo    '<td>'.$gradecherC.'</td>';
                                     echo    '<td>'.$profilcher.'</td>';
                                     echo    '<td>'.$nomequip.'</td>';
                                     echo    '<td>'.$nomLabo.'</td>';
@@ -101,11 +104,13 @@
                                     $nomcher = $row["nom"];
                                     $mailcher = $row["mail"];
                                     $gradecher = $row["grade"];
+                                    $gradecherC = $row["gradeC"];
                                     $profilcher = $row["profil"];
                                     echo    '<tr>';
                                     echo    '<td>'.$nomcher.'</td>';
                                     echo    '<td>'.$mailcher.'</td>';
                                     echo    '<td>'.$gradecher.'</td>';
+                                    echo    '<td>'.$gradecherC.'</td>';
                                     echo    '<td>'.$profilcher.'</td>';
                                     echo    '<td>'.$nomequip.'</td>';
                                     echo    '<td>'.$nomLabo.'</td>';
@@ -154,12 +159,14 @@
                         $nomcher = $row["nom"];
                         $mailcher = $row["mail"];
                         $gradecher = $row["grade"];
+                        $gradecherC = $row["gradeC"];
                         $profilcher = $row["profil"];
 
                         echo    '<tr>';
                         echo    '<td>'.$nomcher.'</td>';
                         echo    '<td>'.$mailcher.'</td>';
                         echo    '<td>'.$gradecher.'</td>';
+                        echo    '<td>'.$gradecherC.'</td>';
                         echo    '<td>'.$profilcher.'</td>';
                         echo    '<td>'.$nomLabo.'</td>';
                         echo    '<td>'.$nometab.'</td>';

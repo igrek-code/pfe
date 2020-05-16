@@ -21,6 +21,7 @@
                 <th>Nom</th>
                 <th>Profil</th>
                 <th>Grade</th>
+                <th>Grade C</th>
                 <th>Email</th>
                 <th>Laboratoire</th>
                 <th>Action</th>
@@ -42,11 +43,13 @@
                     $nomcher = $row["nom"];
                     $profilcher = $row["profil"];
                     $gradecher = $row["grade"];
+                    $gradecherC = $row["gradeC"];
                     $mailcher = $row["mail"];
                     echo   '<tr>';
                     echo   '<td>'.$nomcher.'</td>';
                     echo   '<td>'.$profilcher.'</td>';
                     echo   '<td>'.$gradecher.'</td>';
+                    echo   '<td>'.$gradecherC.'</td>';
                     echo   '<td>'.$mailcher.'</td>';
                     echo   '<td>'.$nomLabo.'</td>';
                     echo   '<td>';

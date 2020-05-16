@@ -1398,6 +1398,7 @@
             $nom = $row["nom"];
             $mail = $row["mail"];
             $grade = $row["grade"];
+            $gradeC = $row["gradeC"];
             $profil = $row["profil"];
             $sql = "SELECT * FROM equipe WHERE idequipe IN (
                 SELECT idequipe FROM menbrequip WHERE idcher='".$idcher."'
@@ -1410,6 +1411,7 @@
             echo '<span class="text-info">Mail: </span>'.$mail.'<br>';
             echo '<span class="text-info">Profil: </span>'.$profil.'<br>';
             echo '<span class="text-info">Grade: </span>'.$grade.'<br>';
+            echo '<span class="text-info">Grade C: </span>'.$gradeC.'<br>';
             echo '<span class="text-info">Equipe: </span>'.$nomequip.'<br>';
         }
         else{

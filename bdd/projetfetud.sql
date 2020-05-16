@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 16 mai 2020 à 01:27
+-- Généré le : sam. 16 mai 2020 à 14:08
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -154,6 +154,7 @@ CREATE TABLE `chercheur` (
   `nom` varchar(255) NOT NULL,
   `mail` varchar(40) NOT NULL,
   `grade` enum('DOC','MAB','MAA','MCB','MCA','PROF') NOT NULL,
+  `gradeC` enum('Directeur de recherche','Maitre de recherche','Chargé de recherche','Attaché de recherche','Docteur','Doctorant') NOT NULL,
   `profil` enum('permanent','doctorant') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -161,14 +162,14 @@ CREATE TABLE `chercheur` (
 -- Déchargement des données de la table `chercheur`
 --
 
-INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `profil`) VALUES
-(16, 'Sid ahmed', 'sid.ahmedl@usthb.dz', 'MCA', 'permanent'),
-(21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'permanent'),
-(23, 'newdoc', 'newdoc@usthb.dz', '', 'doctorant'),
-(24, 'fleur', 'fleur@usthb.dz', 'PROF', 'permanent'),
-(26, 'xwqinsosiqdioqsn', 'newdoc@usthb.dz', '', 'doctorant'),
-(27, 'new doc 5', 'newdoc5@usthb.dz', 'MCA', 'permanent'),
-(28, 'omar rabhi', 'omar@usthb.dz', 'MCB', 'permanent');
+INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `gradeC`, `profil`) VALUES
+(16, 'Sid ahmed', 'sid.ahmedl@usthb.dz', 'MCA', 'Directeur de recherche', 'permanent'),
+(21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent'),
+(23, 'newdoc', 'newdoc@usthb.dz', '', 'Directeur de recherche', 'doctorant'),
+(24, 'fleur', 'fleur@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent'),
+(26, 'xwqinsosiqdioqsn', 'newdoc@usthb.dz', '', 'Directeur de recherche', 'doctorant'),
+(27, 'new doc 5', 'newdoc5@usthb.dz', 'MCA', 'Directeur de recherche', 'permanent'),
+(28, 'omar rabhi', 'omar@usthb.dz', 'MCB', 'Directeur de recherche', 'permanent');
 
 -- --------------------------------------------------------
 
@@ -645,63 +646,64 @@ INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) V
 CREATE TABLE `production` (
   `codepro` int(12) NOT NULL,
   `date` varchar(7) NOT NULL,
-  `type` enum('communication','ouvrage','chapitreOuvrage','publication','doctorat','master') NOT NULL
+  `type` enum('communication','ouvrage','chapitreOuvrage','publication','doctorat','master') NOT NULL,
+  `codeproj` int(12) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `production`
 --
 
-INSERT INTO `production` (`codepro`, `date`, `type`) VALUES
-(2, '2020-04', 'publication'),
-(3, '2010-03', 'communication'),
-(4, '2014-02', 'communication'),
-(5, '2009-01', 'ouvrage'),
-(6, '2020-03', 'chapitreOuvrage'),
-(7, '2017-03', 'chapitreOuvrage'),
-(8, '2020-03', 'chapitreOuvrage'),
-(9, '2015-04', 'doctorat'),
-(10, '2012-04', 'master'),
-(12, '2020-04', 'publication'),
-(13, '2020-04', 'publication'),
-(14, '2020-04', 'publication'),
-(21, '2020-04', 'master'),
-(23, '2020-04', 'master'),
-(24, '2020-04', 'master'),
-(25, '2020-04', 'master'),
-(26, '2020-04', 'master'),
-(27, '2020-04', 'master'),
-(28, '2020-04', 'master'),
-(29, '2020-04', 'master'),
-(30, '2020-04', 'master'),
-(31, '2020-04', 'master'),
-(32, '2020-04', 'master'),
-(33, '2020-04', 'master'),
-(34, '2020-04', 'master'),
-(35, '2020-04', 'master'),
-(36, '2020-04', 'master'),
-(37, '2020-04', 'master'),
-(38, '2020-04', 'master'),
-(39, '2020-04', 'master'),
-(40, '2020-04', 'master'),
-(41, '2020-04', 'master'),
-(42, '2020-04', 'master'),
-(43, '2020-04', 'master'),
-(44, '2020-04', 'master'),
-(45, '2020-04', 'master'),
-(46, '2020-04', 'master'),
-(47, '2020-04', 'master'),
-(48, '2020-04', 'master'),
-(49, '2020-04', 'master'),
-(50, '2020-04', 'doctorat'),
-(51, '2020-04', 'ouvrage'),
-(52, '2020-04', 'ouvrage'),
-(53, '2020-04', 'ouvrage'),
-(54, '2020-04', 'ouvrage'),
-(55, '2020-04', 'ouvrage'),
-(56, '2020-04', 'ouvrage'),
-(57, '2020-05', 'communication'),
-(58, '2020-05', 'communication');
+INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
+(2, '2020-04', 'publication', NULL),
+(3, '2010-03', 'communication', NULL),
+(4, '2014-02', 'communication', NULL),
+(5, '2009-01', 'ouvrage', NULL),
+(6, '2020-03', 'chapitreOuvrage', NULL),
+(7, '2017-03', 'chapitreOuvrage', NULL),
+(8, '2020-03', 'chapitreOuvrage', NULL),
+(9, '2015-04', 'doctorat', NULL),
+(10, '2012-04', 'master', NULL),
+(12, '2020-04', 'publication', NULL),
+(13, '2020-04', 'publication', NULL),
+(14, '2020-04', 'publication', NULL),
+(21, '2020-04', 'master', NULL),
+(23, '2020-04', 'master', NULL),
+(24, '2020-04', 'master', NULL),
+(25, '2020-04', 'master', NULL),
+(26, '2020-04', 'master', NULL),
+(27, '2020-04', 'master', NULL),
+(28, '2020-04', 'master', NULL),
+(29, '2020-04', 'master', NULL),
+(30, '2020-04', 'master', NULL),
+(31, '2020-04', 'master', NULL),
+(32, '2020-04', 'master', NULL),
+(33, '2020-04', 'master', NULL),
+(34, '2020-04', 'master', NULL),
+(35, '2020-04', 'master', NULL),
+(36, '2020-04', 'master', NULL),
+(37, '2020-04', 'master', NULL),
+(38, '2020-04', 'master', NULL),
+(39, '2020-04', 'master', NULL),
+(40, '2020-04', 'master', NULL),
+(41, '2020-04', 'master', NULL),
+(42, '2020-04', 'master', NULL),
+(43, '2020-04', 'master', NULL),
+(44, '2020-04', 'master', NULL),
+(45, '2020-04', 'master', NULL),
+(46, '2020-04', 'master', NULL),
+(47, '2020-04', 'master', NULL),
+(48, '2020-04', 'master', NULL),
+(49, '2020-04', 'master', NULL),
+(50, '2020-04', 'doctorat', NULL),
+(51, '2020-04', 'ouvrage', NULL),
+(52, '2020-04', 'ouvrage', NULL),
+(53, '2020-04', 'ouvrage', NULL),
+(54, '2020-04', 'ouvrage', NULL),
+(55, '2020-04', 'ouvrage', NULL),
+(56, '2020-04', 'ouvrage', NULL),
+(57, '2020-05', 'communication', NULL),
+(58, '2020-05', 'communication', NULL);
 
 -- --------------------------------------------------------
 
@@ -711,12 +713,10 @@ INSERT INTO `production` (`codepro`, `date`, `type`) VALUES
 
 CREATE TABLE `projrecher` (
   `codeproj` int(12) NOT NULL,
+  `date` varchar(7) NOT NULL,
   `intitule` varchar(50) NOT NULL,
-  `annee` year(4) NOT NULL,
-  `mois` int(2) NOT NULL,
   `description` text NOT NULL,
-  `duree` int(4) NOT NULL,
-  `codepro` int(11) DEFAULT NULL
+  `duree` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -1123,14 +1123,14 @@ ALTER TABLE `pfemaster`
 -- Index pour la table `production`
 --
 ALTER TABLE `production`
-  ADD PRIMARY KEY (`codepro`);
+  ADD PRIMARY KEY (`codepro`),
+  ADD KEY `codeproj` (`codeproj`);
 
 --
 -- Index pour la table `projrecher`
 --
 ALTER TABLE `projrecher`
-  ADD PRIMARY KEY (`codeproj`),
-  ADD KEY `codepro` (`codepro`);
+  ADD PRIMARY KEY (`codeproj`);
 
 --
 -- Index pour la table `publication`
@@ -1298,8 +1298,8 @@ ALTER TABLE `cheflabo`
 -- Contraintes pour la table `chefproj`
 --
 ALTER TABLE `chefproj`
-  ADD CONSTRAINT `chefproj_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`),
-  ADD CONSTRAINT `chefproj_ibfk_2` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`);
+  ADD CONSTRAINT `chefproj_ibfk_1` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chefproj_ibfk_2` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `coauteurs`
@@ -1339,8 +1339,8 @@ ALTER TABLE `laboratoire`
 -- Contraintes pour la table `membreproj`
 --
 ALTER TABLE `membreproj`
-  ADD CONSTRAINT `membreproj_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `projrecher` (`codeproj`),
-  ADD CONSTRAINT `membreproj_ibfk_2` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`);
+  ADD CONSTRAINT `membreproj_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `membreproj_ibfk_2` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `menbrequip`
@@ -1371,10 +1371,10 @@ ALTER TABLE `pfemaster`
   ADD CONSTRAINT `pfemaster_ibfk_2` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `projrecher`
+-- Contraintes pour la table `production`
 --
-ALTER TABLE `projrecher`
-  ADD CONSTRAINT `projrecher_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`);
+ALTER TABLE `production`
+  ADD CONSTRAINT `production_projcher_fk` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Contraintes pour la table `publication`

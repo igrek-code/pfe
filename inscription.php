@@ -38,10 +38,13 @@
             }else $execute = false;
             if(isset($_POST["idequip"]) && $_POST["idequip"] != ""){
                 $idequipe = mysqli_real_escape_string($db,$_POST["idequip"]);
-            }
+            }else $execute = false;
+            if(isset($_POST["gradecherC"]) && $_POST["gradecherC"] != ""){
+                $gradecherC = mysqli_real_escape_string($db,$_POST["gradecherC"]);
+            }else $execute = false;
 
             if($execute){
-                $sql = "INSERT INTO chercheur (mail,nom,grade,profil) VALUES ('".$mailcher."','".$nomcher."','".$gradecher."','".$profilcher."')";
+                $sql = "INSERT INTO chercheur (mail,nom,grade,profil,gradeC) VALUES ('".$mailcher."','".$nomcher."','".$gradecher."','".$profilcher."','".$gradecherC."')";
                 if(mysqli_query($db,$sql)){
                     $sql = "SELECT * FROM chercheur ORDER BY idcher DESC";
                     if($result = mysqli_query($db,$sql)){
@@ -194,6 +197,23 @@
                                         <option value="prof">PROF.</option>
                                     </select>
                                     <input disabled hidden name="gradecher" value="" type="text">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>grade de chercheur</label>
+                                    <select required class="form-control selectpicker" name="gradecherC" id="gradecherC">
+                                        <option>Directeur de recherche</option>
+                                        <option>Maitre de recherche</option>
+                                        <option>Chargé de recherche</option>
+                                        <option>Attaché de recherche</option>
+                                        <option>Docteur</option>
+                                        <option>Doctorant</option>
+                                    </select>
+                                    <input disabled hidden name="gradecherC" value="Doctorant" type="text">
                                 </div>
                             </div>
                         </div>
@@ -384,9 +404,12 @@
                     $('input[name="gradecher"]').prop("disabled",false);
                     $('select[name="statuscher"]').prop("disabled",true);
                     $('input[name="statuscher"]').prop("disabled",false);
+                    $('select[name="gradecherC"]').prop("disabled",true);
+                    $('input[name="gradecherC"]').prop("disabled",false);
                 }
                 $("#statuscher").val("chercheur");
-                $("#gradecher").val("doctorant");
+                $("#gradecher").val("doc");
+                $("#gradecherC").val("Doctorant");
                 $('.selectpicker').selectpicker('refresh');
                 $("#statuscher").trigger("change");
             });
@@ -397,6 +420,8 @@
                     $('input[name="gradecher"]').prop("disabled",true);
                     $('select[name="statuscher"]').prop("disabled",false);
                     $('input[name="statuscher"]').prop("disabled",true);
+                    $('select[name="gradecherC"]').prop("disabled",false);
+                    $('input[name="gradecherC"]').prop("disabled",true);
                 }
                 $('.selectpicker').selectpicker('refresh');
             });
