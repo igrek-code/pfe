@@ -270,7 +270,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>mots-clès (séparé par une virgule)</label>
-                                        <input required name="cles" placeholder="Domaine du projet" class="form-control" type="text">
+                                        <input required name="cles" placeholder="Mots-clès du projet" class="form-control" type="text">
                                     </div>
                                 </div>
                             </div>
