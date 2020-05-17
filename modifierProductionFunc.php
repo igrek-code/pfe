@@ -49,6 +49,8 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM publication WHERE codepro='".$codepro."'
@@ -59,7 +61,7 @@
             SELECT idspe FROM publication WHERE codepro='".$codepro."'
         )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE publication SET titre='".$titreProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
@@ -158,6 +160,8 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM communication WHERE codepro='".$codepro."'
@@ -168,7 +172,7 @@
             SELECT idspe FROM communication WHERE codepro='".$codepro."'
         )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE communication SET titre='".$titreProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
@@ -225,6 +229,8 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM ouvrage WHERE codepro='".$codepro."'
@@ -235,7 +241,7 @@
             SELECT idspe FROM ouvrage WHERE codepro='".$codepro."'
         )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE ouvrage SET titre='".$titreProduction."', nbpages='".$nbrePagesProduction."', editeur='".$editeurProduction."', url='".$urlProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
@@ -289,6 +295,8 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM chapitredouvrage WHERE codepro='".$codepro."'
@@ -299,7 +307,7 @@
             SELECT idspe FROM chapitredouvrage WHERE codepro='".$codepro."'
         )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE chapitredouvrage SET titre='".$titreProduction."', editeur='".$editeurProduction."', volume='".$volumeProduction."', url='".$urlProduction."', pages='".$pagesProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
@@ -353,6 +361,8 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM these WHERE codepro='".$codepro."'
@@ -363,7 +373,7 @@
             SELECT idspe FROM these WHERE codepro='".$codepro."'
         )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE these SET titre='".$titreProduction."', encadreur='".$encadreurProduction."', lieusout='".$lieusoutProduction."', nordre='".$nordreProduction."', url='".$urlProduction."'";
         if(!mysqli_query($db,$sql)) return true;
@@ -389,6 +399,8 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM pfemaster WHERE codepro='".$codepro."'
@@ -399,7 +411,7 @@
             SELECT idspe FROM pfemaster WHERE codepro='".$codepro."'
         )";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE production SET date='".$dateProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE pfemaster SET titre='".$titreProduction."', encadreur='".$encadreurProduction."', lieusout='".$lieusoutProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;

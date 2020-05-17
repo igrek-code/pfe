@@ -432,8 +432,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur `+position+`</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur`+position+`" auteur="`+position+`">
+                                <label>auteur</label>
+                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur" auteur="`+position+`">
                                 <option value="autre">Autre</option>
                                 <?php
                                     $sql = "SELECT * FROM chercheur";
@@ -460,7 +460,7 @@
                             $(".bootstrap-select").has(this).after(`<div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                    <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
+                                    <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur">
                                     </div>
                                 </div>
                             </div>`);

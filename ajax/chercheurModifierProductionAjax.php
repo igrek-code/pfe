@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once("../config.php");
     
     if(isset($_GET["typeProduction"]) && $_GET["typeProduction"] != "" && isset($_GET["codepro"]) && $_GET["codepro"] != ""){
@@ -31,7 +32,11 @@
                     $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result2) > 0){
-                        $date = mysqli_fetch_array($result2)["date"]; 
+                        $row2 = mysqli_fetch_array($result2);
+                        $date = $row2["date"]; 
+                        if(isset($row2['codeproj']))
+                            $codeproj = $row2['codeproj'];
+                        else $codeproj = '';
                     }
                     $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
@@ -96,7 +101,36 @@
                         }
                     }*/
                 }
-                echo '<div class="row">
+                echo '
+                <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">';
+                                            
+                                            $idcher = $_SESSION['idcher'];
+                                            $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                            ) OR codeproj IN (
+                                                SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $codeproj2 = $row['codeproj'];
+                                                    $intitule = $row['intitule'];
+                                                    if($codeproj == $codeproj2)
+                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+
+                                                }
+                                            }
+                                            
+                                        echo'</select>
+                                    </div>
+                                </div>
+                            </div>';
+                echo'<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
@@ -241,8 +275,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur '.$position.'</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                <label>auteur</label>
+                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -260,7 +294,7 @@
                     echo '<div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                            <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur '.$position.'">
+                            <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur">
                             </div>
                         </div>
                     </div>
@@ -274,8 +308,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur '.$position.'</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                <label>auteur</label>
+                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -360,7 +394,11 @@
                     $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result2) > 0){
-                        $date = mysqli_fetch_array($result2)["date"]; 
+                        $row2 = mysqli_fetch_array($result2);
+                        $date = $row2["date"]; 
+                        if(isset($row2['codeproj']))
+                            $codeproj = $row2['codeproj'];
+                        else $codeproj = '';
                     }
                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                         SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -388,6 +426,36 @@
                         }
                     }
                 }
+
+                echo '
+                <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">';
+                                            
+                                            $idcher = $_SESSION['idcher'];
+                                            $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                            ) OR codeproj IN (
+                                                SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $codeproj2 = $row['codeproj'];
+                                                    $intitule = $row['intitule'];
+                                                    if($codeproj == $codeproj2)
+                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+
+                                                }
+                                            }
+                                            
+                                        echo'</select>
+                                    </div>
+                                </div>
+                            </div>';
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -508,8 +576,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur '.$position.'</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                <label>auteur</label>
+                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -527,7 +595,7 @@
                     echo '<div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                            <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur '.$position.'">
+                            <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur">
                             </div>
                         </div>
                     </div>
@@ -541,8 +609,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>auteur '.$position.'</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                <label>auteur</label>
+                                <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                 <option selected value="autre">Autre</option>';
                                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                         SELECT idcher FROM users WHERE actif=1
@@ -625,7 +693,11 @@
                     $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result2) > 0){
-                        $date = mysqli_fetch_array($result2)["date"]; 
+                        $row2 = mysqli_fetch_array($result2);
+                        $date = $row2["date"]; 
+                        if(isset($row2['codeproj']))
+                            $codeproj = $row2['codeproj'];
+                        else $codeproj = '';
                     }
                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                         SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -653,6 +725,37 @@
                         }
                     }
                 }
+                echo '
+                <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">';
+                                            
+                                            $idcher = $_SESSION['idcher'];
+                                            $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                            ) OR codeproj IN (
+                                                SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $codeproj2 = $row['codeproj'];
+                                                    $intitule = $row['intitule'];
+                                                    if($codeproj == $codeproj2)
+                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+
+                                                }
+                                            }
+                                            
+                                        echo'</select>
+                                    </div>
+                                </div>
+                            </div>';
+
+
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -791,8 +894,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                            <label>auteur '.$position.'</label>
-                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <label>auteur</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                     SELECT idcher FROM users WHERE actif=1
@@ -810,7 +913,7 @@
                                 echo '<div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                        <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur '.$position.'">
+                                        <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur">
                                         </div>
                                     </div>
                                 </div>
@@ -824,8 +927,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                            <label>auteur '.$position.'</label>
-                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <label>auteur</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                     SELECT idcher FROM users WHERE actif=1
@@ -885,7 +988,11 @@
                     $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result2) > 0){
-                        $date = mysqli_fetch_array($result2)["date"]; 
+                        $row2 = mysqli_fetch_array($result2);
+                        $date = $row2["date"]; 
+                        if(isset($row2['codeproj']))
+                            $codeproj = $row2['codeproj'];
+                        else $codeproj = '';
                     }
                     $sql = "SELECT * FROM chercheur WHERE idcher IN (
                         SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -913,6 +1020,37 @@
                         }
                     }
                 }
+                echo '
+                <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">';
+                                            
+                                            $idcher = $_SESSION['idcher'];
+                                            $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                            ) OR codeproj IN (
+                                                SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $codeproj2 = $row['codeproj'];
+                                                    $intitule = $row['intitule'];
+                                                    if($codeproj == $codeproj2)
+                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+
+                                                }
+                                            }
+                                            
+                                        echo'</select>
+                                    </div>
+                                </div>
+                            </div>';
+
+
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -1057,8 +1195,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                            <label>auteur '.$position.'</label>
-                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <label>auteur</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                     SELECT idcher FROM users WHERE actif=1
@@ -1076,7 +1214,7 @@
                                 echo '<div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                        <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur '.$position.'">
+                                        <input required value="'.$nomauteur.'" auteur="'.$position.'" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l\'auteur">
                                         </div>
                                     </div>
                                 </div>
@@ -1090,8 +1228,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                            <label>auteur '.$position.'</label>
-                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur'.$position.'" auteur="'.$position.'">
+                                            <label>auteur</label>
+                                            <select required data-live-search="true" class="form-control selectpicker" name="auteurSelect[]" title="Auteur..." auteur="'.$position.'">
                                             <option selected value="autre">Autre</option>';
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                                     SELECT idcher FROM users WHERE actif=1
@@ -1150,9 +1288,44 @@
                     $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result2) > 0){
-                        $date = mysqli_fetch_array($result2)["date"]; 
+                        $row2 = mysqli_fetch_array($result2);
+                        $date = $row2["date"]; 
+                        if(isset($row2['codeproj']))
+                            $codeproj = $row2['codeproj'];
+                        else $codeproj = '';
                     }
                 }
+                echo '
+                <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">';
+                                            
+                                            $idcher = $_SESSION['idcher'];
+                                            $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                            ) OR codeproj IN (
+                                                SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $codeproj2 = $row['codeproj'];
+                                                    $intitule = $row['intitule'];
+                                                    if($codeproj == $codeproj2)
+                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+
+                                                }
+                                            }
+                                            
+                                        echo'</select>
+                                    </div>
+                                </div>
+                            </div>';
+
+
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -1290,9 +1463,44 @@
                     $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                     $result2 = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result2) > 0){
-                        $date = mysqli_fetch_array($result2)["date"]; 
+                        $row2 = mysqli_fetch_array($result2);
+                        $date = $row2["date"]; 
+                        if(isset($row2['codeproj']))
+                            $codeproj = $row2['codeproj'];
+                        else $codeproj = '';
                     }
                 }
+                echo '
+                <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Projet de recherche</label>
+                                        <select data-live-search="true" name="codeproj" title="Projet de recherche..." class="selectpicker form-control">';
+                                            
+                                            $idcher = $_SESSION['idcher'];
+                                            $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                                SELECT codeproj FROM chefproj WHERE idcher='".$idcher."'
+                                            ) OR codeproj IN (
+                                                SELECT codeproj FROM membreproj WHERE idcher='".$idcher."'
+                                            )";
+                                            $result = mysqli_query($db,$sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $codeproj2 = $row['codeproj'];
+                                                    $intitule = $row['intitule'];
+                                                    if($codeproj == $codeproj2)
+                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+
+                                                }
+                                            }
+                                            
+                                        echo'</select>
+                                    </div>
+                                </div>
+                            </div>';
+
+
                 echo '<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
