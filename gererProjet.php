@@ -210,13 +210,13 @@
 
             function init_buttons(){
 
-                $('tbody').on('click', 'button[membre="membre"]',function(){
+                /*$('tbody').on('click', 'button[membre="membre"]',function(){
                     var codeproj = $(this).val();
                     $.confirm({
                         content: function(){
                             var self = this;
                             self.setTitle('Membres du projet');
-                            $.get("ajax/gererProjetAjax.php",{membre: codeproj},function(data){
+                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
                                 self.setContent(data.slice(2,-1));
                             });
                         },
@@ -227,15 +227,15 @@
                             }
                         }
                     });
-                });
+                });*/
 
                 $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
                     var codeproj = $(this).val();
                     $.confirm({
                         content: function(){
                             var self = this;
-                            self.setTitle('<span class="text-info">Description</span>');
-                            $.get("ajax/gererProjetAjax.php",{description: codeproj},function(data){
+                            self.setTitle('Informations supplémentaires sur le projet');
+                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
                                 self.setContent(data.slice(2,-1));
                             });
                         },

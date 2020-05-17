@@ -11,19 +11,59 @@
         session_destroy();
         header("location: index.php");
     }
+    $idcher = $_SESSION['idcher']; 
+    $sql = "SELECT codeproj FROM projrecher WHERE etat <> 'clôturé' AND (
+        codeproj IN (
+            SELECT codeproj FROM chefproj WHERE idcher = '".$idcher."'
+        )
+        OR codeproj IN (
+            SELECT codeproj FROM membreproj WHERE idcher = '".$idcher."'
+        )
+    )";
+    $result = mysqli_query($db,$sql);
+    if(mysqli_num_rows($result) > 0){
+        header('location: gererProjet.php');
+    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $idcher = $_SESSION['idcher'];
         $display_notif = true;
         $error = true;
+
+        $codeproj = mysqli_real_escape_string($db,$_POST['codeproj']);
+
+
+        $targetDir = "uploads/";
+        $fileName = basename($_FILES["newFile"]["name"]);
+        $fileName = $codeproj.'.rar';
+        $targetFilePath = $targetDir . $codeproj.'.rar';
+        $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+        if(!empty($_FILES["newFile"]["name"])){
+            // Allow certain file formats
+            $allowTypes = array('rar');
+            if(in_array($fileType, $allowTypes)){
+                // Upload file to server
+                move_uploaded_file($_FILES["newFile"]["tmp_name"], $targetFilePath);
+            }
+        }
+
         
         $intitule = mysqli_real_escape_string($db,$_POST['intitule']);
         $description = mysqli_real_escape_string($db,$_POST['description']);
         $date = mysqli_real_escape_string($db,$_POST['date']);
         $duree = mysqli_real_escape_string($db,$_POST['duree']);
-        $codeproj = mysqli_real_escape_string($db,$_POST['codeproj']);
+        
+        $etat = mysqli_real_escape_string($db,$_POST['etat']);
+        $domaine = mysqli_real_escape_string($db,$_POST['domaine']);
 
-        $sql = "INSERT INTO projrecher (intitule,description,date,duree) VALUES ('".$intitule."','".$description."','".$date."','".$duree."')";
+        $sql = "INSERT INTO domaine (nom) VALUES ('".$domaine."')";
+        $result = mysqli_query($db,$sql);
+        $sql = "SELECT codeDomaine FROM domaine ORDER BY codeDomaine DESC";
+        $result = mysqli_query($db,$sql);
+        $codeDomaine = mysqli_fetch_array($result)['codeDomaine'];
+
+        $sql = "INSERT INTO projrecher (codeproj,intitule,description,date,duree,codeDomaine,etat,fichier) VALUES ('".$codeproj."','".$intitule."','".$description."','".$date."','".$duree."','".$codeDomaine."','".$etat."','".$fileName."')";
         if(mysqli_query($db,$sql)){
             $sql = "INSERT INTO chefproj (idcher,codeproj) VALUES ('".$idcher."','".$codeproj."')";
             if(mysqli_query($db,$sql)){
@@ -37,6 +77,13 @@
                 }
             }
             
+        }
+
+        $mots = explode(',',mysqli_real_escape_string($db,$_POST['cles']));
+        for ($i=0; $i < count($mots); $i++) { 
+            $mot = $mots[$i];
+            $sql = "INSERT INTO motscler (codeproj,mot) VALUES ('".$codeproj."','".$mot."')";
+            mysqli_query($db,$sql);
         }
 
         if(!$error) $display_type = "success";
@@ -179,7 +226,7 @@
                     </div>
 
                     <div class="content">
-                        <form action="" id="mainForm" method="post">
+                        <form enctype="multipart/form-data" action="" id="mainForm" method="post">
                         <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -196,6 +243,37 @@
                                     </div>
                                 </div>
                             </div>  
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>état</label>
+                                        <select class="form-control selectpicker" name="etat" required>
+                                            <option>en cours</option>
+                                            <option>reconduit</option>
+                                            <option>clôturé</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Domaine</label>
+                                        <input required name="domaine" placeholder="Domaine du projet" class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>mots-clès (séparé par une virgule)</label>
+                                        <input required name="cles" placeholder="Domaine du projet" class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -218,11 +296,20 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>description</label>
+                                        <label>description (brève)</label>
                                         <textarea minlength="50" rows="5" name="description" class="form-control" placeholder="Description du projet..." required></textarea>
                                     </div>
                                 </div>
                             </div> 
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>description (fichier .rar)</label>
+                                        <input accept=".rar" class="form-group" type="file" name="newFile" required>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div id="auteurs">
                                 <div class="row">
@@ -238,14 +325,7 @@
                                 <button value="0" type="button" class="btn btn-info btn-fill">Ajouter membre</button>
                             </div>
 
-                            <!--<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Domaine</label>
-                                        <input placeholder="Domaine de l'équipe" disabled class="form-control" value="<?php if(isset($nomDomaine)) echo $nomDomaine;?>" type="text">
-                                    </div>
-                                </div>
-                            </div> 
+                            <!-- 
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -345,68 +425,76 @@
 
                 $('.btn-info').click(function(){
                     var position = $(this).val();
-                    position++;
-                    $(this).val(position);
-                    $(this).before(`<div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
-                                <label>membre `+position+`</label>
-                                <select required data-live-search="true" class="form-control selectpicker" name="membreproj[]" title="Membre `+position+`" membre="`+position+`">
-                                <!--<option value="autre">Autre</option>-->
-                                <?php
-                                    $idlabo = $_SESSION['idlabo'];
-                                    $idcher = $_SESSION['idcher'];
-                                    $sql = "SELECT * FROM chercheur WHERE idcher IN (
-                                        SELECT idcher FROM users WHERE actif=1
-                                    ) AND (
-                                        idcher IN (
-                                            SELECT idcher FROM menbrequip WHERE idequipe IN (
-                                                SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
-                                            ) 
+                    if($('#auteurs > .row').length < 7){
+                        position++;
+                        $(this).val(position);
+                        $(this).before(`<div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-danger text-danger" style="margin-bottom:2px;padding:3px;font-size:15px;" >x</button>
+                                    <label>membre</label>
+                                    <select required data-live-search="true" class="form-control selectpicker" name="membreproj[]" title="Membre..." membre="`+position+`">
+                                    <!--<option value="autre">Autre</option>-->
+                                    <?php
+                                        $idequipe = $_SESSION['idequipe'];
+                                        $idcher = $_SESSION['idcher'];
+                                        $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                            SELECT idcher FROM users WHERE actif=1
+                                        ) AND (
+                                            idcher IN (
+                                                SELECT idcher FROM menbrequip WHERE idequipe ='".$idequipe."'
+                                            )
+                                            OR
+                                            idcher IN (
+                                                SELECT idcher FROM chefequip WHERE idequipe ='".$idequipe."'
+                                            )
+                                        ) AND idcher <> '".$idcher."'
+                                        AND idcher NOT IN (
+                                            SELECT idcher FROM chefproj WHERE codeproj IN (
+                                                SELECT codeproj FROM projrecher WHERE etat <> 'clôturé' 
+                                            )
                                         )
-                                        OR
-                                        idcher IN (
-                                            SELECT idcher FROM chefequip WHERE idequipe IN (
-                                                SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
-                                            ) 
-                                        )
-                                    ) AND idcher <> '".$idcher."'";
-                                    $result = mysqli_query($db,$sql);
-                                    if(mysqli_num_rows($result) > 0){
-                                        while($row = mysqli_fetch_array($result)){
-                                            $nomcher = $row["nom"];
-                                            $idcher = $row["idcher"];
-                                            echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                        AND idcher NOT IN (
+                                            SELECT idcher FROM membreproj WHERE codeproj IN (
+                                                SELECT codeproj FROM projrecher WHERE etat <> 'clôturé' 
+                                            )
+                                        )";
+                                        $result = mysqli_query($db,$sql);
+                                        if(mysqli_num_rows($result) > 0){
+                                            while($row = mysqli_fetch_array($result)){
+                                                $nomcher = $row["nom"];
+                                                $idcher = $row["idcher"];
+                                                echo '<option value="'.$idcher.'">'.$nomcher.'</option>';
+                                            }
                                         }
-                                    }
-                                ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>`);
-
-                    $(".selectpicker").selectpicker("resfresh");
-
-                    /*$('select[name="auteurSelect[]"]').change(function(){
-                        var position = $(this).attr("auteur");
-                        $('.row:has(input[auteur="'+position+'"])').not(':has(.bootstrap-select)').remove();
-                        if($(this).val() == "autre"){
-                            $(".bootstrap-select").has(this).after(`<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                    <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
-                                    </div>
+                                    ?>
+                                    </select>
                                 </div>
-                            </div>`);
-                        }
-                    });*/
+                            </div>
+                        </div>`);
 
-                    $('.form-group .btn-danger').click(function(){
-                        var button = $(this);
-                        $(".row").has(button).remove();
-                    });
-                    $(".selectpicker").selectpicker("refresh");
+                        $(".selectpicker").selectpicker("resfresh");
+
+                        /*$('select[name="auteurSelect[]"]').change(function(){
+                            var position = $(this).attr("auteur");
+                            $('.row:has(input[auteur="'+position+'"])').not(':has(.bootstrap-select)').remove();
+                            if($(this).val() == "autre"){
+                                $(".bootstrap-select").has(this).after(`<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                        <input required auteur="`+position+`" class="form-control" name="auteurInput[]" type="text" placeholder="Nom de l'auteur `+position+`">
+                                        </div>
+                                    </div>
+                                </div>`);
+                            }
+                        });*/
+
+                        $('.form-group .btn-danger').click(function(){
+                            var button = $(this);
+                            $(".row").has(button).remove();
+                        });
+                        $(".selectpicker").selectpicker("refresh");
+                    }
                     
                 });
             }
