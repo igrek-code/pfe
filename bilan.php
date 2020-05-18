@@ -237,6 +237,10 @@
 
     <!-- CHART JS -->
     <script src="assets/chartjs/chartjs.js"></script>
+
+    <!-- EXCEL JS -->
+    <script src="assets/excel-js/polyfill.js"></script>
+    <script src="assets/excel-js/exceljs/lib/exceljs.browser.js"></script>
     
     <script>
         $(document).ready(function(){
@@ -418,7 +422,7 @@
                     console.log(codeproj);
                     if( codeproj != "" && format.test(deb) && format.test(fin)){
                         console.log('IN IF');
-                        $.get("ajax/bilanAjax.php",{codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'},function(data){
+                        $.get("ajax/bilanAjax.php",{export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'},function(data){
                             var productions = JSON.parse(data.slice(2,-1)+"]");
                             console.log(productions);
                             graph = drawChart(productions,deb,fin,affichage,graph,update,'all');
@@ -429,14 +433,14 @@
                             $('#table').html(`
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table id="toExport" class="table table-hover">
+                                    <!--<table id="toExport" class="table table-hover">
                                         <thead>
                                             <th>Titre</th>
                                             <th>Date</th>
                                             <th>Type</th>
                                         </thead>
                                         <tbody></tbody>
-                                    </table>
+                                    </table>-->
 
                                     <div class="header">
                                         <h4 class="title">Liste des productions</h4>
@@ -466,10 +470,16 @@
                                 `);                    
                             });
                             $('#showTable').DataTable(fr_table());
-                            $('#toExport').hide();
+                            //$('#toExport').hide();
                             init_codepro();
                             $('.btn-success').click(function(){
-                                tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                //tblToExcel('toExport', 'bilan_du_<?php //echo date('c');?>');
+                                /*$.get("ajax/bilanAjax.php",{export: 'true', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'},function(data){
+
+                                });*/
+                                var workbook = new Excel.Workbook();
+                                var sheet = workbook.addWorksheet('My Sheet');
+                                await workbook.xlsx.writeFile('test');
                             });
                         });
 
