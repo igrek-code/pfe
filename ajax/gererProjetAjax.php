@@ -114,7 +114,12 @@
                 }
             }
             echo '<br>';
-            $nom = $_SESSION["nom"];
+            //$nom = $_SESSION["nom"];
+            $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM chefproj WHERE codeproj='".$codeproj."'
+            )";
+            $result = mysqli_query($db,$sql);
+            $nom = mysqli_fetch_array($result)['nom'];
             echo '<span class="text-info">Chef du projet: </span>'.$nom.'<br>';
 
             $sql = "SELECT nom FROM chercheur WHERE idcher IN (

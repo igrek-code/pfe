@@ -201,7 +201,7 @@
                                                     while($row = mysqli_fetch_array($result)){
                                                         $codeproj = $row['codeproj'];
                                                         $intitule = $row['intitule'];
-                                                        echo '<option value="'.$codeproj.'">'.$intitule.'</option>';
+                                                        echo '<option data-tokens="'.$codeproj.'" value="'.$codeproj.'">'.$intitule.'</option>';
                                                     }
                                                 }
                                             ?>

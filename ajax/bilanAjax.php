@@ -64,6 +64,12 @@
         else{
             $typeProduction = " AND type='".$typeProduction."' ";
         }
+
+        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != ""){
+            $codeproj = mysqli_real_escape_string($db,$_GET["codeproj"]);
+            $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codeproj='".$codeproj."'";
+        }
+
         if(isset($_GET["bilancher"]) && $_GET["bilancher"] != ""){
             $idcher = mysqli_real_escape_string($db,$_GET["bilancher"]);
             $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' ".$typeProduction." AND (codepro IN (

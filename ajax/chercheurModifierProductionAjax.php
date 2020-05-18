@@ -120,8 +120,8 @@
                                                     $codeproj2 = $row['codeproj'];
                                                     $intitule = $row['intitule'];
                                                     if($codeproj == $codeproj2)
-                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
-                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                        echo '<option selected data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
 
                                                 }
                                             }
@@ -446,8 +446,8 @@
                                                     $codeproj2 = $row['codeproj'];
                                                     $intitule = $row['intitule'];
                                                     if($codeproj == $codeproj2)
-                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
-                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                        echo '<option selected data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
 
                                                 }
                                             }
@@ -744,8 +744,8 @@
                                                     $codeproj2 = $row['codeproj'];
                                                     $intitule = $row['intitule'];
                                                     if($codeproj == $codeproj2)
-                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
-                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                        echo '<option selected data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
 
                                                 }
                                             }
@@ -1039,8 +1039,8 @@
                                                     $codeproj2 = $row['codeproj'];
                                                     $intitule = $row['intitule'];
                                                     if($codeproj == $codeproj2)
-                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
-                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                        echo '<option selected data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
 
                                                 }
                                             }
@@ -1314,8 +1314,8 @@
                                                     $codeproj2 = $row['codeproj'];
                                                     $intitule = $row['intitule'];
                                                     if($codeproj == $codeproj2)
-                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
-                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                        echo '<option selected data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
 
                                                 }
                                             }
@@ -1489,8 +1489,8 @@
                                                     $codeproj2 = $row['codeproj'];
                                                     $intitule = $row['intitule'];
                                                     if($codeproj == $codeproj2)
-                                                        echo '<option selected value="'.$codeproj2.'">'.$intitule.'</option>';
-                                                    else echo '<option value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                        echo '<option selected data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                                    else echo '<option data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
 
                                                 }
                                             }
