@@ -55,6 +55,7 @@
                     <th>Encadreur</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Projet</th>
                     <th>Posté par</th>
                     <th>Action</th>
                 </thead>
@@ -93,7 +94,10 @@
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $date = mysqli_fetch_array($result2)["date"]; 
+                    $row2 = mysqli_fetch_array($result2);
+                    $date = $row2["date"]; 
+                    if(isset($row2['codeproj']))
+                        $codeproj = $row2['codeproj'];
                 }
                 echo    '<tr>';
                 echo    '<td>'.$lieusout.'</td>';
@@ -107,6 +111,10 @@
                 echo    '<td>'.$encadreur.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                if(isset($codeproj))
+                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    else    
+                    echo '<td></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
                 echo   '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -143,6 +151,7 @@
                     <th>Encadreur</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Projet</th>
                     <th>URL</th>
                     <th>Posté par</th>
                     <th>Action</th>
@@ -184,7 +193,10 @@
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $date = mysqli_fetch_array($result2)["date"]; 
+                    $row2 = mysqli_fetch_array($result2);
+                    $date = $row2["date"]; 
+                    if(isset($row2['codeproj']))
+                        $codeproj = $row2['codeproj'];
                 }
                 echo    '<tr>';
                 echo    '<td>'.$nordre.'</td>';
@@ -199,6 +211,10 @@
                 echo    '<td>'.$encadreur.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                if(isset($codeproj))
+                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    else    
+                    echo '<td></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
                 echo    '</tr>';
@@ -228,6 +244,7 @@
                     <th>Co-auteurs</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Projet</th>
                     <th>URL</th>
                     <th>Posté par</th>
                     <th>Action</th>
@@ -277,7 +294,10 @@
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $date = mysqli_fetch_array($result2)["date"]; 
+                    $row2 = mysqli_fetch_array($result2);
+                    $date = $row2["date"]; 
+                    if(isset($row2['codeproj']))
+                        $codeproj = $row2['codeproj'];
                 }
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -330,6 +350,10 @@
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                if(isset($codeproj))
+                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    else    
+                    echo '<td></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
@@ -368,6 +392,7 @@
                     <th>Co-auteurs</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Projet</th>
                     <th>URL</th>
                     <th>Posté par</th>
                     <th>Action</th>
@@ -414,7 +439,10 @@
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $date = mysqli_fetch_array($result2)["date"]; 
+                    $row2 = mysqli_fetch_array($result2);
+                    $date = $row2["date"]; 
+                    if(isset($row2['codeproj']))
+                        $codeproj = $row2['codeproj'];
                 }
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -466,6 +494,10 @@
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                if(isset($codeproj))
+                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    else    
+                    echo '<td></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
@@ -509,6 +541,7 @@
                     <th>Pays</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Projet</th>
                     <th>Conférence</th>
                     <th>URL</th>
                     <th>Posté par</th>
@@ -555,7 +588,10 @@
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $date = mysqli_fetch_array($result2)["date"]; 
+                    $row2 = mysqli_fetch_array($result2);
+                    $date = $row2["date"]; 
+                    if(isset($row2['codeproj']))
+                        $codeproj = $row2['codeproj'];
                 }
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -627,6 +663,10 @@
                 echo    '<td>'.$pays.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                if(isset($codeproj))
+                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    else    
+                    echo '<td></td>';
                 echo    '<td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$codeconf.'">'.$nomconf.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
@@ -724,6 +764,7 @@
                     <th>Pays</th>
                     <th>Titre</th>
                     <th>Date</th>
+                    <th>Projet</th>
                     <th>Revue</th>
                     <th>URL</th>
                     <th>Posté par</th>
@@ -765,7 +806,10 @@
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $date = mysqli_fetch_array($result2)["date"]; 
+                    $row2 = mysqli_fetch_array($result2);
+                    $date = $row2["date"]; 
+                    if(isset($row2['codeproj']))
+                        $codeproj = $row2['codeproj'];
                 }
                 $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
@@ -851,6 +895,10 @@
                 echo    '<td>'.$pays.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                if(isset($codeproj))
+                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    else    
+                    echo '<td></td>';
                 echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';

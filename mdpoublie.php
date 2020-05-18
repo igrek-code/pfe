@@ -14,8 +14,9 @@
                 $sql = "UPDATE users SET password='".$pwd."' WHERE mail='".$mail."'";
                 if(mysqli_query($db,$sql)) {
                     // the message
-                    $to   = 'plateformescientifiquepfe@gmail.com';
-                    $from = 'plateformescientifiquepfe@gmail.com';
+                    require_once('token.php');
+                    $to   = $user;
+                    $from = $user;
                     $name = 'Plateforme Scientifique';
                     $subj = 'Mot de passe réinitialisé (Plateforme scientifique)';
                     $msg = "Votre nouveau mot de passe:\n".$pwd;
@@ -46,18 +47,20 @@
         $mail->CharSet="UTF-8";
         $mail->IsSMTP();
         $mail->SMTPAuth = true; 
+
+        require_once('token.php');
  
         $mail->SMTPSecure = 'ssl'; 
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 465;  
-        $mail->Username = 'plateformescientifiquepfe@gmail.com';
-        $mail->Password = '3Rh4X#r2pF-7E/}M';   
+        $mail->Username = $user;
+        $mail->Password = $secret;   
    
    //   $path = 'reseller.pdf';
    //   $mail->AddAttachment($path);
    
         $mail->IsHTML(true);
-        $mail->From="plateformescientifiquepfe@gmail.com";
+        $mail->From=$user;
         $mail->FromName=$from_name;
         $mail->Sender=$from;
         $mail->AddReplyTo($from, $from_name);

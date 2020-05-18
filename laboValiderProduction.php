@@ -894,6 +894,26 @@
             }
 
             function init_codepro(){
+
+                $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                    var codeproj = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle('Informations supplémentaires sur le projet');
+                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "Fermer",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
+
                 $('#theTable tbody').on('click', 'button[codepro="codepro"]', function(){
                     var codepro = $(this).val();
                     $.confirm({
@@ -970,14 +990,14 @@
 
                     case 'doctorat':
                         columnDefs=[
-                            {targets: [-1,-3], orderable: false},
+                            {targets: [-1], orderable: false},
                             {targets: Array.from({length: 6}, (x,i) => i), visible: false}
                         ]    
                     break;
 
                     case 'master':
                         columnDefs=[
-                            {targets: [-1,-3], orderable: false},
+                            {targets: [-1], orderable: false},
                             {targets: Array.from({length: 5}, (x,i) => i), visible: false}
                         ]    
                     break;
