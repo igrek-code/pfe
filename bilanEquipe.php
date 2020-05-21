@@ -395,7 +395,7 @@
                             var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
                             if( idcher != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
-                                $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                $.get("ajax/bilanAjax.php",{export: 'false', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                     var productions = JSON.parse(data.slice(2,-1)+"]");
                                     graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                                     pie = drawPie(productions,pie,update,typeProduction);
@@ -405,26 +405,19 @@
                                     $('#table').html(`
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table id="toExport" class="table table-hover">
-                                                <thead>
-                                                    <th>Titre</th>
-                                                    <th>Date</th>
-                                                    <th>Type</th>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
 
                                             <div class="header">
                                                 <h4 class="title">Liste des productions</h4>
+                                                <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
                                             </div>
 
                                             <div class="content">
-                                            <p><button class="btn btn-success btn-fill">Export to excel</button></p>
                                                 <table id="showTable" class="table table-hover">
                                                     <thead>
                                                         <th>Titre</th>
                                                         <th>Date</th>
                                                         <th>Type</th>
+                                                        <th>Projet</th>
                                                     </thead>
                                                     <tbody></tbody>
                                                 </table>
@@ -433,26 +426,46 @@
                                     </div>
                                     `);
                                     productions.forEach(production => {
+                                        if(production.codeproj == undefined) production.codeproj = ''; 
                                         $('tbody').append(`
                                             <tr>
                                             <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
                                             <td>${production.date}</td>
                                             <td>${production.type}</td>
+                                            <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
                                             </tr>
                                         `);                    
                                     });
                                     $('#showTable').DataTable(fr_table());
-                                    $('#toExport').hide();
                                     init_codepro();
-                                    $('.btn-success').click(function(){
-                                        tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                    $('button[exporter="exporter"]').click(function(){
+                                        var exporter = $(this);
+                                        $.get("ajax/bilanAjax.php",{export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                            if($('a[download="production"]').length == 0)
+                                                exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                        });
                                     });
                                 });
-                                /*$.get("ajax/bilanAjax.php",{pointCher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
-                                    getPoints(data);
-                                });*/
 
                                 $('#stats').show();
+                                $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                                    var codeproj = $(this).val();
+                                    $.confirm({
+                                        content: function(){
+                                            var self = this;
+                                            self.setTitle('Informations supplémentaires sur le projet');
+                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                self.setContent(data.slice(2,-1));
+                                            });
+                                        },
+                                        buttons:{
+                                            ok: {
+                                                text: "Fermer",
+                                                keys: ["enter"]
+                                            }
+                                        }
+                                    });
+                                });
                             }
                             else{
                                 $('#stats').hide();
@@ -628,7 +641,7 @@
                             var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
                             if( idequipe != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
-                                $.get("ajax/bilanAjax.php",{bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                $.get("ajax/bilanAjax.php",{export: 'false', bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                     var productions = JSON.parse(data.slice(2,-1)+"]");
                                     graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                                     pie = drawPie(productions,pie,update,typeProduction);
@@ -638,21 +651,13 @@
                                     $('#table').html(`
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table id="toExport" class="table table-hover">
-                                                <thead>
-                                                    <th>Titre</th>
-                                                    <th>Date</th>
-                                                    <th>Type</th>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
 
                                             <div class="header">
                                                 <h4 class="title">Liste des productions</h4>
+                                                <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
                                             </div>
 
                                             <div class="content">
-                                            <p><button class="btn btn-success btn-fill">Export to excel</button></p>
                                                 <table id="showTable" class="table table-hover">
                                                     <thead>
                                                         <th>Titre</th>
@@ -666,19 +671,24 @@
                                     </div>
                                     `);
                                     productions.forEach(production => {
+                                        if(production.codeproj == undefined) production.codeproj = ''; 
                                         $('tbody').append(`
                                             <tr>
                                             <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
                                             <td>${production.date}</td>
                                             <td>${production.type}</td>
+                                            <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
                                             </tr>
                                         `);                    
                                     });
                                     $('#showTable').DataTable(fr_table());
-                                    $('#toExport').hide();
                                     init_codepro();
-                                    $('.btn-success').click(function(){
-                                        tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                    $('button[exporter="exporter"]').click(function(){
+                                        var exporter = $(this);
+                                        $.get("ajax/bilanAjax.php",{export: 'true', bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                            if($('a[download="production"]').length == 0)
+                                                exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                        });
                                     });
                                 });
 

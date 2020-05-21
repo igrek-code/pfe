@@ -1097,6 +1097,7 @@
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
                         $nbpages = $row["nbpages"];
+                        $isbn = $row["isbn"];
                         $editeur = $row["editeur"];
                         $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                             SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
@@ -1117,6 +1118,7 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">ISBN: </span>'.$isbn.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Nombre de pages: </span>'.$nbpages.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
@@ -1183,6 +1185,7 @@
                         $row = mysqli_fetch_array($result);
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
+                        $isbn = $row["isbn"];
                         $pages = $row["pages"];
                         $volume = $row["volume"];
                         $editeur = $row["editeur"];
@@ -1205,6 +1208,7 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">ISBN: </span>'.$isbn.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Volume: </span>'.$volume.'<br>';
                         echo '<span class="text-info">N° de pages: </span>'.$pages.'<br>';

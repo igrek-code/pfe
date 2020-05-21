@@ -238,9 +238,15 @@
     <!-- CHART JS -->
     <script src="assets/chartjs/chartjs.js"></script>
 
+    <!-- require js -->
+    <!--<script src="assets/requirejs/require.js"></script>-->
+
     <!-- EXCEL JS -->
-    <script src="assets/excel-js/polyfill.js"></script>
-    <script src="assets/excel-js/exceljs/lib/exceljs.browser.js"></script>
+    <!--<script src="assets/excel-js/polyfill.js"></script>
+    <script src="assets/excel-js/exceljs/excel.js"></script>-->
+
+    <!-- SHEET JS -->
+    <script src="assets/sheetjs/xlsx.full.min.js"></script>
     
     <script>
         $(document).ready(function(){
@@ -353,26 +359,8 @@
                     var option = $('option[value="'+codeproj+'"]');
 
                     $('button[codeproj="codeproj"]').remove();
-                    $('#filters').before(`<button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="`+codeproj+`">Plus d'info sur le projet</button>`);
-                    $('button[codeproj="codeproj"]').click(function(){
-                    var codeproj = $(this).val();
-                    $.confirm({
-                        content: function(){
-                            var self = this;
-                            self.setTitle('Informations supplémentaires sur le projet');
-                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
-                                self.setContent(data.slice(2,-1));
-                            });
-                        },
-                        buttons:{
-                            ok: {
-                                text: "Fermer",
-                                keys: ["enter"]
-                            }
-                        }
-                    });
-                });
-
+                    if(codeproj != '') $('#filters').before(`<button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="`+codeproj+`">Plus d'info sur le projet</button>`);
+                    
                     var dateDeb = new Date(option.attr('dateDeb'));
                     var date = new Date(dateDeb);
                     var duree = option.attr('duree');
@@ -385,7 +373,6 @@
 
                     switch (periodeProjet) {
                         case 'final':
-                            console.log('in case final');
                             var month = dateDeb.getMonth();
                             if(month < 10) var deb = dateDeb.getFullYear()+'-0'+month;
                             else var deb = dateDeb.getFullYear()+'-'+month;
@@ -417,14 +404,9 @@
                     }
 
                     var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
-                    console.log(deb);
-                    console.log(fin);
-                    console.log(codeproj);
                     if( codeproj != "" && format.test(deb) && format.test(fin)){
-                        console.log('IN IF');
                         $.get("ajax/bilanAjax.php",{export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'},function(data){
                             var productions = JSON.parse(data.slice(2,-1)+"]");
-                            console.log(productions);
                             graph = drawChart(productions,deb,fin,affichage,graph,update,'all');
                             pie = drawPie(productions,pie,update,'all');
                             getPoints(productions,'all');
@@ -433,26 +415,19 @@
                             $('#table').html(`
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!--<table id="toExport" class="table table-hover">
-                                        <thead>
-                                            <th>Titre</th>
-                                            <th>Date</th>
-                                            <th>Type</th>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>-->
 
                                     <div class="header">
                                         <h4 class="title">Liste des productions</h4>
                                     </div>
 
                                     <div class="content">
-                                    <p><button class="btn btn-success btn-fill">Export to excel</button></p>
+                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
                                         <table id="showTable" class="table table-hover">
                                             <thead>
                                                 <th>Titre</th>
                                                 <th>Date</th>
                                                 <th>Type</th>
+                                                <th>Projet</th>
                                             </thead>
                                             <tbody></tbody>
                                         </table>
@@ -461,25 +436,42 @@
                             </div>
                             `);
                             productions.forEach(production => {
+                                if(production.codeproj == undefined) production.codeproj = '';
                                 $('tbody').append(`
                                     <tr>
                                     <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
                                     <td>${production.date}</td>
                                     <td>${production.type}</td>
+                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
                                     </tr>
                                 `);                    
                             });
-                            $('#showTable').DataTable(fr_table());
-                            //$('#toExport').hide();
+                            $('#showTable').DataTable(fr_table())
                             init_codepro();
-                            $('.btn-success').click(function(){
-                                //tblToExcel('toExport', 'bilan_du_<?php //echo date('c');?>');
-                                /*$.get("ajax/bilanAjax.php",{export: 'true', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'},function(data){
-
-                                });*/
-                                var workbook = new Excel.Workbook();
-                                var sheet = workbook.addWorksheet('My Sheet');
-                                await workbook.xlsx.writeFile('test');
+                            $('button[exporter="exporter"]').click(function(){
+                                var exporter = $(this);
+                                $.get("ajax/bilanAjax.php",{export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    if($('a[download="production"]').length == 0)
+                                        exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                });
+                            });
+                            $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                                var codeproj = $(this).val();
+                                $.confirm({
+                                    content: function(){
+                                        var self = this;
+                                        self.setTitle('Informations supplémentaires sur le projet');
+                                        $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                            self.setContent(data.slice(2,-1));
+                                        });
+                                    },
+                                    buttons:{
+                                        ok: {
+                                            text: "Fermer",
+                                            keys: ["enter"]
+                                        }
+                                    }
+                                });
                             });
                         });
 
@@ -488,10 +480,27 @@
                     else{
                         $('#stats').hide();
                     }
+                    $('button[codeproj="codeproj"]').click(function(){
+                        var codeproj = $(this).val();
+                        $.confirm({
+                            content: function(){
+                                var self = this;
+                                self.setTitle('Informations supplémentaires sur le projet');
+                                $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                    self.setContent(data.slice(2,-1));
+                                });
+                            },
+                            buttons:{
+                                ok: {
+                                    text: "Fermer",
+                                    keys: ["enter"]
+                                }
+                            }
+                        });
+                    });
                 });
 
                 $('#anneeproj').change(function(){
-                    console.log('changed year');
                     $('#codeproj').trigger('change');
                 });
 
@@ -715,8 +724,9 @@
                                 var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
                                 if( idcher != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
-                                    $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    $.get("ajax/bilanAjax.php",{export: 'false', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                         var productions = JSON.parse(data.slice(2,-1)+"]");
+                                        console.log(productions);
                                         graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                                         pie = drawPie(productions,pie,update,typeProduction);
                                         getPoints(productions,typeProduction);
@@ -725,26 +735,19 @@
                                         $('#table').html(`
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <table id="toExport" class="table table-hover">
-                                                    <thead>
-                                                        <th>Titre</th>
-                                                        <th>Date</th>
-                                                        <th>Type</th>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
 
                                                 <div class="header">
                                                     <h4 class="title">Liste des productions</h4>
+                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
                                                 </div>
 
                                                 <div class="content">
-                                                <p><button class="btn btn-success btn-fill">Export to excel</button></p>
                                                     <table id="showTable" class="table table-hover">
                                                         <thead>
                                                             <th>Titre</th>
                                                             <th>Date</th>
                                                             <th>Type</th>
+                                                            <th>Projet</th>
                                                         </thead>
                                                         <tbody></tbody>
                                                     </table>
@@ -753,19 +756,42 @@
                                         </div>
                                         `);
                                         productions.forEach(production => {
+                                            if(production.codeproj == undefined) production.codeproj = ''; 
                                             $('tbody').append(`
                                                 <tr>
                                                 <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
                                                 <td>${production.date}</td>
                                                 <td>${production.type}</td>
+                                                <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
                                                 </tr>
                                             `);                    
                                         });
                                         $('#showTable').DataTable(fr_table());
-                                        $('#toExport').hide();
                                         init_codepro();
-                                        $('.btn-success').click(function(){
-                                            tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                        $('button[exporter="exporter"]').click(function(){
+                                            var exporter = $(this);
+                                            $.get("ajax/bilanAjax.php",{export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                                if($('a[download="production"]').length == 0)
+                                                    exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                            });
+                                        });
+                                        $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                                            var codeproj = $(this).val();
+                                            $.confirm({
+                                                content: function(){
+                                                    var self = this;
+                                                    self.setTitle('Informations supplémentaires sur le projet');
+                                                    $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                        self.setContent(data.slice(2,-1));
+                                                    });
+                                                },
+                                                buttons:{
+                                                    ok: {
+                                                        text: "Fermer",
+                                                        keys: ["enter"]
+                                                    }
+                                                }
+                                            });
                                         });
                                     });
 
@@ -774,6 +800,24 @@
                                 else{
                                     $('#stats').hide();
                                 }
+                                $('button[codeproj="codeproj"]').click(function(){
+                                    var codeproj = $(this).val();
+                                    $.confirm({
+                                        content: function(){
+                                            var self = this;
+                                            self.setTitle('Informations supplémentaires sur le projet');
+                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                self.setContent(data.slice(2,-1));
+                                            });
+                                        },
+                                        buttons:{
+                                            ok: {
+                                                text: "Fermer",
+                                                keys: ["enter"]
+                                            }
+                                        }
+                                    });
+                                });
                             });
 
                             $('#byYear').hide();
@@ -993,7 +1037,7 @@
                                 var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
                                 if( idequipe != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
-                                    $.get("ajax/bilanAjax.php",{bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    $.get("ajax/bilanAjax.php",{export: 'false', bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                         var productions = JSON.parse(data.slice(2,-1)+"]");
                                         graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                                         pie = drawPie(productions,pie,update,typeProduction);
@@ -1003,26 +1047,19 @@
                                         $('#table').html(`
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <table id="toExport" class="table table-hover">
-                                                    <thead>
-                                                        <th>Titre</th>
-                                                        <th>Date</th>
-                                                        <th>Type</th>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
 
                                                 <div class="header">
                                                     <h4 class="title">Liste des productions</h4>
+                                                <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
                                                 </div>
 
                                                 <div class="content">
-                                                <p><button class="btn btn-success btn-fill">Export to excel</button></p>
                                                     <table id="showTable" class="table table-hover">
                                                         <thead>
                                                             <th>Titre</th>
                                                             <th>Date</th>
                                                             <th>Type</th>
+                                                            <th>Projet</th>
                                                         </thead>
                                                         <tbody></tbody>
                                                     </table>
@@ -1031,19 +1068,42 @@
                                         </div>
                                         `);
                                         productions.forEach(production => {
+                                            if(production.codeproj == undefined) production.codeproj = ''; 
                                             $('tbody').append(`
                                                 <tr>
                                                 <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
                                                 <td>${production.date}</td>
                                                 <td>${production.type}</td>
+                                                <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
                                                 </tr>
                                             `);                    
                                         });
                                         $('#showTable').DataTable(fr_table());
-                                        $('#toExport').hide();
                                         init_codepro();
-                                        $('.btn-success').click(function(){
-                                            tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                        $('button[exporter="exporter"]').click(function(){
+                                            var exporter = $(this);
+                                            $.get("ajax/bilanAjax.php",{export: 'true', bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                                if($('a[download="production"]').length == 0)
+                                                    exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                            });
+                                        });
+                                        $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                                            var codeproj = $(this).val();
+                                            $.confirm({
+                                                content: function(){
+                                                    var self = this;
+                                                    self.setTitle('Informations supplémentaires sur le projet');
+                                                    $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                        self.setContent(data.slice(2,-1));
+                                                    });
+                                                },
+                                                buttons:{
+                                                    ok: {
+                                                        text: "Fermer",
+                                                        keys: ["enter"]
+                                                    }
+                                                }
+                                            });
                                         });
                                     });
 
@@ -1052,6 +1112,24 @@
                                 else{
                                     $('#stats').hide();
                                 }
+                                $('button[codeproj="codeproj"]').click(function(){
+                                    var codeproj = $(this).val();
+                                    $.confirm({
+                                        content: function(){
+                                            var self = this;
+                                            self.setTitle('Informations supplémentaires sur le projet');
+                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                self.setContent(data.slice(2,-1));
+                                            });
+                                        },
+                                        buttons:{
+                                            ok: {
+                                                text: "Fermer",
+                                                keys: ["enter"]
+                                            }
+                                        }
+                                    });
+                                });
                             });
 
                             $('#byYear').hide();
@@ -1256,7 +1334,7 @@
                                 var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
                                 if( idlabo != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
-                                    $.get("ajax/bilanAjax.php",{bilanlabo: idlabo, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    $.get("ajax/bilanAjax.php",{export: 'false', bilanlabo: idlabo, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                         var productions = JSON.parse(data.slice(2,-1)+"]");
                                         graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                                         pie = drawPie(productions,pie,update,typeProduction);
@@ -1266,26 +1344,19 @@
                                         $('#table').html(`
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <table id="toExport" class="table table-hover">
-                                                    <thead>
-                                                        <th>Titre</th>
-                                                        <th>Date</th>
-                                                        <th>Type</th>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
 
                                                 <div class="header">
                                                     <h4 class="title">Liste des productions</h4>
+                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
                                                 </div>
 
                                                 <div class="content">
-                                                <p><button class="btn btn-success btn-fill">Export to excel</button></p>
                                                     <table id="showTable" class="table table-hover">
                                                         <thead>
                                                             <th>Titre</th>
                                                             <th>Date</th>
                                                             <th>Type</th>
+                                                            <th>Projet</th>
                                                         </thead>
                                                         <tbody></tbody>
                                                     </table>
@@ -1294,19 +1365,42 @@
                                         </div>
                                         `);
                                         productions.forEach(production => {
+                                            if(production.codeproj == undefined) production.codeproj = ''; 
                                             $('tbody').append(`
                                                 <tr>
                                                 <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
                                                 <td>${production.date}</td>
                                                 <td>${production.type}</td>
+                                                <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
                                                 </tr>
                                             `);                    
                                         });
                                         $('#showTable').DataTable(fr_table());
-                                        $('#toExport').hide();
                                         init_codepro();
-                                        $('.btn-success').click(function(){
-                                            tblToExcel('toExport', 'bilan_du_<?php echo date('c');?>');
+                                        $('button[exporter="exporter"]').click(function(){
+                                            var exporter = $(this);
+                                            $.get("ajax/bilanAjax.php",{export: 'true', bilanlabo: idlabo, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                                if($('a[download="production"]').length == 0)
+                                                    exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                            });
+                                        });
+                                        $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                                            var codeproj = $(this).val();
+                                            $.confirm({
+                                                content: function(){
+                                                    var self = this;
+                                                    self.setTitle('Informations supplémentaires sur le projet');
+                                                    $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                        self.setContent(data.slice(2,-1));
+                                                    });
+                                                },
+                                                buttons:{
+                                                    ok: {
+                                                        text: "Fermer",
+                                                        keys: ["enter"]
+                                                    }
+                                                }
+                                            });
                                         });
                                     });
 
@@ -1315,6 +1409,24 @@
                                 else{
                                     $('#stats').hide();
                                 }
+                                $('button[codeproj="codeproj"]').click(function(){
+                                    var codeproj = $(this).val();
+                                    $.confirm({
+                                        content: function(){
+                                            var self = this;
+                                            self.setTitle('Informations supplémentaires sur le projet');
+                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                                self.setContent(data.slice(2,-1));
+                                            });
+                                        },
+                                        buttons:{
+                                            ok: {
+                                                text: "Fermer",
+                                                keys: ["enter"]
+                                            }
+                                        }
+                                    });
+                                });
                             });
 
                             $('#byYear').hide();
