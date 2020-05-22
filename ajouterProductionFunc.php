@@ -212,6 +212,7 @@
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
@@ -229,7 +230,7 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO ouvrage (codepro,titre,nbpages,editeur,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$nbrePagesProduction."','".$editeurProduction."','".$urlProduction."','".$idspeProduction."')";
+        $sql = "INSERT INTO ouvrage (codepro,titre,nbpages,editeur,url,idspe,isbn) VALUES ('".$codepro."','".$titreProduction."','".$nbrePagesProduction."','".$editeurProduction."','".$urlProduction."','".$idspeProduction."','".$isbn."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);
@@ -276,6 +277,7 @@
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
@@ -293,7 +295,7 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO chapitredouvrage (codepro,titre,editeur,volume,url,idspe,pages) VALUES ('".$codepro."','".$titreProduction."','".$editeurProduction."','".$volumeProduction."','".$urlProduction."','".$idspeProduction."','".$pagesProduction."')";
+        $sql = "INSERT INTO chapitredouvrage (codepro,titre,editeur,volume,url,idspe,pages,isbn) VALUES ('".$codepro."','".$titreProduction."','".$editeurProduction."','".$volumeProduction."','".$urlProduction."','".$idspeProduction."','".$pagesProduction."','".$isbn."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);

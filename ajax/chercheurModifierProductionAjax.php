@@ -667,6 +667,7 @@
                     $row = mysqli_fetch_array($result);
                     $idspe = $row["idspe"];
                     $titre = $row["titre"];
+                    $isbn = $row['isbn'];
                     $nbpages = $row["nbpages"];
                     $editeur = $row["editeur"];
                     $url = $row["url"];
@@ -764,6 +765,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <input value="'.$isbn.'" required class="form-control" name="isbn" type="text" placeholder="ISBN de l\'ouvrage">
+                </div>
+            </div>
+        </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -962,6 +972,7 @@
                     $idspe = $row["idspe"];
                     $titre = $row["titre"];
                     $pages = $row["pages"];
+                    $isbn = $row['isbn'];
                     $editeur = $row["editeur"];
                     $volume = $row["volume"];
                     $url = $row["url"];
@@ -1059,6 +1070,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <input value="'.$isbn.'" required class="form-control" name="isbn" type="text" placeholder="ISBN de l\'ouvrage">
+                </div>
+            </div>
+        </div>
 
             <div class="row">
                 <div class="col-md-12">

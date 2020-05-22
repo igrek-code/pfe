@@ -230,6 +230,7 @@
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
@@ -243,7 +244,7 @@
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE ouvrage SET titre='".$titreProduction."', nbpages='".$nbrePagesProduction."', editeur='".$editeurProduction."', url='".$urlProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE ouvrage SET isbn='".$isbn."', titre='".$titreProduction."', nbpages='".$nbrePagesProduction."', editeur='".$editeurProduction."', url='".$urlProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "DELETE FROM motscle WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
@@ -296,6 +297,7 @@
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
+        $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
@@ -309,7 +311,7 @@
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE chapitredouvrage SET titre='".$titreProduction."', editeur='".$editeurProduction."', volume='".$volumeProduction."', url='".$urlProduction."', pages='".$pagesProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE chapitredouvrage SET isbn='".$isbn."', titre='".$titreProduction."', editeur='".$editeurProduction."', volume='".$volumeProduction."', url='".$urlProduction."', pages='".$pagesProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "DELETE FROM motscle WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;

@@ -248,6 +248,15 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
+                        <label>ISBN</label>
+                        <input required class="form-control" name="isbn" type="text" placeholder="ISBN de l\'ouvrage">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
                         <label>éditeur</label>
                         <input required class="form-control" name="editeurProduction" type="text" placeholder="Editeur de l\'ouvrage">
                     </div>
@@ -343,6 +352,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <input required class="form-control" name="isbn" type="text" placeholder="ISBN de l\'ouvrage">
+                </div>
+            </div>
+        </div>
 
             <div class="row">
                 <div class="col-md-12">
