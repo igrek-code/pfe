@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : Dim 17 mai 2020 à 00:34
+-- Généré le : ven. 22 mai 2020 à 15:35
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -84,16 +84,17 @@ CREATE TABLE `chapitredouvrage` (
   `volume` int(11) NOT NULL,
   `url` varchar(255) DEFAULT NULL,
   `idspe` int(12) NOT NULL,
-  `pages` varchar(40) NOT NULL
+  `pages` varchar(40) NOT NULL,
+  `isbn` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `chapitredouvrage`
 --
 
-INSERT INTO `chapitredouvrage` (`codepro`, `titre`, `editeur`, `volume`, `url`, `idspe`, `pages`) VALUES
-(7, 'CH9', 'ch9', 9, 'CH9', 27, '129 238'),
-(8, 'CH', 'CH', 4, 'CH', 28, '129 230');
+INSERT INTO `chapitredouvrage` (`codepro`, `titre`, `editeur`, `volume`, `url`, `idspe`, `pages`, `isbn`) VALUES
+(7, 'CH9', 'ch9', 9, 'CH9', 27, '129 238', ''),
+(8, 'CH', 'CH', 4, 'CH', 28, '129 230', '');
 
 -- --------------------------------------------------------
 
@@ -149,7 +150,9 @@ CREATE TABLE `chefproj` (
 --
 
 INSERT INTO `chefproj` (`idcher`, `codeproj`) VALUES
-(16, '18');
+(16, '106'),
+(16, '180808'),
+(16, '646dsds564');
 
 -- --------------------------------------------------------
 
@@ -227,8 +230,8 @@ CREATE TABLE `communication` (
 --
 
 INSERT INTO `communication` (`codepro`, `titre`, `idspe`, `url`, `codeconf`) VALUES
-(4, 'COM23', 22, 'COM23', 1),
-(58, 'com8', 89, 'com8', 1);
+(4, 'COM235', 22, 'COM23', 1),
+(58, 'com85', 89, 'com8', 1);
 
 -- --------------------------------------------------------
 
@@ -348,7 +351,13 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (79, 'verifP'),
 (80, 'verifP'),
 (81, 'verifP'),
-(82, 'verif2');
+(82, 'verif2'),
+(83, 'yihoiolnmoijlkl'),
+(84, 'yihoiolnmoijlkl'),
+(85, 'yihoiolnmoijlkl'),
+(91, 'yihoiolnmoijlkl'),
+(94, 'lôkpokjpôk'),
+(95, 'lôkpok');
 
 -- --------------------------------------------------------
 
@@ -453,13 +462,6 @@ CREATE TABLE `membreproj` (
   `codeproj` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Déchargement des données de la table `membreproj`
---
-
-INSERT INTO `membreproj` (`idcher`, `codeproj`) VALUES
-(28, '18');
-
 -- --------------------------------------------------------
 
 --
@@ -559,6 +561,31 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `motscler`
+--
+
+CREATE TABLE `motscler` (
+  `codeproj` varchar(40) NOT NULL,
+  `mot` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `motscler`
+--
+
+INSERT INTO `motscler` (`codeproj`, `mot`) VALUES
+('106', ' pozak'),
+('106', 'jdoize'),
+('180808', 'jdoizejdioz'),
+('180808', 'just to test'),
+('180808', 'kkljiojoij'),
+('180808', 'yes'),
+('646dsds564', 'okpokpok'),
+('646dsds564', 'opkok');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `notification`
 --
 
@@ -593,21 +620,22 @@ CREATE TABLE `ouvrage` (
   `titre` varchar(40) NOT NULL,
   `nbpages` int(4) NOT NULL,
   `editeur` varchar(40) NOT NULL,
-  `url` varchar(40) NOT NULL
+  `url` varchar(40) NOT NULL,
+  `isbn` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `ouvrage`
 --
 
-INSERT INTO `ouvrage` (`codepro`, `idspe`, `titre`, `nbpages`, `editeur`, `url`) VALUES
-(5, 25, 'ouv55', 500, 'five', 'five.5'),
-(51, 79, 'OB', 200, 'OB', 'OB'),
-(52, 80, 'OB2', 500, 'OB2', 'OB2'),
-(53, 81, 'OB2', 500, 'OB2', 'OB2'),
-(54, 82, 'OB2', 500, 'OB2', 'OB2'),
-(55, 83, 'OB2', 500, 'OB2', 'OB2'),
-(56, 84, 'OB2', 500, 'OB2', 'OB2');
+INSERT INTO `ouvrage` (`codepro`, `idspe`, `titre`, `nbpages`, `editeur`, `url`, `isbn`) VALUES
+(5, 25, 'ouv55', 500, 'five', 'five.5', ''),
+(51, 79, 'OB', 200, 'OB', 'OB', ''),
+(52, 80, 'OB2', 500, 'OB2', 'OB2', ''),
+(53, 81, 'OB2', 500, 'OB2', 'OB2', ''),
+(54, 82, 'OB2', 500, 'OB2', 'OB2', ''),
+(55, 83, 'OB2', 500, 'OB2', 'OB2', ''),
+(56, 84, 'OB2', 500, 'OB2', 'OB2', '');
 
 -- --------------------------------------------------------
 
@@ -679,10 +707,10 @@ CREATE TABLE `production` (
 INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (2, '2020-04', 'publication', NULL),
 (3, '2010-03', 'communication', NULL),
-(4, '2014-02', 'communication', NULL),
+(4, '2014-02', 'communication', '180808'),
 (5, '2009-01', 'ouvrage', NULL),
 (6, '2020-03', 'chapitreOuvrage', NULL),
-(7, '2017-03', 'chapitreOuvrage', NULL),
+(7, '2017-03', 'chapitreOuvrage', '106'),
 (8, '2020-03', 'chapitreOuvrage', NULL),
 (9, '2015-04', 'doctorat', NULL),
 (10, '2012-04', 'master', NULL),
@@ -717,7 +745,7 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (47, '2020-04', 'master', NULL),
 (48, '2020-04', 'master', NULL),
 (49, '2020-04', 'master', NULL),
-(50, '2020-04', 'doctorat', NULL),
+(50, '2020-04', 'doctorat', '106'),
 (51, '2020-04', 'ouvrage', NULL),
 (52, '2020-04', 'ouvrage', NULL),
 (53, '2020-04', 'ouvrage', NULL),
@@ -725,7 +753,7 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (55, '2020-04', 'ouvrage', NULL),
 (56, '2020-04', 'ouvrage', NULL),
 (57, '2020-05', 'communication', NULL),
-(58, '2020-05', 'communication', NULL),
+(58, '2020-05', 'communication', '106'),
 (100, '2010-05', 'master', NULL),
 (101, '2020-05', 'publication', NULL),
 (102, '2020-05', 'master', NULL);
@@ -741,15 +769,20 @@ CREATE TABLE `projrecher` (
   `date` varchar(7) NOT NULL,
   `intitule` varchar(50) NOT NULL,
   `description` text NOT NULL,
-  `duree` int(4) NOT NULL
+  `duree` int(4) NOT NULL,
+  `etat` enum('en cours','reconduit','clôturé') NOT NULL,
+  `codeDomaine` int(11) DEFAULT NULL,
+  `fichier` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `projrecher`
 --
 
-INSERT INTO `projrecher` (`codeproj`, `date`, `intitule`, `description`, `duree`) VALUES
-('18', '2020-05', 'anotherp', 'anotherp\r\nnanotherp\r\nnanotherp', 50);
+INSERT INTO `projrecher` (`codeproj`, `date`, `intitule`, `description`, `duree`, `etat`, `codeDomaine`, `fichier`) VALUES
+('106', '2020-05', 'ezfzefzelkjlkj', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eum, vitae aspernatur sapiente quod nobis aperiam placeat officia veritatis quam nisi! Unde ad cum harum minus impedit laboriosam quo eveniet minima repudiandae ipsa id natus, sapiente vel! Amet, qui esse laudantium ad, magnam doloribus quod perspiciatis ipsum eaque adipisci dignissimos!', 50, 'clôturé', 94, '106.rar'),
+('180808', '2020-05', 'ezfzefzelkjlkjlkkkljlkjlj', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eum, vitae aspernatur sapiente quod nobis aperiam placeat officia veritatis quam nisi! Unde ad cum harum minus impedit laboriosam quo eveniet minima repudiandae ipsa id natus, sapiente vel! Amet, qui esse laudantium ad, magnam doloribus quod perspiciatis ipsum eaque adipisci dignissimos!\r\nunlink(\"uploads/ptoneclk.exe\");\r\n/*if', 546, 'en cours', 95, 'test.rar'),
+('646dsds564', '2020-05', 'ezfzefze', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eum, vitae aspernatur sapiente quod nobis aperiam placeat officia veritatis quam nisi! Unde ad cum harum minus impedit laboriosam quo eveniet minima repudiandae ipsa id natus, sapiente vel! Amet, qui esse laudantium ad, magnam doloribus quod perspiciatis ipsum eaque adipisci dignissimos!', 50, 'clôturé', 91, 'test.rar');
 
 -- --------------------------------------------------------
 
@@ -965,7 +998,7 @@ CREATE TABLE `these` (
 --
 
 INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
-(9, 'TD10', 16, 'TD', 8, 'TD', 29),
+(9, 'DB', 16, 'DB', 5, 'DB', 29),
 (50, 'DB', 16, 'DB', 5, 'DB', 78);
 
 -- --------------------------------------------------------
@@ -1043,7 +1076,7 @@ ALTER TABLE `cheflabo`
 -- Index pour la table `chefproj`
 --
 ALTER TABLE `chefproj`
-  ADD PRIMARY KEY (`idcher`,`codeproj`),
+  ADD PRIMARY KEY (`codeproj`),
   ADD KEY `idcher` (`idcher`),
   ADD KEY `codeproj` (`codeproj`);
 
@@ -1134,6 +1167,13 @@ ALTER TABLE `motscle`
   ADD KEY `codepro` (`codepro`);
 
 --
+-- Index pour la table `motscler`
+--
+ALTER TABLE `motscler`
+  ADD PRIMARY KEY (`codeproj`,`mot`),
+  ADD KEY `codeproj` (`codeproj`);
+
+--
 -- Index pour la table `notification`
 --
 ALTER TABLE `notification`
@@ -1167,7 +1207,8 @@ ALTER TABLE `production`
 -- Index pour la table `projrecher`
 --
 ALTER TABLE `projrecher`
-  ADD PRIMARY KEY (`codeproj`);
+  ADD PRIMARY KEY (`codeproj`),
+  ADD KEY `codeDomaine` (`codeDomaine`);
 
 --
 -- Index pour la table `publication`
@@ -1244,7 +1285,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -1387,6 +1428,12 @@ ALTER TABLE `motscle`
   ADD CONSTRAINT `motscle_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `motscler`
+--
+ALTER TABLE `motscler`
+  ADD CONSTRAINT `motscle_projet_fk` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `ouvrage`
 --
 ALTER TABLE `ouvrage`
@@ -1406,6 +1453,12 @@ ALTER TABLE `pfemaster`
 --
 ALTER TABLE `production`
   ADD CONSTRAINT `production_projcher_fk` FOREIGN KEY (`codeproj`) REFERENCES `projrecher` (`codeproj`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Contraintes pour la table `projrecher`
+--
+ALTER TABLE `projrecher`
+  ADD CONSTRAINT `projet_domaine_fk` FOREIGN KEY (`codeDomaine`) REFERENCES `domaine` (`codeDomaine`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Contraintes pour la table `publication`
