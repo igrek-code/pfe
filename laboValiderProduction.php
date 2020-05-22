@@ -264,7 +264,7 @@
 
                 $('#searchInfo').html(`
                     OUVRAGE: <br>
-                    -Titre, date, éditeur, nombre de pages, domaine, spécialités, mots-clés, (co)auteurs
+                    -Titre, date, ISBN, éditeur, nombre de pages, domaine, spécialités, mots-clés, (co)auteurs
                 `);
 
                 $('#searchBox').html(`
@@ -273,6 +273,7 @@
                     <select id="searchOuv" class="form-control selectpicker" title="Ouvrage...">
                         <option value="titre">Titre</option>
                         <option value="date">Date</option>
+                        <option value="isbn">ISBN</option>
                         <option value="editeur">Editeur</option>
                         <option value="nbrepages">Nombre de pages</option>
                         <option value="nomDomaine">Domaine</option>
@@ -280,6 +281,7 @@
                         <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
                         <option value="coauteur">Co-auteurs</option>
+                        <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -291,6 +293,14 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'codeproj':
+                            column = 9;
+                        break;
+
+                        case 'isbn':
+                            column = 10;
+                        break;
+
                         case 'titre':
                             column = 7;
                         break;
@@ -343,7 +353,7 @@
             function init_chapitreOuvrage(table){
                 $('#searchInfo').html(`
                     CHAPITRE D'OUVRAGE: <br>
-                    -Titre, date, éditeur, pages, volume, domaine, spécialités, mots-clés, (co)auteurs
+                    -Titre, date, ISBN, éditeur, pages, volume, domaine, spécialités, mots-clés, (co)auteurs
                 `);
 
                 $('#searchBox').html(`
@@ -352,6 +362,7 @@
                     <select id="searchOuv" class="form-control selectpicker" title="Chapitre...">
                         <option value="titre">Titre</option>
                         <option value="date">Date</option>
+                        <option value="isbn">ISBN</option>
                         <option value="editeur">Editeur</option>
                         <option value="pages">Pages</option>
                         <option value="volume">Volume</option>
@@ -360,6 +371,7 @@
                         <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
                         <option value="coauteur">Co-auteurs</option>
+                        <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -371,6 +383,14 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'codeproj':
+                            column = 10;
+                        break;
+
+                        case 'isbn':
+                            column = 11;
+                        break;
+
                         case 'titre':
                             column = 8;
                         break;
@@ -442,6 +462,7 @@
                         <option value="nomspe">Spécialités</option>
                         <option value="motscle">Mots-clés</option>
                         <option value="encadreur">Encadreur</option>
+                        <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -453,6 +474,10 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'codeproj':
+                            column = 8;
+                        break;
+
                         case 'titre':
                             column = 6;
                         break;
@@ -516,6 +541,7 @@
                         <option value="nomspe">Spécialités</option>
                         <option value="motscle">Mots-clés</option>
                         <option value="encadreur">Encadreur</option>
+                        <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -527,6 +553,10 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'codeproj':
+                            column = 7;
+                        break;
+
                         case 'titre':
                             column = 5;
                         break;
@@ -588,6 +618,7 @@
                         <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
                         <option value="coauteur">Co-auteurs</option>
+                        <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -658,6 +689,10 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'codeproj':
+                            column = 15;
+                        break;
+
                         case 'titre':
                             column = 12;
                         break;
@@ -741,6 +776,7 @@
                         <option value="motscle">Mots-clés</option>
                         <option value="auteur">Auteur principal</option>
                         <option value="coauteur">Co-auteurs</option>
+                        <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
                 </div>
@@ -821,6 +857,10 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'codeproj':
+                            column = 20;
+                        break;
+
                         case 'titre':
                             column = 17;
                         break;
@@ -977,6 +1017,7 @@
                     case 'ouvrage':
                         columnDefs=[
                             {targets: [-1,-3], orderable: false},
+                            {targets: [10], visible: false},
                             {targets: Array.from({length: 7}, (x,i) => i), visible: false}
                         ]    
                     break;
@@ -984,6 +1025,7 @@
                     case 'chapitreOuvrage':
                         columnDefs=[
                             {targets: [-1,-3], orderable: false},
+                            {targets: [11], visible: false},
                             {targets: Array.from({length: 8}, (x,i) => i), visible: false}
                         ]    
                     break;

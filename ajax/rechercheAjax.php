@@ -219,6 +219,7 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Projet</th>
+                    <th>ISBN</th>
                     <th>URL</th>
                 </thead>
             <tbody>';
@@ -226,6 +227,7 @@
                 $codepro = $row["codepro"];
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
+                $isbn = $row["isbn"];
                 $pages = $row["pages"];
                 $pages = str_replace(","," ",$pages);
                 $pages = str_replace("-"," ",$pages);
@@ -315,6 +317,7 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
+                echo    '<td>'.$isbn.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
@@ -341,6 +344,7 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Projet</th>
+                    <th>ISBN</th>
                     <th>URL</th>
                 </thead>
             <tbody>';
@@ -348,6 +352,7 @@
                 $codepro = $row["codepro"];
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
+                $isbn = $row["isbn"];
                 $nbpages = $row["nbpages"];
                 $editeur = $row["editeur"];
                 $url = $row["url"];
@@ -433,6 +438,7 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
+                echo    '<td>'.$isbn.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
@@ -463,8 +469,8 @@
                     <th>Pays</th>
                     <th>Titre</th>
                     <th>Date</th>
-                    <th>Projet</th>
                     <th>Conférence</th>
+                    <th>Projet</th>
                     <th>URL</th>
                 </thead>
             <tbody>';
@@ -572,11 +578,12 @@
                 echo    '<td>'.$pays.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                echo    '<td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$codeconf.'">'.$nomconf.'</button></td>';
                 if(isset($codeproj))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
-                echo    '<td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$codeconf.'">'.$nomconf.'</button></td>';
+                
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
@@ -660,8 +667,8 @@
                     <th>Pays</th>
                     <th>Titre</th>
                     <th>Date</th>
-                    <th>Projet</th>
                     <th>Revue</th>
+                    <th>Projet</th>
                     <th>URL</th>
                 </thead>
             <tbody>';
@@ -778,11 +785,11 @@
                 echo    '<td>'.$pays.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
+                echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
                 if(isset($codeproj))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
-                echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
@@ -1020,6 +1027,7 @@
                         $row = mysqli_fetch_array($result);
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
+                        $isbn = $row["isbn"];
                         $nbpages = $row["nbpages"];
                         $editeur = $row["editeur"];
                         $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
@@ -1041,6 +1049,7 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">ISBN: </span>'.$isbn.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Nombre de pages: </span>'.$nbpages.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
@@ -1107,6 +1116,7 @@
                         $row = mysqli_fetch_array($result);
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
+                        $isbn = $row["isbn"];
                         $pages = $row["pages"];
                         $volume = $row["volume"];
                         $editeur = $row["editeur"];
@@ -1129,6 +1139,7 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">ISBN: </span>'.$isbn.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Volume: </span>'.$volume.'<br>';
                         echo '<span class="text-info">N° de pages: </span>'.$pages.'<br>';

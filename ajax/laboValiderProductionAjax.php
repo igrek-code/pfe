@@ -245,6 +245,7 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Projet</th>
+                    <th>ISBN</th>
                     <th>URL</th>
                     <th>Posté par</th>
                     <th>Action</th>
@@ -265,6 +266,7 @@
                 /*-------------------------*/
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
+                $isbn = $row['isbn'];
                 $pages = $row["pages"];
                 $pages = str_replace(","," ",$pages);
                 $pages = str_replace("-"," ",$pages);
@@ -354,6 +356,7 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
+                echo    '<td>'.$isbn.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
@@ -393,6 +396,7 @@
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Projet</th>
+                    <th>ISBN</th>
                     <th>URL</th>
                     <th>Posté par</th>
                     <th>Action</th>
@@ -413,6 +417,7 @@
                 /* ----------------------------------------------------------- */
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
+                $isbn = $row['isbn'];
                 $nbpages = $row["nbpages"];
                 $editeur = $row["editeur"];
                 $url = $row["url"];
@@ -498,6 +503,7 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
+                echo    '<td>'.$isbn.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
@@ -1148,6 +1154,7 @@
                         $row = mysqli_fetch_array($result);
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
+                        $isbn = $row['isbn'];
                         $nbpages = $row["nbpages"];
                         $editeur = $row["editeur"];
                         $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
@@ -1169,6 +1176,7 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">ISBN: </span>'.$isbn.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Nombre de pages: </span>'.$nbpages.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
@@ -1235,6 +1243,7 @@
                         $row = mysqli_fetch_array($result);
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
+                        $isbn = $row["isbn"];
                         $pages = $row["pages"];
                         $volume = $row["volume"];
                         $editeur = $row["editeur"];
@@ -1257,6 +1266,7 @@
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">ISBN: </span>'.$isbn.'<br>';
                         echo '<span class="text-info">Editeur: </span>'.$editeur.'<br>';
                         echo '<span class="text-info">Volume: </span>'.$volume.'<br>';
                         echo '<span class="text-info">N° de pages: </span>'.$pages.'<br>';

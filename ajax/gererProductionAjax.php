@@ -241,6 +241,7 @@
                     <th>Titre</th>
                     <th>Date</th>';
                     echo '<th>Projet</th>';
+                    echo '<th>ISBN</th>';
                     echo'<th>URL</th>
                     <th>Action</th>
                 </thead>
@@ -249,6 +250,7 @@
                 $codepro = $row["codepro"];
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
+                $isbn = $row['isbn'];
                 $pages = $row["pages"];
                 $pages = str_replace(","," ",$pages);
                 $pages = str_replace("-"," ",$pages);
@@ -338,6 +340,7 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
+                echo    '<td>'.$isbn.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -376,6 +379,7 @@
                     <th>Titre</th>
                     <th>Date</th>';
                     echo '<th>Projet</th>';
+                    echo '<th>ISBN</th>';
                     echo '<th>URL</th>
                     <th>Action</th>
                 </thead>
@@ -384,6 +388,7 @@
                 $codepro = $row["codepro"];
                 $idspe = $row["idspe"];
                 $titre = $row["titre"];
+                $isbn = $row['isbn'];
                 $nbpages = $row["nbpages"];
                 $editeur = $row["editeur"];
                 $url = $row["url"];
@@ -469,6 +474,7 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
+                echo    '<td>'.$isbn.'</td>';
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';

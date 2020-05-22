@@ -461,46 +461,10 @@
                                 });
 
                                 $('#stats').show();
-                                $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
-                                    var codeproj = $(this).val();
-                                    $.confirm({
-                                        content: function(){
-                                            var self = this;
-                                            self.setTitle('Informations supplémentaires sur le projet');
-                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
-                                                self.setContent(data.slice(2,-1));
-                                            });
-                                        },
-                                        buttons:{
-                                            ok: {
-                                                text: "Fermer",
-                                                keys: ["enter"]
-                                            }
-                                        }
-                                    });
-                                });
                             }
                             else{
                                 $('#stats').hide();
                             }
-                            $('button[codeproj="codeproj"]').click(function(){
-                                var codeproj = $(this).val();
-                                $.confirm({
-                                    content: function(){
-                                        var self = this;
-                                        self.setTitle('Informations supplémentaires sur le projet');
-                                        $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
-                                            self.setContent(data.slice(2,-1));
-                                        });
-                                    },
-                                    buttons:{
-                                        ok: {
-                                            text: "Fermer",
-                                            keys: ["enter"]
-                                        }
-                                    }
-                                });
-                            });
                         });
 
                         $('#byYear').hide();
@@ -744,24 +708,6 @@
                                 });
 
                                 $('#stats').show();
-                                $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
-                                    var codeproj = $(this).val();
-                                    $.confirm({
-                                        content: function(){
-                                            var self = this;
-                                            self.setTitle('Informations supplémentaires sur le projet');
-                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
-                                                self.setContent(data.slice(2,-1));
-                                            });
-                                        },
-                                        buttons:{
-                                            ok: {
-                                                text: "Fermer",
-                                                keys: ["enter"]
-                                            }
-                                        }
-                                    });
-                                });
                             }
                             else{
                                 $('#stats').hide();
@@ -990,24 +936,6 @@
                                 });
 
                                 $('#stats').show();
-                                $('tbody').on('click', 'button[codeproj="codeproj"]',function(){
-                                    var codeproj = $(this).val();
-                                    $.confirm({
-                                        content: function(){
-                                            var self = this;
-                                            self.setTitle('Informations supplémentaires sur le projet');
-                                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
-                                                self.setContent(data.slice(2,-1));
-                                            });
-                                        },
-                                        buttons:{
-                                            ok: {
-                                                text: "Fermer",
-                                                keys: ["enter"]
-                                            }
-                                        }
-                                    });
-                                });
                             }
                             else{
                                 $('#stats').hide();
@@ -1521,6 +1449,25 @@
             }
 
             function init_codepro(){
+                $('#showTable tbody').on('click', 'button[codeproj="codeproj"]',function(){
+                    var codeproj = $(this).val();
+                    $.confirm({
+                        content: function(){
+                            var self = this;
+                            self.setTitle('Informations supplémentaires sur le projet');
+                            $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                self.setContent(data.slice(2,-1));
+                            });
+                        },
+                        buttons:{
+                            ok: {
+                                text: "Fermer",
+                                keys: ["enter"]
+                            }
+                        }
+                    });
+                });
+
                 $('#showTable tbody').on('click', 'button[codepro="codepro"]',function(){
                     var codepro = $(this).val();
                     $.confirm({
