@@ -237,16 +237,6 @@
 
     <!-- CHART JS -->
     <script src="assets/chartjs/chartjs.js"></script>
-
-    <!-- require js -->
-    <!--<script src="assets/requirejs/require.js"></script>-->
-
-    <!-- EXCEL JS -->
-    <!--<script src="assets/excel-js/polyfill.js"></script>
-    <script src="assets/excel-js/exceljs/excel.js"></script>-->
-
-    <!-- SHEET JS -->
-    <script src="assets/sheetjs/xlsx.full.min.js"></script>
     
     <script>
         $(document).ready(function(){
@@ -358,9 +348,29 @@
                     var codeproj = $(this).val();
                     var option = $('option[value="'+codeproj+'"]');
 
-                    $('button[codeproj="codeproj"]').remove();
-                    if(codeproj != '') $('#filters').before(`<button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="`+codeproj+`">Plus d'info sur le projet</button>`);
-                    
+                    $('button[infoproj="infoproj"]').remove();
+                    if(codeproj != '') {
+                        $('#filters').before(`<button infoproj="infoproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="`+codeproj+`">Plus d'info sur le projet</button>`);
+                        $('button[infoproj="infoproj"]').click(function(){
+                            console.log('in click');
+                            var codeproj = $(this).val();
+                            $.confirm({
+                                content: function(){
+                                    var self = this;
+                                    self.setTitle('Informations supplémentaires sur le projet');
+                                    $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                        self.setContent(data.slice(2,-1));
+                                    });
+                                },
+                                buttons:{
+                                    ok: {
+                                        text: "Fermer",
+                                        keys: ["enter"]
+                                    }
+                                }
+                            });
+                        });
+                    }
                     var dateDeb = new Date(option.attr('dateDeb'));
                     var date = new Date(dateDeb);
                     var duree = option.attr('duree');
@@ -1813,6 +1823,7 @@
             }
 
             function init_codepro(){
+
                 $('#showTable tbody').on('click', 'button[codeproj="codeproj"]',function(){
                     var codeproj = $(this).val();
                     $.confirm({
