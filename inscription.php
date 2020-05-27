@@ -38,7 +38,7 @@
             }else $execute = false;
             if(isset($_POST["idequip"]) && $_POST["idequip"] != ""){
                 $idequipe = mysqli_real_escape_string($db,$_POST["idequip"]);
-            }else $execute = false;
+            }
             if(isset($_POST["gradecherC"]) && $_POST["gradecherC"] != ""){
                 $gradecherC = mysqli_real_escape_string($db,$_POST["gradecherC"]);
             }else $execute = false;
