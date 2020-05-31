@@ -29,7 +29,7 @@
                     while($row = mysqli_fetch_array($result)){
                         $idcher = $row["idcher"];
                         $sql = "SELECT * FROM equipe WHERE idequipe IN (
-                            SELECT idequipe FROM membrequip WHERE idcher ='".$idcher."'
+                            SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
                         )";
                         if($result2 = mysqli_query($db,$sql)){
                             $row2 = mysqli_fetch_array($result2);
