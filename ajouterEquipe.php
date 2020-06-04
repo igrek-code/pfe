@@ -24,12 +24,13 @@
         $error = true;
         $nomEquipe = mysqli_real_escape_string($db,$_POST["nomEquipe"]);
         $nomspe = mysqli_real_escape_string($db,$_POST["nomspe"]);
+        $etat = mysqli_real_escape_string($db,$_POST["etat"]);
         $sql = "INSERT INTO specialite (codeDomaine,nomspe) VALUES ('".$codeDomaine."','".$nomspe."')";
         if(mysqli_query($db,$sql)){
             $sql = "SELECT * FROM specialite ORDER BY idspe DESC";
             if($result = mysqli_query($db,$sql)){
                 $idspe = mysqli_fetch_array($result)["idspe"];
-                $sql = "INSERT INTO equipe (nomequip,idspe,idlabo) VALUES ('".$nomEquipe."','".$idspe."','".$idlabo."')";
+                $sql = "INSERT INTO equipe (nomequip,idspe,idlabo,etat) VALUES ('".$nomEquipe."','".$idspe."','".$idlabo."','".$etat."')";
                 if(mysqli_query($db,$sql)) $error = false;
             }
         }
@@ -177,6 +178,18 @@
                                     <div class="form-group">
                                         <label>nom</label>
                                         <input type="text" name="nomEquipe" class="form-control" placeholder="Nom de l'équipe" required>
+                                    </div>
+                                </div>
+                            </div>  
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>etat</label>
+                                        <select required class="selectpicker form-control" name="etat" id="etat">
+                                            <option value="actif">Actif</option>
+                                            <option value="inactif">Inactif</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>  

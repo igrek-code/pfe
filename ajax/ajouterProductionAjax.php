@@ -35,14 +35,14 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>№ ISSUE</label>
-                        <input min="0" max="99" required class="form-control" name="nissueProduction" type="number" placeholder="№ issue de la publication">
+                        <input required class="form-control" name="nissueProduction" type="text" placeholder="№ issue de la publication">
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>№ volume</label>
-                        <input min="0" max="99" required class="form-control" name="nvolProduction" type="number" placeholder="№ volume de la publication">
+                        <input min="0" max="10000000" required class="form-control" name="nvolProduction" type="number" placeholder="№ volume de la publication">
                     </div>
                 </div>
             </div>
@@ -648,7 +648,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>nom</label>
-                <input maxlength="20" required class="form-control" name="nomrevue" type="text" placeholder="Nom de la revue">
+                <input maxlength="250" required class="form-control" name="nomrevue" type="text" placeholder="Nom de la revue">
             </div>
         </div>
     </div>

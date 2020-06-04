@@ -217,7 +217,7 @@
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
                                         $.get("ajax/adminGererCompteAjax.php",{supprimer : idcher},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",

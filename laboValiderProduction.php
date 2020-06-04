@@ -1050,7 +1050,7 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    //"scrollX": true,  
+                    "scrollX": true,  
                     "columnDefs": columnDefs,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
@@ -1100,7 +1100,7 @@
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
                                         $.get("ajax/laboValiderProductionAjax.php",{supprimer: codepro},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",
@@ -1156,7 +1156,7 @@
                                     btnClass : 'btn-success btn-fill',
                                     action : function (){
                                         $.get("ajax/laboValiderProductionAjax.php",{valider: codepro},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",

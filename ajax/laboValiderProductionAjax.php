@@ -39,7 +39,7 @@
         $sql = "SELECT * FROM pfemaster WHERE codepro IN (
             SELECT codepro FROM validationproduction WHERE idcher IN (
                 SELECT idcher FROM menbrequip WHERE idequipe IN (
-                    SELECT idequipe FROM equipe WHERE idlabo ='".$idequipe."'
+                    SELECT idequipe FROM equipe WHERE idequipe ='".$idequipe."'
                 )
             )
         )";
@@ -215,7 +215,10 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                    if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
                 echo    '</tr>';
             }
@@ -357,7 +360,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td>'.$isbn.'</td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -504,7 +510,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td>'.$isbn.'</td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -674,7 +683,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$codeconf.'">'.$nomconf.'</button></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
                 echo    '<div class="btn-toolbar">';
@@ -906,7 +918,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idpostedBy.'">'.$postedBy.'</button></td>';
                 echo   '<td>';
                 echo    '<div class="btn-toolbar">';

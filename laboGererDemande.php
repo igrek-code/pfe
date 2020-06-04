@@ -228,7 +228,7 @@
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
                                         $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "supprimer"},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",
@@ -288,7 +288,7 @@
                                     btnClass : 'btn-success btn-fill',
                                     action : function (){
                                         $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "accepter"},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",
@@ -355,7 +355,7 @@
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
                                         $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "supprimer"},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",
@@ -411,7 +411,7 @@
                                     btnClass : 'btn-success btn-fill',
                                     action : function (){
                                         $.get("ajax/laboGererDemandeAjax.php",{idcher: idcher, action: "accepter"},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",

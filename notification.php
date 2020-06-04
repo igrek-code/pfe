@@ -422,7 +422,7 @@
                     var idcher = <?php if(isset($_SESSION['idcher'])) echo $_SESSION['idcher']; else echo 0;?>;
                     var forEquipe = form.find('select[name="forEquipe"]').val() === undefined ? 0:form.find('select[name="forEquipe"]').val();
                     $.get('ajax/notificationAjax.php',{idcher: idcher, oldTitre: oldTitre, titre: titre, date: date, type: type, forEquipe: forEquipe},function(data){
-                        if(data == '?>true'){
+                        if(data.includes('true')){
                             $.notify({
                                 icon : "pe-7s-angle-down-circle",
                                 title : "Succès !",
@@ -477,7 +477,7 @@
                                 action : function (){
                                     var idcher = <?php if(isset($_SESSION['idcher'])) echo $_SESSION['idcher']; else echo 0;?>;
                                     $.get("ajax/notificationAjax.php",{idcher : idcher, titre: titre},function (data) {
-                                        if(data == "?>true"){
+                                        if(data.includes('true')){
                                             $.notify({
                                                     icon : "pe-7s-angle-down-circle",
                                                     title : "Succès !",

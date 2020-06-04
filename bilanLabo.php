@@ -266,6 +266,9 @@
 
             var color = Chart.helpers.color;
             var colors = ['#f58442','#f542bc','#eb4034','#4287f5','#32a852','#fcba03','#b342f5'];
+            var update = false;
+            var graph = undefined;
+            var pie = undefined;
 
             $('#typeBilan').change(function(){
                 var typeBilan = $(this).val();
@@ -377,9 +380,8 @@
                         `);
                         
                         $('#stats').hide();
-                        var update = false;
-                        var graph = undefined;
-                        var pie = undefined;
+                        
+                        
 
                         $('#idequipe').change(function(){
                             var idequipe = $(this).val();
@@ -632,9 +634,8 @@
                         </div>
                         `);
                         $('#stats').hide();
-                        var update = false;
-                        var graph = undefined;
-                        var pie = undefined;
+                        
+                        
 
                         $('#idequipe').change(function(){
                             var typeProduction = $('#typeProduction').val();
@@ -858,9 +859,8 @@
                         </div>
                         `);
                         $('#stats').hide();
-                        var update = false;
-                        var graph = undefined;
-                        var pie = undefined;
+                        
+                        
 
                         updateLaboStats();
 
@@ -1413,7 +1413,7 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    //"scrollX": true,
+                    "scrollX": true,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                         "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",

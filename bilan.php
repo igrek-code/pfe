@@ -272,6 +272,9 @@
             }
             var color = Chart.helpers.color;
             var colors = ['#f58442','#f542bc','#eb4034','#4287f5','#32a852','#fcba03','#b342f5'];
+            var update = false;
+            var graph = undefined;
+            var pie = undefined;
 
             $('#natureBilan').change(function(){
                 var natureBilan = $(this).val();
@@ -339,9 +342,6 @@
                 $('#bi').hide();
                 $('#an').hide();
                 $('#stats').hide();
-                var update = false;
-                var graph = undefined;
-                var pie = undefined;
 
                 $('#codeproj').change(function(){
                     var periodeProjet = $('#periodeProj').val();
@@ -653,9 +653,6 @@
                             `);
                             
                             $('#stats').hide();
-                            var update = false;
-                            var graph = undefined;
-                            var pie = undefined;
 
                             $('#idetab').change(function(){
                                 var idetab = $(this).val();
@@ -938,9 +935,6 @@
                             </div>
                             `);
                             $('#stats').hide();
-                            var update = false;
-                            var graph = undefined;
-                            var pie = undefined;
 
                             $('#idetab').change(function(){
                                 var idetab = $(this).val();
@@ -1206,9 +1200,6 @@
                             </div>
                             `);
                             $('#stats').hide();
-                            var update = false;
-                            var graph = undefined;
-                            var pie = undefined;
 
                             $('#idetab').change(function(){
                                 var idetab = $(this).val();
@@ -1787,7 +1778,7 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    //"scrollX": true,
+                    "scrollX": true,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                         "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",

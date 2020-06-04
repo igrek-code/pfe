@@ -261,7 +261,7 @@
                                 btnClass : 'btn-danger btn-fill',
                                 action : function (){
                                     $.get("ajax/gererProjetAjax.php",{supprimer: val},function (data) {
-                                        if(data == "?>true"){
+                                        if(data.includes('true')){
                                             $.notify({
                                                     icon : "pe-7s-angle-down-circle",
                                                     title : "Succès !",

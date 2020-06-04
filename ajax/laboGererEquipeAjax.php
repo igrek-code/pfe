@@ -7,6 +7,7 @@
         <table class="table table-hover">
             <thead>
                 <th>Nom</th>
+                <th>Etat</th>
                 <th>Spécialités</th>
                 <th>Action</th>
             </thead>
@@ -19,12 +20,17 @@
                 $idequipe = $row["idequipe"];
                 $nomequipe = $row["nomequip"];
                 $idspe = $row["idspe"];
+                $etat = $row['etat'];
                 $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){    
                     $nomspe = mysqli_fetch_array($result2)["nomspe"];
                     echo    '<tr>';
                     echo    '<td>'.$nomequipe.'</td>';
+                    if($etat == "actif")    
+                            echo    '<td class="text-success">Actif</td>';
+                        else
+                            echo    '<td class="text-danger">Inactif</td>';
                     echo    '<td>'.$nomspe.'</td>';
                     echo    '<td>';
                     echo    '<div class="btn-toolbar">';

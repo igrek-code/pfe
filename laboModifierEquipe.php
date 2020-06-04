@@ -17,6 +17,7 @@
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_array($result);
             $nomEquipe = $row["nomequip"];
+            $etat = $row['etat'];
             $idspe = $row["idspe"];
             
             $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
@@ -52,6 +53,12 @@
         if($_POST["nomEquipe"] != $nomEquipe){
             $nomEquipe = mysqli_real_escape_string($db,$_POST["nomEquipe"]);
             $sql = "UPDATE equipe SET nomequip='".$nomEquipe."'WHERE idequipe='".$idequipe."'";
+            if(!mysqli_query($db,$sql)) $error = true;
+        }
+
+        if($_POST["etat"] != $etat){
+            $etat = mysqli_real_escape_string($db,$_POST["etat"]);
+            $sql = "UPDATE equipe SET etat='".$etat."'WHERE idequipe='".$idequipe."'";
             if(!mysqli_query($db,$sql)) $error = true;
         }
 
@@ -238,6 +245,18 @@
                                     <div class="form-group">
                                         <label>nom</label>
                                         <input value="<?php echo $nomEquipe;?>" type="text" name="nomEquipe" class="form-control" placeholder="Nom de l'équipe" required>
+                                    </div>
+                                </div>
+                            </div>  
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>etat</label>
+                                        <select required class="selectpicker form-control" name="etat" id="etat">
+                                            <option <?php if($etat == 'actif') echo 'selected'; ?> value="actif">Actif</option>
+                                            <option <?php if($etat == 'inactif') echo 'selected'; ?> value="inactif">Inactif</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>  

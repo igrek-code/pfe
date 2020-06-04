@@ -1026,7 +1026,7 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    //"scrollX": true,  
+                    "scrollX": true,  
                     "columnDefs": columnDefs,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",

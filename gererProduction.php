@@ -986,7 +986,7 @@
                                 btnClass : 'btn-danger btn-fill',
                                 action : function (){
                                     $.get("ajax/gererProductionAjax.php",{supprimer: val},function (data) {
-                                        if(data == "?>true"){
+                                        if(data.includes('true')){
                                             $.notify({
                                                     icon : "pe-7s-angle-down-circle",
                                                     title : "Succès !",
@@ -1084,7 +1084,7 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    //"scrollX": true,  
+                    "scrollX": true,  
                     "columnDefs": columnDefs,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",

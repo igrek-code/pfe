@@ -357,7 +357,7 @@
                 var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
 
                 if( idcher != "" && format.test(deb) && format.test(fin) && typeProduction != ""){
-                    $.get("ajax/bilanAjax.php",{bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                    $.get("ajax/bilanAjax.php",{export: 'false', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                         var productions = JSON.parse(data.slice(2,-1)+"]");
                         graph = drawChart(productions,deb,fin,affichage,graph,update,typeProduction);
                         pie = drawPie(productions,pie,update,typeProduction);
@@ -883,7 +883,7 @@
                 return {
                     //"scrollY" : "500px",
                     //"scrollCollapse": true,
-                    //"scrollX": true,
+                    "scrollX": true,
                     "language" : {
                         "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                         "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",

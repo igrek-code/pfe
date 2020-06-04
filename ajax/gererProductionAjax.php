@@ -202,7 +202,10 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                    if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';
@@ -341,7 +344,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td>'.$isbn.'</td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';
@@ -475,7 +481,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td>'.$isbn.'</td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';
@@ -636,7 +645,10 @@
                 else    {
                     echo '<td></td>';
                 }
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';
@@ -855,7 +867,10 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                 else    
                     echo '<td></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                    if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';

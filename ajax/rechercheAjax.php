@@ -192,7 +192,10 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                    else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
@@ -318,7 +321,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td>'.$isbn.'</td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
@@ -439,7 +445,10 @@
                     else    
                     echo '<td></td>';
                 echo    '<td>'.$isbn.'</td>';
+                if(strpos($url,'http') === false)
                 echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                else
+                echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
@@ -584,7 +593,10 @@
                     else    
                     echo '<td></td>';
                 
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                    else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
@@ -790,7 +802,10 @@
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
-                echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                if(strpos($url,'http') === false)
+                    echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
+                    else
+                    echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '</tr>';
             }
             echo '</tbody>
@@ -870,6 +885,7 @@
                         $nvol = $row["nvol"];
                         $nissue = $row["nissue"];
                         $idspe = $row["idspe"];
+                        $url = $row['url'];
                         $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                             SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
                         )";
@@ -937,6 +953,11 @@
                             echo $auteur.', ';
                         }
                         echo '<br>';
+                        if(strpos($url,'http') === false)
+                    echo    '<a target="_blank" href="http://'.$url.'">>>Lien<<</a>';
+                    else
+                    echo    '<a target="_blank" href="'.$url.'">>>Lien<<</a>';
+                    echo '<br>';
                     }
                     else{
                         echo '<div class="text-danger">Informations indisponibles !</div>';
@@ -950,6 +971,7 @@
                         $row = mysqli_fetch_array($result);
                         $titre = $row["titre"];
                         $idspe = $row["idspe"];
+                        $url = $row['url'];
                         $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                             SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
                         )";
@@ -1014,6 +1036,11 @@
                             echo $auteur.', ';
                         }
                         echo '<br>';
+                        if(strpos($url,'http') === false)
+                    echo    '<a target="_blank" href="http://'.$url.'">>>Lien<<</a>';
+                    else
+                    echo    '<a target="_blank" href="'.$url.'">>>Lien<<</a>';
+                    echo '<br>';
                     }
                     else{
                         echo '<div class="text-danger">Informations indisponibles !</div>';
@@ -1029,6 +1056,7 @@
                         $titre = $row["titre"];
                         $isbn = $row["isbn"];
                         $nbpages = $row["nbpages"];
+                        $url = $row['url'];
                         $editeur = $row["editeur"];
                         $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                             SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
@@ -1103,6 +1131,11 @@
                             echo $auteur.', ';
                         }
                         echo '<br>';
+                        if(strpos($url,'http') === false)
+                    echo    '<a target="_blank" href="http://'.$url.'">>>Lien<<</a>';
+                    else
+                    echo    '<a target="_blank" href="'.$url.'"> >>Lien<< </a>';
+                    echo '<br>';
                     }
                     else{
                         echo '<div class="text-danger">Informations indisponibles !</div>';
@@ -1114,6 +1147,7 @@
                     $result = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result) > 0){
                         $row = mysqli_fetch_array($result);
+                        $url = $row['url'];
                         $idspe = $row["idspe"];
                         $titre = $row["titre"];
                         $isbn = $row["isbn"];
@@ -1194,6 +1228,11 @@
                             echo $auteur.', ';
                         }
                         echo '<br>';
+                        if(strpos($url,'http') === false)
+                    echo    '<a target="_blank" href="http://'.$url.'"> >>Lien<< </a>';
+                    else
+                    echo    '<a target="_blank" href="'.$url.'"> >>Lien<< </a>';
+                    echo '<br>';
                     }
                     else{
                         echo '<div class="text-danger">Informations indisponibles !</div>';
@@ -1205,6 +1244,7 @@
                     $result = mysqli_query($db,$sql);
                     if(mysqli_num_rows($result) > 0){
                         $row = mysqli_fetch_array($result);
+                        $url = $row['url'];
                         $titre = $row["titre"];
                         $lieusout = $row["lieusout"];
                         $nordre = $row["nordre"];
@@ -1250,6 +1290,11 @@
                         }
                         echo '<br>';
                         echo '<span class="text-info">Encadreur: </span>'.$encadreur.'<br>';
+                        if(strpos($url,'http') === false)
+                    echo    '<a target="_blank" href="http://'.$url.'"> >>Lien<< </a>';
+                    else
+                    echo    '<a target="_blank" href="'.$url.'"> >>Lien<< </a>';
+                    echo '<br>';
                     }
                     else{
                         echo '<div class="text-danger">Informations indisponibles !</div>';

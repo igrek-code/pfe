@@ -204,7 +204,7 @@
                                     btnClass : 'btn-danger btn-fill',
                                     action : function (){
                                         $.get("ajax/adminGererEtabAjax.php",{idetab : val},function (data) {
-                                            if(data == "?>true"){
+                                            if(data.includes('true')){
                                                 $.notify({
                                                         icon : "pe-7s-angle-down-circle",
                                                         title : "Succès !",
