@@ -146,16 +146,29 @@
                                 <div style="margin-top:10px;" class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Type</label>
-                                            <select title="Bilan..." class="form-control selectpicker" id="typeBilan">
-                                                <option selected value="chercheur">Chercheur</option>
-                                                <option value="equipe">Equipe</option>
-                                                <option value="laboratoire">Laboratoire</option>
+                                            <select class="form-control selectpicker" id="natureBilan">
+                                                <option value="activite">Bilan d'activité</option>
+                                                <option selected value="projet">Bilan de projet</option>
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="filters"></div>
+                                </div> 
+
+                                <div id="allFilters">
+                                    <div style="margin-top:10px;" class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Type</label>
+                                                <select title="Type..." class="form-control selectpicker" id="typeBilan">
+                                                    <option selected value="chercheur">Chercheur</option>
+                                                    <option value="equipe">Equipe</option>
+                                                    <option value="laboratoire">Laboratoire</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div id="filters"></div>
+                                </div> 
                             </div>
 
                                 
@@ -233,42 +246,332 @@
     <script>
         $(document).ready(function(){
 
-            function tblToExcel(tableID, filename = ''){
-                var downloadLink;
-                var dataType = 'application/vnd.ms-excel';
-                var tableSelect = document.getElementById(tableID);
-                var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-                
-                // Specify file name
-                filename = filename?filename+'.xls':'excel_data.xls';
-                
-                // Create download link element
-                downloadLink = document.createElement("a");
-                
-                document.body.appendChild(downloadLink);
-                
-                if(navigator.msSaveOrOpenBlob){
-                    var blob = new Blob(['\ufeff', tableHTML], {
-                        type: dataType
-                    });
-                    navigator.msSaveOrOpenBlob( blob, filename);
-                }else{
-                    // Create a link to the file
-                    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-                
-                    // Setting the file name
-                    downloadLink.download = filename;
-                    
-                    //triggering the function
-                    downloadLink.click();
-                }
-            }
-
             var color = Chart.helpers.color;
             var colors = ['#f58442','#f542bc','#eb4034','#4287f5','#32a852','#fcba03','#b342f5'];
             var update = false;
             var graph = undefined;
             var pie = undefined;
+
+            $('#natureBilan').change(function(){
+                var natureBilan = $(this).val();
+                if(natureBilan == 'activite') init_activite();
+                else init_projet();
+            });
+
+            $('#natureBilan').trigger('change');
+
+            function init_projet(){
+                $('#allFilters').html(`
+                <div id="filters">
+
+                    <div style="" class="row">
+                        <div style="margin-top:10px;" class="col-md-6">
+                            <div class="form-group">
+                                <label>Projet (recherche par intitulé ou code)</label>
+                                <select data-live-search="true" title="Projet..." class="form-control selectpicker" id="codeproj">
+                                    <?php
+                                        $idlabo = $_SESSION['idlabo'];
+                                        $sql = "SELECT * FROM projrecher WHERE codeproj IN (
+                                            SELECT codeproj FROM chefproj WHERE idcher IN (
+                                                SELECT idcher FROM cheflabo WHERE idlabo IN (
+                                                    SELECT idlabo FROM laboratoire WHERE idlabo='".$idlabo."'
+                                                )
+                                            )
+                                            OR idcher IN (
+                                                SELECT idcher FROM chefequip WHERE idequipe IN (
+                                                    SELECT idequipe FROM equipe WHERE idlabo IN (
+                                                        SELECT idlabo FROM laboratoire WHERE idlabo='".$idlabo."'
+                                                    )
+                                                )
+                                            )
+                                            OR idcher IN (
+                                                SELECT idcher FROM menbrequip WHERE idequipe IN (
+                                                    SELECT idequipe FROM equipe WHERE idlabo IN (
+                                                        SELECT idlabo FROM laboratoire WHERE idlabo='".$idlabo."'
+                                                    )
+                                                )
+                                            )
+                                        )";
+                                        $result = mysqli_query($db,$sql);
+                                        if(mysqli_num_rows($result) > 0){
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                $codeproj2 = $row['codeproj'];
+                                                $intitule = $row['intitule'];
+                                                $date = $row['date'];
+                                                $duree = $row['duree'];
+                                                echo '<option dateDeb="'.$date.'" duree="'.$duree.'" data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-bottom:10px;" class="row">
+                        <div style="margin-top:10px;" class="col-md-2">
+                            <div class="form-group">
+                            <label>type</label>
+                                <select class="form-control selectpicker" id="type">
+                                    <option value="equipe">Equipe</option>
+                                    <option value="chercheur">Individuel</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="idcher" style="margin-top:10px;"  class="col-md-4">
+                            <div class="form-group">
+                            <label>Chercheur</label>
+                                <select class="form-control selectpicker" id="idcher">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-bottom:10px;" class="row">
+                        <div style="margin-top:10px;" class="col-md-3">
+                            <div class="form-group">
+                                <label>Période</label>
+                                <select title="Période..." class="form-control selectpicker" id="periodeProj">
+                                    <option value="annuel">Annuel</option>
+                                    <option value="biannuel">Bi-annuel</option>
+                                    <option value="final">Final</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="an" style="margin-top:10px;"  class="col-md-2">
+                            <div class="form-group">
+                                <label>Année</label>
+                                <input class="form-control" id="anneeproj" type="number">
+                            </div>
+                        </div>
+                        <div id="bi" style="margin-top:10px;" class="col-md-3">
+                            <div class="form-group">
+                                <label>Semstre</label>
+                                <select title="Semestre..." class="form-control selectpicker" id="semestreProj">
+                                    <option selected value="1">Semestre 1</option>
+                                    <option value="2">Semestre 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `);
+
+                $('#idcher').hide();
+                $('#bi').hide();
+                $('#an').hide();
+                $('#stats').hide();
+
+                $('#codeproj').change(function(){
+                    var periodeProjet = $('#periodeProj').val();
+                    var codeproj = $(this).val();
+                    var option = $('option[value="'+codeproj+'"]');
+
+                    $('button[infoproj="infoproj"]').remove();
+                    if(codeproj != '') {
+                        $('#filters').before(`<button infoproj="infoproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="`+codeproj+`">Plus d'info sur le projet</button>`);
+                        $('button[infoproj="infoproj"]').click(function(){
+                            console.log('in click');
+                            var codeproj = $(this).val();
+                            $.confirm({
+                                content: function(){
+                                    var self = this;
+                                    self.setTitle('Informations supplémentaires sur le projet');
+                                    $.get("ajax/gererProjetAjax.php",{codeproj: codeproj},function(data){
+                                        self.setContent(data.slice(2,-1));
+                                    });
+                                },
+                                buttons:{
+                                    ok: {
+                                        text: "Fermer",
+                                        keys: ["enter"]
+                                    }
+                                }
+                            });
+                        });
+                    }
+                    var dateDeb = new Date(option.attr('dateDeb'));
+                    var date = new Date(dateDeb);
+                    var duree = option.attr('duree');
+                    dateDeb.setMonth(dateDeb.getMonth()+duree);
+                    var dateFin = dateDeb;
+                    dateDeb = date;
+
+                    $('#anneeproj').prop('min',dateDeb.getFullYear());
+                    $('#anneeproj').prop('max',dateFin.getFullYear());
+
+                    switch (periodeProjet) {
+                        case 'final':
+                            var month = dateDeb.getMonth();
+                            if(month < 10) var deb = dateDeb.getFullYear()+'-0'+month;
+                            else var deb = dateDeb.getFullYear()+'-'+month;
+                            var month = dateFin.getMonth();
+                            if(month < 10) var fin = dateFin.getFullYear()+'-0'+dateFin.getMonth();
+                            else var fin = dateFin.getFullYear()+'-'+dateFin.getMonth();
+                            var affichage = 'annee';
+                        break;
+                    
+                        case 'biannuel':
+                            var affichage = 'mois';
+                            var annee = $('#anneeproj').val();
+                            var semestre = $('#semestreProj').val();
+                            if(semestre == '1') {
+                                var deb = annee+'-01';
+                                var fin = annee+'-06';
+                            }else{
+                                var deb = annee+'-07';
+                                var fin = annee+'-12';  
+                            }
+                        break;
+
+                        case 'annuel':
+                            var affichage = 'mois';
+                            var annee = $('#anneeproj').val();
+                            var deb = annee+'-01';
+                            var fin = annee+'-12';
+                        break;
+                    }
+
+                    var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
+                    var type = $('#type').val();
+                    if( codeproj != "" && format.test(deb) && format.test(fin) && type != ''){
+                        var input = {export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'};
+                        if(type == 'chercheur') {
+                            var idcher = $('select[id="idcher"]').val();
+                            input = {idcher: idcher, export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'};
+                        }
+                        $.get("ajax/bilanAjax.php",input,function(data){
+                            var productions = JSON.parse(data.slice(2,-1)+"]");
+                            graph = drawChart(productions,deb,fin,affichage,graph,update,'all');
+                            pie = drawPie(productions,pie,update,'all');
+                            getPoints(productions,'all');
+                            update = true;
+                            $('#table').html('');
+                            $('#table').html(`
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="header">
+                                        <h4 class="title">Liste des productions</h4>
+                                    </div>
+
+                                    <div class="content">
+                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Projet</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            `);
+                            productions.forEach(production => {
+                                if(production.codeproj == undefined) production.codeproj = '';
+                                $('tbody').append(`
+                                    <tr>
+                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                    <td>${production.date}</td>
+                                    <td>${production.type}</td>
+                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                    </tr>
+                                `);                    
+                            });
+                            $('#showTable').DataTable(fr_table())
+                            init_codepro();
+                            $('button[exporter="exporter"]').click(function(){
+                                var exporter = $(this);
+                                $.get("ajax/bilanAjax.php",{export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                    if($('a[download="production"]').length == 0)
+                                        exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                });
+                            });
+                        });
+
+                        $('#stats').show();
+                    }
+                    else{
+                        $('#stats').hide();
+                    }
+                });
+
+                $('#anneeproj').change(function(){
+                    $('#codeproj').trigger('change');
+                });
+
+                $('#semestreProj').change(function(){
+                    $('#codeproj').trigger('change');
+                });
+
+                $('#periodeProj').change(function(){
+                    var periode = $(this).val();
+
+                    switch (periode) {
+                        case 'final':
+                            $('#bi').hide();
+                            $('#an').hide();
+                        break;
+                    
+                        case 'annuel':
+                            $('#bi').hide();
+                            $('#an').show();
+                        break;
+
+                        case 'biannuel':
+                            $('#bi').show();
+                            $('#an').show();
+                        break;
+                    }
+                        
+                    $('#codeproj').trigger('change');
+                });
+                
+                $('select[id="idcher"]').change(function(){
+                    $('#codeproj').trigger('change');
+                });
+
+                $('#type').change(function(){
+                    var type = $(this).val();
+                    var codeproj = $('#codeproj').val();
+                    if(type == 'chercheur'){
+                        $.get('ajax/otherAjax.php',{codeproj: codeproj},function(data){
+                            $('#idcher').show();
+                            $('select[id="idcher"]').html(data);
+                            $('select[id="idcher"]').selectpicker('refresh');
+                        });
+                        $('select[id="idcher"]').trigger('change');
+                    }
+                    else{
+                        $('#idcher').hide();
+                        $('#codeproj').trigger('change');
+                    }
+                });
+
+                $('.selectpicker').selectpicker('refresh');
+                //TODO: here
+            }
+        
+        function init_activite(){
+
+            $('#allFilters').html(`
+                <div style="margin-top:10px;" class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select title="Type..." class="form-control selectpicker" id="typeBilan">
+                                <option selected value="chercheur">Chercheur</option>
+                                <option value="equipe">Equipe</option>
+                                <option value="laboratoire">Laboratoire</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> 
+                <div id="filters"></div>`);
 
             $('#typeBilan').change(function(){
                 var typeBilan = $(this).val();
@@ -997,22 +1300,23 @@
                             updateLaboStats();
                         });
                         $('#periodeFinY').change(function(){
-                            var max = $(this).val();
-                            $('#periodeDeb').prop('max',max);
-                            if(max<$('#periodeDeb').val())
-                            $('#periodeDeb').val(max);
-                            updateLaboStats();
-                        });
+                                var max = $(this).val();
+                                $('#periodeDeb').prop('max',max);
+                                if(max<$('#periodeDeb').val())
+                                $('#periodeDeb').val(max);
+                                updateLaboStats();
+                            });
 
-                        $('#typeProduction').change(function(){
-                            updateLaboStats();
-                        });
-                    break;
-                }
-                $('.selectpicker').selectpicker('refresh');
-            });
+                            $('#typeProduction').change(function(){
+                                updateLaboStats();
+                            });
+                        break;
+                    }
+                    $('.selectpicker').selectpicker('refresh');
+                });
 
-            $('#typeBilan').trigger('change');
+                $('#typeBilan').trigger('change');
+            }
 
             function getPoints(productions,typeProduction){
                 var affichage = $('#notes');

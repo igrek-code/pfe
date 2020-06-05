@@ -240,36 +240,7 @@
     
     <script>
         $(document).ready(function(){
-            function tblToExcel(tableID, filename = ''){
-                var downloadLink;
-                var dataType = 'application/vnd.ms-excel';
-                var tableSelect = document.getElementById(tableID);
-                var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-                
-                // Specify file name
-                filename = filename?filename+'.xls':'excel_data.xls';
-                
-                // Create download link element
-                downloadLink = document.createElement("a");
-                
-                document.body.appendChild(downloadLink);
-                
-                if(navigator.msSaveOrOpenBlob){
-                    var blob = new Blob(['\ufeff', tableHTML], {
-                        type: dataType
-                    });
-                    navigator.msSaveOrOpenBlob( blob, filename);
-                }else{
-                    // Create a link to the file
-                    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-                
-                    // Setting the file name
-                    downloadLink.download = filename;
-                    
-                    //triggering the function
-                    downloadLink.click();
-                }
-            }
+            
             var color = Chart.helpers.color;
             var colors = ['#f58442','#f542bc','#eb4034','#4287f5','#32a852','#fcba03','#b342f5'];
             var update = false;
@@ -287,13 +258,45 @@
             function init_projet(){
                 $('#allFilters').html(`
                 <div id="filters">
+                <div style="" class="row">
+                        <div style="margin-top:10px;" class="col-md-6">
+                            <div class="form-group">
+                                <label>établissement</label>
+                                <select data-live-search="true" title="Etablissement..." class="form-control selectpicker" id="idetab">
+                                    <?php
+                                        $sql = "SELECT * FROM etablissement";
+                                        $result = mysqli_query($db,$sql);
+                                        if(mysqli_num_rows($result) > 0){
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                $idetab = $row['idetab'];
+                                                $nom = $row['nom'];
+                                                echo '<option value="'.$idetab.'">'.$nom.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="" class="row">
+                        <div style="margin-top:10px;" class="col-md-3">
+                            <div class="form-group">
+                                <label>domaine</label>
+                                <select data-live-search="true" title="Domaine..." class="form-control selectpicker" id="codeDomaine">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="" class="row">
                         <div style="margin-top:10px;" class="col-md-6">
                             <div class="form-group">
                                 <label>Projet (recherche par intitulé ou code)</label>
                                 <select data-live-search="true" title="Projet..." class="form-control selectpicker" id="codeproj">
                                     <?php
-                                        $sql = "SELECT * FROM projrecher";
+                                        /*$sql = "SELECT * FROM projrecher";
                                         $result = mysqli_query($db,$sql);
                                         if(mysqli_num_rows($result) > 0){
                                             while ($row = mysqli_fetch_array($result)) {
@@ -303,12 +306,33 @@
                                                 $duree = $row['duree'];
                                                 echo '<option dateDeb="'.$date.'" duree="'.$duree.'" data-tokens="'.$codeproj2.'" value="'.$codeproj2.'">'.$intitule.'</option>';
                                             }
-                                        }
+                                        }*/
                                     ?>
                                 </select>
                             </div>
                         </div>
                     </div>
+
+                    <div style="padding-bottom:10px;" class="row">
+                        <div style="margin-top:10px;" class="col-md-2">
+                            <div class="form-group">
+                            <label>Type</label>
+                                <select class="form-control selectpicker" id="type">
+                                    <option value="equipe">Equipe</option>
+                                    <option value="chercheur">Individuel</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="idcher" style="margin-top:10px;"  class="col-md-4">
+                            <div class="form-group">
+                                <label>Chercheur</label>
+                                <select class="form-control selectpicker" id="idcher">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="padding-bottom:10px;" class="row">
                         <div style="margin-top:10px;" class="col-md-3">
                             <div class="form-group">
@@ -339,6 +363,28 @@
                 </div>
                 `);
 
+                $('#idcher').hide();
+
+                $('#idetab').change(function(){
+                    var idetab = $(this).val();
+                    $.get('ajax/otherAjax.php',{idetab: idetab},function(data){
+                        $('#codeDomaine').html('');
+                        $('#codeDomaine').html(data);
+                        $('#codeproj').html('');
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+                });
+
+                $('#codeDomaine').change(function(){
+                    var nomDomaine = $(this).val();
+                    var idetab = $('#idetab').val();
+                    $.get('ajax/otherAjax.php',{nomDomaine: nomDomaine, idetab: idetab},function(data){
+                        $('#codeproj').html('');
+                        $('#codeproj').html(data);
+                        $('#codeproj').selectpicker('refresh');
+                    });
+                });
+
                 $('#bi').hide();
                 $('#an').hide();
                 $('#stats').hide();
@@ -352,7 +398,6 @@
                     if(codeproj != '') {
                         $('#filters').before(`<button infoproj="infoproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="`+codeproj+`">Plus d'info sur le projet</button>`);
                         $('button[infoproj="infoproj"]').click(function(){
-                            console.log('in click');
                             var codeproj = $(this).val();
                             $.confirm({
                                 content: function(){
@@ -414,8 +459,14 @@
                     }
 
                     var format = /^\d{4}[\/\-](0?[1-9]|1[012])$/;
-                    if( codeproj != "" && format.test(deb) && format.test(fin)){
-                        $.get("ajax/bilanAjax.php",{export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'},function(data){
+                    var type = $('#type').val();
+                    if( codeproj != "" && format.test(deb) && format.test(fin) && type != ''){
+                        var input = {export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'};
+                        if(type == 'chercheur') {
+                            var idcher = $('select[id="idcher"]').val();
+                            input = {idcher: idcher, export: 'false', codeproj: codeproj, deb: deb, fin: fin, typeProduction: 'all'};
+                        }
+                        $.get("ajax/bilanAjax.php",input,function(data){
                             var productions = JSON.parse(data.slice(2,-1)+"]");
                             graph = drawChart(productions,deb,fin,affichage,graph,update,'all');
                             pie = drawPie(productions,pie,update,'all');
@@ -471,6 +522,27 @@
                     }
                     else{
                         $('#stats').hide();
+                    }
+                });
+
+                $('select[id="idcher"]').change(function(){
+                    $('#codeproj').trigger('change');
+                });
+
+                $('#type').change(function(){
+                    var type = $(this).val();
+                    var codeproj = $('#codeproj').val();
+                    if(type == 'chercheur'){
+                        $.get('ajax/otherAjax.php',{codeproj: codeproj},function(data){
+                            $('#idcher').show();
+                            $('select[id="idcher"]').html(data);
+                            $('select[id="idcher"]').selectpicker('refresh');
+                        });
+                        $('select[id="idcher"]').trigger('change');
+                    }
+                    else{
+                        $('#idcher').hide();
+                        $('#codeproj').trigger('change');
                     }
                 });
 

@@ -66,9 +66,27 @@
             $typeProduction = " AND type='".$typeProduction."' ";
         }
 
-        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != ""){
+        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != "" && !isset($_GET['idcher'])){
             $codeproj = mysqli_real_escape_string($db,$_GET["codeproj"]);
             $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codeproj='".$codeproj."'";
+        }
+
+        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != "" && isset($_GET['idcher'])){
+            $codeproj = mysqli_real_escape_string($db,$_GET["codeproj"]);
+            $idcher = mysqli_real_escape_string($db,$_GET["idcher"]);
+            $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codeproj='".$codeproj."' AND (codepro IN (
+                    SELECT codepro FROM auteurprinc WHERE idcher ='".$idcher."'
+                )
+                OR codepro IN (
+                    SELECT codepro FROM coauteurs WHERE idcher ='".$idcher."'
+                )
+                OR codepro IN (
+                    SELECT codepro FROM pfemaster WHERE encadreur ='".$idcher."'
+                )
+                OR codepro IN (
+                    SELECT codepro FROM these WHERE encadreur ='".$idcher."'
+                )
+            )";
         }
 
         if(isset($_GET["bilancher"]) && $_GET["bilancher"] != ""){
