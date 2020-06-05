@@ -524,7 +524,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Date</label>
+                        <label>Date de soutenance</label>
                         <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
                     </div>
                 </div>
@@ -607,7 +607,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Date</label>
+                        <label>Date de soutenance</label>
                         <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
                     </div>
                 </div>

@@ -447,7 +447,7 @@
 
                 $('#searchInfo').html(`
                     THESE DE DOCTORAT: <br>
-                    -Titre, date, n d'ordre,lieu, domaine, spécialités, mots-clés, encadreur
+                    -Titre, date de soutenance, n d'ordre,lieu, domaine, spécialités, mots-clés, encadreur
                 `);
 
                 $('#searchBox').html(`
@@ -455,7 +455,7 @@
                     <label>Thèse de doctorat: </label>
                     <select id="searchOuv" class="form-control selectpicker" title="Thèse...">
                         <option value="titre">Titre</option>
-                        <option value="date">Date</option>
+                        <option value="date">Date de soutenance</option>
                         <option value="nordre">N ordre</option>
                         <option value="lieusout">Lieu</option>
                         <option value="nomDomaine">Domaine</option>
@@ -526,7 +526,7 @@
 
                 $('#searchInfo').html(`
                     PFE MASTER: <br>
-                    -Titre, date, lieu, domaine, spécialités, mots-clés, encadreur
+                    -Titre, date de soutenance, lieu, domaine, spécialités, mots-clés, encadreur
                 `);
 
                 $('#searchBox').html(`
@@ -534,7 +534,7 @@
                     <label>PFE Master: </label>
                     <select id="searchOuv" class="form-control selectpicker" title="PFE...">
                         <option value="titre">Titre</option>
-                        <option value="date">Date</option>
+                        <option value="date">Date de soutenance</option>
                         <option value="lieusout">Lieu</option>
                         <option value="nomDomaine">Domaine</option>
                         <option value="nomspe">Spécialités</option>

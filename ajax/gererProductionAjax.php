@@ -1323,7 +1323,7 @@
                             $date = mysqli_fetch_array($result2)["date"]; 
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
-                        echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">Date de soutenance: </span>'.$date.'<br>';
                         echo '<span class="text-info">N° d\'ordre: </span>'.$nordre.'<br>';
                         echo '<span class="text-info">Lieu: </span>'.$lieusout.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
@@ -1378,7 +1378,7 @@
                             $date = mysqli_fetch_array($result2)["date"]; 
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
-                        echo '<span class="text-info">Date: </span>'.$date.'<br>';
+                        echo '<span class="text-info">Date de soutenance: </span>'.$date.'<br>';
                         echo '<span class="text-info">Lieu: </span>'.$lieusout.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';
                         echo '<span class="text-info">Spécialités: </span>'.$nomspe.'<br>';

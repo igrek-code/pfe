@@ -8,7 +8,7 @@
             <thead>
                 <th>Code</th>
                 <th>Intitulé</th>
-                <th>Date</th>
+                <th>Date d\'agrément</th>
                 <th>Etat</th>
                 <th>Action</th>
             </thead>
@@ -89,7 +89,7 @@
             $nomDomaine = mysqli_fetch_array($result)['nom'];
             echo '<span class="text-info">Code du projet: </span>'.$codeproj.'<br>';
             echo '<span class="text-info">Intitulé: </span>'.$intitule.'<br>';
-            echo '<span class="text-info">Date: </span>'.$date.'<br>';
+            echo '<span class="text-info">Date d\'agrément: </span>'.$date.'<br>';
             echo '<span class="text-info">Durée: </span>'.$duree.' mois<br>';
             switch ($etat) {
                 case 'en cours':

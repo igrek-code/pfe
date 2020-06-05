@@ -318,7 +318,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>date</label>
+                                        <label>date d'agrément</label>
                                         <input value="<?php echo $date; ?>" min="2000-01" max="<?php echo date('Y-m'); ?>" type="month" name="date" class="form-control" placeholder="Date de début du projet" required>
                                     </div>
                                 </div>
