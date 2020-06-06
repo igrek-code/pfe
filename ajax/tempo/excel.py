@@ -2,7 +2,7 @@ import xlsxwriter
 import json
 from datetime import date
 
-#max size for each column
+#init size for each column to track max width size of it
 max_size_col = {}
 for i in range(13):
     max_size_col[i] = 0
@@ -10,7 +10,7 @@ for i in range(13):
 #functions to insert the right header
 def insert_header_activite(worksheet, pour, nom, grade, equipes, chefequip, menbrequip, laboratoire, cheflabo, domaine, dateDeb, dateFin, row):
     if(pour == 'laboratoire'):
-        worksheet.write(row,1,'Bilan d\'activité pour laboratoire')
+        worksheet.write(row,1,'Bilan d\'activité pour laboratoire', header)
         row += 1
         worksheet.write(row,1,nom)
         row += 1
@@ -65,17 +65,23 @@ def insert_header_activite(worksheet, pour, nom, grade, equipes, chefequip, menb
 def insert_pub_inter(worksheet, publications, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les publications internationales')
+    worksheet.write(row, 0, 'Les publications internationales', bold)
     row += 2
     columns = [
         'Titre', 'Auteurs', 'Année-Mois', 'Revue', 'E-ISSN', 'ISSN', 'Editeur', 'Volume', 'Issue', 'URL', 'DOI', 'Classe'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(len(publications) == 0):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     for publication in publications:
         col = 0
@@ -83,14 +89,14 @@ def insert_pub_inter(worksheet, publications, row):
             if(attr == 'type'):
                 break
             elif(attr == 'auteurP'):
-                worksheet.write(row, col, publication[attr]+', '+publication['auteurs'])
+                worksheet.write(row, col, publication[attr]+', '+publication['auteurs'], table_border)
                 if(publication[attr] and len(publication[attr]+', '+publication['auteurs']) > max_size_col[col]):
                     max_size_col[col] = len(publication[attr]+', '+publication['auteurs'])
                 col += 1
             elif(attr == 'auteurs'):
                 continue
             else:
-                worksheet.write(row, col, publication[attr])
+                worksheet.write(row, col, publication[attr], table_border)
                 if(publication[attr] and len(publication[attr]) > max_size_col[col]):
                     max_size_col[col] = len(publication[attr])
                 col += 1
@@ -101,37 +107,43 @@ def insert_pub_inter(worksheet, publications, row):
 def insert_pub_nat(worksheet, publications, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les publications Nationales')
+    worksheet.write(row, 0, 'Les publications Nationales', bold)
     row += 2
     columns = [
         'Titre', 'Auteurs', 'Année-Mois', 'Revue-Pays', 'E-ISSN', 'ISSN', 'Editeur', 'Volume', 'Issue', 'URL', 'DOI', 'Classe'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(len(publications) == 0):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     for publication in publications:
         col = 0
         for attr in publication:
             if(attr == 'revue'):
-                worksheet.write(row, col, publication[attr]+' - '+publication['pays'])
+                worksheet.write(row, col, publication[attr]+' - '+publication['pays'], table_border)
                 if(publication[attr] and len(publication[attr]+' - '+publication['pays']) > max_size_col[col]):
                     max_size_col[col] = len(publication[attr]+' - '+publication['pays'])
                 col += 1
             elif(attr == 'type'):
                 break
             elif(attr == 'auteurP'):
-                worksheet.write(row, col, publication[attr]+', '+publication['auteurs'])
+                worksheet.write(row, col, publication[attr]+', '+publication['auteurs'], table_border)
                 if(publication[attr] and len(publication[attr]+', '+publication['auteurs']) > max_size_col[col]):
                     max_size_col[col] = len(publication[attr]+', '+publication['auteurs'])
                 col += 1
             elif(attr == 'auteurs'):
                 continue
             else:
-                worksheet.write(row, col, publication[attr])
+                worksheet.write(row, col, publication[attr], table_border)
                 if(publication[attr] and len(publication[attr]) > max_size_col[col]):
                     max_size_col[col] = len(publication[attr])
                 col += 1
@@ -142,17 +154,23 @@ def insert_pub_nat(worksheet, publications, row):
 def insert_com_inter(worksheet, communications, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les communications Internationales')
+    worksheet.write(row, 0, 'Les communications Internationales', bold)
     row += 2
     columns = [
         'Titre', 'Auteurs', 'Année-Mois', 'Nom conférence', 'Lieu', 'URL', 'Classe'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(len(communications) == 0):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     for communication in communications:
         col = 0
@@ -160,14 +178,14 @@ def insert_com_inter(worksheet, communications, row):
             if(attr == 'type'):
                 break
             elif(attr == 'auteurP'):
-                worksheet.write(row, col, communication[attr]+', '+communication['auteurs'])
+                worksheet.write(row, col, communication[attr]+', '+communication['auteurs'], table_border)
                 if(communication[attr] and len(communication[attr]+', '+communication['auteurs']) > max_size_col[col]):
                     max_size_col[col] = len(communication[attr]+', '+communication['auteurs'])
                 col += 1
             elif(attr == 'auteurs'):
                 continue
             else:
-                worksheet.write(row, col, communication[attr])
+                worksheet.write(row, col, communication[attr], table_border)
                 if(communication[attr] and len(communication[attr]) > max_size_col[col]):
                     max_size_col[col] = len(communication[attr])
                 col += 1
@@ -178,17 +196,23 @@ def insert_com_inter(worksheet, communications, row):
 def insert_com_nat(worksheet, communications, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les communications Nationales')
+    worksheet.write(row, 0, 'Les communications Nationales', bold)
     row += 2
     columns = [
         'Titre', 'Auteurs', 'Année-Mois', 'Nom conférence', 'Pays', 'URL', 'Classe'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(len(communications) == 0):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     for communication in communications:
         col = 0
@@ -196,14 +220,14 @@ def insert_com_nat(worksheet, communications, row):
             if(attr == 'type'):
                 break
             elif(attr == 'auteurP'):
-                worksheet.write(row, col, communication[attr]+', '+communication['auteurs'])
+                worksheet.write(row, col, communication[attr]+', '+communication['auteurs'], table_border)
                 if(communication[attr] and len(communication[attr]+', '+communication['auteurs']) > max_size_col[col]):
                     max_size_col[col] = len(communication[attr]+', '+communication['auteurs'])
                 col += 1
             elif(attr == 'auteurs'):
                 continue
             else:
-                worksheet.write(row, col, communication[attr])
+                worksheet.write(row, col, communication[attr], table_border)
                 if(communication[attr] and len(communication[attr]) > max_size_col[col]):
                     max_size_col[col] = len(communication[attr])
                 col += 1
@@ -214,31 +238,37 @@ def insert_com_nat(worksheet, communications, row):
 def insert_chapitre(worksheet, chapitres, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les chapitres d\'ouvrages')
+    worksheet.write(row, 0, 'Les chapitres d\'ouvrages', bold)
     row += 2
     columns = [
         'Titre', 'Auteurs', 'Année-Mois', 'ISBN', 'Editeur', 'URL'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(chapitres is None):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     else:
         for chapitre in chapitres:
             col = 0
             for attr in chapitre:
                 if(attr == 'auteurP'):
-                    worksheet.write(row, col, chapitre[attr]+', '+chapitre['auteurs'])
+                    worksheet.write(row, col, chapitre[attr]+', '+chapitre['auteurs'], table_border)
                     if(chapitre[attr] and len(chapitre[attr]+', '+chapitre['auteurs']) > max_size_col[col]):
                         max_size_col[col] = len(chapitre[attr]+', '+chapitre['auteurs'])
                     col += 1
                 elif(attr == 'auteurs'):
                     continue
                 else:
-                    worksheet.write(row, col, chapitre[attr])
+                    worksheet.write(row, col, chapitre[attr], table_border)
                     if(chapitre[attr] and len(chapitre[attr]) > max_size_col[col]):
                         max_size_col[col] = len(chapitre[attr])
                     col += 1
@@ -249,31 +279,37 @@ def insert_chapitre(worksheet, chapitres, row):
 def insert_ouvrage(worksheet, ouvrages, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les Ouvrages')
+    worksheet.write(row, 0, 'Les Ouvrages', bold)
     row += 2
     columns = [
         'Titre', 'Auteurs', 'Année-Mois', 'ISBN', 'Editeur', 'URL'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(ouvrages is None):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     else:
         for ouvrage in ouvrages:
             col = 0
             for attr in ouvrage:
                 if(attr == 'auteurP'):
-                    worksheet.write(row, col, ouvrage[attr]+', '+ouvrage['auteurs'])
+                    worksheet.write(row, col, ouvrage[attr]+', '+ouvrage['auteurs'], table_border)
                     if(ouvrage[attr] and len(ouvrage[attr]+', '+ouvrage['auteurs']) > max_size_col[col]):
                         max_size_col[col] = len(ouvrage[attr]+', '+ouvrage['auteurs'])
                     col += 1
                 elif(attr == 'auteurs'):
                     continue
                 else:
-                    worksheet.write(row, col, ouvrage[attr])
+                    worksheet.write(row, col, ouvrage[attr], table_border)
                     if(ouvrage[attr] and len(ouvrage[attr]) > max_size_col[col]):
                         max_size_col[col] = len(ouvrage[attr])
                     col += 1
@@ -284,24 +320,30 @@ def insert_ouvrage(worksheet, ouvrages, row):
 def insert_doctorat(worksheet, doctorats, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les soutenances de Doctorat')
+    worksheet.write(row, 0, 'Les soutenances de Doctorat', bold)
     row += 2
     columns = [
         'Titre', 'Année-Mois', 'Directeur de thèse', 'Spécialité', 'Numéro', 'Lieu'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(doctorats is None):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     else:
         for doctorat in doctorats:
             col = 0
             for attr in doctorat:
-                worksheet.write(row, col, doctorat[attr])
-                if(len(doctorat[attr]) > max_size_col[col]):
+                worksheet.write(row, col, doctorat[attr], table_border)
+                if(doctorat[attr] and len(doctorat[attr]) > max_size_col[col]):
                     max_size_col[col] = len(doctorat[attr])
                 col += 1
             row += 1
@@ -311,24 +353,30 @@ def insert_doctorat(worksheet, doctorats, row):
 def insert_master(worksheet, masters, row):
     global max_size_col
     #insert table header
-    worksheet.write(row, 0, 'Les soutenances de Master')
+    worksheet.write(row, 0, 'Les soutenances de Master', bold)
     row += 2
     columns = [
         'Titre', 'Année-Mois', 'Promoteur', 'Spécialité', 'Lieu'  
     ]
     col = 0
     for column in columns:
-        worksheet.write(row, col, column)
+        worksheet.write(row, col, column, table_header)
+        if(len(column) > max_size_col[col]):
+            max_size_col[col] = len(columns)
         col += 1
     row += 1
     if(masters is None):
+        col = 0
+        for column in columns:
+            worksheet.write(row, col, '', table_border)
+            col += 1
         row += 1
     else:
         for master in masters:
             col = 0
             for attr in master:
-                worksheet.write(row, col, master[attr])
-                if(len(master[attr]) > max_size_col[col]):
+                worksheet.write(row, col, master[attr], table_border)
+                if(master[attr] and len(master[attr]) > max_size_col[col]):
                     max_size_col[col] = len(master[attr])
                 col += 1
             row += 1
@@ -344,13 +392,17 @@ row = 0
 # open json created by php from db
 with open('tempo/productions.json') as json_file:
     fichier = json.load(json_file)
+
 # Create a workbook and add a worksheet.
 workbook = xlsxwriter.Workbook('tempo/productions.xlsx')
 worksheet = workbook.add_worksheet('productions')
+
 # Create formats
 date_format = workbook.add_format({'num_format': 'yyyy-mm'})
-bold = workbook.add_format()
-header = workbook.add_format()
+bold = workbook.add_format({'bold': True})
+header = workbook.add_format({'bold': True, 'font_size': 14})
+table_header = workbook.add_format({'bg_color': 'green', 'border': True, 'border_color': 'black'})
+table_border = workbook.add_format({'border': True, 'border_color': 'black'})
 
 #insert the page header
 #image header
@@ -404,5 +456,6 @@ row = insert_master(worksheet, fichier['master'], row)
 #set width of columns = max
 for i in max_size_col:
     print(i)
+    worksheet.set_column(i, i, max_size_col[i])
 
 workbook.close()
