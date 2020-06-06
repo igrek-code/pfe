@@ -2,6 +2,340 @@ import xlsxwriter
 import json
 from datetime import date
 
+#max size for each column
+max_size_col = {}
+for i in range(13):
+    max_size_col[i] = 0
+
+#functions to insert the right header
+def insert_header_activite(worksheet, pour, nom, grade, equipes, chefequip, menbrequip, laboratoire, cheflabo, domaine, dateDeb, dateFin, row):
+    if(pour == 'laboratoire'):
+        worksheet.write(row,1,'Bilan d\'activité pour laboratoire')
+        row += 1
+        worksheet.write(row,1,nom)
+        row += 1
+        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine))
+        row += 1
+        worksheet.write(row,1,'Période: de -deb- à -fin-'.replace('-deb-', dateDeb).replace('-fin-', dateFin))
+        row += 3
+        worksheet.write(row, 0, 'Chef de laboratoire:')
+        worksheet.write(row, 1, cheflabo)
+        row += 1
+        worksheet.write(row, 0, 'Les équipes:')
+        worksheet.write(row, 1, equipes)
+        row += 4
+    elif(pour == 'equipe'):
+        worksheet.write(row,1,'Bilan d\'activité pour équipe')
+        row += 1
+        worksheet.write(row,1,nom)
+        row += 1
+        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine))
+        row += 1
+        worksheet.write(row,1,'Période: de -deb- à -fin-'.replace('-deb-', dateDeb).replace('-fin-', dateFin))
+        row += 3
+        worksheet.write(row, 0, 'Laboratoire:')
+        worksheet.write(row, 1, laboratoire)
+        row += 1
+        worksheet.write(row, 0, 'Chef d\'équipe:')
+        worksheet.write(row, 1, chefequip)
+        row += 1
+        worksheet.write(row, 0, 'Membres:')
+        worksheet.write(row, 1, menbrequip)
+        row += 4
+    else:
+        worksheet.write(row,1,'Bilan individuel d\'activité')
+        row += 2
+        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine))
+        row += 1
+        worksheet.write(row,1,'Période: de -deb- à -fin-'.replace('-deb-', dateDeb).replace('-fin-', dateFin))
+        row += 2
+        worksheet.write(row, 1, nom)
+        row += 1
+        worksheet.write(row, 1, 'Grade du chercheur:')
+        worksheet.write(row, 2, grade)
+        row += 2
+        worksheet.write(row, 0, 'Laboratoire:')
+        worksheet.write(row, 1, laboratoire)
+        row += 1
+        worksheet.write(row, 0, 'Equipe:')
+        worksheet.write(row, 1, equipes)
+        row += 2
+    return row
+
+def insert_pub_inter(worksheet, publications, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les publications internationales')
+    row += 2
+    columns = [
+        'Titre', 'Auteurs', 'Année-Mois', 'Revue', 'E-ISSN', 'ISSN', 'Editeur', 'Volume', 'Issue', 'URL', 'DOI', 'Classe'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(len(publications) == 0):
+        row += 1
+    for publication in publications:
+        col = 0
+        for attr in publication:
+            if(attr == 'type'):
+                break
+            elif(attr == 'auteurP'):
+                worksheet.write(row, col, publication[attr]+', '+publication['auteurs'])
+                if(publication[attr] and len(publication[attr]+', '+publication['auteurs']) > max_size_col[col]):
+                    max_size_col[col] = len(publication[attr]+', '+publication['auteurs'])
+                col += 1
+            elif(attr == 'auteurs'):
+                continue
+            else:
+                worksheet.write(row, col, publication[attr])
+                if(publication[attr] and len(publication[attr]) > max_size_col[col]):
+                    max_size_col[col] = len(publication[attr])
+                col += 1
+        row += 1
+    row += 1
+    return row
+
+def insert_pub_nat(worksheet, publications, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les publications Nationales')
+    row += 2
+    columns = [
+        'Titre', 'Auteurs', 'Année-Mois', 'Revue-Pays', 'E-ISSN', 'ISSN', 'Editeur', 'Volume', 'Issue', 'URL', 'DOI', 'Classe'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(len(publications) == 0):
+        row += 1
+    for publication in publications:
+        col = 0
+        for attr in publication:
+            if(attr == 'revue'):
+                worksheet.write(row, col, publication[attr]+' - '+publication['pays'])
+                if(publication[attr] and len(publication[attr]+' - '+publication['pays']) > max_size_col[col]):
+                    max_size_col[col] = len(publication[attr]+' - '+publication['pays'])
+                col += 1
+            elif(attr == 'type'):
+                break
+            elif(attr == 'auteurP'):
+                worksheet.write(row, col, publication[attr]+', '+publication['auteurs'])
+                if(publication[attr] and len(publication[attr]+', '+publication['auteurs']) > max_size_col[col]):
+                    max_size_col[col] = len(publication[attr]+', '+publication['auteurs'])
+                col += 1
+            elif(attr == 'auteurs'):
+                continue
+            else:
+                worksheet.write(row, col, publication[attr])
+                if(publication[attr] and len(publication[attr]) > max_size_col[col]):
+                    max_size_col[col] = len(publication[attr])
+                col += 1
+        row += 1
+    row += 1
+    return row
+
+def insert_com_inter(worksheet, communications, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les communications Internationales')
+    row += 2
+    columns = [
+        'Titre', 'Auteurs', 'Année-Mois', 'Nom conférence', 'Lieu', 'URL', 'Classe'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(len(communications) == 0):
+        row += 1
+    for communication in communications:
+        col = 0
+        for attr in communication:
+            if(attr == 'type'):
+                break
+            elif(attr == 'auteurP'):
+                worksheet.write(row, col, communication[attr]+', '+communication['auteurs'])
+                if(communication[attr] and len(communication[attr]+', '+communication['auteurs']) > max_size_col[col]):
+                    max_size_col[col] = len(communication[attr]+', '+communication['auteurs'])
+                col += 1
+            elif(attr == 'auteurs'):
+                continue
+            else:
+                worksheet.write(row, col, communication[attr])
+                if(communication[attr] and len(communication[attr]) > max_size_col[col]):
+                    max_size_col[col] = len(communication[attr])
+                col += 1
+        row += 1
+    row += 1
+    return row
+
+def insert_com_nat(worksheet, communications, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les communications Nationales')
+    row += 2
+    columns = [
+        'Titre', 'Auteurs', 'Année-Mois', 'Nom conférence', 'Pays', 'URL', 'Classe'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(len(communications) == 0):
+        row += 1
+    for communication in communications:
+        col = 0
+        for attr in communication:
+            if(attr == 'type'):
+                break
+            elif(attr == 'auteurP'):
+                worksheet.write(row, col, communication[attr]+', '+communication['auteurs'])
+                if(communication[attr] and len(communication[attr]+', '+communication['auteurs']) > max_size_col[col]):
+                    max_size_col[col] = len(communication[attr]+', '+communication['auteurs'])
+                col += 1
+            elif(attr == 'auteurs'):
+                continue
+            else:
+                worksheet.write(row, col, communication[attr])
+                if(communication[attr] and len(communication[attr]) > max_size_col[col]):
+                    max_size_col[col] = len(communication[attr])
+                col += 1
+        row += 1
+    row += 1
+    return row
+
+def insert_chapitre(worksheet, chapitres, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les chapitres d\'ouvrages')
+    row += 2
+    columns = [
+        'Titre', 'Auteurs', 'Année-Mois', 'ISBN', 'Editeur', 'URL'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(chapitres is None):
+        row += 1
+    else:
+        for chapitre in chapitres:
+            col = 0
+            for attr in chapitre:
+                if(attr == 'auteurP'):
+                    worksheet.write(row, col, chapitre[attr]+', '+chapitre['auteurs'])
+                    if(chapitre[attr] and len(chapitre[attr]+', '+chapitre['auteurs']) > max_size_col[col]):
+                        max_size_col[col] = len(chapitre[attr]+', '+chapitre['auteurs'])
+                    col += 1
+                elif(attr == 'auteurs'):
+                    continue
+                else:
+                    worksheet.write(row, col, chapitre[attr])
+                    if(chapitre[attr] and len(chapitre[attr]) > max_size_col[col]):
+                        max_size_col[col] = len(chapitre[attr])
+                    col += 1
+            row += 1
+    row += 1
+    return row
+
+def insert_ouvrage(worksheet, ouvrages, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les Ouvrages')
+    row += 2
+    columns = [
+        'Titre', 'Auteurs', 'Année-Mois', 'ISBN', 'Editeur', 'URL'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(ouvrages is None):
+        row += 1
+    else:
+        for ouvrage in ouvrages:
+            col = 0
+            for attr in ouvrage:
+                if(attr == 'auteurP'):
+                    worksheet.write(row, col, ouvrage[attr]+', '+ouvrage['auteurs'])
+                    if(ouvrage[attr] and len(ouvrage[attr]+', '+ouvrage['auteurs']) > max_size_col[col]):
+                        max_size_col[col] = len(ouvrage[attr]+', '+ouvrage['auteurs'])
+                    col += 1
+                elif(attr == 'auteurs'):
+                    continue
+                else:
+                    worksheet.write(row, col, ouvrage[attr])
+                    if(ouvrage[attr] and len(ouvrage[attr]) > max_size_col[col]):
+                        max_size_col[col] = len(ouvrage[attr])
+                    col += 1
+            row += 1
+    row += 1
+    return row
+
+def insert_doctorat(worksheet, doctorats, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les soutenances de Doctorat')
+    row += 2
+    columns = [
+        'Titre', 'Année-Mois', 'Directeur de thèse', 'Spécialité', 'Numéro', 'Lieu'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(doctorats is None):
+        row += 1
+    else:
+        for doctorat in doctorats:
+            col = 0
+            for attr in doctorat:
+                worksheet.write(row, col, doctorat[attr])
+                if(len(doctorat[attr]) > max_size_col[col]):
+                    max_size_col[col] = len(doctorat[attr])
+                col += 1
+            row += 1
+    row += 1
+    return row
+
+def insert_master(worksheet, masters, row):
+    global max_size_col
+    #insert table header
+    worksheet.write(row, 0, 'Les soutenances de Master')
+    row += 2
+    columns = [
+        'Titre', 'Année-Mois', 'Promoteur', 'Spécialité', 'Lieu'  
+    ]
+    col = 0
+    for column in columns:
+        worksheet.write(row, col, column)
+        col += 1
+    row += 1
+    if(masters is None):
+        row += 1
+    else:
+        for master in masters:
+            col = 0
+            for attr in master:
+                worksheet.write(row, col, master[attr])
+                if(len(master[attr]) > max_size_col[col]):
+                    max_size_col[col] = len(master[attr])
+                col += 1
+            row += 1
+    row += 1
+    return row
+
+#Today's date
 today = date.today()
 
 #tracking last row inserted
@@ -10,148 +344,65 @@ row = 0
 # open json created by php from db
 with open('tempo/productions.json') as json_file:
     fichier = json.load(json_file)
-
 # Create a workbook and add a worksheet.
 workbook = xlsxwriter.Workbook('tempo/productions.xlsx')
 worksheet = workbook.add_worksheet('productions')
+# Create formats
 date_format = workbook.add_format({'num_format': 'yyyy-mm'})
+bold = workbook.add_format()
+header = workbook.add_format()
 
-#insert the headers
+#insert the page header
 #image header
 worksheet.insert_image(row, 0, 'tempo/header-usthb.png')
 row += 6
 
 #information about this bilan
-worksheet.write(row, 0, 'Information sur le bilan')
+worksheet.write(row, 0, 'Date:-d-'.replace('-d-',str(today)), date_format)
 row += 1
 
-if(not(fichier['projet'] is None)):
-    worksheet.add_table(row,0,row+1,3,{
-        'name': 'infoBilan',
-        'style': 'Table Style Medium 9',
-        'autofilter': False,
-        'columns': [
-            {'header': 'Type'},
-            {'header': 'Effectué le'},
-            {'header': 'Période du'},
-            {'header': 'Au'}
-        ]
-    })
-    worksheet.write(row+1, 0, 'Bilan projet')
-else:
-    worksheet.add_table(row,0,row+1,5,{
-        'name': 'infoBilan',
-        'style': 'Table Style Medium 9',
-        'autofilter': False,
-        'columns': [
-            {'header': 'Type'},
-            {'header': 'Effectué le'},
-            {'header': 'Période du'},
-            {'header': 'Au'},
-            {'header': 'Pour'},
-            {'header': 'Nom'}
-        ]
-    })
-    worksheet.write(row+1, 0, 'Bilan d\'activité')
-    worksheet.write(row+1, 4, fichier['pour'])
-    worksheet.write(row+1, 5, fichier['nom'])
-worksheet.write(row+1, 1, today, date_format )
-info = row+1
-row += 3
+#insert header
+if(fichier['projet'] is None):
+    row = insert_header_activite(worksheet, fichier['pour'], fichier['nom'], fichier['grade'], fichier['equipes'], fichier['chefequip'], fichier['menbrequip'], fichier['laboratoire'], fichier['cheflabo'], fichier['domaine'], fichier['dateDeb'], fichier['dateFin'], row)
 
-if(not(fichier['projet'] is None)):
-    worksheet.write(row, 0, 'Description du projet: ')
-    row += 1
+#inserer publications
+publications = fichier['publication']
+publications_inter = []
+publications_nat = []
+for publication in publications:
+    if(publication['type'] == 'internationale'):
+        publications_inter.append(publication)
+    else:
+        publications_nat.append(publication)
+row = insert_pub_inter(worksheet, publications_inter, row)
+row = insert_pub_nat(worksheet, publications_nat, row)
 
-    worksheet.write(row, 0, fichier['projet']['description'])
-    row += 2
+#inserer communications
+communications = fichier['communication']
+communications_inter = []
+communications_nat = []
+for communication in communications:
+    if(communication['type'] == 'internationale'):
+        communications_inter.append(communication)
+    else:
+        communications_nat.append(communication)
+row = insert_com_inter(worksheet, communications_inter, row)
+row = insert_com_nat(worksheet, communications_nat, row)
 
-    worksheet.write(row, 0, 'Information sur le projet: ')
-    row += 1
+#inserer les chapitre d'ouvrages
+row = insert_chapitre(worksheet, fichier['chapitreOuvrage'], row)
 
-    liste = fichier['projet']
-    data = []
+#inserer les ouvrages
+row = insert_ouvrage(worksheet, fichier['ouvrage'], row)
 
-    columns = []
-    for atr in liste:
-        if(atr == 'description'):
-            continue
+#inserer les doctorats
+row = insert_doctorat(worksheet, fichier['doctorat'], row)
 
-        columns.append(
-            {'header': atr}
-        )
-        if(liste[atr] is None):
-            data.append('')
-        else:
-            data.append(liste[atr])
+#inserer les masters
+row = insert_master(worksheet, fichier['master'], row)
 
-    worksheet.add_table(row,0,row+1,len(liste)-2,{
-        'name': 'projet',
-        'style': 'Table Style Medium 9',
-        'autofilter': False,
-        'columns': columns,
-        'data': [data]
-    })
-    row += 3
-
-style = 3
-for production in fichier:
-    if(fichier[production] is None):
-        continue
-
-    if(production == 'dateDeb'):
-        worksheet.write(info, 2, fichier['dateDeb'], date_format )
-        #print(production['dateDeb'])
-        continue
-
-    if(production == 'dateFin'):
-        worksheet.write(info, 3, fichier['dateFin'], date_format )
-        #print(production['dateFin'])
-        continue
-
-    if(production == 'projet'):
-        continue
-
-    if(production == 'pour'):
-        continue
-
-    if(production == 'nom'):
-        continue
-
-    worksheet.write(row, 0, 'Tableau: '+production)
-    row += 1
-
-    liste = fichier[production]
-    data = []
-
-    columns = []
-    for atr in liste[0]:
-        columns.append(
-            {'header': atr}
-        )
-    
-    for elm in liste:
-        tempo = []
-        for attr in elm:
-            tempo.append(elm[attr])
-        data.append(tempo)
-
-    worksheet.add_table(row,0,row+len(liste),len(liste[0])-1,{
-        'name': production,
-        'style': 'Table Style Medium %tl'.replace('%tl',str(style)),
-        'autofilter': False,
-        'columns': columns,
-        'data': data
-    })
-    style += 1
-    row += len(liste)+2
-
-
-#worksheet.center_horizontally()
-#worksheet.center_vertically()
-#header-usthb.png
-#worksheet.insert_image('B2', 'header-usthb.png')
-#worksheet.set_header('&LCiao&CBello&RCielo')
-#worksheet.add_table()
+#set width of columns = max
+for i in max_size_col:
+    print(i)
 
 workbook.close()

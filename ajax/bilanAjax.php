@@ -368,6 +368,13 @@
             public $master;
             public $pour;
             public $nom;
+            public $grade;
+            public $equipes;
+            public $chefequip;
+            public $menbrequip;
+            public $laboratoire;
+            public $cheflabo;
+            public $domaine;
         }
 
         class projet{
@@ -384,85 +391,69 @@
 
         class publication{
             public $titre;
-            public $date;
-            public $doi;
-            public $volume;
-            public $issue;
-            public $domaine;
-            public $specialite;
             public $auteurP;
             public $auteurs;
-            public $motscles;
+            public $date;
             public $revue;
             public $eissn;
             public $issn;
             public $editeur;
+            public $volume;
+            public $issue;
+            public $url;
+            public $doi;
             public $classe;
             public $type;
             public $pays;
-            public $codeproj;
         }
 
         class communication{
             public $titre;
-            public $date;
-            public $domaine;
-            public $specialite;
             public $auteurP;
             public $auteurs;
-            public $motscles;
+            public $date;
             public $conference;
-            public $codeproj;
+            public $lieu;
+            public $url;
+            public $classe;
+            public $type;
         }
 
         class chapitreOuvrage{
             public $titre;
-            public $date;
-            public $pages;
-            public $volume;
-            public $editeur;
-            public $domaine;
-            public $specialite;
             public $auteurP;
             public $auteurs;
-            public $motscles;
-            public $codeproj;
+            public $date;
+            public $isbn;
+            public $editeur;
+            public $url;
         }
 
         class ouvrage{
             public $titre;
-            public $date;
-            public $nbrePages;
-            public $editeur;
-            public $domaine;
-            public $specialite;
             public $auteurP;
             public $auteurs;
-            public $motscles;
-            public $codeproj;
+            public $date;
+            public $isbn;
+            public $editeur;
+            public $url;
         }
 
         class doctorat{
             public $titre;
             public $date;
+            public $encadreur;
+            public $specialite;
             public $nordre;
             public $lieu;
-            public $domaine;
-            public $specialite;
-            public $encadreur;
-            public $motscles;
-            public $codeproj;
         }
 
         class master{
             public $titre;
             public $date;
-            public $lieu;
-            public $domaine;
-            public $specialite;
             public $encadreur;
-            public $motscles;
-            public $codeproj;
+            public $specialite;
+            public $lieu;
         }
 
         $deb = mysqli_real_escape_string($db,$_GET["deb"]);
@@ -475,9 +466,27 @@
             $typeProduction = " AND type='".$typeProduction."' ";
         }
 
-        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != ""){
+        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != "" && !isset($_GET['idcher'])){
             $codeproj = mysqli_real_escape_string($db,$_GET["codeproj"]);
             $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codeproj='".$codeproj."'";
+        }
+
+        if(isset($_GET["codeproj"]) && $_GET["codeproj"] != "" && isset($_GET['idcher'])){
+            $codeproj = mysqli_real_escape_string($db,$_GET["codeproj"]);
+            $idcher = mysqli_real_escape_string($db,$_GET["idcher"]);
+            $sql = "SELECT * FROM production WHERE date BETWEEN '".$deb."' AND '".$fin."' AND codeproj='".$codeproj."' AND (codepro IN (
+                    SELECT codepro FROM auteurprinc WHERE idcher ='".$idcher."'
+                )
+                OR codepro IN (
+                    SELECT codepro FROM coauteurs WHERE idcher ='".$idcher."'
+                )
+                OR codepro IN (
+                    SELECT codepro FROM pfemaster WHERE encadreur ='".$idcher."'
+                )
+                OR codepro IN (
+                    SELECT codepro FROM these WHERE encadreur ='".$idcher."'
+                )
+            )";
         }
 
         if(isset($_GET["bilancher"]) && $_GET["bilancher"] != ""){
@@ -645,19 +654,96 @@
             }
         }else if(isset($_GET['bilancher'])){
             $productions->pour = 'chercheur';
-            $sql = "SELECT nom FROM chercheur WHERE idcher='".$idcher."'";
+            $sql = "SELECT nom, grade FROM chercheur WHERE idcher='".$idcher."'";
             $result2 = mysqli_query($db,$sql);
-            $productions->nom = mysqli_fetch_array($result2)['nom'];
+            $row3 = mysqli_fetch_array($result2);
+            $productions->nom = $row3['nom'];
+            $productions->grade = $row3['grade'];
+            $sql = "SELECT nomequip FROM equipe WHERE idequipe IN (
+                SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
+            )
+            OR idcher IN (
+                SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->equipes = mysqli_fetch_array($result2)['nomequip'];
+            $sql = "SELECT nom FROM laboratoire WHERE idlabo IN (
+                SELECT idlabo FROM equipe WHERE idequipe IN (
+                    SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
+                )
+                OR idcher IN (
+                    SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
+                )
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->laboratoire = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nom FROM domaine WHERE codeDomaine IN (
+                SELECT codeDomaine FROM specialite WHERE idspe IN (
+                    SELECT idspe FROM equipe WHERE idequipe IN (
+                        SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
+                    )
+                    OR idcher IN (
+                        SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
+                    )
+                ) 
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->domaine = mysqli_fetch_array($result2)['nom'];
         }else if(isset($_GET['bilanequipe'])){
-            $productions->pour = 'équipe';
+            $productions->pour = 'equipe';
             $sql = "SELECT nomequip FROM equipe WHERE idequipe='".$idequipe."'";
             $result2 = mysqli_query($db,$sql);
             $productions->nom = mysqli_fetch_array($result2)['nomequip'];
+            $sql = "SELECT nom FROM domaine WHERE codeDomaine IN (
+                SELECT codeDomaine FROM specialite WHERE idspe IN (
+                    SELECT idspe FROM equipe WHERE idequipe='".$idlabo."'
+                )
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->domaine = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nom FROM laboratoire WHERE idlabo IN (
+                SELECT idlabo FROM equipe WHERE idequipe = '".$idequipe."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->laboratoire = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->chefequip = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe = '".$idequipe."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $menbrequip = '';
+            while($row3 = mysqli_fetch_array($result2)){
+                $menbrequip = $row3['nom'].', '.$menbrequip;
+            }
+            $productions->menbrequip = $menbrequip;
         }else if(isset($_GET['bilanlabo'])){
             $productions->pour = 'laboratoire';
             $sql = "SELECT nom FROM laboratoire WHERE idlabo='".$idlabo."'";
             $result2 = mysqli_query($db,$sql);
             $productions->nom = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nom FROM domaine WHERE codeDomaine IN (
+                SELECT codeDomaine FROM specialite WHERE idspe IN (
+                    SELECT idspe FROM laboratoire WHERE idlabo='".$idlabo."'
+                )
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->domaine = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM cheflabo WHERE idlabo='".$idlabo."'
+            )";
+            $result2 = mysqli_query($db,$sql);
+            $productions->cheflabo = mysqli_fetch_array($result2)['nom'];
+            $sql = "SELECT nomequip FROM equipe WHERE idlabo='".$idlabo."'";
+            $result2 = mysqli_query($db,$sql);
+            $equipes = '';
+            while($row3 = mysqli_fetch_array($result2)){
+                $equipes = $row3['nomequip'].', '.$equipes;
+            }
+            $productions->equipes = $equipes;
         }
         if(mysqli_num_rows($result) > 0){
             $publications = array();
@@ -676,32 +762,11 @@
                         if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $publication = new publication();
-                            $publication->codeproj = $row['codeproj'];
+                            $publication->url = $row2['url'];
+                            $publication->doi = $row2['doi'];
                             $publication->titre = $row2['titre'];
                             $publication->date = $row['date'];
-                            $idspe = $row2['idspe'];
                             $coderevue = $row2['coderevue'];
-                            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
-                                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
-                            )";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $publication->domaine = mysqli_fetch_array($result2)["nom"];
-                            }
-                            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $publication->specialite = mysqli_fetch_array($result2)["nomspe"];
-                            }
-                            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $motscles = '';
-                                while($row3 = mysqli_fetch_array($result2)){
-                                    $motscles = $motscles.$row3["mot"].', ';
-                                }
-                                $publication->motscles = $motscles;
-                            }
                             $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                 SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
                             )";
@@ -757,32 +822,10 @@
                         if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $communication = new communication();
-                            $communication->codeproj = $row['codeproj'];
                             $communication->titre = $row2['titre'];
+                            $communication->url = $row2['url'];
                             $communication->date = $row['date'];
-                            $idspe = $row2['idspe'];
                             $codeconf = $row2['codeconf'];
-                            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
-                                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
-                            )";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $communication->domaine = mysqli_fetch_array($result2)["nom"];
-                            }
-                            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $communication->specialite = mysqli_fetch_array($result2)["nomspe"];
-                            }
-                            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $motscles = '';
-                                while($row3 = mysqli_fetch_array($result2)){
-                                    $motscles = $motscles.$row3["mot"].', ';
-                                }
-                                $communication->motscles = $motscles;
-                            }
                             $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                 SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
                             )";
@@ -819,8 +862,12 @@
                             $sql = "SELECT * FROM conference WHERE codeconf='".$codeconf."'";
                             $result2 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result2) > 0){
-                                $communication->conference = mysqli_fetch_array($result2)['nomconf'];
-                                /*$nomconf = $row2["nomconf"];
+                                $row3 = mysqli_fetch_array($result2);
+                                $communication->conference = $row3['nomconf'];
+                                $communication->type = $row3["type"];
+                                $communication->classe = $row3["classe"];
+                                $communication->lieu = $row3["pays"];
+                                /*
                                 $abrvconf = $row2["abrv"];
                                 $annee = $row2["annee"];
                                 $theme = $row2["theme"];
@@ -839,33 +886,11 @@
                         if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $ouvrage = new ouvrage();
-                            $ouvrage->codeproj = $row['codeproj'];
                             $ouvrage->titre = $row2['titre'];
+                            $ouvrage->isbn = $row2['isbn'];
+                            $ouvrage->url = $row2['url'];
                             $ouvrage->date = $row['date'];
-                            $ouvrage->nbrePages = $row2['nbpages'];
                             $ouvrage->editeur = $row2['editeur'];
-                            $idspe = $row2['idspe'];
-                            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
-                                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
-                            )";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $ouvrage->domaine = mysqli_fetch_array($result2)["nom"];
-                            }
-                            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $ouvrage->specialite = mysqli_fetch_array($result2)["nomspe"];
-                            }
-                            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $motscles = '';
-                                while($row3 = mysqli_fetch_array($result2)){
-                                    $motscles = $motscles.$row3["mot"].', ';
-                                }
-                                $ouvrage->motscles = $motscles;
-                            }
                             $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                 SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
                             )";
@@ -909,34 +934,11 @@
                         if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $chapitreOuvrage = new chapitreOuvrage();
-                            $chapitreOuvrage->codeproj = $row['codeproj'];
                             $chapitreOuvrage->titre = $row2['titre'];
+                            $chapitreOuvrage->url = $row2['url'];
+                            $chapitreOuvrage->isbn = $row2['isbn'];
                             $chapitreOuvrage->date = $row['date'];
-                            $chapitreOuvrage->pages = $row2['pages'];
-                            $chapitreOuvrage->volume = $row2['volume'];
                             $chapitreOuvrage->editeur = $row2['editeur'];
-                            $idspe = $row2['idspe'];
-                            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
-                                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
-                            )";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $chapitreOuvrage->domaine = mysqli_fetch_array($result2)["nom"];
-                            }
-                            $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $chapitreOuvrage->specialite = mysqli_fetch_array($result2)["nomspe"];
-                            }
-                            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $motscles = '';
-                                while($row3 = mysqli_fetch_array($result2)){
-                                    $motscles = $motscles.$row3["mot"].', ';
-                                }
-                                $chapitreOuvrage->motscles = $motscles;
-                            }
                             $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                 SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
                             )";
@@ -980,33 +982,16 @@
                         if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $doctorat = new doctorat();
-                            $doctorat->codeproj = $row['codeproj'];
                             $doctorat->titre = $row2['titre'];
                             $doctorat->date = $row['date'];
                             $doctorat->nordre = $row2['nordre'];
                             $doctorat->lieu = $row2['lieusout'];
                             $encadreur = $row2['encadreur'];
                             $idspe = $row2['idspe'];
-                            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
-                                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
-                            )";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $doctorat->domaine = mysqli_fetch_array($result2)["nom"];
-                            }
                             $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
                             $result2 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result2) > 0){
                                 $doctorat->specialite = mysqli_fetch_array($result2)["nomspe"];
-                            }
-                            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $motscles = '';
-                                while($row3 = mysqli_fetch_array($result2)){
-                                    $motscles = $motscles.$row3["mot"].', ';
-                                }
-                                $doctorat->motscles = $motscles;
                             }
                             $sql = "SELECT nom FROM chercheur WHERE idcher='".$encadreur."'";
                             $result2 = mysqli_query($db,$sql);
@@ -1023,32 +1008,15 @@
                         if(mysqli_num_rows($result2) > 0){
                             $row2 = mysqli_fetch_array($result2);
                             $master = new master();
-                            $master->codeproj = $row['codeproj'];
                             $master->titre = $row2['titre'];
                             $master->date = $row['date'];
                             $master->lieu = $row2['lieusout'];
                             $encadreur = $row2['encadreur'];
                             $idspe = $row2['idspe'];
-                            $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
-                                SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
-                            )";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $master->domaine = mysqli_fetch_array($result2)["nom"];
-                            }
                             $sql = "SELECT * FROM specialite WHERE idspe='".$idspe."'";
                             $result2 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result2) > 0){
                                 $master->specialite = mysqli_fetch_array($result2)["nomspe"];
-                            }
-                            $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
-                            $result2 = mysqli_query($db,$sql);
-                            if(mysqli_num_rows($result2) > 0){
-                                $motscles = '';
-                                while($row3 = mysqli_fetch_array($result2)){
-                                    $motscles = $motscles.$row3["mot"].', ';
-                                }
-                                $master->motscles = $motscles;
                             }
                             $sql = "SELECT nom FROM chercheur WHERE idcher='".$encadreur."'";
                             $result2 = mysqli_query($db,$sql);
