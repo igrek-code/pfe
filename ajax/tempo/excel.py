@@ -25,7 +25,7 @@ def insert_header_activite(worksheet, pour, nom, grade, equipes, chefequip, menb
         worksheet.write(row, 1, equipes)
         row += 4
     elif(pour == 'equipe'):
-        worksheet.write(row,1,'Bilan d\'activité pour équipe')
+        worksheet.write(row,1,'Bilan d\'activité pour équipe', header)
         row += 1
         worksheet.write(row,1,nom)
         row += 1
@@ -43,16 +43,15 @@ def insert_header_activite(worksheet, pour, nom, grade, equipes, chefequip, menb
         worksheet.write(row, 1, menbrequip)
         row += 4
     else:
-        worksheet.write(row,1,'Bilan individuel d\'activité')
+        worksheet.write(row,1,'Bilan individuel d\'activité', header)
         row += 2
-        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine))
+        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine or ''))
         row += 1
         worksheet.write(row,1,'Période: de -deb- à -fin-'.replace('-deb-', dateDeb).replace('-fin-', dateFin))
         row += 2
         worksheet.write(row, 1, nom)
         row += 1
-        worksheet.write(row, 1, 'Grade du chercheur:')
-        worksheet.write(row, 2, grade)
+        worksheet.write(row, 1, 'Grade du chercheur: -g-'.replace('-g-', grade or ''))
         row += 2
         worksheet.write(row, 0, 'Laboratoire:')
         worksheet.write(row, 1, laboratoire)
@@ -62,6 +61,55 @@ def insert_header_activite(worksheet, pour, nom, grade, equipes, chefequip, menb
         row += 2
     return row
 
+def insert_header_bilan(worksheet, pour, nom, grade, codeproj, domaine, intitule, date, chef, membres, dateDeb, dateFin, row):
+    if(pour == 'equipe'):
+        worksheet.write(row,1,'Bilan "Equipe" du projet de recherche PRFU', header)
+        row += 2    
+        worksheet.write(row,1,'Code projet: -cp-'.replace('-cp-',codeproj or ''))
+        row += 1
+        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine))
+        row += 1
+        worksheet.write(row,1,'Période: de -deb- à -fin-'.replace('-deb-', dateDeb).replace('-fin-', dateFin))
+        row += 3
+        worksheet.write(row, 0, 'Intitulé du projet: -idp-'.replace('-idp-', intitule or ''))
+        row += 1
+        worksheet.write(row, 0, 'Date d\'agrément: -da-'.replace('-da-', date or ''))
+        row += 1
+        worksheet.write(row, 0, 'Chef Projet: -cp-'.replace('-cp-', chef[0] or ''))
+        worksheet.write(row, 1, 'Grade: -g-'.replace('-g-', chef[1] or ''))
+        row += 2
+        worksheet.write(row, 0, 'Membres du projet', bold)
+        row += 2
+        worksheet.write(row, 0, 'Nom et prénom', table_border)
+        worksheet.write(row, 1, 'Grade', table_border)
+        row += 1
+        for chercheur in membres:
+            worksheet.write(row, 0, chercheur[0], table_border)
+            worksheet.write(row, 1, chercheur[1], table_border)
+            row += 1
+        row += 3
+    else:
+        worksheet.write(row,1,'Bilan Individuel du projet de recherche PRFU', header)
+        row += 2    
+        worksheet.write(row,1,'Code projet: -cp-'.replace('-cp-',codeproj or ''))
+        row += 1
+        worksheet.write(row,1,'Domaine: -d-'.replace('-d-', domaine))
+        row += 1
+        worksheet.write(row,1,'Période: de -deb- à -fin-'.replace('-deb-', dateDeb).replace('-fin-', dateFin))
+        row += 1
+        worksheet.write(row,1,nom)
+        row += 1
+        worksheet.write(row,1,grade)
+        row += 3
+        worksheet.write(row, 0, 'Intitulé du projet: -idp-'.replace('-idp-', intitule or ''))
+        row += 1
+        worksheet.write(row, 0, 'Date d\'agrément: -da-'.replace('-da-', date or ''))
+        row += 1
+        worksheet.write(row, 0, 'Chef Projet: -cp-'.replace('-cp-', chef[0] or ''))
+        row += 4
+    return row
+
+#functions to insert productions
 def insert_pub_inter(worksheet, publications, row):
     global max_size_col
     #insert table header
@@ -409,23 +457,25 @@ table_border = workbook.add_format({'border': True, 'border_color': 'black'})
 worksheet.insert_image(row, 0, 'tempo/header-usthb.png')
 row += 6
 
-#information about this bilan
+#date of creation
 worksheet.write(row, 0, 'Date:-d-'.replace('-d-',str(today)), date_format)
 row += 1
 
 #insert header
 if(fichier['projet'] is None):
     row = insert_header_activite(worksheet, fichier['pour'], fichier['nom'], fichier['grade'], fichier['equipes'], fichier['chefequip'], fichier['menbrequip'], fichier['laboratoire'], fichier['cheflabo'], fichier['domaine'], fichier['dateDeb'], fichier['dateFin'], row)
-
+else:
+    row = insert_header_bilan(worksheet, fichier['pour'], fichier['nom'], fichier['grade'], fichier['projet']['codeproj'], fichier['projet']['domaine'], fichier['projet']['intitule'], fichier['projet']['date'], fichier['projet']['chef'], fichier['projet']['membres'], fichier['dateDeb'], fichier['dateFin'], row)
 #inserer publications
 publications = fichier['publication']
 publications_inter = []
 publications_nat = []
-for publication in publications:
-    if(publication['type'] == 'internationale'):
-        publications_inter.append(publication)
-    else:
-        publications_nat.append(publication)
+if(publications):
+    for publication in publications:
+        if(publication['type'] == 'internationale'):
+            publications_inter.append(publication)
+        else:
+            publications_nat.append(publication)
 row = insert_pub_inter(worksheet, publications_inter, row)
 row = insert_pub_nat(worksheet, publications_nat, row)
 
@@ -433,11 +483,12 @@ row = insert_pub_nat(worksheet, publications_nat, row)
 communications = fichier['communication']
 communications_inter = []
 communications_nat = []
-for communication in communications:
-    if(communication['type'] == 'internationale'):
-        communications_inter.append(communication)
-    else:
-        communications_nat.append(communication)
+if(communications):
+    for communication in communications:
+        if(communication['type'] == 'internationale'):
+            communications_inter.append(communication)
+        else:
+            communications_nat.append(communication)
 row = insert_com_inter(worksheet, communications_inter, row)
 row = insert_com_nat(worksheet, communications_nat, row)
 
@@ -455,7 +506,6 @@ row = insert_master(worksheet, fichier['master'], row)
 
 #set width of columns = max
 for i in max_size_col:
-    print(i)
     worksheet.set_column(i, i, max_size_col[i])
 
 workbook.close()

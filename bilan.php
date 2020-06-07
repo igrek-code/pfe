@@ -507,11 +507,12 @@
                                     </tr>
                                 `);                    
                             });
+                            input.export = 'true';
                             $('#showTable').DataTable(fr_table())
                             init_codepro();
                             $('button[exporter="exporter"]').click(function(){
                                 var exporter = $(this);
-                                $.get("ajax/bilanAjax.php",{export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                $.get("ajax/bilanAjax.php",input,function(data){
                                     if($('a[download="production"]').length == 0)
                                         exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
                                 });

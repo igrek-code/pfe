@@ -378,13 +378,10 @@
         }
 
         class projet{
+            public $codeproj;
             public $intitule;
             public $date;
-            public $description;
-            public $duree;
-            public $etat;
             public $domaine;
-            public $motscles;
             public $chef;
             public $membres;
         }
@@ -607,46 +604,51 @@
         $productions->dateDeb = $deb;
         $productions->dateFin = $fin;
         if(isset($_GET['codeproj'])){
+            $productions->pour = 'equipe';
+            if(isset($_GET['idcher'])){
+                $productions->pour = 'chercheur';
+                $sql = "SELECT nom, gradec FROM chercheur WHERE idcher='".$idcher."'";
+                $result3 = mysqli_query($db,$sql);
+                $row3 = mysqli_fetch_array($result3);
+                $productions->nom = $row3['nom'];
+                $productions->grade = $row3['gradec'];
+            } 
             $sql = "SELECT * FROM projrecher WHERE codeproj='".$codeproj."'";
             $result2 = mysqli_query($db,$sql);
             if(mysqli_num_rows($result2) > 0){
                 $projet = new projet();
                 $row2 = mysqli_fetch_array($result2);
+                $projet->codeproj = $row2['codeproj'];
                 $projet->intitule = $row2['intitule'];
                 $projet->date = $row2['date'];
-                $projet->duree = $row2['duree'];
-                $projet->etat = $row2['etat'];
-                $projet->description = $row2['description'];
                 $codeDomaine = $row2['codeDomaine'];
                 $sql = "SELECT nom FROM domaine WHERE codeDomaine='".$codeDomaine."'";
                 $result3 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result3) > 0){
                     $projet->domaine = mysqli_fetch_array($result3)['nom'];
                 }
-                $sql = "SELECT * FROM motscler WHERE codeproj='".$codeproj."'";
-                $result2 = mysqli_query($db,$sql);
-                if(mysqli_num_rows($result2) > 0){
-                    $motscles = '';
-                    while($row3 = mysqli_fetch_array($result2)){
-                        $motscles = $motscles.$row3["mot"].', ';
-                    }
-                    $projet->motscles = $motscles;
-                }
-                $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                $sql = "SELECT nom, gradec FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM chefproj WHERE codeproj='".$codeproj."'
                 )";
                 $result2 = mysqli_query($db,$sql);
+                $chef = array();
                 if(mysqli_num_rows($result2) > 0){
-                    $projet->chef = mysqli_fetch_array($result2)["nom"];
+                    $row3 = mysqli_fetch_array($result2);
+                    $chef[] = $row3["nom"];
+                    $chef[] = $row3["gradec"];
+                    $projet->chef = $chef;
                 }
-                $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                $sql = "SELECT nom, gradec FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM membreproj WHERE codeproj = '".$codeproj."'
                 )";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $coauteurs = '';
+                    $coauteurs = array();
                     while($row3 = mysqli_fetch_array($result2)){
-                        $coauteurs = $coauteurs.$row3["nom"].', ';
+                        $coauteur = array();
+                        $coauteur[] = $row3['nom'];
+                        $coauteur[] = $row3['gradec'];
+                        $coauteurs[] = $coauteur;
                     }
                     $projet->membres = $coauteurs;
                 }
@@ -662,7 +664,7 @@
             $sql = "SELECT nomequip FROM equipe WHERE idequipe IN (
                 SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
             )
-            OR idcher IN (
+            OR idequipe IN (
                 SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
             )";
             $result2 = mysqli_query($db,$sql);
@@ -671,7 +673,7 @@
                 SELECT idlabo FROM equipe WHERE idequipe IN (
                     SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
                 )
-                OR idcher IN (
+                OR idequipe IN (
                     SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
                 )
             )";
@@ -682,7 +684,7 @@
                     SELECT idspe FROM equipe WHERE idequipe IN (
                         SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
                     )
-                    OR idcher IN (
+                    OR idequipe IN (
                         SELECT idequipe FROM menbrequip WHERE idcher ='".$idcher."'
                     )
                 ) 
@@ -696,7 +698,7 @@
             $productions->nom = mysqli_fetch_array($result2)['nomequip'];
             $sql = "SELECT nom FROM domaine WHERE codeDomaine IN (
                 SELECT codeDomaine FROM specialite WHERE idspe IN (
-                    SELECT idspe FROM equipe WHERE idequipe='".$idlabo."'
+                    SELECT idspe FROM equipe WHERE idequipe='".$idequipe."'
                 )
             )";
             $result2 = mysqli_query($db,$sql);
