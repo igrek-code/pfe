@@ -656,11 +656,11 @@
             }
         }else if(isset($_GET['bilancher'])){
             $productions->pour = 'chercheur';
-            $sql = "SELECT nom, grade FROM chercheur WHERE idcher='".$idcher."'";
+            $sql = "SELECT nom, gradec FROM chercheur WHERE idcher='".$idcher."'";
             $result2 = mysqli_query($db,$sql);
             $row3 = mysqli_fetch_array($result2);
             $productions->nom = $row3['nom'];
-            $productions->grade = $row3['grade'];
+            $productions->grade = $row3['gradec'];
             $sql = "SELECT nomequip FROM equipe WHERE idequipe IN (
                 SELECT idequipe FROM chefequip WHERE idcher ='".$idcher."'
             )
@@ -766,6 +766,8 @@
                             $publication = new publication();
                             $publication->url = $row2['url'];
                             $publication->doi = $row2['doi'];
+                            $publication->volume = $row2['nvol'];
+                            $publication->issue = $row2['nissue'];
                             $publication->titre = $row2['titre'];
                             $publication->date = $row['date'];
                             $coderevue = $row2['coderevue'];

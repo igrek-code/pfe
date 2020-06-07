@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 04 juin 2020 à 13:36
+-- Généré le : Dim 07 juin 2020 à 15:21
 -- Version du serveur :  10.4.11-MariaDB
--- Version de PHP : 7.2.28
+-- Version de PHP : 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -572,6 +572,7 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 CREATE TABLE `equipe` (
   `idequipe` int(12) NOT NULL,
   `nomequip` varchar(40) NOT NULL,
+  `etat` enum('actif','inactif') NOT NULL DEFAULT 'actif',
   `idspe` int(12) NOT NULL,
   `idlabo` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -580,17 +581,17 @@ CREATE TABLE `equipe` (
 -- Déchargement des données de la table `equipe`
 --
 
-INSERT INTO `equipe` (`idequipe`, `nomequip`, `idspe`, `idlabo`) VALUES
-(16, 'Génie Logiciel', 95, 43),
-(17, 'Ingénierie des Systèmes d’information', 96, 43),
-(18, 'Modélisation et Vérification des Système', 97, 43),
-(19, 'Web Technologie et Sécurité Informatique', 98, 43),
-(20, 'Mobilité', 99, 43),
-(21, 'Intelligence Artificielle et Data Mining', 110, 44),
-(22, 'Bio-Informatique et Robotique', 111, 44),
-(23, 'Optimisation, Raisonnement et Applicatio', 112, 44),
-(24, 'Représentation de Connaissances et Systè', 113, 44),
-(25, 'Traitement et Synthèse d’Images', 114, 44);
+INSERT INTO `equipe` (`idequipe`, `nomequip`, `etat`, `idspe`, `idlabo`) VALUES
+(16, 'Génie Logiciel', 'actif', 95, 43),
+(17, 'Ingénierie des Systèmes d’information', 'actif', 96, 43),
+(18, 'Modélisation et Vérification des Système', 'actif', 97, 43),
+(19, 'Web Technologie et Sécurité Informatique', 'actif', 98, 43),
+(20, 'Mobilité', 'actif', 99, 43),
+(21, 'Intelligence Artificielle et Data Mining', 'actif', 110, 44),
+(22, 'Bio-Informatique et Robotique', 'actif', 111, 44),
+(23, 'Optimisation, Raisonnement et Applicatio', 'actif', 112, 44),
+(24, 'Représentation de Connaissances et Systè', 'actif', 113, 44),
+(25, 'Traitement et Synthèse d’Images', 'actif', 114, 44);
 
 -- --------------------------------------------------------
 
@@ -1097,8 +1098,8 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (125, '2019-07', 'master', NULL),
 (126, '2019-07', 'master', NULL),
 (127, '2019-07', 'master', NULL),
-(128, '2019-06', 'master', NULL),
-(129, '2019-06', 'master', NULL),
+(128, '2019-06', 'master', 'B*00220130123'),
+(129, '2019-06', 'master', 'B*00220130123'),
 (130, '2019-07', 'master', NULL),
 (131, '2019-07', 'master', NULL),
 (132, '2020-07', 'master', NULL);
@@ -1367,7 +1368,10 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (157, 'processus Workflow', '', 149),
 (158, 'cloud', '', 150),
 (159, 'Cloud', '', 151),
-(160, 'système d’extraction et d’intégration', '', 152);
+(160, 'système d’extraction et d’intégration', '', 152),
+(161, 'test', '', 96),
+(162, 'du du du', '', 96),
+(163, 'du du du', '', 96);
 
 -- --------------------------------------------------------
 
@@ -1532,12 +1536,7 @@ CREATE TABLE `validationproduction` (
 INSERT INTO `validationproduction` (`codepro`, `idcher`, `type`) VALUES
 (106, 38, 'publication'),
 (126, 85, 'master'),
-(127, 85, 'master'),
-(128, 53, 'master'),
-(129, 53, 'master'),
-(130, 56, 'master'),
-(131, 56, 'master'),
-(132, 56, 'master');
+(127, 85, 'master');
 
 --
 -- Index pour les tables déchargées
@@ -1794,7 +1793,7 @@ ALTER TABLE `domaine`
 -- AUTO_INCREMENT pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `idequipe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT pour la table `etablissement`
@@ -1830,7 +1829,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
