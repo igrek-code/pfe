@@ -162,7 +162,6 @@
                                                 <select title="Type..." class="form-control selectpicker" id="typeBilan">
                                                     <option selected value="chercheur">Chercheur</option>
                                                     <option value="equipe">Equipe</option>
-                                                    <option value="laboratoire">Laboratoire</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -449,7 +448,7 @@
                                     </div>
 
                                     <div class="content">
-                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
+                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
                                         <table id="showTable" class="table table-hover">
                                             <thead>
                                                 <th>Titre</th>
@@ -705,7 +704,7 @@
 
                                                 <div class="header">
                                                     <h4 class="title">Liste des productions</h4>
-                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
+                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
                                                 </div>
 
                                                 <div class="content">
@@ -930,7 +929,7 @@
 
                                                 <div class="header">
                                                     <h4 class="title">Liste des productions</h4>
-                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
+                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
                                                 </div>
 
                                                 <div class="content">

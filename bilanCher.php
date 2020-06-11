@@ -408,7 +408,7 @@
                                     </div>
 
                                     <div class="content">
-                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
+                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
                                         <table id="showTable" class="table table-hover">
                                             <thead>
                                                 <th>Titre</th>
@@ -437,7 +437,7 @@
                             init_codepro();
                             $('button[exporter="exporter"]').click(function(){
                                 var exporter = $(this);
-                                $.get("ajax/bilanAjax.php",{idcher: idcher, export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
+                                $.get("ajax/bilanAjax.php",{idcher: idcher, export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: 'all'},function(data){
                                     if($('a[download="production"]').length == 0)
                                         exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
                                 });
@@ -600,7 +600,7 @@
 
                                     <div class="header">
                                         <h4 class="title">Liste des productions</h4>
-                                        <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Exporter</button></p>
+                                        <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
                                     </div>
 
                                     <div class="content">
