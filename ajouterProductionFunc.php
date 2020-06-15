@@ -51,6 +51,7 @@
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
@@ -150,6 +151,7 @@
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
@@ -214,6 +216,7 @@
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
@@ -279,6 +282,7 @@
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
@@ -343,6 +347,7 @@
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
@@ -383,6 +388,7 @@
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
 
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;

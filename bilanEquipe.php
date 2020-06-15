@@ -558,7 +558,6 @@
                             <select title="Type..." class="form-control selectpicker" id="typeBilan">
                                 <option selected value="chercheur">Chercheur</option>
                                 <option value="equipe">Equipe</option>
-                                <option value="laboratoire">Laboratoire</option>
                             </select>
                         </div>
                     </div>
