@@ -54,6 +54,8 @@
             public $inter;
             public $date;
             public $codeproj;
+            public $coderevue;
+            public $nomrevue;
         }
 
         $deb = mysqli_real_escape_string($db,$_GET["deb"]);
@@ -281,6 +283,8 @@
                             $row2 = mysqli_fetch_array($result2);
                             $production->classe = $row2['classe'];
                             $production->inter = $row2['type'];
+                            $production->nomrevue = $row2['nom'];
+                            $production->coderevue = $row2['coderevue'];
                         }
                     break;
 
@@ -293,6 +297,8 @@
                             $row2 = mysqli_fetch_array($result2);
                             $production->classe = $row2['classe'];
                             $production->inter = $row2['type'];
+                            $production->nomrevue = $row2['nomconf'];
+                            $production->coderevue = $row2['codeconf'];
                         }
                     break;
 

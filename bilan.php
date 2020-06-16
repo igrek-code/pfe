@@ -478,43 +478,199 @@
                                 <div class="col-md-12">
 
                                     <div class="header">
+                                        <p><button type="button" class="btn btn-success" style="font-size:16px;font-weight:bold;" exporter="exporter">Exporter</button></p>
                                         <h4 class="title">Liste des productions</h4>
+                                        <div class="col-md-3" style="margin-bottom:10px;padding-left:0px;">
+                                            <div class="">
+                                                <label>Type de production</label>
+                                                <select class="form-control" id="typeProductionTab">
+                                                    <option value="publication">Publication</option>
+                                                    <option value="communication">Communication</option>
+                                                    <option value="ouvrage">Ouvrage</option>
+                                                    <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                                    <option value="doctorat">Thèse de doctorat</option>
+                                                    <option value="master">PFE Master</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        </div>
                                     </div>
 
                                     <div class="content">
-                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
-                                        <table id="showTable" class="table table-hover">
-                                            <thead>
-                                                <th>Titre</th>
-                                                <th>Date</th>
-                                                <th>Type</th>
-                                                <th>Projet</th>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+                                        <div id="theTable"></div>
                                     </div>
                                 </div>
                             </div>
                             `);
-                            productions.forEach(production => {
-                                if(production.codeproj == undefined) production.codeproj = '';
-                                $('tbody').append(`
-                                    <tr>
-                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
-                                    <td>${production.date}</td>
-                                    <td>${production.type}</td>
-                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
-                                    </tr>
-                                `);                    
+                            $('#typeProductionTab').selectpicker();
+                            $('#typeProductionTab').change(function(){
+                                var typeProduction = $(this).val();
+                                switch(typeProduction){
+                                    case 'publication':
+                                        $('#theTable').html(`
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                                <th>Revue</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>`);
+                                        productions.forEach(production => {
+                                            if(production.type == 'publication')
+                                            $('tbody').append(`
+                                                <tr>
+                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                    <td>${production.date}</td>
+                                                    <td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                </tr>
+                                            `);
+                                        });
+                                        $('#theTable tbody').on('click', 'button[coderevue="coderevue"]', function(){
+                                            var coderevue = production.coderevue;
+                                            $.confirm({
+                                                content: function(){
+                                                    var self = this;
+                                                    self.setTitle("Informations supplémentaires sur la revue");
+                                                    $.get("ajax/rechercheAjax.php",{coderevue: coderevue},function(data){
+                                                        self.setContent(data.slice(2,-1));
+                                                    });
+                                                },
+                                                buttons:{
+                                                    ok: {
+                                                        text: "Fermer",
+                                                        keys: ["enter"]
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    break;
+                                    case 'communication':
+                                        $('#theTable').html(`
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                                <th>Conférence</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>`);
+                                        productions.forEach(production => {
+                                            if(production.type == 'communication')
+                                            $('tbody').append(`
+                                                <tr>
+                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                    <td>${production.date}</td>
+                                                    <td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                </tr>
+                                            `);
+                                        });
+                                        $('#theTable tbody').on('click', 'button[codeconf="codeconf"]', function(){
+                                            var codeconf = production.coderevue;
+                                            $.confirm({
+                                                content: function(){
+                                                    var self = this;
+                                                    self.setTitle("Informations supplémentaires sur la conférence");
+                                                    $.get("ajax/rechercheAjax.php",{codeconf: codeconf},function(data){
+                                                        self.setContent(data.slice(2,-1));
+                                                    });
+                                                },
+                                                buttons:{
+                                                    ok: {
+                                                        text: "Fermer",
+                                                        keys: ["enter"]
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    break;
+                                    case 'ouvrage':
+                                        $('#theTable').html(`
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>`);
+                                        productions.forEach(production => {
+                                            if(production.type == 'ouvrage')
+                                            $('tbody').append(`
+                                                <tr>
+                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                    <td>${production.date}</td>
+                                                </tr>
+                                            `);
+                                        });
+                                    break;
+                                    case 'chapitreOuvrage':
+                                        $('#theTable').html(`
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>`);
+                                        productions.forEach(production => {
+                                            if(production.type == 'chapitreOuvrage')
+                                            $('tbody').append(`
+                                                <tr>
+                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                    <td>${production.date}</td>
+                                                </tr>
+                                            `);
+                                        });
+                                    break;
+                                    case 'master':
+                                        $('#theTable').html(`
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>`);
+                                        productions.forEach(production => {
+                                            if(production.type == 'master')
+                                            $('tbody').append(`
+                                                <tr>
+                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                    <td>${production.date}</td>
+                                                </tr>
+                                            `);
+                                        });
+                                    break;
+                                    case 'doctorat':
+                                        $('#theTable').html(`
+                                        <table id="showTable" class="table table-hover">
+                                            <thead>
+                                                <th>Titre</th>
+                                                <th>Date</th>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>`);
+                                        productions.forEach(production => {
+                                            if(production.type == 'doctorat')
+                                            $('tbody').append(`
+                                                <tr>
+                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                    <td>${production.date}</td>
+                                                </tr>
+                                            `);
+                                        });
+                                    break;
+                                }
+                                $('table').DataTable(fr_table());
+                                init_codepro();
                             });
+                            $('#typeProductionTab').trigger('change');
                             input.export = 'true';
-                            $('#showTable').DataTable(fr_table())
-                            init_codepro();
                             $('button[exporter="exporter"]').click(function(){
                                 var exporter = $(this);
                                 $.get("ajax/bilanAjax.php",input,function(data){
                                     if($('a[download="production"]').length == 0)
-                                        exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                        exporter.after(` =>  <a class="btn btn-success" style="padding-left:0px;border:0px;font-size:16px;font-weight:bold;" download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
                                 });
                             });
                         });
@@ -781,42 +937,222 @@
                                             <div class="col-md-12">
 
                                                 <div class="header">
+                                                    <p><button type="button" class="btn btn-success" style="font-size:16px;font-weight:bold;" exporter="exporter">Exporter</button></p>
                                                     <h4 class="title">Liste des productions</h4>
-                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
+                                                    <div class="col-md-3" style="margin-bottom:10px;padding-left:0px;">
+                                                        <div class="">
+                                                            <label>Type de production</label>
+                                                            <select class="form-control" id="typeProductionTab">
+                                                                <option value="publication">Publication</option>
+                                                                <option value="communication">Communication</option>
+                                                                <option value="ouvrage">Ouvrage</option>
+                                                                <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                                                <option value="doctorat">Thèse de doctorat</option>
+                                                                <option value="master">PFE Master</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="content">
-                                                    <table id="showTable" class="table table-hover">
-                                                        <thead>
-                                                            <th>Titre</th>
-                                                            <th>Date</th>
-                                                            <th>Type</th>
-                                                            <th>Projet</th>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                    </table>
+                                                    <div id="theTable"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         `);
-                                        productions.forEach(production => {
-                                            if(production.codeproj == undefined) production.codeproj = ''; 
-                                            $('tbody').append(`
-                                                <tr>
-                                                <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
-                                                <td>${production.date}</td>
-                                                <td>${production.type}</td>
-                                                <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
-                                                </tr>
-                                            `);                    
+                                        $('#typeProductionTab').selectpicker();
+                                        $('#typeProductionTab').change(function(){
+                                            var typeProduction = $(this).val();
+                                            switch(typeProduction){
+                                                case 'publication':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Revue</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'publication'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                    $('#theTable tbody').on('click', 'button[coderevue="coderevue"]', function(){
+                                                        var coderevue = production.coderevue;
+                                                        $.confirm({
+                                                            content: function(){
+                                                                var self = this;
+                                                                self.setTitle("Informations supplémentaires sur la revue");
+                                                                $.get("ajax/rechercheAjax.php",{coderevue: coderevue},function(data){
+                                                                    self.setContent(data.slice(2,-1));
+                                                                });
+                                                            },
+                                                            buttons:{
+                                                                ok: {
+                                                                    text: "Fermer",
+                                                                    keys: ["enter"]
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                break;
+                                                case 'communication':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Conférence</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'communication'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                    $('#theTable tbody').on('click', 'button[codeconf="codeconf"]', function(){
+                                                        var codeconf = production.coderevue;
+                                                        $.confirm({
+                                                            content: function(){
+                                                                var self = this;
+                                                                self.setTitle("Informations supplémentaires sur la conférence");
+                                                                $.get("ajax/rechercheAjax.php",{codeconf: codeconf},function(data){
+                                                                    self.setContent(data.slice(2,-1));
+                                                                });
+                                                            },
+                                                            buttons:{
+                                                                ok: {
+                                                                    text: "Fermer",
+                                                                    keys: ["enter"]
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                break;
+                                                case 'ouvrage':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'ouvrage'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'chapitreOuvrage':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'chapitreOuvrage'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'master':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'master'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'doctorat':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'doctorat'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                            }
+                                            $('table').DataTable(fr_table());
+                                            init_codepro();
                                         });
-                                        $('#showTable').DataTable(fr_table());
-                                        init_codepro();
+                                        $('#typeProductionTab').trigger('change');
                                         $('button[exporter="exporter"]').click(function(){
                                             var exporter = $(this);
                                             $.get("ajax/bilanAjax.php",{export: 'true', bilancher: idcher, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                                 if($('a[download="production"]').length == 0)
-                                                    exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                                    exporter.after(` =>  <a class="btn btn-success" style="padding-left:0px;border:0px;font-size:16px;font-weight:bold;" download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
                                             });
                                         });
                                     });
@@ -1054,42 +1390,222 @@
                                             <div class="col-md-12">
 
                                                 <div class="header">
+                                                    <p><button type="button" class="btn btn-success" style="font-size:16px;font-weight:bold;" exporter="exporter">Exporter</button></p>
                                                     <h4 class="title">Liste des productions</h4>
-                                                <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
+                                                    <div class="col-md-3" style="margin-bottom:10px;padding-left:0px;">
+                                                        <div class="">
+                                                            <label>Type de production</label>
+                                                            <select class="form-control" id="typeProductionTab">
+                                                                <option value="publication">Publication</option>
+                                                                <option value="communication">Communication</option>
+                                                                <option value="ouvrage">Ouvrage</option>
+                                                                <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                                                <option value="doctorat">Thèse de doctorat</option>
+                                                                <option value="master">PFE Master</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="content">
-                                                    <table id="showTable" class="table table-hover">
-                                                        <thead>
-                                                            <th>Titre</th>
-                                                            <th>Date</th>
-                                                            <th>Type</th>
-                                                            <th>Projet</th>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                    </table>
+                                                    <div id="theTable"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         `);
-                                        productions.forEach(production => {
-                                            if(production.codeproj == undefined) production.codeproj = ''; 
-                                            $('tbody').append(`
-                                                <tr>
-                                                <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
-                                                <td>${production.date}</td>
-                                                <td>${production.type}</td>
-                                                <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
-                                                </tr>
-                                            `);                    
+                                        $('#typeProductionTab').selectpicker();
+                                        $('#typeProductionTab').change(function(){
+                                            var typeProduction = $(this).val();
+                                            switch(typeProduction){
+                                                case 'publication':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Revue</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'publication'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                    $('#theTable tbody').on('click', 'button[coderevue="coderevue"]', function(){
+                                                        var coderevue = production.coderevue;
+                                                        $.confirm({
+                                                            content: function(){
+                                                                var self = this;
+                                                                self.setTitle("Informations supplémentaires sur la revue");
+                                                                $.get("ajax/rechercheAjax.php",{coderevue: coderevue},function(data){
+                                                                    self.setContent(data.slice(2,-1));
+                                                                });
+                                                            },
+                                                            buttons:{
+                                                                ok: {
+                                                                    text: "Fermer",
+                                                                    keys: ["enter"]
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                break;
+                                                case 'communication':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Conférence</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'communication'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                    $('#theTable tbody').on('click', 'button[codeconf="codeconf"]', function(){
+                                                        var codeconf = production.coderevue;
+                                                        $.confirm({
+                                                            content: function(){
+                                                                var self = this;
+                                                                self.setTitle("Informations supplémentaires sur la conférence");
+                                                                $.get("ajax/rechercheAjax.php",{codeconf: codeconf},function(data){
+                                                                    self.setContent(data.slice(2,-1));
+                                                                });
+                                                            },
+                                                            buttons:{
+                                                                ok: {
+                                                                    text: "Fermer",
+                                                                    keys: ["enter"]
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                break;
+                                                case 'ouvrage':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'ouvrage'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'chapitreOuvrage':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'chapitreOuvrage'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'master':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'master'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'doctorat':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'doctorat'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                            }
+                                            $('table').DataTable(fr_table());
+                                            init_codepro();
                                         });
-                                        $('#showTable').DataTable(fr_table());
-                                        init_codepro();
+                                        $('#typeProductionTab').trigger('change');
                                         $('button[exporter="exporter"]').click(function(){
                                             var exporter = $(this);
                                             $.get("ajax/bilanAjax.php",{export: 'true', bilanequipe: idequipe, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                                 if($('a[download="production"]').length == 0)
-                                                    exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                                    exporter.after(` =>  <a class="btn btn-success" style="padding-left:0px;border:0px;font-size:16px;font-weight:bold;" download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
                                             });
                                         });
                                     });
@@ -1312,42 +1828,222 @@
                                             <div class="col-md-12">
 
                                                 <div class="header">
+                                                    <p><button type="button" class="btn btn-success" style="font-size:16px;font-weight:bold;" exporter="exporter">Exporter</button></p>
                                                     <h4 class="title">Liste des productions</h4>
-                                                    <p><button type="button" class="btn btn-info" style="border:0px;font-size:16px;" exporter="exporter">Importer</button></p>
+                                                    <div class="col-md-3" style="margin-bottom:10px;padding-left:0px;">
+                                                        <div class="">
+                                                            <label>Type de production</label>
+                                                            <select class="form-control" id="typeProductionTab">
+                                                                <option value="publication">Publication</option>
+                                                                <option value="communication">Communication</option>
+                                                                <option value="ouvrage">Ouvrage</option>
+                                                                <option value="chapitreOuvrage">Chapitre d'ouvrage</option>
+                                                                <option value="doctorat">Thèse de doctorat</option>
+                                                                <option value="master">PFE Master</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="content">
-                                                    <table id="showTable" class="table table-hover">
-                                                        <thead>
-                                                            <th>Titre</th>
-                                                            <th>Date</th>
-                                                            <th>Type</th>
-                                                            <th>Projet</th>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                    </table>
+                                                    <div id="theTable"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         `);
-                                        productions.forEach(production => {
-                                            if(production.codeproj == undefined) production.codeproj = ''; 
-                                            $('tbody').append(`
-                                                <tr>
-                                                <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
-                                                <td>${production.date}</td>
-                                                <td>${production.type}</td>
-                                                <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
-                                                </tr>
-                                            `);                    
+                                        $('#typeProductionTab').selectpicker();
+                                        $('#typeProductionTab').change(function(){
+                                            var typeProduction = $(this).val();
+                                            switch(typeProduction){
+                                                case 'publication':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Revue</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'publication'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                    $('#theTable tbody').on('click', 'button[coderevue="coderevue"]', function(){
+                                                        var coderevue = production.coderevue;
+                                                        $.confirm({
+                                                            content: function(){
+                                                                var self = this;
+                                                                self.setTitle("Informations supplémentaires sur la revue");
+                                                                $.get("ajax/rechercheAjax.php",{coderevue: coderevue},function(data){
+                                                                    self.setContent(data.slice(2,-1));
+                                                                });
+                                                            },
+                                                            buttons:{
+                                                                ok: {
+                                                                    text: "Fermer",
+                                                                    keys: ["enter"]
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                break;
+                                                case 'communication':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Conférence</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'communication'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.coderevue}">${production.nomrevue}</button></td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                    $('#theTable tbody').on('click', 'button[codeconf="codeconf"]', function(){
+                                                        var codeconf = production.coderevue;
+                                                        $.confirm({
+                                                            content: function(){
+                                                                var self = this;
+                                                                self.setTitle("Informations supplémentaires sur la conférence");
+                                                                $.get("ajax/rechercheAjax.php",{codeconf: codeconf},function(data){
+                                                                    self.setContent(data.slice(2,-1));
+                                                                });
+                                                            },
+                                                            buttons:{
+                                                                ok: {
+                                                                    text: "Fermer",
+                                                                    keys: ["enter"]
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                break;
+                                                case 'ouvrage':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'ouvrage'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'chapitreOuvrage':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'chapitreOuvrage'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'master':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'master'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                                case 'doctorat':
+                                                    $('#theTable').html(`
+                                                    <table id="showTable" class="table table-hover">
+                                                        <thead>
+                                                            <th>Titre</th>
+                                                            <th>Date</th>
+                                                            <th>Projet</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>`);
+                                                    productions.forEach(production => {
+                                                        if(production.type == 'doctorat'){
+                                                            if(production.codeproj == undefined) production.codeproj = '';
+                                                            $('tbody').append(`
+                                                                <tr>
+                                                                    <td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codepro}">${production.titre}</button></td>
+                                                                    <td>${production.date}</td>
+                                                                    <td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="${production.codeproj}">${production.codeproj}</button></td>
+                                                                </tr>
+                                                            `);
+                                                        }
+                                                    });
+                                                break;
+                                            }
+                                            $('table').DataTable(fr_table());
+                                            init_codepro();
                                         });
-                                        $('#showTable').DataTable(fr_table());
-                                        init_codepro();
+                                        $('#typeProductionTab').trigger('change');
                                         $('button[exporter="exporter"]').click(function(){
                                             var exporter = $(this);
                                             $.get("ajax/bilanAjax.php",{export: 'true', bilanlabo: idlabo, deb: deb, fin: fin, typeProduction: typeProduction},function(data){
                                                 if($('a[download="production"]').length == 0)
-                                                    exporter.after(` =>  <a download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
+                                                    exporter.after(` =>  <a class="btn btn-success" style="padding-left:0px;border:0px;font-size:16px;font-weight:bold;" download="production" target="_blank" href="ajax/tempo/productions.xlsx">Télécharger</a>`);
                                             });
                                         });
                                     });
