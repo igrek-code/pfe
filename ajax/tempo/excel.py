@@ -404,7 +404,7 @@ def insert_master(worksheet, masters, row):
     worksheet.write(row, 0, 'Les soutenances de Master', bold)
     row += 2
     columns = [
-        'Titre', 'Année-Mois', 'Promoteur', 'Spécialité', 'Lieu'  
+        'Titre', 'N° Projet', 'Année-Mois', 'Promoteur', 'Spécialité', 'Lieu'  
     ]
     col = 0
     for column in columns:

@@ -401,6 +401,7 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $nprojet = mysqli_real_escape_string($db,$_POST["nprojet"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
@@ -415,7 +416,7 @@
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE pfemaster SET titre='".$titreProduction."', encadreur='".$encadreurProduction."', lieusout='".$lieusoutProduction."' WHERE codepro='".$codepro."'";
+        $sql = "UPDATE pfemaster SET titre='".$titreProduction."', encadreur='".$encadreurProduction."', lieusout='".$lieusoutProduction."', nprojet='".$nprojet."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "DELETE FROM motscle WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;

@@ -42,6 +42,7 @@
             echo '<div class="content">
             <table class="table table-hover">
                 <thead>
+                    <th>n projet</th>
                     <th>Lieu</th>
                     <th>Domaine</th>
                     <th>Spécialités</th>
@@ -55,6 +56,7 @@
             while($row = mysqli_fetch_array($result)){
                 $codepro = $row["codepro"];
                 $titre = $row["titre"];
+                $nprojet = $row["nprojet"];
                 $lieusout = $row["lieusout"];
                 $encadreur = $row["encadreur"];
                 $sql = "SELECT * FROM chercheur WHERE idcher='".$encadreur."'";
@@ -92,6 +94,7 @@
                         $codeproj = $row2['codeproj'];
                 }
                 echo    '<tr>';
+                echo    '<td>'.$nprojet.'</td>';
                 echo    '<td>'.$lieusout.'</td>';
                 echo    '<td>'.$nomDomaine.'</td>';
                 echo    '<td>'.$nomspe.'</td>'; 
@@ -1307,6 +1310,7 @@
                     if(mysqli_num_rows($result) > 0){
                         $row = mysqli_fetch_array($result);
                         $titre = $row["titre"];
+                        $nprojet = $row["nprojet"];
                         $lieusout = $row["lieusout"];
                         $encadreur = $row["encadreur"];
                         $sql = "SELECT * FROM chercheur WHERE idcher='".$encadreur."'";
@@ -1333,6 +1337,7 @@
                             $date = mysqli_fetch_array($result2)["date"]; 
                         }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
+                        echo '<span class="text-info">N° Projet: </span>'.$nprojet.'<br>';
                         echo '<span class="text-info">Date de soutenance: </span>'.$date.'<br>';
                         echo '<span class="text-info">Lieu: </span>'.$lieusout.'<br>';
                         echo '<span class="text-info">Domaine: </span>'.$nomDomaine.'<br>';

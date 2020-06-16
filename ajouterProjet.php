@@ -239,7 +239,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>intitulé</label>
-                                        <input minlength="5" maxlength="50" type="text" name="intitule" class="form-control" placeholder="Intitulé du projet" required>
+                                        <input minlength="5" maxlength="250" type="text" name="intitule" class="form-control" placeholder="Intitulé du projet" required>
                                     </div>
                                 </div>
                             </div>  

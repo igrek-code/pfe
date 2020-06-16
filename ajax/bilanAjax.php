@@ -453,6 +453,7 @@
 
         class master{
             public $titre;
+            public $nprojet;
             public $date;
             public $encadreur;
             public $specialite;
@@ -1019,6 +1020,7 @@
                             $row2 = mysqli_fetch_array($result2);
                             $master = new master();
                             $master->titre = $row2['titre'];
+                            $master->nprojet = $row2['nprojet'];
                             $master->date = $row['date'];
                             $master->lieu = $row2['lieusout'];
                             $encadreur = $row2['encadreur'];

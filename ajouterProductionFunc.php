@@ -386,6 +386,7 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $nprojet = mysqli_real_escape_string($db,$_POST["nprojet"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
         else $codeproj = "'".$codeproj."'";
@@ -405,7 +406,7 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO pfemaster (codepro,titre,encadreur,lieusout,idspe) VALUES ('".$codepro."','".$titreProduction."','".$encadreurProduction."','".$lieusoutProduction."','".$idspeProduction."')";
+        $sql = "INSERT INTO pfemaster (codepro,titre,encadreur,lieusout,idspe,nprojet) VALUES ('".$codepro."','".$titreProduction."','".$encadreurProduction."','".$lieusoutProduction."','".$idspeProduction."','".$nprojet."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);

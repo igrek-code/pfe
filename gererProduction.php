@@ -529,7 +529,7 @@
 
                 $('#searchInfo').html(`
                     PFE MASTER: <br>
-                    -Titre, date de soutenance, lieu, domaine, spécialités, mots-clés, encadreur
+                    -Titre, n° projet, date de soutenance, lieu, domaine, spécialités, mots-clés, encadreur
                 `);
 
                 $('#searchBox').html(`
@@ -537,6 +537,7 @@
                     <label>PFE Master: </label>
                     <select id="searchOuv" class="form-control selectpicker" title="PFE...">
                         <option value="titre">Titre</option>
+                        <option value="nproj">N° Projet</option>
                         <option value="date">Date de soutenance</option>
                         <option value="lieusout">Lieu</option>
                         <option value="nomDomaine">Domaine</option>
@@ -555,36 +556,40 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
-                        case 'codeproj':
-                            column = 7;
-                        break;
-
-                        case 'titre':
-                            column = 5;
-                        break;
-                        
-                        case 'date':
-                            column = 6;
-                        break;
-
-                        case 'lieusout':
+                        case 'nproj':
                             column = 0;
                         break;
 
-                        case 'nomDomaine':
+                        case 'codeproj':
+                            column = 8;
+                        break;
+
+                        case 'titre':
+                            column = 6;
+                        break;
+                        
+                        case 'date':
+                            column = 7;
+                        break;
+
+                        case 'lieusout':
                             column = 1;
                         break;
 
-                        case 'nomspe':
+                        case 'nomDomaine':
                             column = 2;
                         break;
 
-                        case 'motscle':
+                        case 'nomspe':
                             column = 3;
+                        break;
+
+                        case 'motscle':
+                            column = 4;
                         break;  
 
                         case 'encadreur':
-                            column = 4;
+                            column = 5;
                         break;
 
                         default:
@@ -1074,7 +1079,7 @@
                     case 'master':
                         columnDefs=[
                             {targets: [-1], orderable: false, "width": "105px"},
-                            {targets: Array.from({length: 5}, (x,i) => i), visible: false}
+                            {targets: Array.from({length: 6}, (x,i) => i), visible: false}
                         ]    
                     break;
 

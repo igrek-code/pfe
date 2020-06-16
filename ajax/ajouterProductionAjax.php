@@ -471,7 +471,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>№ d\'ORDRE</label>
-                        <input required class="form-control" name="nordreProduction" type="number" placeholder="№ d\'ordre">
+                        <input required class="form-control" name="nordreProduction" type="text" maxlength="100" placeholder="№ d\'ordre">
                     </div>
                 </div>
             </div>
@@ -525,7 +525,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date de soutenance</label>
-                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de soutenance">
                     </div>
                 </div>
             </div>
@@ -563,7 +563,16 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
-                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
+                        <input required class="form-control" name="titreProduction" type="text" placeholder="Titre du PFE">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>№ projet</label>
+                        <input required class="form-control" name="nprojet" type="text" placeholder="Numéro du projet">
                     </div>
                 </div>
             </div>
@@ -581,7 +590,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>domaine</label>
-                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
+                        <input required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine du PFE">
                     </div>
                 </div>
             </div>
@@ -590,7 +599,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>spécialités</label>
-                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
+                        <input maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités du PFE">
                     </div>
                 </div>
             </div>
@@ -599,7 +608,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>mots-clés (séparés par , )</label>
-                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés de la thèse">
+                        <input required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clés du PFE">
                     </div>
                 </div>
             </div>
@@ -608,7 +617,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date de soutenance</label>
-                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                        <input required class="form-control" name="dateProduction" type="month" placeholder="Date de soutenance">
                     </div>
                 </div>
             </div>

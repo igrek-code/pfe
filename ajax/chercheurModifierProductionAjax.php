@@ -1359,7 +1359,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>№ ORDRE</label>
-                        <input value="'.$nordre.'" required class="form-control" name="nordreProduction" type="number" placeholder="№ ordre">
+                        <input value="'.$nordre.'" required class="form-control" name="nordreProduction" type="text" maxlength="100" placeholder="№ ordre">
                     </div>
                 </div>
             </div>
@@ -1419,7 +1419,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date de soutenance</label>
-                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de soutenance">
                     </div>
                 </div>
             </div>
@@ -1457,6 +1457,7 @@
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
                     $titre = $row["titre"];
+                    $nprojet = $row["nprojet"];
                     $lieusout = $row["lieusout"];
                     $encadreur = $row["encadreur"];
                     $idspe = $row["idspe"];
@@ -1525,7 +1526,16 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>titre</label>
-                        <input value="'.$titre.'" required class="form-control" name="titreProduction" type="text" placeholder="Titre de la thèse">
+                        <input value="'.$titre.'" required class="form-control" name="titreProduction" type="text" placeholder="Titre du PFE">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>№ projet</label>
+                        <input value="'.$nprojet.'" required class="form-control" name="nprojet" type="text" placeholder="Numéro du projet">
                     </div>
                 </div>
             </div>
@@ -1543,7 +1553,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>domaine</label>
-                        <input value="'.$nomDomaine.'" required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine de la thèse">
+                        <input value="'.$nomDomaine.'" required maxlength="50" class="form-control" name="codeDomaineProduction" type="text" placeholder="Domaine du PFE">
                     </div>
                 </div>
             </div>
@@ -1552,7 +1562,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>spécialités</label>
-                        <input value="'.$nomspe.'" maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités de la thèse">
+                        <input value="'.$nomspe.'" maxlength="255" required class="form-control" name="idspeProduction" type="text" placeholder="Spécialités du PFE">
                     </div>
                 </div>
             </div>
@@ -1567,7 +1577,7 @@
                             echo $motscles[$i].',';
                         }
                         echo $motscles[$length-1];
-                        echo'" required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès de la thèse">
+                        echo'" required class="form-control" name="motsclesProduction" type="text" placeholder="Mots-clès du PFE">
                     </div>
                 </div>
             </div>
@@ -1576,7 +1586,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Date de soutenance</label>
-                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de la thèse">
+                        <input value="'.$date.'" required class="form-control" name="dateProduction" type="month" placeholder="Date de soutenance">
                     </div>
                 </div>
             </div>
