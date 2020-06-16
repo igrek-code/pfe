@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 12 juin 2020 à 15:11
+-- Généré le : mar. 16 juin 2020 à 16:54
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -561,7 +561,9 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (152, 'informatique'),
 (153, 'informatique'),
 (154, 'informatique'),
-(155, 'informatique');
+(155, 'informatique'),
+(156, 'C2C3'),
+(157, 'C2C3');
 
 -- --------------------------------------------------------
 
@@ -939,7 +941,6 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`idcher`, `titre`, `date`, `type`, `admin`, `forEquipe`) VALUES
-(0, 'etablir bilan laboratoire', '2020-06-01', 'urgent', 1, 0),
 (16, 'bilan svp faite vite', '2020-05-31', 'pasUrgent', 0, 0),
 (16, 'ddzdaz', '2020-05-26', 'urgent', 0, 1),
 (16, 'whateverlol', '2020-05-28', 'pasUrgent', 0, 0),
@@ -984,6 +985,7 @@ INSERT INTO `ouvrage` (`codepro`, `idspe`, `titre`, `nbpages`, `editeur`, `url`,
 CREATE TABLE `pfemaster` (
   `codepro` int(12) NOT NULL,
   `titre` varchar(255) NOT NULL,
+  `nprojet` varchar(100) NOT NULL,
   `idspe` int(12) NOT NULL,
   `encadreur` int(12) NOT NULL,
   `lieusout` varchar(40) NOT NULL
@@ -993,15 +995,15 @@ CREATE TABLE `pfemaster` (
 -- Déchargement des données de la table `pfemaster`
 --
 
-INSERT INTO `pfemaster` (`codepro`, `titre`, `idspe`, `encadreur`, `lieusout`) VALUES
-(125, 'plateforme de services basée IoT : application à la e-santé', 153, 30, 'usthb'),
-(126, 'Relocation de capteurs dans les réseaux de capteurs et robots sans fils', 154, 85, 'usthb'),
-(127, 'Détection et réparation de trous dans les réseaux de capteurs et de robots sans fil', 155, 85, 'usthb'),
-(128, 'Conception et réalisation d’une application pour l’évaluation de la performance commerciale d’une entreprise', 156, 53, 'usthb'),
-(129, 'Analyse des modèles de processus Workflow orientés services sur la base de métriques', 157, 53, 'usthb'),
-(130, 'Approche de recommandation de services basée sur les Réseaux Sociaux dans un Cloud', 158, 56, 'usthb'),
-(131, 'Approche de recommandation et de design de cubes de données dans un Cloud', 159, 56, 'usthb'),
-(132, 'Conception et réalisation d’un système d’extraction et d’intégration des Linked Open Data dans un contexte de Business Intelligence', 160, 56, 'usthb');
+INSERT INTO `pfemaster` (`codepro`, `titre`, `nprojet`, `idspe`, `encadreur`, `lieusout`) VALUES
+(125, 'plateforme de services basée IoT : application à la e-santé', '', 153, 30, 'usthb'),
+(126, 'Relocation de capteurs dans les réseaux de capteurs et robots sans fils', '', 154, 85, 'usthb'),
+(127, 'Détection et réparation de trous dans les réseaux de capteurs et de robots sans fil', '', 155, 85, 'usthb'),
+(128, 'Conception et réalisation d’une application pour l’évaluation de la performance commerciale d’une entreprise', '', 156, 53, 'usthb'),
+(129, 'Analyse des modèles de processus Workflow orientés services sur la base de métriques', '', 157, 53, 'usthb'),
+(130, 'Approche de recommandation de services basée sur les Réseaux Sociaux dans un Cloud', '', 158, 56, 'usthb'),
+(131, 'Approche de recommandation et de design de cubes de données dans un Cloud', '', 159, 56, 'usthb'),
+(132, 'Conception et réalisation d’un système d’extraction et d’intégration des Linked Open Data dans un contexte de Business Intelligence', '', 160, 56, 'usthb');
 
 -- --------------------------------------------------------
 
@@ -1371,7 +1373,9 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (160, 'système d’extraction et d’intégration', '', 152),
 (161, 'test', '', 96),
 (162, 'du du du', '', 96),
-(163, 'du du du', '', 96);
+(163, 'du du du', '', 96),
+(164, 'C2C3', '', 156),
+(165, 'OU', '', 157);
 
 -- --------------------------------------------------------
 
@@ -1417,7 +1421,7 @@ CREATE TABLE `these` (
   `titre` varchar(255) NOT NULL,
   `encadreur` int(12) NOT NULL,
   `lieusout` varchar(40) NOT NULL,
-  `nordre` int(11) NOT NULL,
+  `nordre` varchar(100) NOT NULL,
   `url` varchar(255) DEFAULT NULL,
   `idspe` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1427,8 +1431,8 @@ CREATE TABLE `these` (
 --
 
 INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
-(9, 'DB', 16, 'DB', 5, 'DB', 29),
-(50, 'DB', 16, 'DB', 5, 'DB', 78);
+(9, 'DB', 16, 'DB', '5', 'DB', 29),
+(50, 'DB', 16, 'DB', '5', 'DB', 78);
 
 -- --------------------------------------------------------
 
@@ -1787,7 +1791,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -1817,7 +1821,7 @@ ALTER TABLE `laboratoire`
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT pour la table `revue`
@@ -1829,7 +1833,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
