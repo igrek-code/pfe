@@ -114,7 +114,7 @@
                 echo    '<td>'.$encadreur.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($codeproj))
+                if(isset($row2['codeproj']))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
@@ -214,7 +214,7 @@
                 echo    '<td>'.$encadreur.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($codeproj))
+                if(isset($row2['codeproj']))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
@@ -223,6 +223,16 @@
                 else
                     echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
                 echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
+                echo   '<td>';
+                echo    '<div class="btn-toolbar">';
+                echo    '<div class="btn-group">';
+                echo    '<button value="'.$codepro.'" title="valider" class="btn btn-fill btn-success">Valider</button>';
+                echo    '</div>';
+                echo    '<div class="btn-group">';
+                echo    '<button  value="'.$codepro.'" title="supprimer" class="btn-fill btn btn-danger">Supprimer</button>';
+                echo    '</div>';
+                echo    '</div>';
+                echo   '</td>';
                 echo    '</tr>';
             }
             echo '</tbody></table></div>';
@@ -358,7 +368,7 @@
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($codeproj))
+                if(isset($row2['codeproj']))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
@@ -508,7 +518,7 @@
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($codeproj))
+                if(isset($row2['codeproj']))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
@@ -681,7 +691,7 @@
                 echo    '<td>'.$pays.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($codeproj))
+                if(isset($row2['codeproj']))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';
@@ -916,7 +926,7 @@
                 echo    '<td>'.$pays.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($codeproj))
+                if(isset($row2['codeproj']))
                     echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
                     else    
                     echo '<td></td>';

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 16 juin 2020 à 16:54
+-- Généré le : mer. 17 juin 2020 à 21:58
 -- Version du serveur :  10.4.11-MariaDB
--- Version de PHP : 7.4.3
+-- Version de PHP : 7.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -70,7 +70,6 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (16, '', 56),
 (16, '', 58),
 (0, 'verifP', 101),
-(40, '', 103),
 (31, '', 104),
 (31, '', 105),
 (38, '', 106),
@@ -91,7 +90,20 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (45, '', 121),
 (0, 'Khadidja Bennaceur', 122),
 (66, '', 123),
-(67, '', 124);
+(67, '', 124),
+(42, '', 138),
+(0, 'Mahseur mohamed', 139),
+(32, '', 152),
+(0, 'Mohamed Boubenia', 153),
+(0, 'Koubai Nesrine', 154),
+(55, '', 155),
+(0, 'Wassila Guendouzi', 159),
+(67, '', 160),
+(0, 'L.Mokdad', 161),
+(96, '', 164),
+(76, '', 165),
+(96, '', 166),
+(53, '', 167);
 
 -- --------------------------------------------------------
 
@@ -116,7 +128,8 @@ CREATE TABLE `chapitredouvrage` (
 
 INSERT INTO `chapitredouvrage` (`codepro`, `titre`, `editeur`, `volume`, `url`, `idspe`, `pages`, `isbn`) VALUES
 (113, 'Novel Design and Applications of Robotic', 'IGI Global', 7, 'https://www.igi-global.com/gateway/chapter/212064', 133, '188-216', '9781522552765'),
-(114, 'Sensing Platforms for Prototyping and Ex', 'IGI Global', 13, 'https://www.igi-global.com/chapter/sensing-platforms-for-prototyping-and-experimenting-wearable-continuous-health-monitoring-systems/238980', 134, '212-223', '9781799810902');
+(114, 'Sensing Platforms for Prototyping and Ex', 'IGI Global', 13, 'https://www.igi-global.com/chapter/sensing-platforms-for-prototyping-and-experimenting-wearable-continuous-health-monitoring-systems/238980', 134, '212-223', '9781799810902'),
+(159, 'An Enhanced Bat Echolocation Approach fo', 'Springer', 3, 'https://www.springer.com/gp/book/9783319582528', 196, '477-493', ' 978-3-319-58253-5');
 
 -- --------------------------------------------------------
 
@@ -179,6 +192,7 @@ CREATE TABLE `chefproj` (
 INSERT INTO `chefproj` (`idcher`, `codeproj`) VALUES
 (30, 'C00L07UN160420180002'),
 (38, 'C00L07UN160420180017'),
+(39, 'C00L07UN160420180016'),
 (49, 'B*00220130123');
 
 -- --------------------------------------------------------
@@ -217,7 +231,7 @@ INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `gradeC`, `profil`) V
 (36, 'Zebbouchi Karima', 'Zebouchi_karima@live.fr', '', 'Doctorant', 'doctorant'),
 (37, 'Boubenia Mohamed', 'mboubenia@live.fr', '', 'Doctorant', 'doctorant'),
 (38, 'Ahmed Nacer Mohamed	', 'anacer@mail.cerist.dz', 'PROF', 'Directeur de recherche', 'permanent'),
-(39, 'Boukra Abdelmadjid', 'amboukra@yahoo.fr', 'PROF', 'Maitre de recherche', 'permanent'),
+(39, 'Boukra Abdelmadjid', 'amboukra@yahoo.fr', 'PROF', 'Directeur de recherche', 'permanent'),
 (40, 'Berbar Ahmed', 'berbar@hotmail.com', 'MAA', 'Directeur de recherche', 'permanent'),
 (41, 'Boussaid Ilhem', 'Ilhem_boussaid@yahoo.fr', 'MCB', 'Attaché de recherche', 'permanent'),
 (42, 'Benabidallah Rymel', 'relym@hotmail.fr', '', 'Doctorant', 'doctorant'),
@@ -297,6 +311,7 @@ INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
 (0, 'Abdelfetah Hentout', 117),
 (0, 'Abdelfetah Hentout', 118),
 (0, 'Abdelkader Bellarbi', 118),
+(0, 'Abderazzak Henni', 165),
 (0, 'Amad Mourad', 112),
 (0, 'another one', 5),
 (0, 'C23', 4),
@@ -306,38 +321,56 @@ INSERT INTO `coauteurs` (`idcher`, `nom`, `codepro`) VALUES
 (0, 'Garcia-Vidal Jorge', 111),
 (0, 'L.MOKDAD', 123),
 (0, 'Mourad Oussalah', 121),
+(0, 'Mourad Oussalah', 165),
 (0, 'Nadia Zenati', 118),
 (0, 'Nouali-Taboudjemat Nadia', 109),
 (0, 'Samir Benbelkacem', 118),
 (0, 'seba hamida', 109),
 (0, 'what ', 4),
+(0, 'yacine Meraihi', 139),
 (21, '', 5),
 (23, '', 52),
 (23, '', 53),
 (23, '', 54),
 (23, '', 55),
 (23, '', 56),
-(30, '', 103),
 (30, '', 104),
 (30, '', 105),
 (30, '', 115),
 (30, '', 116),
 (30, '', 117),
+(30, '', 152),
 (31, '', 119),
+(31, '', 152),
+(31, '', 153),
+(31, '', 154),
 (32, '', 119),
+(34, '', 152),
 (38, '', 120),
 (38, '', 122),
+(38, '', 138),
 (39, '', 106),
+(39, '', 139),
+(39, '', 159),
+(49, '', 155),
+(49, '', 167),
 (51, '', 109),
 (51, '', 110),
 (51, '', 111),
 (51, '', 112),
 (51, '', 114),
 (66, '', 124),
+(66, '', 160),
+(66, '', 161),
 (67, '', 123),
 (70, '', 107),
 (70, '', 108),
-(70, '', 113);
+(70, '', 113),
+(70, '', 160),
+(70, '', 164),
+(70, '', 166),
+(84, '', 160),
+(84, '', 164);
 
 -- --------------------------------------------------------
 
@@ -358,7 +391,6 @@ CREATE TABLE `communication` (
 --
 
 INSERT INTO `communication` (`codepro`, `titre`, `idspe`, `url`, `codeconf`) VALUES
-(103, 'e-health platform', 108, 'url', 2),
 (115, 'e-health platform', 135, 'url', 2),
 (116, 'Identification in the service of national solidarity', 137, 'http://www.medi-ast.org/sca19/index.html', 3),
 (117, 'Computing and Communication Technologies for Home Health care in Algeria: A Review of the Literature', 139, 'url', 4),
@@ -368,7 +400,16 @@ INSERT INTO `communication` (`codepro`, `titre`, `idspe`, `url`, `codeconf`) VAL
 (121, 'Quality Model to the Adaptive Guidance', 147, 'https://cseit2019.org/ps.html', 8),
 (122, 'Training Function Stability in Anomaly Intrusion Detection based Deep Learning', 149, 'url', 9),
 (123, 'ISOCOV: a New MCDM Method to Handle Value Constraints in Web Service Selection ', 151, 'url', 10),
-(124, 'Formal Approach for Compatibility Checking of Orchestrations of Composite Semantic Web Services', 152, 'url', 10);
+(124, 'Formal Approach for Compatibility Checking of Orchestrations of Composite Semantic Web Services', 152, 'url', 10),
+(138, 'Utilisation des états d’un système de systèmes pour l’identification des comportements émergents négatifs', 170, 'url', 11),
+(139, 'Improved Quantum Chaotic Animal Migration Optimization algorithm for QoS multicast routing problem', 172, 'url', 12),
+(152, 'Smart airport: an IoT-based Airport Management System', 186, 'url', 13),
+(153, 'Toward a Smart Restaurant with Context Management. In Smart Cities Symposium', 188, 'url', 14),
+(154, 'Toward a Smart Restaurant with Context Management', 190, 'url', 15),
+(160, 'Formal Specification and Analysis of a Cross-Layer Overlay P2P Construction Protocol over MANETs', 198, 'http://ieeexplore.ieee.org/document/7925', 16),
+(161, 'Admission Control based on WRR', 199, 'http://ieeexplore.ieee.org/document/7925', 16),
+(164, 'A Clustering-based Replication Strategy for Mobile P2P networks', 203, 'url', 17),
+(165, 'An approach for the dynamic reconfiguration of software architecture', 204, 'url', 17);
 
 -- --------------------------------------------------------
 
@@ -403,7 +444,14 @@ INSERT INTO `conference` (`codeconf`, `nomconf`, `abrv`, `annee`, `idspe`, `them
 (7, 'International Conference on Software Engineering and Computational Intelligence', 'CSECI 2019', '2019', 144, ' Software Engineering and Computational Intelligence', 'annuel', 'internationale', 'A', '', 0),
 (8, '6th International Conference on Computer Science, Engineering and Information Technology ', 'CSEIT-2019', '2019', 146, 'Computer Science, Engineering and Information Technology ', 'annuel', 'internationale', 'A', '', 0),
 (9, 'Conference on Control Automation and Diagnosis', 'ICCAD\'19', '2019', 148, 'Control Automation and Diagnosis', 'annuel', 'internationale', 'A', '', 0),
-(10, 'IEEE ISCC Barcelona', 'IEEE ISCC', '2019', 150, 'IEEE ISCC Barcelona', 'annuel', 'internationale', 'A', '', 0);
+(10, 'IEEE ISCC Barcelona', 'IEEE ISCC', '2019', 150, 'IEEE ISCC Barcelona', 'annuel', 'internationale', 'A', '', 0),
+(11, '27th IEEE International Conference on Enabling Track on Adaptive and Reconfigurable systems and architectures', 'AROSA', '2018', 169, 'Systeme', 'annuel', 'internationale', 'B', '', 0),
+(12, '6th IFIP International Conference on Computational Intelligence and Its Applications', 'IFIP CIIA2018 ', '2018', 171, 'intelligence artificielle', 'annuel', 'nationale', '', 'Algerie', 0),
+(13, 'International Conference on Future Networks and Distributed Systems', 'FTND', '2017', 185, 'Distributed Systems', 'annuel', 'internationale', 'A', '', 0),
+(14, 'International Symposium on Programming and Systems', 'ISPS', '2018', 187, 'Systeme', 'annuel', 'internationale', 'A', '', 0),
+(15, 'In Smart Cities Symposium', 'SCS2018', '2018', 189, 'informatique', 'annuel', 'internationale', 'B', '', 0),
+(16, 'IEEE Wireless Communications and Networking Conference ', 'WCNC\'2017', '2017', 197, 'Wireless Communications and Networking', 'annuel', 'internationale', 'A', '', 0),
+(17, 'IEEE International Conference Applied Smart Systems', 'ICASS2018', '2018', 201, 'Smart Systems', 'annuel', 'internationale', 'B', '', 0);
 
 -- --------------------------------------------------------
 
@@ -563,7 +611,52 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (154, 'informatique'),
 (155, 'informatique'),
 (156, 'C2C3'),
-(157, 'C2C3');
+(157, 'C2C3'),
+(158, 'informatique'),
+(159, 'informatique'),
+(160, 'informatique'),
+(161, 'informatique'),
+(162, 'informatique'),
+(163, 'informatique'),
+(164, 'informatique'),
+(165, 'informatique'),
+(166, 'informatique'),
+(167, 'informatique'),
+(168, 'informatique'),
+(169, 'informatique'),
+(170, 'informatique'),
+(171, 'informatique'),
+(172, 'informatique'),
+(173, 'informatique'),
+(174, 'informatique'),
+(175, 'informatique'),
+(176, 'informatique'),
+(177, 'informatique'),
+(178, 'informatique'),
+(179, 'informatique'),
+(180, 'informatique'),
+(181, 'informatique'),
+(182, 'informatique'),
+(183, 'informatique'),
+(184, 'informatique'),
+(185, 'informatique'),
+(186, 'informatique'),
+(187, 'informatique'),
+(188, 'informatique'),
+(189, 'informatique'),
+(190, 'informatique'),
+(191, 'informatique'),
+(192, 'informatique'),
+(193, 'informatique'),
+(194, 'informatique'),
+(195, 'informatique'),
+(196, 'informatique'),
+(197, 'informatique'),
+(198, 'informatique'),
+(199, 'informatique'),
+(200, 'informatique'),
+(201, 'informatique'),
+(202, 'informatique');
 
 -- --------------------------------------------------------
 
@@ -688,6 +781,7 @@ INSERT INTO `membreproj` (`idcher`, `codeproj`) VALUES
 (41, 'C00L07UN160420180017'),
 (43, 'C00L07UN160420180017'),
 (45, 'C00L07UN160420180017'),
+(47, 'C00L07UN160420180016'),
 (53, 'B*00220130123'),
 (61, 'B*00220130123');
 
@@ -843,8 +937,6 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (58, 'o'),
 (101, 'verifP'),
 (102, 'verif2'),
-(103, 'sécurité'),
-(103, 'système'),
 (104, 'E-tourism'),
 (104, 'Web Services Researc'),
 (105, ''),
@@ -888,17 +980,59 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (123, 'Web Service'),
 (124, 'Web Services'),
 (125, 'application'),
-(126, 'réseau'),
-(126, 'robots'),
-(126, 'système'),
-(127, 'réseau'),
-(127, 'robots'),
-(127, 'système'),
 (128, 'application'),
 (129, 'processus Workflow'),
 (130, 'cloud'),
 (131, 'cloud'),
-(132, 'système d’extraction');
+(132, 'système d’extraction'),
+(135, 'réseau'),
+(135, 'robots'),
+(135, 'système'),
+(136, 'réseau'),
+(136, 'robots'),
+(136, 'système'),
+(137, 'WSN'),
+(138, 'système'),
+(139, 'algorithmique'),
+(140, 'service web'),
+(141, 'domotique'),
+(142, 'informatique'),
+(142, 'services basée'),
+(143, 'réseau'),
+(143, 'robots'),
+(143, 'système'),
+(144, 'réseau'),
+(144, 'robots'),
+(144, 'système'),
+(145, 'routage'),
+(145, 'sécurité'),
+(146, 'réseaux'),
+(146, 'wsn'),
+(147, 'bioinformatique'),
+(148, 'robot'),
+(149, 'réseau'),
+(150, 'robot'),
+(151, 'BPEL'),
+(152, 'management'),
+(153, 'smart city'),
+(154, 'Management'),
+(155, 'design'),
+(156, 'géo-décisionnel'),
+(157, 'Web Service'),
+(158, 'WS-CDL'),
+(159, 'sécurité'),
+(159, 'système'),
+(160, 'Analysis'),
+(160, 'Formal Specification'),
+(161, 'control'),
+(161, 'wrr'),
+(162, 'génie logiciel'),
+(164, 'peer-to-peer'),
+(165, 'software architectur'),
+(166, 'peer-to-peer'),
+(167, 'hierarchical Petri-n'),
+(168, 'Web Service'),
+(169, 'Web Service');
 
 -- --------------------------------------------------------
 
@@ -919,6 +1053,10 @@ INSERT INTO `motscler` (`codeproj`, `mot`) VALUES
 ('B*00220130123', 'informatique'),
 ('C00L07UN160420180002', 'Identité numérique'),
 ('C00L07UN160420180002', 'services basés IoT'),
+('C00L07UN160420180016', ' sécurité dans les réseaux'),
+('C00L07UN160420180016', 'Cloud'),
+('C00L07UN160420180016', 'informatique'),
+('C00L07UN160420180016', 'Routage'),
 ('C00L07UN160420180017', 'informatique');
 
 -- --------------------------------------------------------
@@ -997,13 +1135,24 @@ CREATE TABLE `pfemaster` (
 
 INSERT INTO `pfemaster` (`codepro`, `titre`, `nprojet`, `idspe`, `encadreur`, `lieusout`) VALUES
 (125, 'plateforme de services basée IoT : application à la e-santé', '', 153, 30, 'usthb'),
-(126, 'Relocation de capteurs dans les réseaux de capteurs et robots sans fils', '', 154, 85, 'usthb'),
-(127, 'Détection et réparation de trous dans les réseaux de capteurs et de robots sans fil', '', 155, 85, 'usthb'),
 (128, 'Conception et réalisation d’une application pour l’évaluation de la performance commerciale d’une entreprise', '', 156, 53, 'usthb'),
 (129, 'Analyse des modèles de processus Workflow orientés services sur la base de métriques', '', 157, 53, 'usthb'),
 (130, 'Approche de recommandation de services basée sur les Réseaux Sociaux dans un Cloud', '', 158, 56, 'usthb'),
 (131, 'Approche de recommandation et de design de cubes de données dans un Cloud', '', 159, 56, 'usthb'),
-(132, 'Conception et réalisation d’un système d’extraction et d’intégration des Linked Open Data dans un contexte de Business Intelligence', '', 160, 56, 'usthb');
+(132, 'Conception et réalisation d’un système d’extraction et d’intégration des Linked Open Data dans un contexte de Business Intelligence', '', 160, 56, 'usthb'),
+(135, 'Détection et réparation de trous dans les réseaux de capteurs et de robots sans fil', '09/2019', 166, 85, 'usthb'),
+(136, 'Relocation de capteurs dans les réseaux de capteurs et robots sans fils', '010/2019', 167, 85, 'usthb'),
+(137, 'Dissémination tolérante aux pannes avec QoS dans les WSNs basés smart cities', '011/2019', 168, 68, 'usthb'),
+(142, 'plateforme de services basée IoT : application à la e-santé', '012/2020', 175, 30, 'usthb'),
+(143, 'Intelligence d\'essaim pour la coopération de robots mobiles : Approche colonie de Fourmiesessaim particulaire ', '013/2018', 176, 39, 'usthb'),
+(144, 'Approche Bio-inspirée pour la coordination de robots dans un milieu hostile : Approche colonie de Fourmies-firefly', '014/2018', 177, 39, 'usthb'),
+(146, 'Minimisation de la consommation d’énergie dans les réseaux de capteurs (wsn) par une approche coopérative de méta heuristiques', '015/2019', 179, 39, 'usthb'),
+(147, 'Contribution à la Résolution Coopérative Approchée de problèmes en Bioinformatique : assemblage de Fragments d’ADN et Alignement de Séquences', '01/2017', 180, 39, 'usthb'),
+(150, 'Exploration d\'un espace à environnement hostile par des robots en utilisant une approche bioinspirée: colonie de Fourmiescolonie d\'abeilles', '02/2017', 183, 39, 'usthb'),
+(151, 'Edition de modèles de processus BPEL temporisé', '04/2017', 184, 32, 'usthb'),
+(156, 'Vers un service géo-décisionnel multi-profils dans le cloud appliqué à l’accidentologie', '010/2018', 193, 55, 'usthb'),
+(157, 'Monitorage et vérification à l’exécution des compositions de web service', '015/2018', 194, 67, 'usthb'),
+(158, 'Raffinement et analyse formelle d\'une chorégraphe WS‐CDL.', '022/2018', 195, 67, 'usthb');
 
 -- --------------------------------------------------------
 
@@ -1075,7 +1224,6 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (100, '2010-05', 'master', NULL),
 (101, '2020-05', 'publication', NULL),
 (102, '2020-05', 'master', NULL),
-(103, '2019-07', 'communication', NULL),
 (104, '2019-04', 'publication', NULL),
 (105, '2019-08', 'publication', NULL),
 (106, '2019-10', 'publication', NULL),
@@ -1098,13 +1246,45 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (123, '2019-07', 'communication', NULL),
 (124, '2019-07', 'communication', NULL),
 (125, '2019-07', 'master', NULL),
-(126, '2019-07', 'master', NULL),
-(127, '2019-07', 'master', NULL),
 (128, '2019-06', 'master', 'B*00220130123'),
 (129, '2019-06', 'master', 'B*00220130123'),
 (130, '2019-07', 'master', NULL),
 (131, '2019-07', 'master', NULL),
-(132, '2020-07', 'master', NULL);
+(132, '2020-07', 'master', NULL),
+(135, '2019-07', 'master', NULL),
+(136, '2019-07', 'master', NULL),
+(137, '2019-07', 'master', NULL),
+(138, '2018-06', 'communication', NULL),
+(139, '2018-05', 'communication', NULL),
+(140, '2018-07', 'doctorat', NULL),
+(141, '2019-07', 'doctorat', NULL),
+(142, '2019-07', 'master', NULL),
+(143, '2018-06', 'master', NULL),
+(144, '2018-06', 'master', NULL),
+(145, '2019-02', 'doctorat', NULL),
+(146, '2019-09', 'master', NULL),
+(147, '2017-07', 'master', NULL),
+(148, '2017-07', 'doctorat', NULL),
+(149, '2020-10', 'doctorat', NULL),
+(150, '2017-06', 'master', NULL),
+(151, '2017-06', 'master', NULL),
+(152, '2017-07', 'communication', NULL),
+(153, '2018-04', 'communication', NULL),
+(154, '2018-04', 'communication', NULL),
+(155, '2017-01', 'publication', NULL),
+(156, '2018-06', 'master', NULL),
+(157, '2018-06', 'master', NULL),
+(158, '2018-06', 'master', NULL),
+(159, '2017-08', 'chapitreOuvrage', NULL),
+(160, '2017-03', 'communication', NULL),
+(161, '2017-03', 'communication', NULL),
+(162, '2018-10', 'doctorat', NULL),
+(164, '2018-11', 'communication', NULL),
+(165, '2018-11', 'communication', NULL),
+(166, '2018-05', 'publication', NULL),
+(167, '2018-04', 'publication', NULL),
+(168, '2017-04', 'doctorat', NULL),
+(169, '2017-12', 'doctorat', NULL);
 
 -- --------------------------------------------------------
 
@@ -1130,6 +1310,7 @@ CREATE TABLE `projrecher` (
 INSERT INTO `projrecher` (`codeproj`, `date`, `intitule`, `description`, `duree`, `etat`, `codeDomaine`, `fichier`) VALUES
 ('B*00220130123', '2019-07', 'Agilité des systemes inter-organisationnels : modèles et outils', 'Agilité des systemes inter-organisationnels : modèles et outils Agilité des systemes inter-organisationnels : modèles et outils', 6, 'en cours', 155, 'B*00220130123.rar'),
 ('C00L07UN160420180002', '2019-06', 'Identité numérique et services basés IoT', 'Identité numérique et services basés IoT Identité numérique et services basés IoT', 12, 'en cours', 154, 'C00L07UN160420180002.rar'),
+('C00L07UN160420180016', '2018-01', 'Développement de méthodes de résolution approchées pour des problèmes difficiles', 'Développement de méthodes de résolution approchées pour des problèmes difficiles\r\nDéveloppement de méthodes de résolution approchées pour des problèmes difficiles', 120, 'en cours', 165, 'C00L07UN160420180016.rar'),
 ('C00L07UN160420180017', '2019-01', 'Modélisation des procédés logiciels dans le cadre multi-contexte de Cloud Computing, d’environnement à base d’architectures logicielles réutilisables et de systèmes de systèmes (SoS)', 'Modélisation des procédés logiciels dans le cadre multi-contexte de Cloud Computing, d’environnement à base d’architectures logicielles réutilisables et de systèmes de systèmes (SoS)', 12, 'en cours', 153, 'C00L07UN160420180017.rar');
 
 -- --------------------------------------------------------
@@ -1162,7 +1343,10 @@ INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvo
 (109, '’A review on security challenges of wireless communications in disaster emergency response and crisis management situations', 126, 9, '10.1016/j.jnca.2018.11.010 ', 126, '1', 'https://www.sciencedirect.com/science/ar'),
 (110, 'SANSync: An Accurate Time Synchronization Protocol for Wireless Sensor and Actuator Networks', 128, 10, '951–972', 105, '3', 'https://link.springer.com/article/10.100'),
 (111, 'Self-calibration methods for uncontrolled environments in sensor networks: A reference survey', 130, 11, '10.1016/j.adhoc.2019.01.008', 88, '142', 'https://www.sciencedirect.com/science/ar'),
-(112, 'HiCo-MoG: Hierarchical consensus-based group membership service in mobile Ad Hoc networks', 132, 12, '10.3233/JHS190609', 25, '2', 'https://content.iospress.com/articles/jo');
+(112, 'HiCo-MoG: Hierarchical consensus-based group membership service in mobile Ad Hoc networks', 132, 12, '10.3233/JHS190609', 25, '2', 'https://content.iospress.com/articles/jo'),
+(155, 'Toward a Smart Restaurant with Context Management', 192, 13, '10.4018/IJKBO.2017010101', 18, '1', 'url'),
+(166, 'PCSM: An Efficient Multihop Proximity aware Clustering Scheme for Mobile Peer-to-Peer Systems', 205, 8, '10.1007/s12652-018-0808-1', 1, '10', ' https://link.springer.com/article/10.10'),
+(167, 'An approach based on hierarchical Petri-nets for the verification of Inteconnected BPEL processes', 207, 14, '10.4018/IJISMD.2018040103', 2, '9', 'https://www.researchgate.net/publication');
 
 -- --------------------------------------------------------
 
@@ -1199,7 +1383,9 @@ INSERT INTO `revue` (`coderevue`, `nom`, `periodicite`, `issnonline`, `issnprint
 (9, 'Journal of Network and Computer Applications', '', '10958592', '10848045', 'Elsevier Inc', '2019', 'Computer Science', 125, 'A', 0, 'internationale', ''),
 (10, 'Journal of Wireless Personal Communications', '', '1572-834X', '0929-6212', 'Springer Science+Business Media', '2019', 'Ingénierie', 127, 'A', 0, 'internationale', ''),
 (11, 'Journal of Ad Hoc Networks', '', '1570-8705', '1570-8705', 'ELSEVIER SCIENCE', '2019', 'Engineering', 129, 'A', 0, 'internationale', ''),
-(12, ' Journal of High Speed Networks', '', '1875-8940', '0926-6801', 'IOS Press', '2019', ' Computer & Communication Sciences, Computer Science, Telecommunication', 131, 'A', 0, 'internationale', '');
+(12, ' Journal of High Speed Networks', '', '1875-8940', '0926-6801', 'IOS Press', '2019', ' Computer & Communication Sciences, Computer Science, Telecommunication', 131, 'A', 0, 'internationale', ''),
+(13, 'International Journal of KnowledgeBased Organizations (IJKBO)', '', '2155-6407', '2155-6393', 'IGI Global publisher', '2017', 'informatique', 191, 'A', 0, 'internationale', ''),
+(14, 'International Journal of Information System Modeling and Design ', '', '1947-8194', '1947-8186', 'IGI Global publisher', '2018', 'Information System Modeling and Design ', 206, 'A', 0, 'internationale', '');
 
 -- --------------------------------------------------------
 
@@ -1375,7 +1561,51 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (162, 'du du du', '', 96),
 (163, 'du du du', '', 96),
 (164, 'C2C3', '', 156),
-(165, 'OU', '', 157);
+(165, 'OU', '', 157),
+(166, 'réseaux,robots', '', 158),
+(167, 'réseaux,robots', '', 159),
+(168, 'QOS', '', 160),
+(169, 'systeme,archi', '', 161),
+(170, 'identification des comportements', '', 162),
+(171, 'intelligence artificielle', '', 163),
+(172, 'Optimization algorithm', '', 164),
+(173, 'service web', '', 166),
+(174, 'domotique', '', 167),
+(175, 'services basée,informatique', '', 168),
+(176, 'robot', '', 169),
+(177, 'réseaux,robots', '', 170),
+(178, 'routage', '', 171),
+(179, 'réseaux', '', 172),
+(180, 'bioinformatique', '', 173),
+(181, 'robot', '', 174),
+(182, 'réseau', '', 175),
+(183, 'robot', '', 176),
+(184, 'processus', '', 177),
+(185, 'Distributed Systems', '', 178),
+(186, 'management', '', 179),
+(187, 'systeme', '', 180),
+(188, 'smart city', '', 181),
+(189, 'smart city', '', 182),
+(190, 'Management', '', 183),
+(191, 'KnowledgeBased Organizations', '', 184),
+(192, 'design', '', 185),
+(193, 'géo-décisionnel', '', 186),
+(194, 'Web Services', '', 187),
+(195, 'WS-CDL', '', 188),
+(196, 'sécurité', '', 189),
+(197, 'Wireless Communications and Networking', '', 190),
+(198, 'manet', '', 191),
+(199, 'control', '', 192),
+(200, 'genie logiciel', '', 193),
+(201, 'Smart Systems', '', 194),
+(202, 'peer-to-peer', '', 195),
+(203, 'peer-to-peer', '', 196),
+(204, 'software architecture', '', 197),
+(205, 'peer-to-peer', '', 198),
+(206, 'Information System Modeling and Design ', '', 199),
+(207, 'hierarchical Petri-nets', '', 200),
+(208, 'Web Services', '', 201),
+(209, 'Web Services', '', 202);
 
 -- --------------------------------------------------------
 
@@ -1432,7 +1662,15 @@ CREATE TABLE `these` (
 
 INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
 (9, 'DB', 16, 'DB', '5', 'DB', 29),
-(50, 'DB', 16, 'DB', '5', 'DB', 78);
+(50, 'DB', 16, 'DB', '5', 'DB', 78),
+(140, 'Composition de services web basée temps', 30, 'usthb', '02/2018', 'url', 173),
+(141, 'environnement domotique pour la esanté', 30, 'usthb', '03/2018', 'url', 174),
+(145, 'Optimisation mono-objectif et multiobjectif approchée des paramètres de qualité de service (QoS) dans un Routage multicast d’un réseau d’ordinateurs Date de soutenance', 39, 'usthb', '04/2019', 'url', 178),
+(148, 'Approche Bio-inspirée pour la coordination de robots dans un milieu hostile : Approche colonie de Fourmies-firefly ', 39, 'usthb', '04/2017', 'url', 181),
+(149, 'Approches Bio-inspirées pour la détection d’intrusions dans un réseau d’ordinateurs', 39, 'usthb', '05/2017', 'url', 182),
+(162, 'La composition des patrons de modèles de procédés logiciels', 38, 'usthb', '04/2018', 'url', 200),
+(168, 'Framework pour la sélection automatique des services Web : Approche basée sur la similarité du profil contextuel', 30, 'usthb', '033/2017', 'url', 208),
+(169, 'Découverte de services mobiles ', 30, 'usthb', '035/2017', 'url', 209);
 
 -- --------------------------------------------------------
 
@@ -1454,8 +1692,6 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (16, 'sid.ahmedl@usthb.dz', 'lol', 1),
 (26, 'newdoc@usthb.dz', 'lol', 1),
-(27, 'newdoc5@usthb.dz', 'lol', 1),
-(28, 'omar@usthb.dz', 'lol', 1),
 (30, 'kaderbelkhir@hotmail.com', 'admin', 1),
 (31, 'fbouyakoub@usthb.dz', 'admin', 1),
 (32, 'sbouyakoub@usthb.dz', 'admin', 1),
@@ -1506,7 +1742,6 @@ INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (80, 'kzeraoulia@usthb.dz', 'admin', 1),
 (81, 'hadjhenni@gmail.com', 'admin', 1),
 (82, 'saidrouibeh@gmail.com', 'admin', 1),
-(83, 'zamusta@yahoo.fr', 'admin', 1),
 (84, 'Sed.manel@gmail.com', 'admin', 1),
 (85, 'n.belguerche@yahoo.fr', 'admin', 1),
 (86, 'chehrazeddib@hotmail.fr', 'admin', 1),
@@ -1539,8 +1774,9 @@ CREATE TABLE `validationproduction` (
 
 INSERT INTO `validationproduction` (`codepro`, `idcher`, `type`) VALUES
 (106, 38, 'publication'),
-(126, 85, 'master'),
-(127, 85, 'master');
+(145, 39, 'doctorat'),
+(148, 39, 'doctorat'),
+(149, 39, 'doctorat');
 
 --
 -- Index pour les tables déchargées
@@ -1785,13 +2021,13 @@ ALTER TABLE `chercheur`
 -- AUTO_INCREMENT pour la table `conference`
 --
 ALTER TABLE `conference`
-  MODIFY `codeconf` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `codeconf` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -1821,19 +2057,19 @@ ALTER TABLE `laboratoire`
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT pour la table `revue`
 --
 ALTER TABLE `revue`
-  MODIFY `coderevue` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `coderevue` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
