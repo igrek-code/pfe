@@ -337,7 +337,6 @@
 
     function ajouter_doctorat($db,$needsValidation,$postedBy){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
-        $encadreurProduction = mysqli_real_escape_string($db,$_POST["encadreurProduction"]);
         $nordreProduction = mysqli_real_escape_string($db,$_POST["nordreProduction"]);
         $lieusoutProduction = mysqli_real_escape_string($db,$_POST["lieusoutProduction"]);
         $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
@@ -345,10 +344,16 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $auteurThese = mysqli_real_escape_string($db,$_POST["auteurThese"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
         else $codeproj = "'".$codeproj."'";
-
+        if($_POST["encadreurSelect"] == "autre"){
+            $encadreur =  mysqli_real_escape_string($db,$_POST["encadreurInput"]);
+        } 
+        else {
+            $encadreur = mysqli_real_escape_string($db,$_POST["encadreurSelect"]);
+        }
         $sql = "INSERT INTO domaine (nom) VALUES ('".$codeDomaineProduction."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "SELECT * FROM domaine ORDER BY codeDomaine DESC";
@@ -364,7 +369,9 @@
         $sql = "SELECT * FROM production ORDER BY codepro DESC";
         if(!($result = mysqli_query($db,$sql))) return true;
         $codepro = mysqli_fetch_array($result)["codepro"];
-        $sql = "INSERT INTO these (codepro,titre,encadreur,lieusout,nordre,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$encadreurProduction."','".$lieusoutProduction."','".$nordreProduction."','".$urlProduction."','".$idspeProduction."')";
+        $sql = "INSERT INTO these (codepro,titre,encadreur,lieusout,nordre,url,idspe) VALUES ('".$codepro."','".$titreProduction."','".$encadreur."','".$lieusoutProduction."','".$nordreProduction."','".$urlProduction."','".$idspeProduction."')";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "INSERT INTO auteurprinc (idcher,codepro) VALUES ('".$auteurThese."','".$codepro."')";
         if(!mysqli_query($db,$sql)) return true;
         for ($i=0; $i < count($motsclesProduction); $i++) { 
             $motcle = mysqli_real_escape_string($db,$motsclesProduction[$i]);

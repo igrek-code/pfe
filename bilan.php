@@ -743,14 +743,14 @@
             function init_activite(){
 
                 $('#allFilters').html(`
-                <div style="margin-top:10px;" class="row">
+                <div style="margin-top:10px;" hidden class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Type</label>
                             <select title="Type..." class="form-control selectpicker" id="typeBilan">
                                 <option selected value="chercheur">Chercheur</option>
                                 <option value="equipe">Equipe</option>
-                                <option value="laboratoire">Laboratoire</option>
+                                <option selected value="laboratoire">Laboratoire</option>
                             </select>
                         </div>
                     </div>

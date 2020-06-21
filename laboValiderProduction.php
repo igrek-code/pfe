@@ -447,7 +447,7 @@
 
                 $('#searchInfo').html(`
                     THESE DE DOCTORAT: <br>
-                    -Titre, date de soutenance, n° d'ordre,lieu, domaine, spécialités, mots-clés, encadreur
+                    -Titre, date de soutenance, n° d'ordre,lieu, domaine, spécialités, mots-clés, encadreur, auteur
                 `);
 
                 $('#searchBox').html(`
@@ -462,6 +462,7 @@
                         <option value="nomspe">Spécialités</option>
                         <option value="motscle">Mots-clés</option>
                         <option value="encadreur">Encadreur</option>
+                        <option value="auteur">Auteur</option>
                         <option value="codeproj">Code projet</option>
                     </select>
                     <input class="form-control" type="text">
@@ -474,16 +475,20 @@
                     var value = $(this).val();
                     var input = $(this).parent().next();
                     switch (value) {
+                        case 'auteur':
+                            column = 6;
+                        break;
+
                         case 'codeproj':
-                            column = 8;
+                            column = 9;
                         break;
 
                         case 'titre':
-                            column = 6;
+                            column = 7;
                         break;
                         
                         case 'date':
-                            column = 7;
+                            column = 8;
                         break;
 
                         case 'nordre':
@@ -1038,7 +1043,7 @@
                     case 'doctorat':
                         columnDefs=[
                             {targets: [-1], orderable: false},
-                            {targets: Array.from({length: 6}, (x,i) => i), visible: false}
+                            {targets: Array.from({length: 7}, (x,i) => i), visible: false}
                         ]    
                     break;
 

@@ -413,7 +413,19 @@
             }
 
             function init_doctorat(){
-                //nothing
+                $("#encadreurProduction").change(function(){
+                    $('.row').has('input[name="encadreurInput"]').not(':has(.bootstrap-select)').remove();
+                    if($(this).val() == "autre"){
+                        $(".bootstrap-select").has(this).after(`<div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input required class="form-control" name="encadreurInput" type="text" placeholder="Nom de l'encadreur">
+                                </div>
+                            </div>
+                        </div>`);
+                    }
+                    $(".selectpicker").selectpicker("refresh");
+                });
             }
 
             function init_master(){

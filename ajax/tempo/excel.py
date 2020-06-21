@@ -371,7 +371,7 @@ def insert_doctorat(worksheet, doctorats, row):
     worksheet.write(row, 0, 'Les soutenances de Doctorat', bold)
     row += 2
     columns = [
-        'Titre', 'Année-Mois', 'Directeur de thèse', 'Spécialité', 'Numéro', 'Lieu'  
+        'Titre', 'Année-Mois', 'Auteur', 'Directeur de thèse', 'Spécialité', 'Numéro', 'Lieu'  
     ]
     col = 0
     for column in columns:

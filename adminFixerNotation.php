@@ -398,7 +398,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Modifier</button>
+                                    <button style="width:20%;" type="submit" class="btn btn-fill btn-info pull-right ">Enregistrer</button>
                                     <button type="button" id="clearBtn" style="width:auto;" class="btn btn-fill btn-danger pull-left ">Réinitialiser</button>
                                 </div>
                             </div>

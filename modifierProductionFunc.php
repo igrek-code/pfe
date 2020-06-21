@@ -355,7 +355,6 @@
 
     function modifier_doctorat($db,$codepro,$needsValidation,$postedBy){
         $titreProduction = mysqli_real_escape_string($db,$_POST["titreProduction"]);
-        $encadreurProduction = mysqli_real_escape_string($db,$_POST["encadreurProduction"]);
         $nordreProduction = mysqli_real_escape_string($db,$_POST["nordreProduction"]);
         $lieusoutProduction = mysqli_real_escape_string($db,$_POST["lieusoutProduction"]);
         $urlProduction = mysqli_real_escape_string($db,$_POST["urlProduction"]);
@@ -363,8 +362,15 @@
         $idspeProduction = mysqli_real_escape_string($db,$_POST["idspeProduction"]);
         $motsclesProduction = explode(',',$_POST["motsclesProduction"]);
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
+        $auteurThese = mysqli_real_escape_string($db,$_POST["auteurThese"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        if($_POST["encadreurSelect"] == "autre"){
+            $encadreur =  mysqli_real_escape_string($db,$_POST["encadreurInput"]);
+        } 
+        else {
+            $encadreur = mysqli_real_escape_string($db,$_POST["encadreurSelect"]);
+        }
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM these WHERE codepro='".$codepro."'
@@ -377,7 +383,11 @@
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE these SET titre='".$titreProduction."', encadreur='".$encadreurProduction."', lieusout='".$lieusoutProduction."', nordre='".$nordreProduction."', url='".$urlProduction."'";
+        $sql = "UPDATE these SET titre='".$titreProduction."', encadreur='".$encadreur."', lieusout='".$lieusoutProduction."', nordre='".$nordreProduction."', url='".$urlProduction."'";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "DELETE FROM auteurprinc WHERE codepro='".$codepro."'";
+        if(!mysqli_query($db,$sql)) return true;
+        $sql = "INSERT INTO auteurprinc (nom,codepro) VALUES ('".$auteurThese."','".$codepro."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "DELETE FROM motscle WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;

@@ -85,9 +85,6 @@
                 OR codepro IN (
                     SELECT codepro FROM pfemaster WHERE encadreur ='".$idcher."'
                 )
-                OR codepro IN (
-                    SELECT codepro FROM these WHERE encadreur ='".$idcher."'
-                )
             )";
         }
 
@@ -103,8 +100,6 @@
                 )
             ) OR codepro IN (
                 SELECT codepro FROM pfemaster WHERE encadreur='".$idcher."'
-            )OR codepro IN (
-                SELECT codepro FROM these WHERE encadreur='".$idcher."'
             )) AND codepro NOT IN (
                 SELECT codepro FROM validationproduction
             )";
@@ -130,14 +125,6 @@
                 )
             ) OR codepro IN (
                 SELECT codepro FROM pfemaster WHERE (encadreur IN (
-                    SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
-                ) OR encadreur IN (
-                    SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
-                )) AND encadreur IN (
-                    SELECT idcher FROM users WHERE actif='1'
-                )
-            )OR codepro IN (
-                SELECT codepro FROM these WHERE (encadreur IN (
                     SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
                 ) OR encadreur IN (
                     SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
@@ -177,18 +164,6 @@
                 )
             ) OR codepro IN (
                 SELECT codepro FROM pfemaster WHERE (encadreur IN (
-                    SELECT idcher FROM chefequip WHERE idequipe IN (
-                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
-                    )
-                ) OR encadreur IN (
-                    SELECT idcher FROM menbrequip WHERE idequipe IN (
-                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
-                    )
-                )) AND encadreur IN (
-                    SELECT idcher FROM users WHERE actif='1'
-                )
-            )OR codepro IN (
-                SELECT codepro FROM these WHERE (encadreur IN (
                     SELECT idcher FROM chefequip WHERE idequipe IN (
                         SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
                     )
@@ -445,6 +420,7 @@
         class doctorat{
             public $titre;
             public $date;
+            public $auteurThese;
             public $encadreur;
             public $specialite;
             public $nordre;
@@ -487,9 +463,6 @@
                 OR codepro IN (
                     SELECT codepro FROM pfemaster WHERE encadreur ='".$idcher."'
                 )
-                OR codepro IN (
-                    SELECT codepro FROM these WHERE encadreur ='".$idcher."'
-                )
             )";
         }
 
@@ -505,8 +478,6 @@
                 )
             ) OR codepro IN (
                 SELECT codepro FROM pfemaster WHERE encadreur='".$idcher."'
-            )OR codepro IN (
-                SELECT codepro FROM these WHERE encadreur='".$idcher."'
             )) AND codepro NOT IN (
                 SELECT codepro FROM validationproduction
             )";
@@ -532,14 +503,6 @@
                 )
             ) OR codepro IN (
                 SELECT codepro FROM pfemaster WHERE (encadreur IN (
-                    SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
-                ) OR encadreur IN (
-                    SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
-                )) AND encadreur IN (
-                    SELECT idcher FROM users WHERE actif='1'
-                )
-            )OR codepro IN (
-                SELECT codepro FROM these WHERE (encadreur IN (
                     SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
                 ) OR encadreur IN (
                     SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
@@ -579,18 +542,6 @@
                 )
             ) OR codepro IN (
                 SELECT codepro FROM pfemaster WHERE (encadreur IN (
-                    SELECT idcher FROM chefequip WHERE idequipe IN (
-                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
-                    )
-                ) OR encadreur IN (
-                    SELECT idcher FROM menbrequip WHERE idequipe IN (
-                        SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
-                    )
-                )) AND encadreur IN (
-                    SELECT idcher FROM users WHERE actif='1'
-                )
-            )OR codepro IN (
-                SELECT codepro FROM these WHERE (encadreur IN (
                     SELECT idcher FROM chefequip WHERE idequipe IN (
                         SELECT idequipe FROM equipe WHERE idlabo='".$idlabo."'
                     )
@@ -1004,10 +955,13 @@
                             if(mysqli_num_rows($result2) > 0){
                                 $doctorat->specialite = mysqli_fetch_array($result2)["nomspe"];
                             }
-                            $sql = "SELECT nom FROM chercheur WHERE idcher='".$encadreur."'";
+                            $doctorat->encadreur = $encadreur;
+                            $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                                SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                            )";
                             $result2 = mysqli_query($db,$sql);
                             if(mysqli_num_rows($result2) > 0){
-                                $doctorat->encadreur = mysqli_fetch_array($result2)["nom"];
+                                $doctorat->auteurThese = mysqli_fetch_array($result2)["nom"];
                             }
                         }
                         $doctorats[] = $doctorat; 

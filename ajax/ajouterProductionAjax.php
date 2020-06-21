@@ -534,8 +534,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>Encadreur</label>
-                        <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <label>Auteur</label>
+                        <select disabled required data-live-search="true" title="Auteur..." name="auteurThese" id="auteurThese" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                     SELECT idcher FROM users WHERE actif=1
                                 )";
@@ -552,7 +552,32 @@
                                     }
                                 }
                         echo'</select>
-                        <input hidden value="'.$thisId.'" name="encadreurProduction" type="text" required>
+                        <input hidden value="'.$thisId.'" name="auteurThese" type="text" required>
+                    </div>
+                </div>
+            </div>
+
+            <div id="auteurs">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Encadreur</label>
+                            <select required data-live-search="true" title="Encadreur..." name="encadreurSelect"" id="encadreurProduction" class="form-control selectpicker">
+                                <option value="autre">Autre</option>';
+                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                    SELECT idcher FROM users WHERE actif=1
+                                )";
+                                $result = mysqli_query($db,$sql);
+                                if(mysqli_num_rows($result) > 0){
+                                    $thisId = $_SESSION["idcher"];
+                                    while($row = mysqli_fetch_array($result)){
+                                        $nomcher = $row["nom"];
+                                        $idcher = $row["idcher"];
+                                        if($idcher != $thisId) echo '<option>'.$nomcher.'</option>';
+                                    }
+                                }
+                            echo '</select>
+                        </div>
                     </div>
                 </div>
             </div>';

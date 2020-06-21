@@ -128,7 +128,9 @@
     }
 
     function afficher_doctorat($db,$idcher){
-        $sql = "SELECT * FROM these WHERE encadreur ='".$idcher."'";
+        $sql = "SELECT * FROM these WHERE codepro IN (
+            SELECT codepro FROM auteurprinc WHERE idcher='".$idcher."'
+        )";
         $result = mysqli_query($db,$sql);
         if(mysqli_num_rows($result) > 0){
             echo '<div class="content">
@@ -140,6 +142,7 @@
                     <th>Spécialités</th>
                     <th>Mots-clè</th>
                     <th>Encadreur</th>
+                    <th>Auteur</th>
                     <th>Titre</th>
                     <th>Date</th>';
                     echo '<th>Projet</th>';
@@ -180,6 +183,13 @@
                         $motscles[] = $row["mot"];
                     }
                 }
+                $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                    SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                )";
+                $result2 = mysqli_query($db,$sql);
+                if(mysqli_num_rows($result2) > 0){
+                    $auteurThese = mysqli_fetch_array($result2)["nom"];
+                }
                 $sql = "SELECT * FROM production WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
@@ -199,6 +209,7 @@
                 }   
                 echo    '</td>';
                 echo    '<td>'.$encadreur.'</td>';
+                echo    '<td>'.$auteurThese.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
                 if(isset($row2['codeproj']))
@@ -1325,6 +1336,13 @@
                         if(mysqli_num_rows($result2) > 0){
                             $date = mysqli_fetch_array($result2)["date"]; 
                         }
+                        $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                            SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                        )";
+                        $result2 = mysqli_query($db,$sql);
+                        if(mysqli_num_rows($result2) > 0){
+                            $auteurThese = mysqli_fetch_array($result2)["nom"];
+                        }
                         echo '<span class="text-info">Titre: </span>'.$titre.'<br>';
                         echo '<span class="text-info">Date de soutenance: </span>'.$date.'<br>';
                         echo '<span class="text-info">N° d\'ordre: </span>'.$nordre.'<br>';
@@ -1342,6 +1360,7 @@
                             }
                         }
                         echo '<br>';
+                        echo '<span class="text-info">Auteur: </span>'.$auteurThese.'<br>';
                         echo '<span class="text-info">Encadreur: </span>'.$encadreur.'<br>';
                     }
                     else{

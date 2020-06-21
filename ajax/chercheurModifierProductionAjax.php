@@ -1424,31 +1424,76 @@
                 </div>
             </div>
 
-            
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>Encadreur</label>
-                        <select disabled required data-live-search="true" title="Encadreur..." name="encadreurProduction" id="encadreurProduction" class="form-control selectpicker">';
+                        <label>Auteur</label>
+                        <select disabled required data-live-search="true" title="Auteur..." name="auteurThese" id="auteurThese" class="form-control selectpicker">';
                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                                     SELECT idcher FROM users WHERE actif=1
                                 )";
+                                $thisId = $_SESSION["idcher"];
                                 $result = mysqli_query($db,$sql);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = mysqli_fetch_array($result)){
                                         $nomcher = $row["nom"];
                                         $idcher = $row["idcher"];
-                                        if($encadreur == $idcher){
+                                        if($idcher == $thisId){
                                             echo '<option selected value="'.$idcher.'">'.$nomcher.'</option>';
                                             break;
                                         }
                                     }
                                 }
                         echo'</select>
-                        <input hidden value="'.$encadreur.'" type="text" name="encadreurProduction" required>
+                        <input hidden value="'.$thisId.'" name="auteurThese" type="text" required>
                     </div>
                 </div>
-            </div>';
+            </div>
+
+            <div id="auteurs">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Encadreur</label>
+                            <select required data-live-search="true" title="Encadreur..." name="encadreurSelect"" id="encadreurProduction" class="form-control selectpicker">
+                                ';
+                                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                                    SELECT idcher FROM users WHERE actif=1
+                                )";
+                                $result = mysqli_query($db,$sql);
+                                if(mysqli_num_rows($result) > 0){
+                                    $thisNom = $encadreur;
+                                    $else = 0;
+                                    while($row = mysqli_fetch_array($result)){
+                                        $nomcher = $row["nom"];
+                                        if($nomcher != $thisNom) echo '<option>'.$nomcher.'</option>';
+                                        else {echo '<option selected>'.$nomcher.'</option>';$else = 1;}
+                                    }
+                                    if($else == 0) {
+                                        echo '<option selected value="autre">Autre</option>';
+                                        echo '</select>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input required value="'.$encadreur.'" class="form-control" name="encadreurInput" type="text" placeholder="Nom de l\'encadreur">
+                                                </div>
+                                            </div>
+                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                    }
+                                    else{
+                                        echo '<option value="autre">Autre</option>';
+                                        echo '</select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>';
+                                    }
+                                }
+                            
             break;
 
             default:

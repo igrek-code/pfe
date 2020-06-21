@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 17 juin 2020 à 21:58
+-- Généré le : Dim 21 juin 2020 à 17:18
 -- Version du serveur :  10.4.11-MariaDB
--- Version de PHP : 7.2.28
+-- Version de PHP : 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -103,7 +103,8 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (96, '', 164),
 (76, '', 165),
 (96, '', 166),
-(53, '', 167);
+(53, '', 167),
+(0, '30', 171);
 
 -- --------------------------------------------------------
 
@@ -215,13 +216,6 @@ CREATE TABLE `chercheur` (
 --
 
 INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `gradeC`, `profil`) VALUES
-(16, 'Sid ahmed', 'sid.ahmedl@usthb.dz', 'MCA', 'Directeur de recherche', 'permanent'),
-(21, 'omar rabhi', 'omar.rabhi@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent'),
-(23, 'newdoc', 'newdoc@usthb.dz', '', 'Directeur de recherche', 'doctorant'),
-(24, 'fleur', 'fleur@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent'),
-(26, 'xwqinsosiqdioqsn', 'newdoc@usthb.dz', '', 'Directeur de recherche', 'doctorant'),
-(27, 'new doc 5', 'newdoc5@usthb.dz', 'MCA', 'Directeur de recherche', 'permanent'),
-(28, 'omar rabhi', 'omar@usthb.dz', 'MCB', 'Directeur de recherche', 'permanent'),
 (30, 'Belkhir Abdelkader', 'kaderbelkhir@hotmail.com', 'PROF', 'Directeur de recherche', 'permanent'),
 (31, 'Bouyakoub Fayçal', 'fbouyakoub@usthb.dz', 'PROF', 'Maitre de recherche', 'permanent'),
 (32, 'Bouyakoub Samia', 'sbouyakoub@usthb.dz', 'MCB', 'Maitre de recherche', 'permanent'),
@@ -656,7 +650,11 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (199, 'informatique'),
 (200, 'informatique'),
 (201, 'informatique'),
-(202, 'informatique');
+(202, 'informatique'),
+(203, 'informatique'),
+(204, 'C2C3'),
+(205, 'C2C3'),
+(206, 'PR3');
 
 -- --------------------------------------------------------
 
@@ -710,7 +708,7 @@ CREATE TABLE `etablissement` (
 --
 
 INSERT INTO `etablissement` (`idetab`, `nom`, `abrv`, `type`, `addresse`, `tel`, `fax`, `siteweb`) VALUES
-(1, 'universite des sciences et technologies houari boumediene', 'USTHB', 'université', 'BP 32, El Alia, Bab Ezzouar, 16111 Alger', 21247911, 21247911, 'usthb.dz'),
+(1, 'Universite des Sciences et Technologies Houari Boumediene', 'USTHB', 'université', 'BP 32, El Alia, Bab Ezzouar, 16111 Alger', 21247911, 21247911, 'usthb.dz'),
 (41, 'CERIST', '', 'centre de recherche', ' Rue Frères Aissou, Ben Aknoun 16028', 23255403, 23255403, 'cerist.dz'),
 (43, 'L\'université d\'Alger Benyoucef Benkhedda', '', 'université', '2 Rue Didouche Mourad, Alger Ctre 16000', 21637765, 21637765, 'www.univ-alger.dz'),
 (44, 'Ecole Nationale Polytechnique', '', 'université', '10 Rue des Frères OUDEK, El Harrach 1620', 21525303, 21525303, 'www.enp.ed'),
@@ -1032,7 +1030,14 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (166, 'peer-to-peer'),
 (167, 'hierarchical Petri-n'),
 (168, 'Web Service'),
-(169, 'Web Service');
+(169, 'Web Service'),
+(171, 'A'),
+(171, 'E'),
+(171, 'G'),
+(171, 'O'),
+(171, 'R'),
+(171, 'U'),
+(171, 'V');
 
 -- --------------------------------------------------------
 
@@ -1284,7 +1289,8 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (166, '2018-05', 'publication', NULL),
 (167, '2018-04', 'publication', NULL),
 (168, '2017-04', 'doctorat', NULL),
-(169, '2017-12', 'doctorat', NULL);
+(169, '2017-12', 'doctorat', NULL),
+(171, '2020-06', 'doctorat', NULL);
 
 -- --------------------------------------------------------
 
@@ -1605,7 +1611,11 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (206, 'Information System Modeling and Design ', '', 199),
 (207, 'hierarchical Petri-nets', '', 200),
 (208, 'Web Services', '', 201),
-(209, 'Web Services', '', 202);
+(209, 'Web Services', '', 202),
+(210, 'programation', '', 203),
+(211, 'C2C3', '', 204),
+(212, 'C2C3', '', 205),
+(213, 'PR3', '', 206);
 
 -- --------------------------------------------------------
 
@@ -1649,28 +1659,12 @@ INSERT INTO `systemenotes` (`revueInterAA`, `revueInterA`, `revueInterB`, `revue
 CREATE TABLE `these` (
   `codepro` int(12) NOT NULL,
   `titre` varchar(255) NOT NULL,
-  `encadreur` int(12) NOT NULL,
+  `encadreur` varchar(250) NOT NULL,
   `lieusout` varchar(40) NOT NULL,
   `nordre` varchar(100) NOT NULL,
   `url` varchar(255) DEFAULT NULL,
   `idspe` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `these`
---
-
-INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
-(9, 'DB', 16, 'DB', '5', 'DB', 29),
-(50, 'DB', 16, 'DB', '5', 'DB', 78),
-(140, 'Composition de services web basée temps', 30, 'usthb', '02/2018', 'url', 173),
-(141, 'environnement domotique pour la esanté', 30, 'usthb', '03/2018', 'url', 174),
-(145, 'Optimisation mono-objectif et multiobjectif approchée des paramètres de qualité de service (QoS) dans un Routage multicast d’un réseau d’ordinateurs Date de soutenance', 39, 'usthb', '04/2019', 'url', 178),
-(148, 'Approche Bio-inspirée pour la coordination de robots dans un milieu hostile : Approche colonie de Fourmies-firefly ', 39, 'usthb', '04/2017', 'url', 181),
-(149, 'Approches Bio-inspirées pour la détection d’intrusions dans un réseau d’ordinateurs', 39, 'usthb', '05/2017', 'url', 182),
-(162, 'La composition des patrons de modèles de procédés logiciels', 38, 'usthb', '04/2018', 'url', 200),
-(168, 'Framework pour la sélection automatique des services Web : Approche basée sur la similarité du profil contextuel', 30, 'usthb', '033/2017', 'url', 208),
-(169, 'Découverte de services mobiles ', 30, 'usthb', '035/2017', 'url', 209);
 
 -- --------------------------------------------------------
 
@@ -1690,8 +1684,6 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
-(16, 'sid.ahmedl@usthb.dz', 'lol', 1),
-(26, 'newdoc@usthb.dz', 'lol', 1),
 (30, 'kaderbelkhir@hotmail.com', 'admin', 1),
 (31, 'fbouyakoub@usthb.dz', 'admin', 1),
 (32, 'sbouyakoub@usthb.dz', 'admin', 1),
@@ -1988,8 +1980,7 @@ ALTER TABLE `systemenotes`
 ALTER TABLE `these`
   ADD PRIMARY KEY (`codepro`),
   ADD KEY `codepro` (`codepro`),
-  ADD KEY `idspe` (`idspe`),
-  ADD KEY `encadreur` (`encadreur`);
+  ADD KEY `idspe` (`idspe`);
 
 --
 -- Index pour la table `users`
@@ -2027,7 +2018,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -2057,7 +2048,7 @@ ALTER TABLE `laboratoire`
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
 
 --
 -- AUTO_INCREMENT pour la table `revue`
@@ -2069,7 +2060,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -2226,7 +2217,6 @@ ALTER TABLE `specialite`
 -- Contraintes pour la table `these`
 --
 ALTER TABLE `these`
-  ADD CONSTRAINT `these_checheur_fk` FOREIGN KEY (`encadreur`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `these_ibfk_1` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `these_spe_fk` FOREIGN KEY (`idspe`) REFERENCES `specialite` (`idspe`) ON DELETE CASCADE ON UPDATE CASCADE;
 
