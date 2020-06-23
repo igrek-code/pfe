@@ -91,8 +91,7 @@
                 if(mysqli_num_rows($result2) > 0){
                     $row2 = mysqli_fetch_array($result2);
                     $date = $row2["date"]; 
-                    if(isset($row2['codeproj']))
-                        $codeproj = $row2['codeproj']; 
+                    $codeproj = $row2['codeproj']; 
                 }
                 echo    '<tr>';
                 echo    '<td>'.$nprojet.'</td>';
@@ -107,10 +106,8 @@
                 echo    '<td>'.$encadreur.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($row2['codeproj']))
-                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
-                    else    
-                    echo '<td></td>';
+                echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                
                 echo    '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';
@@ -195,8 +192,7 @@
                 if(mysqli_num_rows($result2) > 0){
                     $row2 = mysqli_fetch_array($result2);
                     $date = $row2["date"]; 
-                    if(isset($row2['codeproj']))
-                        $codeproj = $row2['codeproj']; 
+                    $codeproj = $row2['codeproj']; 
                 }
                 echo    '<tr>';
                 echo    '<td>'.$nordre.'</td>';
@@ -212,10 +208,8 @@
                 echo    '<td>'.$auteurThese.'</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($row2['codeproj']))
-                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
-                    else    
-                    echo '<td></td>';
+                echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                    
                     if(strpos($url,'http') === false)
                     echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 else
@@ -299,8 +293,7 @@
                 if(mysqli_num_rows($result2) > 0){
                     $row2 = mysqli_fetch_array($result2);
                     $date = $row2["date"]; 
-                    if(isset($row2['codeproj']))
-                        $codeproj = $row2['codeproj']; 
+                    $codeproj = $row2['codeproj']; 
                 }
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -353,10 +346,8 @@
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($row2['codeproj']))
-                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
-                    else    
-                    echo '<td></td>';
+                echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                
                 echo    '<td>'.$isbn.'</td>';
                 if(strpos($url,'http') === false)
                     echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
@@ -437,8 +428,7 @@
                 if(mysqli_num_rows($result2) > 0){
                     $row2 = mysqli_fetch_array($result2);
                     $date = $row2["date"]; 
-                    if(isset($row2['codeproj']))
-                        $codeproj = $row2['codeproj']; 
+                    $codeproj = $row2['codeproj']; 
                 }
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -490,10 +480,8 @@
                 echo    '</td>';
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
-                if(isset($row2['codeproj']))
-                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
-                    else    
-                    echo '<td></td>';
+                echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                
                 echo    '<td>'.$isbn.'</td>';
                 if(strpos($url,'http') === false)
                     echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
@@ -578,8 +566,7 @@
                 if(mysqli_num_rows($result2) > 0){
                     $row2 = mysqli_fetch_array($result2);
                     $date = $row2["date"]; 
-                    if(isset($row2['codeproj']))
-                        $codeproj = $row2['codeproj']; 
+                    $codeproj = $row2['codeproj']; 
                 }
                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
                     SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
@@ -652,13 +639,8 @@
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><button codeconf="codeconf" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$codeconf.'">'.$nomconf.'</button></td>';
-                if(isset($row2['codeproj'])){
-                    
-                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
-                }
-                else    {
-                    echo '<td></td>';
-                }
+                echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                
                 if(strpos($url,'http') === false)
                     echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 else
@@ -789,8 +771,7 @@
                 if(mysqli_num_rows($result2) > 0){
                     $row2 = mysqli_fetch_array($result2);
                     $date = $row2["date"]; 
-                    if(isset($row2['codeproj']))
-                        $codeproj = $row2['codeproj']; 
+                    $codeproj = $row2['codeproj']; 
                 }
                 $sql = "SELECT * FROM motscle WHERE codepro='".$codepro."'";
                 $result2 = mysqli_query($db,$sql);
@@ -877,11 +858,9 @@
                 echo    '<td><button codepro="codepro" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codepro.'">'.$titre.'</button></td>';
                 echo    '<td>'.$date.'</td>';
                 echo    '<td><button coderevue="coderevue" class="btn btn-primary" style="border:0px;font-size:16px;"  value="'.$coderevue.'">'.$nomrevue.'</button></td>';
-                if(isset($row2['codeproj']))
-                    echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
-                else    
-                    echo '<td></td>';
-                    if(strpos($url,'http') === false)
+                echo    '<td><button codeproj="codeproj" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$codeproj.'">'.$codeproj.'</button></td>';
+                
+                if(strpos($url,'http') === false)
                     echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 else
                     echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';

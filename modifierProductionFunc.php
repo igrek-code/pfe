@@ -51,6 +51,7 @@
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM publication WHERE codepro='".$codepro."'
@@ -162,6 +163,7 @@
         $dateProduction = mysqli_real_escape_string($db,$_POST["dateProduction"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM communication WHERE codepro='".$codepro."'
@@ -232,6 +234,7 @@
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM ouvrage WHERE codepro='".$codepro."'
@@ -299,6 +302,7 @@
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         $isbn = mysqli_real_escape_string($db,$_POST["isbn"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM chapitredouvrage WHERE codepro='".$codepro."'
@@ -365,6 +369,7 @@
         $auteurThese = mysqli_real_escape_string($db,$_POST["auteurThese"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         if($_POST["encadreurSelect"] == "autre"){
             $encadreur =  mysqli_real_escape_string($db,$_POST["encadreurInput"]);
         } 
@@ -414,6 +419,7 @@
         $nprojet = mysqli_real_escape_string($db,$_POST["nprojet"]);
         $codeproj = mysqli_real_escape_string($db,$_POST["codeproj"]);
         if($codeproj == '') $codeproj = 'NULL';
+        else $codeproj = "'".$codeproj."'";
         $sql = "UPDATE domaine SET nom='".$codeDomaineProduction."' WHERE codeDomaine IN (
             SELECT codeDomaine FROM specialite WHERE idspe IN (
                 SELECT idspe FROM pfemaster WHERE codepro='".$codepro."'
