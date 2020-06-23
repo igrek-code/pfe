@@ -197,6 +197,24 @@
                     $("#theTable").html(data.slice(2,-1));
                 }).done(function(){
                     $("table").dataTable(fr_table());
+                    $('tbody').on('click', 'button[membrequipe="membrequipe"]',function(){
+                        var idequipe = $(this).val();
+                        $.confirm({
+                            content: function(){
+                                var self = this;
+                                self.setTitle('Membres de l\'équipe');
+                                $.get("ajax/laboGererEquipeAjax.php",{membre: idequipe},function(data){
+                                    self.setContent(data.slice(2,-1));
+                                });
+                            },
+                            buttons:{
+                                ok: {
+                                    text: "Fermer",
+                                    keys: ["enter"]
+                                }
+                            }
+                        });
+                    });
                     $('tbody').on('click', 'button[title="supprimer"]', function(){
                         var val = $(this).val();
                         $.confirm({

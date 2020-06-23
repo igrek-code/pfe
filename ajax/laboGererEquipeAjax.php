@@ -26,7 +26,7 @@
                 if(mysqli_num_rows($result2) > 0){    
                     $nomspe = mysqli_fetch_array($result2)["nomspe"];
                     echo    '<tr>';
-                    echo    '<td>'.$nomequipe.'</td>';
+                    echo    '<td><button membrequipe="membrequipe" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idequipe.'">'.$nomequipe.'</button></td>';
                     if($etat == "actif")    
                             echo    '<td class="text-success">Actif</td>';
                         else
@@ -50,6 +50,33 @@
         echo '</tbody>
             </table>
         </div>';
+    }
+
+    if(isset($_GET['membre']) && $_GET['membre'] != ''){
+        $idequipe = mysqli_real_escape_string($db,$_GET['membre']);
+        $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+            SELECT idcher FROM chefequip WHERE idequipe='".$idequipe."'
+        )";
+        $result = mysqli_query($db,$sql);
+        if(mysqli_num_rows($result) > 0){
+            $nomChef = mysqli_fetch_array($result)['nom'];
+            echo '<span class="text-info">Chef: </span>'.$nomChef.'<br>';
+            $sql = "SELECT nom FROM chercheur WHERE idcher IN (
+                SELECT idcher FROM menbrequip WHERE idequipe='".$idequipe."'
+            )";
+            $result = mysqli_query($db,$sql);
+            if(mysqli_num_rows($result) > 0){
+                echo '<span class="text-info">Membres: </span><br>';
+                while($row = mysqli_fetch_array($result)){
+                    $nomMembre = $row['nom'];
+                    echo '- '.$nomMembre.'<br>';
+                }
+                echo '<br>';
+            }
+        }
+        else{
+            echo '<div class="text-danger">Informations indisponibles !</div>';
+        }
     }
 
     if(isset($_GET["supprimer"]) && $_GET["supprimer"] != ""){

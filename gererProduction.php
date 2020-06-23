@@ -162,7 +162,7 @@
                             </div>
 
                             <div class="header">
-                                <h4 class="title">Liste des productions
+                                <h4 class="title">Mes productions
                                     <a  class="btn btn-success btn-lg btn-fill pull-right" href="ajouterProduction.php" title="ajouter">+</a>
                                 </h4>
                                 <p class="category">Ajouter/modifier/supprimer</p>

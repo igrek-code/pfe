@@ -11,21 +11,21 @@
                 <th>Type</th>
             </thead>
             <tbody>';
-
+        $current_date = date('Y-m-d');
         if(isset($_SESSION['loggedinchercheur'])){
             $idequipe = $_SESSION['idequipe'];
             $sql = "SELECT * FROM notification WHERE idcher IN (
                 SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
-            ) AND forEquipe = 0";
+            ) AND forEquipe = 0 and date >= '".$current_date."'";
         }
         if(isset($_SESSION['loggedinlabo'])){
-            $sql = "SELECT * FROM notification WHERE admin=1";
+            $sql = "SELECT * FROM notification WHERE admin=1 and date >= '".$current_date."'";
         }
         if(isset($_SESSION['loggedinequipe'])){
             $idlabo = $_SESSION['idlabo'];
             $sql = "SELECT * FROM notification WHERE idcher IN (
                 SELECT idcher FROM cheflabo WHERE idlabo = '".$idlabo."'
-            ) AND forEquipe = 1";
+            ) AND forEquipe = 1 and date >= '".$current_date."'";
         }
         
         $result = mysqli_query($db,$sql);

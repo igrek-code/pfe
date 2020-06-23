@@ -140,7 +140,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Demandes en attente (chef d'équipe)</h4>
+                                <h4 class="title">Inscriptions en attente (chef d'équipe)</h4>
                                 <p class="category">Accepter/Supprimer</p>      
                             </div>
 
@@ -156,7 +156,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Demandes en attente (chercheur)</h4>
+                                <h4 class="title">Inscriptions en attente (chercheur)</h4>
                                 <p class="category">Accepter/Supprimer</p>      
                             </div>
 

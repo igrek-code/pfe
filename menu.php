@@ -3,7 +3,8 @@
         function menu($i){
             if($i == -1){
                 $db = mysqli_connect('localhost','root','','projetfetud');
-                 $sql = "SELECT count(*) FROM notification WHERE admin=1";
+                $current_date = date('Y-m-d');	
+                 $sql = "SELECT count(*) FROM notification WHERE admin=1 and date >= '".$current_date."'";
                  $result = mysqli_query($db,$sql);
                  $count = mysqli_fetch_array($result)['count(*)'];
                  echo '
@@ -42,7 +43,7 @@
             <li>
                 <a href="gererProduction.php">
                     <i class="pe-7s-notebook"></i>
-                    <p>gerer production</p>
+                    <p style="font-size:10px;">gerer mes productions</p>
                 </a>
             </li>
             <li>
@@ -86,7 +87,8 @@
                      $class[$j] =  "";
                  }
                  $db = mysqli_connect('localhost','root','','projetfetud');
-                 $sql = "SELECT count(*) FROM notification WHERE admin=1";
+                 $current_date = date('Y-m-d');	
+                 $sql = "SELECT count(*) FROM notification WHERE admin=1 and date >= '".$current_date."'";
                  $result = mysqli_query($db,$sql);
                  $count = mysqli_fetch_array($result)['count(*)'];
                  echo '
@@ -125,7 +127,7 @@
              <li '.$class[3].'>
                  <a href="gererProduction.php">
                      <i class="pe-7s-notebook"></i>
-                     <p>gerer production</p>
+                     <p style="font-size:10px;">gerer mes productions</p>
                  </a>
              </li>
              <li '.$class[4].'>
@@ -172,9 +174,10 @@
                 $db = mysqli_connect('localhost','root','','projetfetud');
                 
                 $idlabo = $_SESSION['idlabo'];
+                $current_date = date('Y-m-d');
                 $sql = "SELECT count(*) FROM notification WHERE idcher IN (
                     SELECT idcher FROM cheflabo WHERE idlabo = '".$idlabo."'
-                ) AND forEquipe = 1";
+                ) AND forEquipe = 1 and date >= '".$current_date."'";
                  $result = mysqli_query($db,$sql);
                  $count = mysqli_fetch_array($result)['count(*)'];
                  echo '
@@ -213,7 +216,7 @@
             <li>
                 <a href="gererProduction.php">
                     <i class="pe-7s-notebook"></i>
-                    <p>gerer production</p>
+                    <p style="font-size:10px;">gerer mes productions</p>
                 </a>
             </li>
             <li>
@@ -259,9 +262,10 @@
                  $db = mysqli_connect('localhost','root','','projetfetud');
                 
                 $idlabo = $_SESSION['idlabo'];
+                $current_date = date('Y-m-d');	
                 $sql = "SELECT count(*) FROM notification WHERE idcher IN (
                     SELECT idcher FROM cheflabo WHERE idlabo = '".$idlabo."'
-                ) AND forEquipe = 1";
+                ) AND forEquipe = 1 and date >= '".$current_date."'";
                  $result = mysqli_query($db,$sql);
                  $count = mysqli_fetch_array($result)['count(*)'];
                  echo '
@@ -300,7 +304,7 @@
              <li '.$class[3].'>
                  <a href="gererProduction.php">
                      <i class="pe-7s-notebook"></i>
-                     <p>gerer production</p>
+                     <p style="font-size:10px;">gerer mes productions</p>
                  </a>
              </li>
              <li '.$class[4].'>
@@ -347,9 +351,10 @@
                 $db = mysqli_connect('localhost','root','','projetfetud');
                 
                 $idequipe = $_SESSION['idequipe'];
+                $current_date = date('Y-m-d');	
                 $sql = "SELECT count(*) FROM notification WHERE idcher IN (
                     SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
-                ) AND forEquipe = 0";
+                ) AND forEquipe = 0 and date >= '".$current_date."'";
                 
                 $result = mysqli_query($db,$sql);
                 $count = mysqli_fetch_array($result)['count(*)'];
@@ -375,7 +380,7 @@
             <li>
                 <a href="gererProduction.php">
                     <i class="pe-7s-notebook"></i>
-                    <p>gerer production</p>
+                    <p style="font-size:10px;">gerer mes productions</p>
                 </a>
             </li>
             <li>
@@ -410,9 +415,10 @@
                  $db = mysqli_connect('localhost','root','','projetfetud');
                 
                 $idequipe = $_SESSION['idequipe'];
+                $current_date = date('Y-m-d');
                 $sql = "SELECT count(*) FROM notification WHERE idcher IN (
                     SELECT idcher FROM chefequip WHERE idequipe = '".$idequipe."'
-                ) AND forEquipe = 0";
+                ) AND forEquipe = 0 and date >= '".$current_date."'";
                 
                 $result = mysqli_query($db,$sql);
                 $count = mysqli_fetch_array($result)['count(*)'];
@@ -439,7 +445,7 @@
              <li '.$class[1].'>
                  <a href="gererProduction.php">
                      <i class="pe-7s-notebook"></i>
-                     <p>gerer production</p>
+                     <p style="font-size:10px;">gerer mes productions</p>
                  </a>
              </li>
              <li '.$class[2].'>

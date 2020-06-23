@@ -208,7 +208,7 @@
                                 </form>
                             </div>
                             <div class="header">
-                                <h4 class="title">Liste des membres</h4>
+                                <h4 class="title">Liste des membres de l'équipe <?php echo $_SESSION['nomequip'];?></h4>
                                 <p class="category">supprimer</p>
                             </div>
                             <div id="theTable"></div>

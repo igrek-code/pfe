@@ -281,6 +281,7 @@
                                                     timer : 2000
                                                 });
                                                 refresh_table();
+                                                $('#codeDomaine').trigger('change');
                                         }
                                         else{
                                             $.notify({
