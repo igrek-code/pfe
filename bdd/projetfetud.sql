@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : Dim 21 juin 2020 à 17:18
+-- Généré le : jeu. 25 juin 2020 à 12:57
 -- Version du serveur :  10.4.11-MariaDB
 -- Version de PHP : 7.4.3
 
@@ -654,7 +654,10 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (203, 'informatique'),
 (204, 'C2C3'),
 (205, 'C2C3'),
-(206, 'PR3');
+(206, 'PR3'),
+(207, 'informatique'),
+(208, 'informatique'),
+(209, 'informatique');
 
 -- --------------------------------------------------------
 
@@ -977,7 +980,6 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (122, ' Deep Learning'),
 (123, 'Web Service'),
 (124, 'Web Services'),
-(125, 'application'),
 (128, 'application'),
 (129, 'processus Workflow'),
 (130, 'cloud'),
@@ -1084,11 +1086,14 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`idcher`, `titre`, `date`, `type`, `admin`, `forEquipe`) VALUES
+(0, 'une autre', '2020-07-04', 'pasUrgent', 1, 0),
+(0, 'Veuillez établir le bilan de projet ', '2020-04-23', 'pasUrgent', 1, 0),
 (16, 'bilan svp faite vite', '2020-05-31', 'pasUrgent', 0, 0),
 (16, 'ddzdaz', '2020-05-26', 'urgent', 0, 1),
 (16, 'whateverlol', '2020-05-28', 'pasUrgent', 0, 0),
 (28, 'vous devez yes', '2020-05-30', 'urgent', 0, 0),
 (30, 'etablir bilan', '2020-06-11', 'urgent', 0, 0),
+(30, 'Veuillez établir le bilan ', '2020-09-18', 'urgent', 0, 1),
 (92, 'etablir bilan', '2020-06-01', 'urgent', 0, 1);
 
 -- --------------------------------------------------------
@@ -1139,7 +1144,6 @@ CREATE TABLE `pfemaster` (
 --
 
 INSERT INTO `pfemaster` (`codepro`, `titre`, `nprojet`, `idspe`, `encadreur`, `lieusout`) VALUES
-(125, 'plateforme de services basée IoT : application à la e-santé', '', 153, 30, 'usthb'),
 (128, 'Conception et réalisation d’une application pour l’évaluation de la performance commerciale d’une entreprise', '', 156, 53, 'usthb'),
 (129, 'Analyse des modèles de processus Workflow orientés services sur la base de métriques', '', 157, 53, 'usthb'),
 (130, 'Approche de recommandation de services basée sur les Réseaux Sociaux dans un Cloud', '', 158, 56, 'usthb'),
@@ -1229,8 +1233,8 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (100, '2010-05', 'master', NULL),
 (101, '2020-05', 'publication', NULL),
 (102, '2020-05', 'master', NULL),
-(104, '2019-04', 'publication', NULL),
-(105, '2019-08', 'publication', NULL),
+(104, '2019-04', 'publication', 'C00L07UN160420180002'),
+(105, '2019-08', 'publication', 'C00L07UN160420180002'),
 (106, '2019-10', 'publication', NULL),
 (107, '2019-11', 'publication', NULL),
 (108, '2019-01', 'publication', NULL),
@@ -1240,17 +1244,16 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (112, '2019-06', 'publication', NULL),
 (113, '2019-01', 'chapitreOuvrage', NULL),
 (114, '2019-01', 'chapitreOuvrage', NULL),
-(115, '2019-07', 'communication', NULL),
-(116, '2019-10', 'communication', NULL),
-(117, '2019-11', 'communication', NULL),
-(118, '2019-10', 'communication', NULL),
-(119, '2019-12', 'communication', NULL),
+(115, '2019-07', 'communication', 'C00L07UN160420180002'),
+(116, '2019-10', 'communication', 'C00L07UN160420180002'),
+(117, '2019-11', 'communication', 'C00L07UN160420180002'),
+(118, '2019-10', 'communication', 'C00L07UN160420180002'),
+(119, '2019-12', 'communication', 'C00L07UN160420180002'),
 (120, '2019-07', 'communication', NULL),
 (121, '2019-11', 'communication', NULL),
 (122, '2020-07', 'communication', NULL),
 (123, '2019-07', 'communication', NULL),
 (124, '2019-07', 'communication', NULL),
-(125, '2019-07', 'master', NULL),
 (128, '2019-06', 'master', 'B*00220130123'),
 (129, '2019-06', 'master', 'B*00220130123'),
 (130, '2019-07', 'master', NULL),
@@ -1263,7 +1266,7 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (139, '2018-05', 'communication', NULL),
 (140, '2018-07', 'doctorat', NULL),
 (141, '2019-07', 'doctorat', NULL),
-(142, '2019-07', 'master', NULL),
+(142, '2019-07', 'master', 'C00L07UN160420180002'),
 (143, '2018-06', 'master', NULL),
 (144, '2018-06', 'master', NULL),
 (145, '2019-02', 'doctorat', NULL),
@@ -1342,7 +1345,7 @@ CREATE TABLE `publication` (
 
 INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvol`, `nissue`, `url`) VALUES
 (104, 'An E-negotiation Agent for an E-tourism Platform', 116, 4, ' 10.4018/IJWSR.2019040104', 16, '4', 'url'),
-(105, 'MyRestaurant: A Smart\r\nRestaurant with a Recommendation System', 118, 5, '10.12785/ijcds/080206', 8, '2210-142X', 'url'),
+(105, 'MyRestaurant: A SmartRestaurant with a Recommendation System', 118, 5, '10.12785/ijcds/080206', 8, '2210-142X', 'url'),
 (106, 'Agility and Cloud Computing: Key Enablers for Knowledge Management Systems Implementation in Algerian Small to Medium-Sized Organisations', 120, 6, '10.1504/IJKMS.2019.103349', 10, '4', 'https://www.inderscience.com/info/inarti'),
 (107, ' Conflict resolution in process\r\nmodels merging', 122, 7, '10.1007/s12652-018-0808-1', 0, '0', 'https://www.eventbrite.com/e/4th-interna'),
 (108, 'PCSM: an efficient multihop proximity aware clustering scheme for mobile peer-to-peer systems', 124, 8, '10.1504/IJIPT.2019.103705', 12, '4', 'http://www.inderscience.com/offer.php?id'),
@@ -1615,7 +1618,10 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (210, 'programation', '', 203),
 (211, 'C2C3', '', 204),
 (212, 'C2C3', '', 205),
-(213, 'PR3', '', 206);
+(213, 'PR3', '', 206),
+(214, 'visuelle', '', 207),
+(215, 'visuelle', '', 208),
+(216, 'visuelle', '', 209);
 
 -- --------------------------------------------------------
 
@@ -1766,6 +1772,8 @@ CREATE TABLE `validationproduction` (
 
 INSERT INTO `validationproduction` (`codepro`, `idcher`, `type`) VALUES
 (106, 38, 'publication'),
+(118, 33, 'communication'),
+(119, 31, 'communication'),
 (145, 39, 'doctorat'),
 (148, 39, 'doctorat'),
 (149, 39, 'doctorat');
@@ -2018,7 +2026,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -2042,7 +2050,7 @@ ALTER TABLE `index`
 -- AUTO_INCREMENT pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT pour la table `production`
@@ -2060,7 +2068,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
@@ -2232,14 +2240,6 @@ ALTER TABLE `users`
 ALTER TABLE `validationproduction`
   ADD CONSTRAINT `validation_chercheur_fk` FOREIGN KEY (`idcher`) REFERENCES `chercheur` (`idcher`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `validation_production_fk` FOREIGN KEY (`codepro`) REFERENCES `production` (`codepro`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-DELIMITER $$
---
--- Évènements
---
-CREATE DEFINER=`root`@`localhost` EVENT `suppNotif` ON SCHEDULE EVERY 1 HOUR STARTS '2020-05-14 14:52:39' ON COMPLETION NOT PRESERVE ENABLE DO DELETE FROM `projetfetud`.`notification` WHERE `date` < CURDATE()$$
-
-DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
