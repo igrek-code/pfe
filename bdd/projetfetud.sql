@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 25 juin 2020 à 12:57
+-- Généré le : ven. 26 juin 2020 à 00:33
 -- Version du serveur :  10.4.11-MariaDB
--- Version de PHP : 7.4.3
+-- Version de PHP : 7.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -104,7 +104,16 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (76, '', 165),
 (96, '', 166),
 (53, '', 167),
-(0, '30', 171);
+(0, '30', 171),
+(0, '97', 174),
+(0, '33', 175),
+(0, '56', 176),
+(0, '74', 177),
+(0, '99', 178),
+(79, '', 179),
+(46, '', 180),
+(99, '', 181),
+(0, '72', 182);
 
 -- --------------------------------------------------------
 
@@ -173,7 +182,7 @@ CREATE TABLE `cheflabo` (
 
 INSERT INTO `cheflabo` (`idcher`, `idlabo`) VALUES
 (30, 43),
-(92, 44);
+(100, 44);
 
 -- --------------------------------------------------------
 
@@ -282,7 +291,11 @@ INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `gradeC`, `profil`) V
 (93, 'lyès Khennak', 'lyesKhennak@usthb.dz', 'MCB', 'Chargé de recherche', 'permanent'),
 (94, 'Saliha Aouat', 'SalihaAouat@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent'),
 (95, 'Nadia Baha-Touzène', 'NadiaBahaTouzene@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent'),
-(96, 'Rahmani Moufida', 'RahmaniMoufida@usthb.dz', '', 'Doctorant', 'doctorant');
+(96, 'Rahmani Moufida', 'RahmaniMoufida@usthb.dz', '', 'Doctorant', 'doctorant'),
+(97, 'Cheniki Nacer ', 'Nacer.cheniki@gmail.com', '', 'Doctorant', 'doctorant'),
+(98, 'boukhelef Djillali', 'boukhelef@gmail.com', '', 'Doctorant', 'doctorant'),
+(99, 'Bey Fella', 'fellatus@hotmail.com', '', 'Doctorant', 'doctorant'),
+(100, 'driass habiba', 'driass@usthb.dz', 'PROF', 'Directeur de recherche', 'permanent');
 
 -- --------------------------------------------------------
 
@@ -657,7 +670,19 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (206, 'PR3'),
 (207, 'informatique'),
 (208, 'informatique'),
-(209, 'informatique');
+(209, 'informatique'),
+(210, 'informatique'),
+(211, 'informatique'),
+(212, 'informatique'),
+(213, 'Physique'),
+(214, 'Genie Civil'),
+(215, 'Mathematique'),
+(216, 'informatique'),
+(217, 'informatique'),
+(218, 'informatique'),
+(219, 'informatique'),
+(220, 'informatique'),
+(221, 'informatique');
 
 -- --------------------------------------------------------
 
@@ -756,8 +781,11 @@ CREATE TABLE `laboratoire` (
 
 INSERT INTO `laboratoire` (`idlabo`, `idspe`, `nom`, `abrv`, `addresse`, `anneecrea`, `tel`, `etat`, `idetab`, `structure`, `fax`, `mail`) VALUES
 (43, 94, 'LABORATOIRE DES SYSTÈMES INFORMATIQUES', 'LSI', 'BP 32 Bab Ezzouar, 16111  ALGER', 2000, 21247911, 'actif', 1, '', 21247911, 'lsi@ushb.dz'),
-(44, 100, 'Recherche en Intelligence Artificielle', 'LRIA', 'BP 32 Bab Ezzouar, 16111  ALGER', 2000, 21247911, 'actif', 1, '', 21247911, 'lria@ushb.dz'),
-(51, 109, 'Laboratoire d\'écologie végétale et d\'environnement', 'LEVE', 'USTHB, BP32 EL ALIA, BAB EZZOUAR, ALGER, ALGERIE. ', 2010, 2147483647, 'actif', 1, '', 2147483647, 'hykadihanifi@yahoo.fr');
+(44, 100, 'RECHERCHE EN INTELLIGENCE ARTIFICIELLE', 'LRIA', 'BP 32 Bab Ezzouar, 16111  ALGER', 2000, 21247911, 'actif', 1, '', 21247911, 'lria@ushb.dz'),
+(51, 109, 'Laboratoire d\'écologie végétale et d\'environnement', 'LEVE', 'USTHB, BP32 EL ALIA, BAB EZZOUAR, ALGER, ALGERIE. ', 2010, 2147483647, 'actif', 1, '', 2147483647, 'hykadihanifi@yahoo.fr'),
+(55, 220, 'Mécanique des fluides théorique et Appliquée', 'MFTA', 'BP 32 Bab Ezzouar, 16111  ALGER', 2000, 2147483647, 'actif', 1, '', 2147483647, 'mc@ushb.dz'),
+(56, 221, 'Bâti dans l\'Environnement', 'BEN', 'BP 32 Bab Ezzouar, 16111  ALGER', 2000, 2147483647, 'actif', 1, '', 2147483647, 'ben@ushb.dz'),
+(57, 222, 'Recherche Opérationnelle et Mathématiques de la Décision', 'ROMD', 'BP 32 Bab Ezzouar, 16111  ALGER', 2000, 2147483647, 'actif', 1, '', 2147483647, 'romd@usthb.dz');
 
 -- --------------------------------------------------------
 
@@ -827,6 +855,7 @@ INSERT INTO `menbrequip` (`idcher`, `idequipe`) VALUES
 (64, 17),
 (65, 17),
 (73, 17),
+(98, 17),
 (66, 18),
 (67, 18),
 (68, 18),
@@ -838,6 +867,8 @@ INSERT INTO `menbrequip` (`idcher`, `idequipe`) VALUES
 (35, 19),
 (36, 19),
 (37, 19),
+(97, 19),
+(99, 19),
 (70, 20),
 (71, 20),
 (72, 20),
@@ -1039,7 +1070,16 @@ INSERT INTO `motscle` (`codepro`, `mot`) VALUES
 (171, 'O'),
 (171, 'R'),
 (171, 'U'),
-(171, 'V');
+(171, 'V'),
+(174, 'service mobile'),
+(175, 'environnement '),
+(176, 'top-k cubes OLAP'),
+(177, 'reseaux'),
+(178, 'service web'),
+(179, 'reseau'),
+(180, 'procédés logiciels'),
+(181, 'Web Service'),
+(182, 'réseaux');
 
 -- --------------------------------------------------------
 
@@ -1293,7 +1333,16 @@ INSERT INTO `production` (`codepro`, `date`, `type`, `codeproj`) VALUES
 (167, '2018-04', 'publication', NULL),
 (168, '2017-04', 'doctorat', NULL),
 (169, '2017-12', 'doctorat', NULL),
-(171, '2020-06', 'doctorat', NULL);
+(171, '2020-06', 'doctorat', NULL),
+(174, '2017-12', 'doctorat', NULL),
+(175, '2019-10', 'doctorat', NULL),
+(176, '2019-03', 'doctorat', NULL),
+(177, '2017-03', 'doctorat', NULL),
+(178, '2018-11', 'doctorat', NULL),
+(179, '2018-11', 'doctorat', NULL),
+(180, '2018-10', 'doctorat', NULL),
+(181, '2018-11', 'doctorat', NULL),
+(182, '2019-12', 'doctorat', NULL);
 
 -- --------------------------------------------------------
 
@@ -1347,7 +1396,7 @@ INSERT INTO `publication` (`codepro`, `titre`, `idspe`, `coderevue`, `doi`, `nvo
 (104, 'An E-negotiation Agent for an E-tourism Platform', 116, 4, ' 10.4018/IJWSR.2019040104', 16, '4', 'url'),
 (105, 'MyRestaurant: A SmartRestaurant with a Recommendation System', 118, 5, '10.12785/ijcds/080206', 8, '2210-142X', 'url'),
 (106, 'Agility and Cloud Computing: Key Enablers for Knowledge Management Systems Implementation in Algerian Small to Medium-Sized Organisations', 120, 6, '10.1504/IJKMS.2019.103349', 10, '4', 'https://www.inderscience.com/info/inarti'),
-(107, ' Conflict resolution in process\r\nmodels merging', 122, 7, '10.1007/s12652-018-0808-1', 0, '0', 'https://www.eventbrite.com/e/4th-interna'),
+(107, ' Conflict resolution in processmodels merging', 122, 7, '10.1007/s12652-018-0808-1', 4, '2', 'https://www.eventbrite.com/e/4th-interna'),
 (108, 'PCSM: an efficient multihop proximity aware clustering scheme for mobile peer-to-peer systems', 124, 8, '10.1504/IJIPT.2019.103705', 12, '4', 'http://www.inderscience.com/offer.php?id'),
 (109, '’A review on security challenges of wireless communications in disaster emergency response and crisis management situations', 126, 9, '10.1016/j.jnca.2018.11.010 ', 126, '1', 'https://www.sciencedirect.com/science/ar'),
 (110, 'SANSync: An Accurate Time Synchronization Protocol for Wireless Sensor and Actuator Networks', 128, 10, '951–972', 105, '3', 'https://link.springer.com/article/10.100'),
@@ -1621,7 +1670,19 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (213, 'PR3', '', 206),
 (214, 'visuelle', '', 207),
 (215, 'visuelle', '', 208),
-(216, 'visuelle', '', 209);
+(216, 'visuelle', '', 209),
+(217, 'service mobile', '', 210),
+(218, 'environnement domotique', '', 211),
+(219, 'top-k cubes OLAP', '', 212),
+(220, 'mecanique', '', 213),
+(221, 'batiment', '', 214),
+(222, 'Recherche opérationnelle', '', 215),
+(223, 'reseaux', '', 216),
+(224, 'service web', '', 217),
+(225, 'réseau', '', 218),
+(226, 'procédés logiciels', '', 219),
+(227, 'Web Services', '', 220),
+(228, 'réseaux', '', 221);
 
 -- --------------------------------------------------------
 
@@ -1671,6 +1732,21 @@ CREATE TABLE `these` (
   `url` varchar(255) DEFAULT NULL,
   `idspe` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `these`
+--
+
+INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url`, `idspe`) VALUES
+(174, 'Découverte de services mobiles ', 'Belkhir Abdelkader', 'usthb', '11/2017', 'usthb', 217),
+(175, 'environnement domotique pour la e santé', 'Belkhir Abdelkader', 'usthb', '01/2019', 'usthb', 218),
+(176, 'Approches de design et de recommandation des top-k cubes OLAP', 'Alimazighi Zaia', 'usthb', '03/2019', 'usthb', 219),
+(177, 'Election Coopérative des Coordinateurs dans les Réseaux de Capteurs : le Contrôle de Topologie pour la Conservation d’Énergie dans les Réseaux de Capteurs', 'Badache Nadjib', 'usthb', '04/2017', 'usthb', 223),
+(178, 'Composition de services web basée temps', 'Belkhir Abdelkader', 'usthb', '11/2018', 'usthb', 224),
+(179, 'La fusion d’information dans les réseaux de capteurs avec actionneurs', 'Badache Nadjib', 'usthb', '03/2018', 'url', 225),
+(180, 'La composition des patrons de modèles de procédés logiciels', 'Ahmed Nacer Mohamed', 'usthb', '04/2018', 'url', 226),
+(181, 'Composition de services web basée temps', 'Belkhir Abdelkader', 'usthb', '02/2018', 'url', 227),
+(182, 'Le recouvrement adaptatif dans les réseaux de capteurs sans fil.', 'Badache Nadjib', 'usthb', '04/2019', 'usthb', 228);
 
 -- --------------------------------------------------------
 
@@ -1752,7 +1828,10 @@ INSERT INTO `users` (`idcher`, `mail`, `password`, `actif`) VALUES
 (93, 'lyesKhennak@usthb.dz', 'admin', 1),
 (94, 'SalihaAouat@usthb.dz', 'admin', 1),
 (95, 'NadiaBahaTouzene@usthb.dz', 'admin', 0),
-(96, 'RahmaniMoufida@usthb.dz', 'admin', 1);
+(96, 'RahmaniMoufida@usthb.dz', 'admin', 1),
+(97, 'Nacer.cheniki@gmail.com', 'admin', 1),
+(98, 'boukhelef@gmail.com', 'admin', 0),
+(99, 'fellatus@hotmail.com', 'admin', 1);
 
 -- --------------------------------------------------------
 
@@ -1772,8 +1851,6 @@ CREATE TABLE `validationproduction` (
 
 INSERT INTO `validationproduction` (`codepro`, `idcher`, `type`) VALUES
 (106, 38, 'publication'),
-(118, 33, 'communication'),
-(119, 31, 'communication'),
 (145, 39, 'doctorat'),
 (148, 39, 'doctorat'),
 (149, 39, 'doctorat');
@@ -2014,7 +2091,7 @@ ALTER TABLE `validationproduction`
 -- AUTO_INCREMENT pour la table `chercheur`
 --
 ALTER TABLE `chercheur`
-  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT pour la table `conference`
@@ -2026,7 +2103,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -2050,13 +2127,13 @@ ALTER TABLE `index`
 -- AUTO_INCREMENT pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 
 --
 -- AUTO_INCREMENT pour la table `revue`
@@ -2068,7 +2145,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`

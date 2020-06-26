@@ -388,11 +388,11 @@
         if(!mysqli_query($db,$sql)) return true;
         $sql = "UPDATE production SET codeproj=".$codeproj.", date='".$dateProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "UPDATE these SET titre='".$titreProduction."', encadreur='".$encadreur."', lieusout='".$lieusoutProduction."', nordre='".$nordreProduction."', url='".$urlProduction."'";
+        $sql = "UPDATE these SET titre='".$titreProduction."', encadreur='".$encadreur."', lieusout='".$lieusoutProduction."', nordre='".$nordreProduction."', url='".$urlProduction."' WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "DELETE FROM auteurprinc WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
-        $sql = "INSERT INTO auteurprinc (nom,codepro) VALUES ('".$auteurThese."','".$codepro."')";
+        $sql = "INSERT INTO auteurprinc (idcher,codepro) VALUES ('".$auteurThese."','".$codepro."')";
         if(!mysqli_query($db,$sql)) return true;
         $sql = "DELETE FROM motscle WHERE codepro='".$codepro."'";
         if(!mysqli_query($db,$sql)) return true;
