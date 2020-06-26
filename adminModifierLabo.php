@@ -63,82 +63,80 @@
         $error = false;
         if($_POST["idetab"] != $idetabLabo){
             $idetabLabo = mysqli_real_escape_string($db,$_POST["idetab"]);
-            $sql = "UPDATE laboratoire SET idetab='".$idetabLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET idetab='".$idetabLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         }
 
         if($_POST["structure"] != $structureLabo){
             $structureLabo = mysqli_real_escape_string($db,$_POST["structure"]);
-            $sql = "UPDATE laboratoire SET structure='".$structureLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET structure='".$structureLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         }
 
         if($_POST["nomLabo"] != $nomLabo){
             $nomLabo = mysqli_real_escape_string($db,$_POST["nomLabo"]);
-            $sql = "UPDATE laboratoire SET nom='".$nomLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET nom='".$nomLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["abrvLabo"] != $abrvLabo){
             $abrvLabo = mysqli_real_escape_string($db,$_POST["abrvLabo"]);
-            $sql = "UPDATE laboratoire SET abrv='".$abrvLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET abrv='".$abrvLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["anneecrea"] != $anneecreaLabo){
             $anneecreaLabo = mysqli_real_escape_string($db,$_POST["anneecrea"]);
-            $sql = "UPDATE laboratoire SET anneecrea='".$anneecreaLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET anneecrea='".$anneecreaLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["etatLabo"] != $etatLabo){
             $etatLabo = mysqli_real_escape_string($db,$_POST["etatLabo"]);
-            $sql = "UPDATE laboratoire SET etat='".$etatLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET etat='".$etatLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["mailLabo"] != $mailLabo){
             $mailLabo = mysqli_real_escape_string($db,$_POST["mailLabo"]);
-            $sql = "UPDATE laboratoire SET mail='".$mailLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET mail='".$mailLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["adresseLabo"] != $adresseLabo){
             $adresseLabo = mysqli_real_escape_string($db,$_POST["adresseLabo"]);
-            $sql = "UPDATE laboratoire SET addresse='".$adresseLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET addresse='".$adresseLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["telLabo"] != $telLabo){
             $telLabo = mysqli_real_escape_string($db,$_POST["telLabo"]);
-            $sql = "UPDATE laboratoire SET tel='".$telLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET tel='".$telLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["faxLabo"] != $faxLabo){
             $faxLabo = mysqli_real_escape_string($db,$_POST["faxLabo"]);
-            $sql = "UPDATE laboratoire SET fax='".$faxLabo."'WHERE idlabo='".$idlabo."'";
+            $sql = "UPDATE laboratoire SET fax='".$faxLabo."' WHERE idlabo='".$idlabo."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["nomDomaine"] != $nomDomaine){
             $nomDomaine = mysqli_real_escape_string($db,$_POST["nomDomaine"]);
-            $sql = "UPDATE domaine SET nom='".$nomDomaine."'WHERE codeDomaine='".$codeDomaine."'";
+            $sql = "UPDATE domaine SET nom='".$nomDomaine."' WHERE codeDomaine='".$codeDomaine."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if($_POST["nomspe"] != $nomspe){
             $nomspe = mysqli_real_escape_string($db,$_POST["nomspe"]);
-            $sql = "UPDATE specialite SET nomspe='".$nomspe."'WHERE idspe='".$idspe."'";
+            $sql = "UPDATE specialite SET nomspe='".$nomspe."' WHERE idspe='".$idspe."'";
             if(!mysqli_query($db,$sql)) $error = true;
         } 
 
         if(isset($_POST["idcher"]) && $_POST["idcher"] != ""){
-            $sql = "DELETE FROM cheflabo WHERE idlabo='".$idlabo."'";
-            if(mysqli_query($db,$sql)){
-                $sql = "INSERT INTO cheflabo (idlabo,idcher) VALUES ('".$idlabo."','".$idcher."')";
-                if(!mysqli_query($db,$sql)) $error = true;
-            }else $error = true;
+            $idcher = mysqli_real_escape_string($db,$_POST["idcher"]);
+            $sql = "UPDATE cheflabo SET idcher='".$idcher."' WHERE idlabo='".$idlabo."'";
+            if(!mysqli_query($db,$sql)) $error = true;
         }
         
         if(!$error) $display_type = "success";
@@ -402,8 +400,8 @@
                                         <select class="form-control selectpicker" name="idcher" id="idcher" data-live-search="true" title="Chef d'équipe...">
                                             <?php
                                                 $sql = "SELECT * FROM chercheur WHERE idcher IN (
-                                                    SELECT idcher FROM chefequip WHERE idequip IN (
-                                                        SELECT idequip FROM equipe WHERE idlabo ='".$idlabo."'
+                                                    SELECT idcher FROM chefequip WHERE idequipe IN (
+                                                        SELECT idequipe FROM equipe WHERE idlabo ='".$idlabo."'
                                                     )
                                                 ) AND idcher IN (
                                                     SELECT idcher FROM users WHERE actif='1'

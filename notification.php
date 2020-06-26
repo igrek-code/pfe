@@ -187,9 +187,9 @@
                             <div class="header">
                                 <h4 class="title">Nouvelle notification</h4>
                                 <?php
-                                    if(isset($_SESSION['loggedinlabo'])) echo '<p class="category">envoyer au chefs d\'équipe ou chercheurs</p>';
-                                    if(isset($_SESSION['loggedinequipe'])) echo '<p class="category">envoyer au chercheurs</p>';
-                                    if(isset($_SESSION['loggedinadmin'])) echo '<p class="category">envoyer au chefs de labo</p>';
+                                    if(isset($_SESSION['loggedinlabo'])) echo '<p class="category">envoyer aux chefs d\'équipe ou chercheurs</p>';
+                                    if(isset($_SESSION['loggedinequipe'])) echo '<p class="category">envoyer aux chercheurs</p>';
+                                    if(isset($_SESSION['loggedinadmin'])) echo '<p class="category">envoyer aux chefs de labo</p>';
                                 ?>
                                 
                             </div>

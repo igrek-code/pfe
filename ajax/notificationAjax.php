@@ -7,7 +7,7 @@
         <table class="table table-hover" id="myTable" >
             <thead>
                 <th>Titre</th>
-                <th>Dérnier délai</th>
+                <th>Dernier délai</th>
                 <th>Type</th>
             </thead>
             <tbody>';
@@ -53,7 +53,7 @@
         <table class="table table-hover" id="myTable1" >
             <thead>
                 <th>Titre</th>
-                <th>Dérnier délai</th>
+                <th>Dernier délai</th>
                 <th>Type</th>';
         if(isset($_SESSION['loggedinlabo']))
             echo '<th>Pour</th>';

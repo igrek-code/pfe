@@ -163,12 +163,20 @@
                 $lieusout = $row["lieusout"];
                 $nordre = $row["nordre"];
                 $url = $row["url"];
-                $idencadreur = $encadreur = $row["encadreur"];
-                $sql = "SELECT * FROM chercheur WHERE idcher='".$encadreur."'";
+                $sql = "SELECT * FROM chercheur WHERE idcher IN (
+                    SELECT idcher FROM auteurprinc WHERE codepro='".$codepro."'
+                )";
                 $result2 = mysqli_query($db,$sql);
                 if(mysqli_num_rows($result2) > 0){
-                    $encadreur = mysqli_fetch_array($result2)["nom"]; 
+                    $row3 = mysqli_fetch_array($result2);
+                    $auteurThese = $row3["nom"]; 
+                    $idAuteurThese = $row3["idcher"];
                 }
+                else{
+                    $auteurThese = "";
+                    $idAuteurThese = "";
+                }
+                $encadreur = $row["encadreur"];
                 $idspe = $row["idspe"];
                 $sql = "SELECT * FROM domaine WHERE codeDomaine IN (
                     SELECT codeDomaine FROM specialite WHERE idspe='".$idspe."'
@@ -224,7 +232,7 @@
                     echo    '<td><a target="_blank" href="http://'.$url.'">lien</a></td>';
                 else
                     echo    '<td><a target="_blank" href="'.$url.'">lien</a></td>';
-                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idencadreur.'">'.$encadreur.'</button></td>';
+                echo    '<td><button postedBy="postedBy" class="btn btn-primary" style="border:0px;font-size:16px;" value="'.$idAuteurThese.'">'.$auteurThese.'</button></td>';
                 echo   '<td>';
                 echo    '<div class="btn-toolbar">';
                 echo    '<div class="btn-group">';

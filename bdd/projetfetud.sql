@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 26 juin 2020 à 00:33
+-- Généré le : ven. 26 juin 2020 à 17:55
 -- Version du serveur :  10.4.11-MariaDB
--- Version de PHP : 7.2.28
+-- Version de PHP : 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -104,16 +104,16 @@ INSERT INTO `auteurprinc` (`idcher`, `nom`, `codepro`) VALUES
 (76, '', 165),
 (96, '', 166),
 (53, '', 167),
-(0, '30', 171),
-(0, '97', 174),
-(0, '33', 175),
-(0, '56', 176),
-(0, '74', 177),
-(0, '99', 178),
+(30, '', 171),
+(97, '', 174),
+(33, '', 175),
+(56, '', 176),
+(74, '', 177),
+(99, '', 178),
 (79, '', 179),
 (46, '', 180),
 (99, '', 181),
-(0, '72', 182);
+(72, '', 182);
 
 -- --------------------------------------------------------
 
@@ -253,9 +253,7 @@ INSERT INTO `chercheur` (`idcher`, `nom`, `mail`, `grade`, `gradeC`, `profil`) V
 (55, 'Selmoune Nazih', 'nselmoune@usthb.dz', 'MAA', 'Chargé de recherche', 'permanent'),
 (56, 'Djiroun Rahma', 'rdjiroun@usthb.dz', 'MAA', 'Chargé de recherche', 'permanent'),
 (57, 'Hamdah Mohamed', 'hamdah_m@yahoo.fr', 'MAA', 'Chargé de recherche', 'permanent'),
-(58, 'Hamdah Mohamed', 'hamdah_m@yahoo.fr', 'MAA', 'Chargé de recherche', 'permanent'),
 (59, 'Ouahrani Leila', 'louahrano@hotmail.com', 'MAA', 'Maitre de recherche', 'permanent'),
-(60, 'Ouahrani Leila', 'louahrano@hotmail.com', 'MAA', 'Directeur de recherche', 'permanent'),
 (61, 'Azzouz Mahdia', 'peace_maha@yahoo.fr', 'MAA', 'Attaché de recherche', 'permanent'),
 (62, 'Challal Zakia	MAB', 'zakiachallal@usthb.dz', 'MAB', 'Attaché de recherche', 'permanent'),
 (63, 'Frihi Ibtissem', 'i.frihi@gmail.com', 'MAB', 'Attaché de recherche', 'permanent'),
@@ -682,7 +680,9 @@ INSERT INTO `domaine` (`codeDomaine`, `nom`) VALUES
 (218, 'informatique'),
 (219, 'informatique'),
 (220, 'informatique'),
-(221, 'informatique');
+(221, 'informatique'),
+(222, 'C2C3'),
+(223, 'informatique et');
 
 -- --------------------------------------------------------
 
@@ -846,9 +846,7 @@ INSERT INTO `menbrequip` (`idcher`, `idequipe`) VALUES
 (55, 17),
 (56, 17),
 (57, 17),
-(58, 17),
 (59, 17),
-(60, 17),
 (61, 17),
 (62, 17),
 (63, 17),
@@ -1126,15 +1124,7 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`idcher`, `titre`, `date`, `type`, `admin`, `forEquipe`) VALUES
-(0, 'une autre', '2020-07-04', 'pasUrgent', 1, 0),
-(0, 'Veuillez établir le bilan de projet ', '2020-04-23', 'pasUrgent', 1, 0),
-(16, 'bilan svp faite vite', '2020-05-31', 'pasUrgent', 0, 0),
-(16, 'ddzdaz', '2020-05-26', 'urgent', 0, 1),
-(16, 'whateverlol', '2020-05-28', 'pasUrgent', 0, 0),
-(28, 'vous devez yes', '2020-05-30', 'urgent', 0, 0),
-(30, 'etablir bilan', '2020-06-11', 'urgent', 0, 0),
-(30, 'Veuillez établir le bilan ', '2020-09-18', 'urgent', 0, 1),
-(92, 'etablir bilan', '2020-06-01', 'urgent', 0, 1);
+(0, 'Établir le bilan de projet bi-annuel', '2020-09-30', 'pasUrgent', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1151,18 +1141,6 @@ CREATE TABLE `ouvrage` (
   `url` varchar(40) NOT NULL,
   `isbn` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `ouvrage`
---
-
-INSERT INTO `ouvrage` (`codepro`, `idspe`, `titre`, `nbpages`, `editeur`, `url`, `isbn`) VALUES
-(51, 79, 'OB', 200, 'OB', 'OB', ''),
-(52, 80, 'OB2', 500, 'OB2', 'OB2', ''),
-(53, 81, 'OB2', 500, 'OB2', 'OB2', ''),
-(54, 82, 'OB2', 500, 'OB2', 'OB2', ''),
-(55, 83, 'OB2', 500, 'OB2', 'OB2', ''),
-(56, 84, 'OB2', 500, 'OB2', 'OB2', '');
 
 -- --------------------------------------------------------
 
@@ -1682,7 +1660,9 @@ INSERT INTO `specialite` (`idspe`, `nomspe`, `abrv`, `codeDomaine`) VALUES
 (225, 'réseau', '', 218),
 (226, 'procédés logiciels', '', 219),
 (227, 'Web Services', '', 220),
-(228, 'réseaux', '', 221);
+(228, 'réseaux', '', 221),
+(229, 'PR3', '', 222),
+(230, 'intelligence artificielle et', '', 223);
 
 -- --------------------------------------------------------
 
@@ -1742,7 +1722,6 @@ INSERT INTO `these` (`codepro`, `titre`, `encadreur`, `lieusout`, `nordre`, `url
 (175, 'environnement domotique pour la e santé', 'Belkhir Abdelkader', 'usthb', '01/2019', 'usthb', 218),
 (176, 'Approches de design et de recommandation des top-k cubes OLAP', 'Alimazighi Zaia', 'usthb', '03/2019', 'usthb', 219),
 (177, 'Election Coopérative des Coordinateurs dans les Réseaux de Capteurs : le Contrôle de Topologie pour la Conservation d’Énergie dans les Réseaux de Capteurs', 'Badache Nadjib', 'usthb', '04/2017', 'usthb', 223),
-(178, 'Composition de services web basée temps', 'Belkhir Abdelkader', 'usthb', '11/2018', 'usthb', 224),
 (179, 'La fusion d’information dans les réseaux de capteurs avec actionneurs', 'Badache Nadjib', 'usthb', '03/2018', 'url', 225),
 (180, 'La composition des patrons de modèles de procédés logiciels', 'Ahmed Nacer Mohamed', 'usthb', '04/2018', 'url', 226),
 (181, 'Composition de services web basée temps', 'Belkhir Abdelkader', 'usthb', '02/2018', 'url', 227),
@@ -2091,7 +2070,7 @@ ALTER TABLE `validationproduction`
 -- AUTO_INCREMENT pour la table `chercheur`
 --
 ALTER TABLE `chercheur`
-  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `idcher` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT pour la table `conference`
@@ -2103,7 +2082,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT pour la table `domaine`
 --
 ALTER TABLE `domaine`
-  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
+  MODIFY `codeDomaine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
 
 --
 -- AUTO_INCREMENT pour la table `equipe`
@@ -2127,13 +2106,13 @@ ALTER TABLE `index`
 -- AUTO_INCREMENT pour la table `laboratoire`
 --
 ALTER TABLE `laboratoire`
-  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `idlabo` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT pour la table `production`
 --
 ALTER TABLE `production`
-  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `codepro` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT pour la table `revue`
@@ -2145,7 +2124,7 @@ ALTER TABLE `revue`
 -- AUTO_INCREMENT pour la table `specialite`
 --
 ALTER TABLE `specialite`
-  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `idspe` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 
 --
 -- AUTO_INCREMENT pour la table `systemenotes`
