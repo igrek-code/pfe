@@ -3,4 +3,4 @@ testAjax.php
 uploads/*
 token.php
 ajax/tempo/*
-bdd/[WITH DATA]projetfetud.sql
+bdd/DATAprojetfetud.sql
