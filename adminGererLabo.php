@@ -139,7 +139,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">Séléctionner un établissement</label>
+                                            <label for="">Selectionner un établissement</label>
                                             <select class="selectpicker form-control"  data-live-search="true" name="idetab" id="idetab" title="établissement...">
                                                 <?php
                                                     $sql = "SELECT * FROM etablissement";
